@@ -8,7 +8,6 @@
   <div class='menu-wrapper'>
     <template v-for="item in routes">
       <keep-alive>
-        
         <router-link v-if="!item.hidden&&item.noDropdown&&item.children.length>0&&!horizontal"
                      :to="item.path + item.children[0].path">
           <el-menu-item :index="item.path + item.children[0].path" class='submenu-title-noDropdown'>

@@ -24,7 +24,7 @@
           <el-menu-item :index="item.path + item.children[0].path" 
                         style="display:inline-block" 
                         :class="['submenu-title-noDropdown',!horizontalFlag? 'leftSidebar-submenu-title-noDropdown': '']">
-            <icon-svg v-if='item.icon' :icon-class="item.icon"></icon-svg>
+            <icon-svg v-if='!horizontalFlag && item.icon' :icon-class="item.icon"></icon-svg>
             <span>{{item.name}}</span>
           </el-menu-item>
         </router-link>
@@ -35,22 +35,22 @@
        <el-submenu :index="item.name" v-if="!item.noDropdown&&!item.hidden">
 
         <template slot="title">
-          <icon-svg v-if='item.icon' :icon-class="item.icon"></icon-svg>
+          <icon-svg v-if='!horizontalFlag && item.icon' :icon-class="item.icon"></icon-svg>
           <span class="parentName">{{item.name}}</span>
         </template>
 
         <template v-for="child in item.children" v-if='!child.hidden'>
 
           <!--子菜单下又有子菜单的时候，递归调用此 sider-item 的组件-->
-          <sidebar-item class='nest-menu' 
-            v-if='!child.noDropdown&&child.children && child.children.length>0' 
+          <sidebar-item 
+            class='nest-menu' 
+            v-if='!child.noDropdown && child.children && child.children.length>0' 
             :routes='[child]'>
-
           </sidebar-item>
 
           <router-link v-else :to="item.path+'/'+child.path">
-            <el-menu-item :index="item.path+'/'+child.path">
-              <icon-svg v-if='child.icon' :icon-class="child.icon"></icon-svg>
+            <el-menu-item :index="item.path+'/'+ child.path">
+              <icon-svg v-if='!horizontalFlag && child.icon' :icon-class="child.icon"></icon-svg>
               <span class="name">{{child.name}}</span>
             </el-menu-item>
           </router-link>

@@ -12,14 +12,16 @@
     </div>
 
     <div class="menuWrap u-f0">
+      $route.path:{{$route.path}}
+      activeIndex: {{activeIndex}}
       <el-menu 
         mode="horizontal"
         theme="dark"
         background-color="#3b8be3"
         text-color="#fff"
-        active-text-color="#cccccc"
+        active-text-color="#ffd04b"
         unique-opened
-        :default-active="$route.path"
+        :default-active="activeIndex"
         :collapse="isCollapse"
         class="navTopMenu u-f"
       >
@@ -77,6 +79,9 @@
         'name',
         'avatar'
       ]),
+      activeIndex(){
+        return this.$route.path
+      },
       isCollapse () {
         return false
       }
