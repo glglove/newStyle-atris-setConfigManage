@@ -19,8 +19,8 @@
       </router-link> -->
 
       <!-- <template > -->
-        <router-link v-if="!item.hidden&&item.noDropdown&&item.children.length>0"
-            :to="item.children[0].path">
+        <router-link v-if="!item.hidden&&item.noDropdown"
+            :to="item.path">
           <el-menu-item :index="item.path + item.children[0].path" 
                         style="display:inline-block" 
                         :class="['submenu-title-noDropdown',!horizontalFlag? 'leftSidebar-submenu-title-noDropdown': '']">
@@ -87,6 +87,9 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
+>>>.el-submenu.is-active
+  .el-submenu__title
+    border-bottom 2px solid rgb(255, 208, 75)
   .menu-wrapper
     .parentName
       margin-right 20px

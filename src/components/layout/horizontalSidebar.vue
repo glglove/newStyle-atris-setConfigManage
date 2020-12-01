@@ -12,8 +12,8 @@
     </div>
 
     <div class="menuWrap u-f0">
-      $route.path:{{$route.path}}
-      activeIndex: {{activeIndex}}
+      <!-- $route.path:{{$route.path}}
+      activeIndex: {{activeIndex}} -->
       <el-menu 
         mode="horizontal"
         theme="dark"
