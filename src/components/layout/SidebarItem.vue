@@ -4,20 +4,12 @@
   功能：home页中 顶部 和 左边的导航—— 菜单项目items的组件，被 horizontalFlagSidebar.vue组件 和 leftSidebarItem组件所 引用
 -->
 <template>
-  <div class='menu-wrapper'>
+  <div :class="['menu-wrapper', horizontalFlag? 'topSidebar-meuWrap': '']">
     <!-- routes: {{routes[5]}} -->
     <template v-for="(item,key) in routes">
       <!-- horizontalFlag: {{horizontalFlag}} -->
       <!-- {{routes[5].hidden}} && {{routes[5].noDropdown}} && {{routes[5].children.length}} && {{horizontalFlag}}------ -->
       <!--菜单只有主菜单一级的情况-->
-      <!-- <router-link v-if="!item.hidden&&item.noDropdown&&item.children.length>0&&!horizontalFlag"
-                   :to="item.path + item.children[0].path">
-        <el-menu-item :index="item.path + item.children[0].path" class='submenu-title-noDropdown'>
-          <icon-svg v-if='item.icon' :icon-class="item.icon"></icon-svg>
-          <span>{{item.name}}</span>
-        </el-menu-item>
-      </router-link> -->
-
       <!-- <template > -->
         <router-link v-if="!item.hidden&&item.noDropdown"
             :to="item.path">
@@ -32,29 +24,29 @@
 
 
       <!--菜单名下有子菜单的情况-->
-       <el-submenu :index="item.name" v-if="!item.noDropdown&&!item.hidden">
+      <el-submenu :index="item.name" v-if="!item.noDropdown&&!item.hidden">
 
         <template slot="title">
           <icon-svg v-if='!horizontalFlag && item.icon' :icon-class="item.icon"></icon-svg>
           <span class="parentName">{{item.name}}</span>
         </template>
 
-        <template v-for="child in item.children" v-if='!child.hidden'>
+        <template v-for="child in item.children" v-if='!child.hidden'>         
 
           <!--子菜单下又有子菜单的时候，递归调用此 sider-item 的组件-->
           <sidebar-item 
-            class='nest-menu' 
+            :class="['nest-menu', 'recursionNenu']" 
             v-if='!child.noDropdown && child.children && child.children.length>0' 
             :routes='[child]'>
-          </sidebar-item>
+          </sidebar-item>                                                                                                                                                                               
 
+          <!--子菜单下没有下级子菜单-->
           <router-link v-else :to="item.path+'/'+child.path">
             <el-menu-item :index="item.path+'/'+ child.path">
               <icon-svg v-if='!horizontalFlag && child.icon' :icon-class="child.icon"></icon-svg>
               <span class="name">{{child.name}}</span>
             </el-menu-item>
-          </router-link>
-
+          </router-link>         
         </template>
 
       </el-submenu>
@@ -87,13 +79,27 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
->>>.el-submenu.is-active
-  .el-submenu__title
-    border-bottom 2px solid rgb(255, 208, 75)
-  .menu-wrapper
-    .parentName
-      margin-right 20px
-    .leftSidebar-submenu-title-noDropdown
-      width 190px !important
+>>>.router-link-exact-active
+  li.el-menu-item
+    // border-bottom 2px solid #ffd04b
+    // border-bottom 2px solid #ffffff
+    background-color: #909399 !important
+.menu-wrapper
+  &.topSidebar-meuWrap
+    >>>.el-submenu
+      &.is-active
+        .el-submenu__title
+          border-bottom 2px solid rgb(255, 208, 75)
+
+// .menu-wrapper.recursionNenu
+//   >>>.el-submenu
+//     &.is-active
+//       .el-submenu__title
+//         border-bottom 2px solid rgb(255, 208, 75)
+.menu-wrapper
+  .parentName
+    margin-right 20px
+  .leftSidebar-submenu-title-noDropdown
+    width 190px !important
 </style>
 

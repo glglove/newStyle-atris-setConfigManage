@@ -7,12 +7,12 @@
   <div class="sidebar-wrapper">
 
     <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
-
+    <!-- default-active: {{$route.path}} -->
     <el-menu mode="vertical"
              theme="dark"
              background-color="#2d3438"
              text-color="#fff"
-             active-text-color="#3b8be3"
+             active-text-color="#ffd04b"
              unique-opened
              :default-active="$route.path"
              :collapse="isCollapse">

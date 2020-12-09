@@ -19,9 +19,9 @@ import BaseRadio from '@/base/NewStyle-cmp/Field-cmp/Base-radio'
 import BaseCheckbox from '@/base/NewStyle-cmp/Field-cmp/Base-checkbox'
 import BaseImgUpload from '@/base/NewStyle-cmp/Field-cmp/Base-img-upload'
 import BaseFileUpload from '@/base/NewStyle-cmp/Field-cmp/Base-file-upload'
-import BaseEmpUpload from '@/base/NewStyle-cmp/Field-cmp/Base-emp-select'
-import BaseOrgUpload from '@/base/NewStyle-cmp/Field-cmp/Base-org-select'
-import BaseMapUpload from '@/base/NewStyle-cmp/Field-cmp/Base-map-select'
+import BaseEmpSelect from '@/base/NewStyle-cmp/Field-cmp/Base-emp-select'
+import BaseOrgSelect from '@/base/NewStyle-cmp/Field-cmp/Base-org-select'
+import BaseMapSelect from '@/base/NewStyle-cmp/Field-cmp/Base-map-select'
 import BaseCalculate from '@/base/NewStyle-cmp/Field-cmp/Base-calculate'
 import BaseEditor from '@/base/NewStyle-cmp/Field-cmp/Base-editor'
 import BaseExplain from '@/base/NewStyle-cmp/Field-cmp/Base-explain'
@@ -84,13 +84,13 @@ export const fieldGroupControlTypeMixin = {
                 case 16:
                     return BaseCalculate
                 case 19:
-                    return BaseEmpUpload
+                    return BaseEmpSelect
                 case 20:
-                    return BaseOrgUpload
-                case 21:
-                    return OrgAndEmpSelect
+                    return BaseOrgSelect
+                // case 21:
+                //     return OrgAndEmpSelect
                 case 22:
-                    return BaseMapUpload
+                    return BaseMapSelect
                 case 23:
                     return BaseEditor
                 case 24:
@@ -126,9 +126,9 @@ export const fieldGroupControlTypeMixin = {
         BaseCheckbox, //多选chekbox
         BaseImgUpload, // 图片
         BaseFileUpload, // 附件
-        BaseEmpUpload,  //  人员
-        BaseOrgUpload,  // 组织
-        BaseMapUpload,  // 地图
+        BaseEmpSelect,  //  人员
+        BaseOrgSelect,  // 组织
+        BaseMapSelect,  // 地图
         BaseCalculate, // 计算公式
         BaseEditor,  // 富文本编辑器
         BaseExplain,  // 说明
