@@ -6,10 +6,25 @@
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 >>>.el-collapse-item {
     margin: 10px 0;
-    border-left: 2px solid red
+    &.is-active {
+        box-shadow: 1px 1px 10px 1px #e8dede
+    }
+    .el-collapse-item__wrap {
+        background-color: #e8dede;
+        padding: 10px;
+    }
 }
 >>>.el-collapse-item__header {
-    padding-left: 5px
+    position: relative;
+    padding-left: 10px;
+    &:after {
+        position: absolute;
+        content: '';
+        width: 4px;
+        height: 30%;
+        left: 0px;
+        background-color: red
+    }
 }
 .rightCmp {
     width: 100%;
@@ -20,10 +35,14 @@
         配置板块——右边
         contentCmpsList: {{contentCmpsList}}-----
         currentMiddleSelectObj: {{currentMiddleSelectObj}}
-        <el-collapse accordion>      
+        <el-collapse 
+            :accordion="false"
+            v-model="activeIndex"
+        >      
             <el-collapse-item 
                 v-for="(cmp, index) in contentCmpsList"
                 :key="index"
+                :name="index"
             >
                 <template slot="title">
                 {{cmp.ControlName}}<i class="header-icon el-icon-info"></i>
@@ -59,6 +78,10 @@
                 default: () => {
                     return {}
                 }
+            },
+            currentMiddleSelectObjIndex: {
+                type: [String, Number],
+                default: ''
             }
         },
         components: {
@@ -66,13 +89,18 @@
         },
         data(){
             return {
-
+                activeIndex: ''
             }
         },
         computed: {
             contentCmpsList(){
                 return this.cmpsList
             }            
+        },
+        watch: {
+            currentMiddleSelectObjIndex(newValue, oldValue){
+                this.activeIndex = newValue
+            }
         },
         created(){
             

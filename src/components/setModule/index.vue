@@ -18,8 +18,21 @@
         .headerWrap {
             .left-header {
                 width: 300px;
-                border-right: 1px solid red;
+                border-right: 1px solid silver;
                 margin-right: 5px;
+            }
+            .right-header {
+                .text {
+                    margin: 0 10px;
+                    font-size: 18px;
+                    color: #000000;
+                    border: none;
+                    &.is-active {
+                        color: #409EFF;
+                        border-radius: 0;
+                        border-bottom: 2px solid #409EFF
+                    }
+                }
             }
         }    
     }
@@ -46,7 +59,7 @@
         >>>.rightSectionWrap {
             height: 100%;
             width: 300px;
-            padding: 0 20px;
+            padding: 0 18px;
             box-sizing: border-box;
             overflow: auto;    
             // background-color: #ffffff;
@@ -58,8 +71,33 @@
     <el-row class="setModule u-f u-f-column">
         <el-col :span="24" class="topWrap">
             <div class="headerWrap u-f">
-                <div class="left-header">rf</div>
-                <div class="right-header u-f2">534 </div>
+                <div class="left-header">
+                    <i class="el-icon-back"></i>
+                    <el-button type="text" style="font-size: 16px;color: #000000">返回</el-button>
+                </div>
+                <div class="right-header u-f2 u-f-jsb">
+                    <div class="u-f-jst">
+                        <el-button 
+                            type="text" 
+                            :class="['text', activeHeaderText==='页面设置'? 'is-active': '']" 
+                            @click.native="clickHeaderText('页面设置')"
+                        >页面设置</el-button>
+                        <el-button 
+                            type="text" 
+                            :class="['text', activeHeaderText==='工作流设置'? 'is-active': '']"
+                            @click.native="clickHeaderText('工作流设置')"
+                        >工作流设置</el-button>
+                        <el-button 
+                            type="text" 
+                            :class="['text', activeHeaderText==='拓展设置'? 'is-active': '']"
+                            @click.native="clickHeaderText('拓展设置')"
+                        >拓展设置</el-button>
+                    </div>
+                    <div>
+                        <el-button type="primary" size="mini">取消</el-button>
+                        <el-button type="primary" size="mini">保存</el-button>
+                    </div>
+                </div>
             </div>
         </el-col>
         <el-col :span="24" class="containerWrap u-f">
@@ -70,13 +108,17 @@
                 currentLeftSelectArr: {{currentLeftSelectArr}}
                 <middle-cmp
                     :cmpsList="currentLeftSelectArr"
-                    @middleChangeEmit="middleChangeEmit"
+                    @middleClickEmit="middleClickEmit"
+                    @middleDeleteEmit="middleDeleteEmit"
+                    @middleCopyEmit="middleCopyEmit"
+                    @middleDraggedEmit="middleDraggedEmit"
                 ></middle-cmp>
             </el-col>
             <el-col :span="4" class="rightSectionWrap">
                 <right-cmp 
                     :cmpsList="currentLeftSelectArr"
                     :currentMiddleSelectObj="currentMiddleSelectObj"
+                    :currentMiddleSelectObjIndex="currentMiddleSelectObjIndex"
                 ></right-cmp>
             </el-col>
         </el-col>
@@ -106,20 +148,39 @@
         data(){
             return {
                currentLeftSelectArr: [],
-               currentMiddleSelectObj: null
+               currentMiddleSelectObj: null,
+               currentMiddleSelectObjIndex: '',
+               activeHeaderText: '页面设置'
             }
         },
         created(){
             
         },
         methods: {
+            clickHeaderText(tit){
+                this.activeHeaderText = tit
+            },
             leftChangeEmit(arr){
                 debugger
                 this.currentLeftSelectArr = arr
             },
-            middleChangeEmit(arr){
+            middleClickEmit(arr, index){
                 debugger
-                this.currentMiddleSelectObj = arr
+                this.currentMiddleSelectObj = arr,
+                this.currentMiddleSelectObjIndex = index
+            },
+            middleDraggedEmit(arr){
+                debugger
+                this.currentLeftSelectArr = arr
+            },
+            middleDeleteEmit(obj, index){
+                debugger
+                this.currentLeftSelectArr = this.currentLeftSelectArr.filter((item, key) => {
+                    return key !=index
+                })
+            },
+            middleCopyEmit(obj, index){
+                this.currentLeftSelectArr.splice(index, 0, obj)
             }
         }
     }

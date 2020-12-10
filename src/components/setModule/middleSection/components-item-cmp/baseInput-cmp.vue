@@ -4,6 +4,9 @@
 * Desc： 配置板块
 */
 <style lang="stylus" rel="stylesheet/stylus" scoped>
+>>>.el-input__inner {
+    background-color: #ffffff !important
+}
 .baseinput-cmp {
    margin-top: 5px;
 }
