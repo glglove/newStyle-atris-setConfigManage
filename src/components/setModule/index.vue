@@ -94,6 +94,7 @@
                         >拓展设置</el-button>
                     </div>
                     <div>
+                        <el-button type="primary" size="mini" disabled>预览</el-button>
                         <el-button type="primary" size="mini">取消</el-button>
                         <el-button type="primary" size="mini">保存</el-button>
                     </div>

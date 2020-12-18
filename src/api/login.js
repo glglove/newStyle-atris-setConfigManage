@@ -12,35 +12,167 @@ import fetch from '@/utils/fetch'
  * @param pwd 密码
  * @returns {Promise.<TResult>}
  */
-export async function loginByUsername (UserName, pwd, companyCode) {
+// export async function loginByUsername (UserName, pwd, companyCode) {
+//   return fetch({
+//     // url: '/API/Account',
+//     url: '/SystemManage/Account',
+//     method: 'post',
+//     data:  {
+//       Method: 'logon',
+//       UserName,
+//       pwd: MD5(pwd),
+//       companyCode
+//     }
+//   })
+// }
+
+
+/**
+ *  登录 new  平台登录
+ * @param accountname 用户名
+ * @param password 密码
+ * @returns {Promise.<TResult>}
+ */
+export async function loginByUsername (accountname, password ) {
   return fetch({
-    // url: '/API/Account',
-    url: '/SystemManage/Account',
+    url: '/sys-user/login',
     method: 'post',
-    data:  {
-      Method: 'logon',
-      UserName,
-      pwd: MD5(pwd),
-      companyCode
+    Method: 'logon',
+    params: {
+      params:  {
+        accountname,
+        // password: MD5(password)
+        password: password
+      }
+    }
+  })
+}
+
+
+
+
+
+/**
+ *  获取用户信息
+ * @param token
+ */
+// export function getUserInfo (TokenId) {
+//   return fetch({
+//     url: '/SystemManage/Account',
+//     method: 'post',
+//     params: {
+//       Method: 'getUser',
+//       TokenId
+//     }
+//   })
+// }
+export function getUserInfo () {
+  return fetch({
+    url: '/sys-user/getUserInfo',
+    method: 'post',
+    params: {
+      Method: 'getUserInfo',
+    }
+  })
+}
+
+
+/**
+ *  企业注册 保存 
+ * @param  companyObj  
+ */
+
+export function saveAccountCompany (companyObj) {
+  return fetch({
+    url: 'sys-account/saveAccountCompany',
+    method: 'post',
+    params: {
+      Method: 'saveAccountCompany',
+      params: {
+        ...companyObj
+      },
+    }
+  })
+}
+
+
+/**
+ * 注册获取手机验证码
+ * @param  phone
+ * @param  userAccount
+ */
+
+export function getMobileCode (phone) {
+  return fetch({
+    url: '/sys-user/getCode',
+    method: 'post',
+    params: {
+      Method: 'getMobileCode',
+      params: {
+        phone
+      }
     }
   })
 }
 
 /**
- *  获取用户信息
- * @param TokenId
+ * 验证短信验证码正确性
+ * @param  code
+ * @param  phone
  */
-export function getUserInfo (TokenId) {
+
+export function checkPhoneCode (phone, code) {
   return fetch({
-    // url: '/API/Account',
-    url: '/SystemManage/Account',
+    url: '/sys-user/checkCode',
     method: 'post',
-    data: {
-      Method: 'getUser',
-      TokenId
+    params: {
+      Method: 'validateMobileCode',
+      params: {
+        phone,
+        code
+      }
     }
   })
 }
+
+/**
+ *  找回密码获取手机验证码  
+ */
+export function getCodeByNamePhone ( phone, userAccount ) {
+  return fetch({
+    url: '/sys-user/getCodeByNamePhone',
+    method: 'post',
+    params: {
+      Method: 'getMobileCode',
+      params: {
+        phone,
+        userAccount
+      }
+    }
+  })
+}
+
+/**
+ *  保存提交修改密码
+ */
+export function resetPassword ( phone, userAccount, code, password ) {
+  return fetch({
+    url: '/sys-user/resetPassword',
+    method: 'post',
+    params: {
+      Method: 'getMobileCode',
+      params: {
+        phone,
+        userAccount,
+        code,
+        password
+      }
+    }
+  })
+}
+
+
+
 
 /**
  * 登出

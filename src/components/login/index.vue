@@ -6,11 +6,21 @@
 <style lang="stylus" rel="stylesheet/stylus">
   @import "~common/css/variable"
   @import "~common/css/mixin"
+  .pageLogin{
+    position: relative;
+    height: 100vh;
+    background-color: $color-background;
+    background: url('../../assets/login-bg.jpg') repeat-x top left;
+  }
+
  .login-container
-   position relative;
-   height: 100vh;
-   background-color: $color-background;
-   background: url('../../assets/login-bg.jpg') repeat-x top left;
+   position: absolute;
+   left:20px;
+   top:0;
+   right:20px;
+   bottom:0;
+   margin:0 auto;
+   width: 500px;
    input:-webkit-autofill
      -webkit-box-shadow: 0 0 0px 1000px #293444 inset !important;
      -webkit-text-fill-color: #fff !important;
@@ -93,12 +103,13 @@
 </style>
 <template>
 <el-row>
-  <el-col :span="24">
+  <el-col :span="24" class="pageLogin">
     <div class="login-container">
-      <el-col :span="20" style="position: absolute;left:20px;top:0;right:20px;bottom:0;margin:0 auto">
+      <el-col :span="20">
         <el-form class="card-box login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
-          <h3 class="title">才慧云管理系统登录</h3>
-          <div class="tagBox u-f-ajc marginB10">
+          <h3 class="title" v-show="isAdminOrUser === 1">才慧云管理系统登录</h3>
+          <h3 class="title" v-show="isAdminOrUser === 2">平台登录</h3>
+          <div class="tagBox u-f-ajc marginB10" v-show="isAdminOrUser === 1">
             <el-button 
               class="user" 
               style="width: 50%"
@@ -212,14 +223,16 @@
         }
       }
       return {
-        isAdminOrUser: 1, // 1是 用户 2 是管理员
+        isAdminOrUser: 2, // 1是 用户 2 是管理员
         loginForm: {
-          businessCode: '80000000',
-          username: '90032',
-          password: '868686'
+          // businessCode: '80000000',
+          // username: '90032',
+          // password: '868686'
+          username: '18674070272',
+          password: '123456'
         },
         loginRules: {
-          businessCode: [{required: true, trigger: 'blur', validator: validateBusinessCode}],
+          // businessCode: [{required: true, trigger: 'blur', validator: validateBusinessCode}],
           username: [{ required: true, trigger: 'blur', validator: validateUsername }],
           password: [{ required: true, trigger: 'blur', validator: validatePassword }]
         },
@@ -271,6 +284,7 @@
             // 验证通过之后，store 中 调用接口异步存入
             debugger
             this.$store.dispatch('LoginByUsername', this.loginForm).then((res) => {
+              debugger
               this.loading = false
               if (res == 1) {
                 // 1 是表示登陆成功

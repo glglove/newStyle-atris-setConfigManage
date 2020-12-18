@@ -35,22 +35,27 @@
         配置板块——右边
         contentCmpsList: {{contentCmpsList}}-----
         currentMiddleSelectObj: {{currentMiddleSelectObj}}
-        <el-collapse 
-            :accordion="false"
-            v-model="activeIndex"
-        >      
-            <el-collapse-item 
-                v-for="(cmp, index) in contentCmpsList"
-                :key="index"
-                :name="index"
-            >
-                <template slot="title">
-                {{cmp.ControlName}}<i class="header-icon el-icon-info"></i>
-                </template>
-                <div>与现实生活一致：与现实生活的流程、逻辑保持一致，遵循用户习惯的语言和概念；</div>
-                <div>在界面中一致：所有的元素和结构需保持一致，比如：设计样式、图标和文本、元素的位置等。</div>
-            </el-collapse-item>                        
-        </el-collapse>  
+        <el-form >
+            <el-collapse 
+                :accordion="true"
+                v-model="activeIndex"
+            >      
+                <el-collapse-item 
+                    v-for="(cmp, index) in contentCmpsList"
+                    :key="index"
+                    :name="index"
+                >
+                    <template slot="title">
+                        {{cmp.ControlName}}<i class="header-icon el-icon-info"></i>
+                    </template>
+                    <div class="setCmpContentBox">
+                        <component
+                            :is="currentSetCmpCotent(cmp)"
+                        ></component>
+                    </div>
+                </el-collapse-item>                        
+            </el-collapse>  
+        </el-form>
     </div>
 </template>
 
@@ -65,6 +70,14 @@
         // setLocalStorage,
         // getLocalStorage
     } from '@/utils/auth.js'
+    import setCmpShowF from './components-setCmpItem-cmp/setCmpShowF'
+    import setCmpUpText from './components-setCmpItem-cmp/setCmpUpText'
+    import setCmpUpBtn from './components-setCmpItem-cmp/setCmpUpBtn'
+    import setCmpContent from './components-setCmpItem-cmp/setCmpContent'
+    import setCmpDownBtn from './components-setCmpItem-cmp/setCmpDownBtn'
+    import setCmpDownText from './components-setCmpItem-cmp/setCmpDownText'
+    import setCmpLink from './components-setCmpItem-cmp/setCmpLink'
+    import setCmpTail from './components-setCmpItem-cmp/setCmpTail'
     export default {
         props: {
             cmpsList: {
@@ -85,7 +98,14 @@
             }
         },
         components: {
-
+            setCmpShowF,
+            setCmpUpText,
+            setCmpUpBtn,
+            setCmpContent,
+            setCmpDownBtn,
+            setCmpDownText,
+            setCmpLink,
+            setCmpTail
         },
         data(){
             return {
@@ -106,6 +126,27 @@
             
         },
         methods: {
+            currentSetCmpCotent(cmp){
+                let type = cmp.ControlType
+                switch(type){
+                    case 1000:  // 显示字段组件区
+                        return setCmpShowF
+                    case 1001: // 上文本区
+                        return setCmpUpText 
+                    case 1002: // 上按钮区
+                        return setCmpUpBtn
+                    case 1003: // 内容区
+                        return setCmpContent
+                    case 1004: // 下按钮区
+                        return setCmpDownBtn
+                    case 1005: //下文本区
+                        return setCmpDownText
+                    case 1006: // 链接区
+                        return setCmpLink
+                    case 1007: // 尾部区
+                        return setCmpTail
+                }
+            }
         }
     }
 </script>

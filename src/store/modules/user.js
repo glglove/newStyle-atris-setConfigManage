@@ -3,7 +3,10 @@ import { loginByUsername, getUserInfo } from '@/api/login'
 import { getMenu } from '@/api/permission'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import * as types from '../mutation-types'
-
+import {
+  REQ_OK,
+  ERR_PWD
+} from '@/api/config'
 const user = {
   state: {
     userType: '',
@@ -64,24 +67,29 @@ const user = {
     LoginByUsername ({ commit, state }, userInfo) {
       const username = userInfo.username.trim()
       console.log(userInfo)
-      debugger
+      // debugger
       return new Promise((resolve, reject) => {
         // 调用登陆接口 进行登陆
         debugger
-        loginByUsername(username, userInfo.password, userInfo.businessCode).then(response => {
+        loginByUsername(username, userInfo.password).then(response => {
           debugger
-          const data = response.data.Data
-          // 登陆后 将 tokenId 值存入 cookie中 ，本地环境 存入的 tokenKey 和 线上环境的 tokenkey 不一样，打包线上环境时要注意，在 @/utils/auth.js文件夹中
-          setToken(response.data.Data.TokenId)
-          // 同时将 tokenId 存入一份到 vuex 中
-          commit(types.SET_TOKEN, data.TokenId)
-
-          // 将用户的 身份(企业用户还是 系统用户)存入到 vuex 中
-          let type = 1
-          commit(types.SET_COMPANYORSYSTEM, type)
-          console.log(state.isCompanyOrSystemUser)
-          resolve(response.data.State)
+          if( response.data.State != ERR_PWD ) {
+            //
+            const data = response.data.Data
+            // 登陆后 将 tokenId 值存入 cookie中 ，本地环境 存入的 tokenKey 和 线上环境的 tokenkey 不一样，打包线上环境时要注意，在 @/utils/auth.js文件夹中
+            setToken(response.data.Data.TokenId)
+            // 同时将 tokenId 存入一份到 vuex 中
+            commit(types.SET_TOKEN, data.TokenId)
+  
+            // 将用户的 身份(企业用户还是 系统用户)存入到 vuex 中
+            let type = 1
+            commit(types.SET_COMPANYORSYSTEM, type)
+            console.log(state.isCompanyOrSystemUser)          
+          }else {
+            
+          }
           
+          resolve(response.data.State)   
         }).catch(error => {
           debugger
           reject(error)
@@ -91,7 +99,7 @@ const user = {
     // 获取用户信息
     GetUserInfo ({ commit, state }) {
       let t = getToken()
-      debugger
+      // debugger
 
       return new Promise((resolve, reject) => {
         // 从cookie 中获取 tokenId， 本地环境 存入的 tokenKey 和 线上环境的 tokenkey 不一样，打包线上环境时要注意，在 @/utils/auth.js文件夹中
@@ -115,12 +123,19 @@ const user = {
           }
           console.log("---getUserInfo接口中打印的返回值response---", response)
           const data = response.data.Data
-          commit(types.SET_USER_TYPE, data.UserType)
-          commit(types.SET_NAME, data.UserName)
-          commit(types.SET_USER_CODE, data.EmployeeId)
-          commit(types.SET_EMP_NO, data.EmployeeNumber)
-          commit(types.SET_COMPANY_CODE, data.CompanyCode)
-          commit(types.SET_AVATAR, data.UserName)
+          // commit(types.SET_USER_TYPE, data.UserType)
+          // commit(types.SET_NAME, data.UserName)
+          // commit(types.SET_USER_CODE, data.EmployeeId)
+          // commit(types.SET_EMP_NO, data.EmployeeNumber)
+          // commit(types.SET_COMPANY_CODE, data.companycode)
+          // commit(types.SET_AVATAR, data.UserName)
+          //--------
+          commit(types.SET_USER_TYPE, '')
+          commit(types.SET_NAME, data.accountname)
+          commit(types.SET_USER_CODE, data.companycode)
+          commit(types.SET_EMP_NO, data.companycode)
+          commit(types.SET_COMPANY_CODE, data.companycode)
+          commit(types.SET_AVATAR, data.companycode)          
           resolve(response)
         }).catch(error => {
           reject(error)

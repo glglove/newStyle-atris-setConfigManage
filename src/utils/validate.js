@@ -85,7 +85,7 @@ export function validatMobilePhone (val) {
 
 /* 验证固定电话 */
 export function validatTel (val) {
-  const reg = /0\d{2,3}-\d{7,8}/
+  const reg = /^[0][1-9]{2,3}-[0-9]{5,10}$/
   return reg.test(val)
 }
 

@@ -160,7 +160,7 @@
       // 验证规则
       let validatePass = (rule, value, callback) => {
         debugger
-        if( !this.isNeedCheck ){
+        if( this.isNeedCheck ){
           callback()
           return
         }

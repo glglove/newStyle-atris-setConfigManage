@@ -10,79 +10,96 @@
     <!-- provinces: {{provinces}}-->
     <div v-if="type != 'mobile'" class="u-f-jsb">
       <!--省--->
-      <span :class="['selectBox', 'u-f1','u-f0',showStyle === 'vertical'? 'vertical': '']">
-        <span class="tit" v-if="showStyle === 'vertical'">省份</span>
-        <el-select 
-          class="provinceSelect"
-          @change="getCities" 
-          filterable
-          clearable
-          v-model="currentProvince" 
-          :disabled="disabled || provinceDisabled">
-          <el-option 
-            :value="placeholders.province"
+      <el-form-item prop="propCurrentProvince" :rules="[
+          { required: true, message: '省不能为空'},
+        ]"
+      >
+        <span :class="['selectBox', 'u-f1','u-f-s1',showStyle === 'vertical'? 'vertical': '']">
+          <span class="tit" v-if="showStyle === 'vertical'">省份</span>
+          <el-select 
+            class="provinceSelect"
+            @change="getCities" 
+            filterable
+            clearable
+            v-model="currentProvince" 
+            :placeholder="placeholders.province"
+            :disabled="disabled || provinceDisabled"
           >
-          {{ placeholders.province }}
-          </el-option>
-          <el-option v-for="(item, index) in provinces"
-                  :value="item"
-                  :key="index">
-            {{ item }}
-          </el-option>
-        </el-select>
-      </span>
+            <el-option 
+              :value="placeholders.province"
+            >
+            </el-option>
+            <el-option v-for="(item, index) in provinces"
+              :value="item"
+              :key="index"
+            >
+              {{ item }}
+            </el-option>
+          </el-select>
+        </span>
+      </el-form-item>      
 
       <!-- cities: {{cities}} -->
       <template v-if="!onlyProvince">
         <!---市--->
-        <span :class="['selectBox','u-f1','u-f0', showStyle === 'vertical'? 'vertical': '']">
-          <span class="tit" v-if="showStyle === 'vertical'">城市</span>
-          <el-select    
-            class="citySelect"    
-            @change="getAreas" 
-            filterable
-            clearable
-            v-model="currentCity" 
-            :disabled="disabled || cityDisabled">
-            <el-option 
-              :value="placeholders.city"
-            >
-            {{ placeholders.city }}
-            </el-option>
+        <el-form-item prop="propCurrentCity" :rules="[
+            { required: true, message: '市不能为空'},
+          ]"
+        >
+          <span :class="['selectBox','u-f1','u-f-s1', showStyle === 'vertical'? 'vertical': '']">
+            <span class="tit" v-if="showStyle === 'vertical'">城市</span>
+            <el-select    
+              class="citySelect"    
+              @change="getAreas" 
+              filterable
+              clearable
+              v-model="currentCity" 
+              :placeholder="placeholders.city"
+              :disabled="disabled || cityDisabled">
+              <el-option 
+                :value="placeholders.city"
+              >
+              </el-option>
 
-            <el-option 
-              v-for="(item, index) in cities"
-              :value="item"
-              :key="index">
-              {{ item }}
-            </el-option>
-          </el-select>
-        </span>
+              <el-option 
+                v-for="(item, index) in cities"
+                :value="item"
+                :key="index">
+                {{ item }}
+              </el-option>
+            </el-select>
+          </span>
+        </el-form-item>
 
         <!---区---->
         <!-- areas: {{areas}} -->
-        <span 
-          v-if="!hideArea" 
-          :class="['selectBox', 'u-f1','u-f0', showStyle === 'vertical'? 'vertical': '']">
-          <span class="tit" v-if="showStyle === 'vertical'">区/县</span>
-          <el-select 
-            class="areaSelect"
-            v-model="currentArea" 
-            filterable
-            clearable
-            :disabled="disabled || areaDisabled">
-            <el-option 
-              :value="placeholders.area">
-              {{ placeholders.area }}
-            </el-option>
-            <el-option 
-              v-for="(item, index) in areas "
-              :value="item"
-              :key="index">
-              {{ item }}
-            </el-option>
-          </el-select>
-        </span>
+        <el-form-item prop="propCurrentArea" :rules="[
+            { required: true, message: '区不能为空'},
+          ]"
+        >
+          <span 
+            v-if="!hideArea" 
+            :class="['selectBox', 'u-f1','u-f-s1', showStyle === 'vertical'? 'vertical': '']">
+            <span class="tit" v-if="showStyle === 'vertical'">区/县</span>
+            <el-select 
+              class="areaSelect"
+              v-model="currentArea" 
+              filterable
+              clearable
+              :placeholder="placeholders.area"
+              :disabled="disabled || areaDisabled">
+              <el-option 
+                :value="placeholders.area">
+              </el-option>
+              <el-option 
+                v-for="(item, index) in areas "
+                :value="item"
+                :key="index">
+                {{ item }}
+              </el-option>
+            </el-select>
+          </span>
+        </el-form-item>
       </template>
     </div>
     <!--pc端---end-->
@@ -159,6 +176,12 @@ export default {
       }
     },
     // 初始的
+    propObj: {
+      type: Object, 
+      default: () => {
+        return {}
+      }      
+    },
     propCurrentProvince: {
       type: [String, Number], 
       default: ''

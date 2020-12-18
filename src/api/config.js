@@ -20,7 +20,7 @@ export const NO_USER = -2
 export const LIMIT_LOGIN = -3
 
 // 密码错误
-export const ERR_PWD = -4
+export const ERR_PWD = 1000
 
 // 多设备登录
 export const DOUBLE_DEVICE = -5

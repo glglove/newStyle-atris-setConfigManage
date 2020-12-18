@@ -11,7 +11,7 @@ import cyrptoFn from '@/utils/cyrpto'
 
 function encryptKey (obj) {
   let newEncrytObj = {}
-  for(let key in obj){
+  for( let key in obj ){
     // let newKey = MD5(key)
     let newKey = cyrptoFn.encrypt(key)
     console.log("加密-----", newKey)
@@ -67,21 +67,22 @@ let appId, appKey
 // 创建axios实例
 
 const service = axios.create({
-  // headers: {
-  //   'Content-Type': 'application/json;charset=utf-8'  // 默认 
-  // },
+  headers: {
+    // 'Content-Type': 'application/x-www-form-urlencoded',   
+    'Content-Type': 'application/json;charset=utf-8' // 默认  
+  },
   baseURL: process.env.BASE_API, // api的base_url 开发环境引用的是@/config/dev.env.js中的 base_API；生成环境引用的是@/config/prod.env.js中的 base_API
-  timeout: 15000               // 请求超时时间 15s
+  timeout: 95000               // 请求超时时间 95s
 })
 
 // request拦截器
 service.interceptors.request.use(config => {
   console.log(store.getters)
-  // config.baseURL = 'http://192.168.0.101'   
-  // debugger
+  config.baseURL = 'http://192.168.0.101:9990'   
+  debugger
   let data = {}
   if(config.method === 'post'){
-    data = config.data
+    data = config.params
   }else if(config.method === 'get' || config.method === 'delete'){
     data = config.params
   }
@@ -91,7 +92,7 @@ service.interceptors.request.use(config => {
     // config.baseURL = 'http://192.168.1.103:802/' // 工作流模块开发环境的地址,线上环境需要 注释此行
   }
 
-  // if (config.data.Method  === 'logon') {
+  // if (config.Method  === 'logon') {
   //   config.baseURL = 'http://192.168.0.101'   
   // }   
   
@@ -100,7 +101,7 @@ service.interceptors.request.use(config => {
     config.baseURL = 'https://www.caihuiyun.cn/ddd'
   }
   
-  if (!config.noQS && data.Method !== 'logon') {
+  if (!config.noQS && config.Method !== 'logon') {
     if (config.module === 'workFlow') {
       // 流转模块
       // debugger
@@ -111,20 +112,18 @@ service.interceptors.request.use(config => {
       }
 
       let newData = Object.assign(data, {
-        'TokenId': getToken(),
+        'token': getToken(),
         'CompanyCode': store.getters.companyCode,
         'UserId': store.getters.userCode,
-        'UserNo': store.getters.userCode,
-        appId,
-        appKey
+        'UserNo': store.getters.userCode
       })
 
       // 将 data 里面的参数进行md5 加密
       // let copyData = JSON.parse(JSON.stringify(encryptKey(newData))) 
 
-      // config.data = qs.stringify(copyData)
+      // config.data = JSON.stringify(copyData)
 
-      config.data = qs.stringify(data)
+      config.data = JSON.stringify(data)
 
       config.withCredentials = false
     } else {
@@ -132,16 +131,14 @@ service.interceptors.request.use(config => {
       if( config.module !='newStyle' ){
         // 统一添加公用的参数
         // let newData = Object.assign(data, {
-        //   'TokenId': getToken(),
+        //   'token': getToken(),
         //   'CompanyCode': store.getters.companyCode,
         //   'UserId': store.getters.userCode,
         //   'UserNo': store.getters.userCode,
-        //   appId,
-        //   appKey
         // })
 
         let newData = Object.assign(data, {
-          'TokenId': getToken(),
+          'token': getToken(),
           'TenantId': store.getters.companyCode,  // 企业号
           // 'PersonId': store.getters.userCode,  // 员工id
           // 'PersonNo': store.getters.empNo,   // 员工号
@@ -166,21 +163,21 @@ service.interceptors.request.use(config => {
         }   
         
         Object.assign(data, {
-          'TokenId': getToken(),
+          'token': getToken(),
           'TenantId': store.getters.companyCode,  // 企业号
           // 'PersonId': store.getters.userCode,  // 员工id
           // 'PersonNo': store.getters.empNo,   // 员工号
           'UserId': store.getters.userCode
         })
 
-        // config.params = qs.stringify(data)
-        config.parmas = data  // get 请求 此处需要是 config.params
+        // config.params = JSON.stringify(data)
+        config.params = data  // get 请求 此处需要是 config.params
       } else {
         // 将 data 里面的参数进行md5 加密
         // let copyData = JSON.parse(JSON.stringify(encryptKey(newData))) 
 
-        // config.data = qs.stringify(copyData)
-        config.data = qs.stringify(data)
+        // config.data = JSON.stringify(copyData)
+        config.data = JSON.stringify(data)
 
         // 为了 开发 系统管控 
         if( config.url != '/SystemManage/Account'){
@@ -202,28 +199,24 @@ service.interceptors.request.use(config => {
         }        
       }       
     }
-  } else if (config.data.Method === 'logon') {
-    // config.baseURL = 'http://192.168.0.101'   
-    config.baseURL = 'https://www.caihuiyun.cn/'   
-    // debugger
+  } else if (config.Method === 'logon') {
+    config.baseURL = 'http://192.168.0.101:9990'   
+    // config.baseURL = 'https://www.caihuiyun.cn/'   
+    debugger
     // 本地的登录接口logon  此时只需要传 商户码、用户名、密码 
     // 将 data 里面的参数进行md5 加密
     // data = JSON.parse(JSON.stringify(encryptKey(data))) 
-    config.data = qs.stringify(data)
+    config.data = JSON.stringify(data)
   }    
 
-  // if (!config.noLoading) {
-  //   ++loadingNum
-  //   console.log(loadingNum)
-  // }
   return config
 }, error => {
   // 请求错误
-  Message({
-    message: '请求错误，请刷新重试！',
-    type: 'error',
-    duration: 2000
-  }) // for debug
+  // Message({
+  //   message: '请求错误，请刷新重试！',
+  //   type: 'error',
+  //   duration: 2000
+  // }) // for debug
   console.log(error)
   return Promise.reject(error)
 })
@@ -232,9 +225,14 @@ service.interceptors.request.use(config => {
 service.interceptors.response.use(
   response => {  
     // debugger 
-    // --loadingNum
-    // console.log(loadingNum)
-    hideFullScreenLoading() // 响应成功关闭loading
+    debugger
+    response = {
+      data: {
+        Data: response.data.data,
+        State: response.data.code,
+        Error: response.data.msg
+      }
+    }
     return response
   },
   error => {
@@ -243,7 +241,6 @@ service.interceptors.response.use(
       type: 'error',
       duration: 2000
     })
-    hideFullScreenLoading() // 响应成功关闭loading
     console.log(error)
     // 生产环境中请求超时后 自动跳转至 https://www.caihuiyun.cn/ 页面进行重新登录
     if (process.env.NODE_ENV === 'production') {

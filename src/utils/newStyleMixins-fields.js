@@ -83,6 +83,8 @@ export const fieldGroupControlTypeMixin = {
                     return BaseFileUpload
                 case 16:
                     return BaseCalculate
+                case 17: 
+                    // return table     // 表格                
                 case 19:
                     return BaseEmpSelect
                 case 20:
@@ -95,6 +97,8 @@ export const fieldGroupControlTypeMixin = {
                     return BaseEditor
                 case 24:
                     return BaseExplain
+                case 25:
+                    // return 'guanlianshenpi'
                 case 27:
                     return BaseProvinces
                 case 28:

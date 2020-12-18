@@ -6,7 +6,14 @@
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 .middleCmp {
     width: 100%;
+    height: 100%;
     font-size: 14px;
+    .containerBox {
+        height: 100%;
+        &.droping {
+            border: 1px dotted red 
+        }
+    }
     .cmp-item {
         padding: 20px 40px;
         box-sizing: border-box;
@@ -37,9 +44,15 @@
 </style>
 <template>
     <div class="middleCmp">
-        配置板块——中间
-        cmpsList: {{cmpsList}}
-        <div class="containerBox marginT30">
+        <div 
+            @drop="dropDrag($event)"
+            @dragover="overDrag($event)"
+            @dragenter="enterDrag($event)"   
+            @dragleave="leaveDrag($event)"              
+            class="containerBox"             
+        >
+            配置板块——中间
+            cmpsList: {{cmpsList}}        
             滑动设置部分
             {{contentCmpsList}}
             
@@ -73,8 +86,10 @@
                                     ></i>
                                 </span>
                             </div>
+                            {{obj}}
                             <component 
                                 :is="currentCmpItemObj(obj)"
+                                :obj="obj"
                             >
                             </component>
                         </li>
@@ -98,6 +113,14 @@
     } from '@/utils/auth.js'
     import Vuedraggable from 'vuedraggable'
     import BaseInput from './components-item-cmp/baseInput-cmp'
+    import BaseSectionShowF from './components-item-cmp/base-sectionShowF-cmp'
+    import BaseSectionUpText from './components-item-cmp/base-sectionUpText-cmp'
+    import BaseSectionUpBtn from './components-item-cmp/base-sectionUpBtn-cmp'
+    import BaseSectionContent from './components-item-cmp/base-sectionContent-cmp'
+    import BaseSectionDownBtn from './components-item-cmp/base-sectionDownBtn-cmp'
+    import BaseSectionDownText from './components-item-cmp/base-sectionDownText-cmp'
+    import BaseSectionLink from './components-item-cmp/base-sectionLink-cmp'
+    import BaseSectionTail from './components-item-cmp/base-sectionTail-cmp'
     export default {
         props:{
             cmpsList: {
@@ -109,11 +132,19 @@
         },
         components: {
             Vuedraggable,
-            BaseInput
+            BaseInput,
+            BaseSectionShowF,
+            BaseSectionUpText,
+            BaseSectionUpBtn,
+            BaseSectionContent,
+            BaseSectionDownBtn,
+            BaseSectionDownText,
+            BaseSectionLink,
+            BaseSectionTail
         },
         data(){
             return {
-                contentCmpsList: null,
+                contentCmpsList: [],
                 currentClickItemObjIndex: 0,
                 currentClickItemObj: null               
             }
@@ -145,6 +176,40 @@
           
         },
         methods: {
+            // 拖起来的元素进入到目标区域中时触发事件
+            enterDrag(event, sourceId) {
+                debugger
+                let e = event || window.event
+                e.preventDefault()
+                console.log("middleSection拖拽进入到目标元素",e)   
+                // e.dataTransfer.dropEffect = "copy" // 允许拖放复制    
+                console.log(document.getElementsByClassName('containerBox')[0].className += ' droping')                       
+            },  
+            // 拖动元素在目标区域中移动时触发事件
+            overDrag(event){
+                debugger
+                let e = event || window.event
+                e.preventDefault()
+                console.log("middleSection中拖拽进行中", e)
+            },   
+            // 拖拽释放时                    
+            dropDrag(event){
+                let e = event || window.event
+                e.preventDefault();
+                console.log("middleSection中拖拽释放时", e)
+                let data = e.dataTransfer.getData("currentItemStr");
+                console.log("----",data) 
+                this.contentCmpsList.push(JSON.parse(data)) 
+                this.$emit("middleDraggedEmit", this.contentCmpsList)         
+                console.log(document.getElementsByClassName('containerBox')[0].classList.remove("droping"))
+
+            }, 
+            // 当拖动元素离开目标区域时触发事件
+            leaveDrag(event, sourceId){
+                let e = event || window.event
+                console.log("middleSection拖拽离开目标元素",e)                
+                debugger
+            },                   
             clickCmpItem(obj, index){
                 debugger
                 this.currentClickItemObjIndex = index
@@ -173,6 +238,22 @@
                 switch(ControlType){
                     case 1:
                         return BaseInput
+                    case 1000:
+                        return BaseSectionShowF
+                    case 1001:
+                        return BaseSectionUpText
+                    case 1002:
+                        return BaseSectionUpBtn
+                    case 1003:
+                        return BaseSectionContent
+                    case 1004:
+                        return BaseSectionDownBtn
+                    case 1005:
+                        return BaseSectionDownText
+                    case 1006:
+                        return BaseSectionLink    
+                    case 1007:
+                        return BaseSectionTail                    
                     default:
                         return BaseInput   
                 }

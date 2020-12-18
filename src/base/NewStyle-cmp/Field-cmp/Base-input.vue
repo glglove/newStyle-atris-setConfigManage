@@ -11,11 +11,11 @@
     :prop="prop"
     :rules="rules"
     v-if="isShowField">
-    <!-- isShowField: {{isShowField}}
-    viewType: {{this.viewType}}
-    resAuth: {{resAuth}} -->
-    <!-- obj：{{obj}} -->
-    <!-- prop: {{prop}} -->
+    // <!-- isShowField: {{isShowField}}
+    // viewType: {{this.viewType}}
+    // resAuth: {{resAuth}} -->
+    // obj：{{obj}}
+    // <!-- prop: {{prop}} -->
     <div 
       class="filedContentWrap u-f-ac u-f-jst"
     >

@@ -46,7 +46,7 @@
           :disabled="obj.Readonly || !isHasAddOrEditAuth()"          
           class="fieldValue"
           size="mini"
-          :placeholder="obj.ActRemind || '选择日期'"
+          :placeholder="obj.ActRemind || '选择是否'"
         >
           <el-option
             v-for="item in data"
@@ -197,7 +197,7 @@
       },         
     },
     created () {
-
+      this.obj.FieldValue = 1
     },
     methods: {
       // 新增/编辑页面 是否有权限编辑
