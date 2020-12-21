@@ -135,5 +135,20 @@ export function getDicCollection ( DicType = 'SYS', ModuleCode = "ALL") {
 
 
 
-// -------------页面配置 基础接口--------------------
+// ------------- 字典表列表--------------------
+/**
+ *  字典表 列表接口
+ */
+export function findDicList ( ) {
+    return fetch({
+      url: 'sys-dic-index/findPage',
+      method: 'post',
+      params: {
+        Method: 'findDicList',
+        params: {
+
+        }
+      }
+    })
+  }
 

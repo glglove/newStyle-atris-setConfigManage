@@ -4,25 +4,28 @@
     功能:
 -->
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-
+.dicListPage {
+    padding: 20px
+    box-sizing: border-box
+}
 </style>
 <template>
-    <div>
+    <div class="dicListPage">
         tableData: {{tableData}}
         ---------
         treeData: {{treeData}}
         <el-table
-            :data="tableData"
+            :data="tableData.records"
             style="width: 100%"
         >
             <el-table-column
-                prop="Name"
-                label="Name"
+                prop="DicName"
+                label="DicName"
                 width="180">
             </el-table-column>
             <el-table-column
-                prop="Code"
-                label="Code"
+                prop="DicCode"
+                label="DicCode"
                 width="180">
             </el-table-column>
             <el-table-column
@@ -52,7 +55,6 @@
             :close-on-click-modal="false"
         >
             <common-dic-tree
-                :propTreeData="treeData"
                 :propRowObj="currentRowObj"
                 :propDicCode="currentRowObj.Code"
                 :propDraggable="true"
@@ -66,12 +68,41 @@ import {
     REQ_OK
 } from '@/api/config'
 import {
-    getDicCollection,
+    findDicList,
 } from '@/api/newStyle.js'
-import {
-    newStyleGetDicByKey
-} from '@/api/dic'
 import CommonDicTree from '@/base/NewStyle-cmp/Dic-cmp/Base-commonDicTree'
+let data = {
+    "State": 1,
+    "Data": [
+        {
+            "Id": 27,
+            "PCode": "",
+            "Code": "DC9f8e7605",
+            "Name": "东区",
+            "Description": "华东区Description",
+            "Changed": false,
+            "SortId": 1,
+            "Children": [
+                {
+                    "Id": 29,
+                    "PCode": "DC9f8e7605",
+                    "Code": "DC9f8e79f4",
+                    "Name": "东区1",
+                    "Description": "东区1",
+                    "Changed": false,
+                    "SortId": 1,
+                    "Children": []
+                }
+            ]
+        }
+    ],
+    "Error": "",
+    "DataCount": 0,
+    "PageIndex": 0,
+    "PageSize": 0,
+    "Total": 0,
+    "PageCount": 1
+}
 export default {
     components: {
         CommonDicTree
@@ -86,14 +117,14 @@ export default {
         }
     },
    created(){
-       this._getDicData()
+       this._findDicList()
    },
    computed:{
    },
    methods:{
-    _getDicData(){
+    _findDicList(){
         this.loading = true
-        getDicCollection('CUS').then(res => {
+        findDicList().then(res => {
             this.loading = false
             if(res && res.data.State === REQ_OK){
                 this.tableData = res.data.Data
@@ -104,17 +135,9 @@ export default {
     },
     // 查看
     handleClick(rowObj){
-        this.loading = true
+        // this.loading = true
         this.currentRowObj = rowObj
-        newStyleGetDicByKey('CUS', this.currentRowObj.Code, this.currentRowObj.ModuleCode).then(res => {
-            this.loading = false
-            if(res && res.data.State === REQ_OK){
-                this.treeData = res.data.Data
-            }else {
-                
-            }
-            this.showScanDialog = true
-        })
+        this.showScanDialog = true
     }
    },
 }

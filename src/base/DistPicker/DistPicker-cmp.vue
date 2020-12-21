@@ -7,11 +7,33 @@
 <template>
   <div :class="wrapper">
     <!--pc端---start-->
-    <!-- provinces: {{provinces}}-->
+    <!-- provinces: {{provinces}} -->
+    <!-- cities: {{cities}}
+    ----
+    areas: {{areas}} -->
+
+    <!-- propCurrentProvince: {{propCurrentProvince}}
+    -----
+    propCurrentCity: {{propCurrentCity}}
+    ------
+    propCurrentArea: {{propCurrentArea}}
+    ----
+    currentProvince: {{currentProvince}}
+    ----
+    currentCity: {{currentCity}}
+    ----
+    currentArea: {{currentArea}} -->
+
     <div v-if="type != 'mobile'" class="u-f-jsb">
       <!--省--->
       <el-form-item prop="propCurrentProvince" :rules="[
-          { required: true, message: '省不能为空'},
+          { required: true, trigger: ['blur', 'change'], validator: (valid, rule, callback) => {
+            if(valid){
+              callback()
+            }else {
+              callback(new Error('省市区不能为空'))
+            }
+          }},
         ]"
       >
         <span :class="['selectBox', 'u-f1','u-f-s1',showStyle === 'vertical'? 'vertical': '']">
@@ -39,11 +61,10 @@
         </span>
       </el-form-item>      
 
-      <!-- cities: {{cities}} -->
       <template v-if="!onlyProvince">
         <!---市--->
         <el-form-item prop="propCurrentCity" :rules="[
-            { required: true, message: '市不能为空'},
+            { required: false, message: '市不能为空'},
           ]"
         >
           <span :class="['selectBox','u-f1','u-f-s1', showStyle === 'vertical'? 'vertical': '']">
@@ -72,9 +93,8 @@
         </el-form-item>
 
         <!---区---->
-        <!-- areas: {{areas}} -->
         <el-form-item prop="propCurrentArea" :rules="[
-            { required: true, message: '区不能为空'},
+            { required: false, message: '区不能为空'},
           ]"
         >
           <span 
@@ -86,6 +106,7 @@
               v-model="currentArea" 
               filterable
               clearable
+              @change="selectChangeArea" 
               :placeholder="placeholders.area"
               :disabled="disabled || areaDisabled">
               <el-option 
@@ -157,9 +178,6 @@ const DEFAULT_CODE = 100000;
 export default {
   name: 'v-distpicker',
   props: {
-    province: { type: [String, Number], default: '' },
-    city: { type: [String, Number], default: '' },
-    area: { type: [String, Number], default: '' },
     showStyle:{ type:[String], default:'' },  // 三级是横排显示 还是 竖排显示，默认横排显示
     type: { type: String, default: '' },  // pc 还是移动端 mobile
     hideArea: { type: Boolean, default: false }, // 是否隐藏 区级
@@ -169,9 +187,9 @@ export default {
       type: Object,
       default() {
         return {
-          province: '-请选择-',
-          city: '-请选择-',
-          area: '-请选择-',
+          province: '-省-',
+          city: '-市-',
+          area: '-区-',
         }
       }
     },
@@ -207,12 +225,12 @@ export default {
       tab: 1,
       showCityTab: false,
       showAreaTab: false,
-      provinces: [],
+      provinces: [], 
       cities: [],
       areas: [],
-      currentProvince: this.determineType(this.province) || this.placeholders.province,
-      currentCity: this.determineType(this.city) || this.placeholders.city,
-      currentArea: this.determineType(this.area) || this.placeholders.area,
+      currentProvince: {},
+      currentCity: {},
+      currentArea: {}
     }
   },
   created() {
@@ -220,11 +238,12 @@ export default {
     console.log(typeof(DISTRICTS))
     console.log(DISTRICTS)
     if (this.type != 'mobile') {
+      this.currentCity = this.placeholders.province
       this.provinces = this.getDistricts()
       this.cities = this.province ? this.getDistricts(this.getAreaCode(this.determineType(this.province))) : []
       this.areas = this.city ? this.getDistricts(this.getAreaCode(this.determineType(this.city), this.area)) : []
     } else {
-      // pc 端
+      // mobile 端
       if (this.area && !this.hideArea && !this.onlyProvince) {
         this.tab = 3
         this.showCityTab = true
@@ -239,66 +258,34 @@ export default {
       }
     }
   },
+  computed: {
+    
+  },
   watch: {
-    propCurrentProvince: {
+    currentProvince:{
       handler(newValue, oldValue){
-        if(newValue){
-          debugger
-          this.currentProvince = this.getCodeValue(newValue)
+        if(!newValue){
+          // 清空省时 需要 清空 市的list 和 区的list
+          this.cleanList("cities")
+          this.currentCity = ''
+          this.cleanList("areas")
+          this.currentArea = ''
         }
-      },
-      immediate: true
-    },
-    propCurrentCity: {
+      }
+    },    
+    currentCity:{
       handler(newValue, oldValue){
-        if(newValue && (newValue != `${this.placeholders.city}`)){
-          debugger
-          this.currentCity = this.getCodeValue(newValue)
+        if(!newValue){
+          // 清空市时 需要 清空  区的list
+          this.cleanList("areas")
+          this.currentArea = ''
         }
-      },
-      immediate: true
-    },  
-    propCurrentArea: {
-      handler(newValue, oldValue){
-        if(newValue && (newValue != `${this.placeholders.area}`)){
-          debugger
-          this.currentArea = this.getCodeValue(newValue)
-        }
-      },
-      immediate: true
-    },       
-    // 省变化
-    currentProvince(value) {
-      debugger
-      this.$emit('province', this.setData(value))
-      if (this.onlyProvince) this.emit('selected')
-    },
-    //市变化
-    currentCity(value) {
-      debugger
-      this.$emit('city', this.setData(value, this.currentProvince))
-      if (value != this.placeholders.city && this.hideArea) this.emit('selected')
-    },
-    //区变化
-    currentArea(value) {
-      debugger
-      this.$emit('area', this.setData(value, this.currentProvince))
-      this.emit('selected')
-    },
-    province(value) {
-      this.currentProvince = this.province || this.placeholders.province
-      this.cities = this.determineValue(this.currentProvince, this.placeholders.province)
-    },
-    city(value) {
-      this.currentCity = this.city || this.placeholders.city
-      this.areas = this.determineValue(this.currentCity, this.placeholders.city, this.currentProvince)
-    },
-    area(value) {
-      this.currentArea = this.area || this.placeholders.area
-    },
+      }
+    },      
   },
   methods: {
     setData(value, check = '', isArea = false) {
+      debugger
       let code
       if (isArea) {
         code = this.getCodeByArea(value)
@@ -322,31 +309,40 @@ export default {
     },
     emit(name) {
       let data = {
-        province: this.setData(this.currentProvince)
+        province: this.setData(this.propCurrentProvince)
       }
 
       if (!this.onlyProvince) {
-        this.$set(data, 'city', this.setData(this.currentCity))
+        this.$set(data, 'city', this.setData(this.propCurrentCity))
       }
 
       if (!this.onlyProvince || this.hideArea) {
-        this.$set(data, 'area', this.setData(this.currentArea, this.currentCity))
+        this.$set(data, 'area', this.setData(this.propCurrentArea, this.propCurrentCity))
       }
 
       this.$emit(name, data)
     },
+    // 选择省变化后
     getCities() {
+      debugger
       this.currentCity = this.placeholders.city
       this.currentArea = this.placeholders.area
-      this.cities = this.determineValue(this.currentProvince, this.placeholders.province)
+      this.cities = this.determineValue(this.currentProvince, this.placeholders.province)       
+      // 清除区list
       this.cleanList('areas')
       if (this.cities.length === 0) {
         this.emit('selected')
         this.tab = 1
         this.showCityTab = false
       }
+
+      console.log(this.setData(this.currentProvince))  
+      // 将选择的省的对象{code:'', value:''}抛出去
+      this.$emit("selectprovince", this.setData(this.currentProvince))        
     },
+    // 选择市变化后
     getAreas() {
+      debugger
       this.currentArea = this.placeholders.area
       this.areas = this.determineValue(this.currentCity, this.placeholders.city, this.currentProvince)
       if (this.areas.length === 0) {
@@ -354,6 +350,17 @@ export default {
         this.tab = 2
         this.showAreaTab = false
       }
+      console.log(this.setData(this.currentCity)) 
+      // 将选择的市 的对象 {code:'',value:''}抛出去       
+      this.$emit("selectcity",  this.setData(this.currentCity))
+
+    },
+    // 选择区变化后
+    selectChangeArea(value){
+      debugger
+      console.log(this.setData(value))
+      // 将选择的区 的对象 {code:'',value:''}抛出去       
+      this.$emit("selectarea",  this.setData(value))
     },
     resetProvince() {
       this.tab = 1
@@ -388,6 +395,7 @@ export default {
     },
     // 根据上级获取 下级的codes集合
     getAreaCodeByPreCode(name, preCode) {
+      debugger
       let codes = []
 
       for(let x in DISTRICTS) {
@@ -443,6 +451,7 @@ export default {
       return DISTRICTS[code] || []
     },
     determineValue(currentValue, placeholderValue, check = '') {
+      debugger
       if(currentValue === placeholderValue) {
         return []
       } else {
@@ -457,6 +466,7 @@ export default {
       return value
     },
     cleanList(name) {
+      debugger
       this[name] = []
     },
   }

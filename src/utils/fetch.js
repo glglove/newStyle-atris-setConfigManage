@@ -97,8 +97,8 @@ service.interceptors.request.use(config => {
   // }   
   
   if( config.module === 'newStyle' ){
-    // config.baseURL = 'http://192.168.0.101'
-    config.baseURL = 'https://www.caihuiyun.cn/ddd'
+    config.baseURL = 'http://192.168.0.101'
+    // config.baseURL = 'https://www.caihuiyun.cn/ddd'
   }
   
   if (!config.noQS && config.Method !== 'logon') {

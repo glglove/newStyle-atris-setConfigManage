@@ -432,3 +432,23 @@ export function deleteDicItem ( ModuleCode, DicCode, Id ) {
       }
   })
 }
+
+
+//-------------newStyle  dic 20201221--------
+// /**
+//  * @params  DicType  字典表类型，默认SYS
+//  * @params DicCode 字典表code
+//  * @params ModuleCode 模块code，默认SYS
+// */
+
+export function newStyleGetDicTree (  ) {
+  return fetch({
+      url: '/sys-dic/tree',
+      method: 'post',
+      params: {   
+        params: {
+
+        }
+      }
+  })
+}

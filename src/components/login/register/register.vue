@@ -166,7 +166,7 @@
                   class="marginR5">
                 </el-input>
                 <el-button 
-                  :disabled="!getCodeStatus || !this.accountForm.phone"
+                  :disabled="!getCodeStatus || !this.accountForm.phone || getMobileCodeStatus"
                   @click.native="getMobileCode"
                 >{{codeBtnTit}}</el-button>
               </el-col>
@@ -235,18 +235,13 @@
               >
               </el-input> -->
               <dist-picker-cmp
-                :placeholders = "{
-                  province: '--省--',
-                  city: '--市--',
-                  area: '--区--'
-                }"
                 :propObj.sync="companyForm"
-                :province="companyForm.province"
-                :city="companyForm.city"
-                :area="companyForm.area"
-                @province="currentProvince"
-                @city="currentCity"
-                @area="currentArea"
+                :propCurrentProvince.sync="companyForm.province"
+                :propCurrentCity.sync="companyForm.city"
+                :propCurrentArea.sync="companyForm.area"
+                @selectprovince="selectProvince"
+                @selectcity="selectCity"
+                @selectarea="selectArea"
               ></dist-picker-cmp>              
             </el-form-item>
           </el-col>    
@@ -469,11 +464,14 @@
         // debugger
         if(this.accountForm.phone){
           if(validatMobilePhone(this.accountForm.phone)){
+            this.getMobileCodeStatus = false
             callback()
           }else { 
+            this.getMobileCodeStatus = true
             callback(new Error('手机号格式不正确'))
           }
         }else {
+          this.getMobileCodeStatus = true
           callback(new Error('手机号为空'))
         }
       } 
@@ -514,6 +512,7 @@
           },                    
         ],
         timer: null,
+        getMobileCodeStatus: true,  // 手机号码是否有效
         getCodeStatus: true,
         countdown: 60,                  
         phone: 17607178201,    
@@ -547,7 +546,7 @@
             {required: true, validator: validateFixtel, trigger: 'blur'}             
           ],
           phone: [
-            {required: true, validator: validatePhone, trigger: 'blur'}               
+            {required: true, validator: validatePhone, trigger: ['change','blur']}               
           ],        
           phonecode: [
             {required: true, message:'验证码为空', trigger: 'blur'}            
@@ -615,7 +614,7 @@
     },
     methods: {
       handlerClickTit(item, index){
-        this.currentIndex = index
+        // this.currentIndex = index
       },
       clickUserAgreement(){
         this.showUserAgreement = true
@@ -623,33 +622,40 @@
       clickProtectAgreement(){
         this.showConfidentialty = true
       },
-      currentProvince(code){
+      selectProvince(obj){
         debugger
-        this.companyForm.province = code.code
+        this.companyForm.province = obj.code || ''
       },
-      currentCity(code){
-        this.companyForm.city = code.code
+      selectCity(obj){
+        debugger
+        this.companyForm.city = obj.code || ''
       },
-      currentArea(code){
-        this.companyForm.area = code.code
+      selectArea(obj){
+        debugger
+        this.companyForm.area = obj.code || ''
       },
       getMobileCode(  ){
         debugger
         // 倒计时60s
         if(this.accountForm.phone) {
-          this.getCodeStatus = false
-          this.timer = setInterval(() => {
-            if(this.countdown === 0){
-              this.getCodeStatus = true
-              this.countdown = 60
-              clearInterval(this.timer)
-            }
-            this.countdown -= 1
-          }, 1000)
-          // 调取短信接口
-          getMobileCode(this.accountForm.phone).then(res => {
+          if( validatMobilePhone(this.accountForm.phone)) {
+            this.getCodeStatus = false
+            this.timer = setInterval(() => {
+              if(this.countdown === 0){
+                this.getCodeStatus = true
+                this.countdown = 60
+                clearInterval(this.timer)
+              }
+              this.countdown -= 1
+            }, 1000)
+            // 调取短信接口
+            getMobileCode(this.accountForm.phone).then(res => {
 
-          })    
+            }) 
+          }else {
+            // 手机 号码无效
+            this.getCodeStatus = false
+          }   
         }else {
 
         }
@@ -678,7 +684,7 @@
         saveAccountCompany(obj).then(res => {
           this.submitBtnStatus = true
           if(res && res.data.State === REQ_OK){
-            
+              this.currentIndex = 2
           }else {
             this.$message({
               type: 'error',
@@ -702,7 +708,13 @@
 
           }
         })
-      }  
+      },
+      gotoLogin(){
+        this.$router.push({
+          path: '/login'
+        })
+        this.currentIndex = 0
+      } 
     }
   }
 </script>

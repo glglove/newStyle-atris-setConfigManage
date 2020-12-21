@@ -48,7 +48,7 @@
 </template>
 
 <script>
-
+const path = require('path')
 import { Navbar, Sidebar, AppMain, horizontalSidebar } from '@/components/layout'
 import { mapGetters } from 'vuex'
 let w = null
@@ -78,7 +78,11 @@ export default {
           // 判断是否有w
           // if(typeof(w) == 'undefined'){
               // 创建一个新的Worker对象，他会去执行demoWorkers.js这个文件下的JS代码
-              w = new Worker(require('../../utils/pageConfigWorker.js'));
+              let path1 = path.join(__filename, '../../utils/pageConfigWorker.js')
+              // let path2 = path.
+              console.log(__filename)
+              console.log(path1)
+              w = new Worker(path1);
               console.log("--------------w", w)
           // }
           w.postMessage("2")

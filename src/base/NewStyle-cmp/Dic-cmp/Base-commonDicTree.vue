@@ -16,7 +16,7 @@
 >>>.el-tree-node__content
     height 45px !important;
     .el-tree-node__expand-icon
-        margin-top -5px;
+        margin-top -5px; 
 >>>.el-form-item__content
     line-height 30px !important
 >>>.el-input__inner 
@@ -26,10 +26,11 @@
     .custom-tree-wrap
         height 100%
         display inline-block
-        .nameBox,.descriptionBox
+        .nameBox,.descriptionBox,.colorBox,.picBox,.cmpExplainBox,.childCmpBox,.cmpIsrequiredBox
             height 100%
             display inline-block
             line-height 26px;
+            margin 0 30px;
             .name-input
                 width 100px;
             .name-input.empty
@@ -64,46 +65,102 @@
                     :data="treeData"
                     :draggable="propDraggable "
                     :show-checkbox="false"
-                    node-key="Code"
+                    node-key="id"
                     :props="{
-                        label: 'Name',
-                        children: 'Children',
+                        label: 'dicName',
+                        children: 'childrenList',
                     }"
                     default-expand-all
                     :expand-on-click-node="false"
                     :filter-node-method="filterNode"
                 >
                         <span :class="['custom-tree-wrap', 'u-f-jc'] " slot-scope="{ node, data }">
-                            <el-form :model="data" :ref="`dataForm_${data.Code}`" :class="[`form_${data.Code}`, 'form']">     
+                            <el-form :model="data" :ref="`dataForm_${data.dicCode}`" :class="[`form_${data.dicCode}`, 'form']">     
                                 <span class="nameBox">
-                                    <el-form-item v-if="data.isEditing" prop="Name" :rules="data.itemRules">
+                                    <el-form-item v-if="data.isEditing" prop="dicName" :rules="data.itemRules">
                                         <el-input
-                                            :class="['name-input', data.Code === currentCode?'empty':'']"
-                                            v-model="data.Name"
+                                            :class="['name-input', data.dicCode === currentDicCode?'empty':'']"
+                                            v-model="data.dicName"
                                             placeholder="请输入"
                                             @change="nameInputChange(node, data)"
                                         >
                                         </el-input>
                                     </el-form-item>                                
-                                    <span v-else class="name-text">{{ data.Name }}</span>                            
+                                    <span v-else class="name-text">{{ data.dicName }}</span>                            
                                 </span>
 
                                 <span 
                                     class="descriptionBox" 
                                 >
-                                    <el-form-item v-if="data.isEditing" prop="Description" :rules="{required: false, message: '描述为空', trigger: 'blur'}">
+                                    <el-form-item v-if="data.isEditing" prop="description" :rules="{required: false, message: '描述为空', trigger: 'blur'}">
                                         <el-input
                                             class="name-input"      
-                                            v-model="data.Description"
+                                            v-model="data.description"
                                             style="width: 300px"
                                             maxlength="40"
                                             placeholder="请输入"
                                         >
                                         </el-input>
                                     </el-form-item>                                
-                                    <span v-else class="name-text">{{ data.Description }}</span>                             
+                                    <span v-else class="name-text">{{ data.description }}</span>                             
                                     
                                 </span>
+
+                                <span
+                                    class="colorBox"
+                                >
+                                    <el-form-item 
+                                        prop="Description" 
+                                        :rules="{required: false, message: '颜色为空', trigger: 'blur'}"
+                                    >
+                                        <el-color-picker size="mini"></el-color-picker>
+                                    </el-form-item>
+                                </span>
+
+                                <span
+                                    class="picBox"
+                                >
+                                    <el-form-item 
+                                        prop="Description" 
+                                        :rules="{required: false, message: '图片', trigger: 'blur'}"
+                                    >
+                                        <span type="text" class="name-text">图片</span>
+                                    </el-form-item>
+                                </span>   
+
+                                <span
+                                    class="cmpExplainBox"
+                                >
+                                    <el-form-item 
+                                        prop="Description" 
+                                        :rules="{required: false, message: '颜色为空', trigger: 'blur'}"
+                                    >
+                                        <span type="text" class="name-text">控件说明文本</span>
+                                    </el-form-item>
+                                </span>   
+
+                                <span
+                                    class="childCmpBox"
+                                >
+                                    <el-form-item 
+                                        prop="Description" 
+                                        :rules="{required: false, message: '颜色为空', trigger: 'blur'}"
+                                    >
+                                        <span type="text" class="name-text">子项后控件</span>
+                                    </el-form-item>
+                                </span>  
+
+                                <span
+                                    class="cmpIsrequiredBox"
+                                >
+                                    <el-form-item 
+                                        prop="Description" 
+                                        :rules="{required: false, message: '颜色为空', trigger: 'blur'}"
+                                    >
+                                        <el-checkbox v-model="data.Description">控件是否必填</el-checkbox>
+                                    </el-form-item>
+                                </span>                                                                                                                            
+
 
                                 <span 
                                     class="handlerBox" 
@@ -161,6 +218,9 @@ import {
 import {
     checkTreeFormArray
 } from '@/utils/newStyleFieldValidate'
+import {
+    newStyleGetDicTree
+} from '@/api/dic'
 import SaveFooter from '../../Save-footer/Save-footer.vue';
 import {
     saveDicByKey,
@@ -174,60 +234,6 @@ export default {
         showSearch: {
             type: Boolean,
             default: false
-        },
-        propTreeData: {
-            type: Array,
-            default: () => {
-                return [
-                {
-                    id: 1,
-                    label: '一级 1',
-                    children: [
-                        {
-                            id: 4,
-                            label: '二级 1-1',
-                            children: [
-                                {
-                                    id: 9,
-                                    label: '三级 1-1-1'
-                                }, 
-                                {
-                                    id: 10,
-                                    label: '三级 1-1-2'
-                                }
-                            ]
-                        }
-                    ]
-                }, 
-                {
-                    id: 2,
-                    label: '一级 2',
-                    children: [
-                        {
-                            id: 5,
-                            label: '二级 2-1'
-                        }, 
-                        {
-                            id: 6,
-                            label: '二级 2-2'
-                        }
-                    ]
-                }, 
-                {
-                    id: 3,
-                    label: '一级 3',
-                    children: [
-                        {
-                            id: 7,
-                            label: '二级 3-1'
-                        }, 
-                        {
-                            id: 8,
-                            label: '二级 3-2'
-                        }
-                    ]
-                }]
-            }
         },
         propRowObj: {
             type: Object,
@@ -256,8 +262,8 @@ export default {
         return {
             loading: false,
             filterText: '',
-            treeData: JSON.parse(JSON.stringify(this.propTreeData)) || [] ,
-            currentCode: '',
+            treeData: [],
+            currentDicCode: '',
             treeForm: [],
             treeRulesForm: [],
             validRes: [],
@@ -265,6 +271,8 @@ export default {
     },
     created(){
         that = this
+        // 初始获取数据
+        this._newStyleGetDicTree()
         // 处理 this.treeData
         this._changeData(this.treeData)
     },
@@ -277,6 +285,17 @@ export default {
         }            
     },
     methods:{
+        _newStyleGetDicTree(){
+            this.loading = true
+            newStyleGetDicTree().then(res => {
+                this.loading = false
+                if(res && res.data.State === REQ_OK){
+                    this.treeData = res.data.Data.records
+                }else {
+                    
+                }
+            }) 
+        },     
         filterNode(value, data) {
             debugger
             if (!value) return true;
@@ -325,8 +344,8 @@ export default {
                     this.$set(item, 'isEditing', false)
                     this.$set(item, 'changed', false)
                     item.itemRules = {required: true, message: '名称为空', trigger: ['blur', 'change']}
-                    if(item.Children && item.Children.length){
-                        this._changeData(item.Children)
+                    if(item.childrenList && item.childrenList.length){
+                        this._changeData(item.childrenList)
                     }
                 })
             }
@@ -334,7 +353,7 @@ export default {
         nameInputChange(node, data){
             debugger
             if(data.Name){
-                this.currentCode = ''
+                this.currentDicCode = ''
             }
         },
         //新增
@@ -358,7 +377,7 @@ export default {
         // 取消
         cancel(node, data){
             debugger
-            this.currentCode = data.Code
+            this.currentDicCode = data.Code
             if(!data.Name){
 
             }else {
