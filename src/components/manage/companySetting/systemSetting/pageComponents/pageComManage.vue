@@ -17,56 +17,9 @@
     <div class="componentsManage animated fadeIn">
       <!-- currentRowObj： {{currentRowObj}} -->
       <!-- modulePage: {{modulePage}} -->
-      <!-----搜索头--start--->
-      <div class="searchBox">
-        <!-- <el-input 
-          clearable
-          v-model="queryObj.key"
-          style="width:200px"
-          placeholder="页面名,组件名">
-        </el-input> -->
-
-        <!-- pageOptions: {{pageOptions}} -->
-        <!-- <el-select 
-          clearable
-          v-model="queryObj.pageCode" 
-          placeholder="请选择">
-          <el-option
-            v-for="(item, key) in pageOptions"
-            :key="key"
-            :value="item.PageCode"
-            :label="item.ModuleName"
-          >
-          </el-option>
-        </el-select> -->
-
-        <span>页面：</span>
-        <el-cascader
-          expand-trigger="hover"
-          filterable
-          clearable
-          :options="pageOptions"
-          v-model="modulePage">
-        </el-cascader>        
-
-        <el-button 
-          type="primary" 
-          size="small"
-          @click.native="clickSearchBtn"
-        >搜索</el-button>
-
-        <el-button 
-          type="primary" 
-          size="small"
-          @click.native="clickResetBtn"
-        >重置</el-button>        
-      </div>
-      <!---搜索头--end-->
-
-      <!---内容区--start-->
-      <!-- tableData: {{tableData}} -->
-      <div :class="['containerBox','marginT10',tableData.length<=0? 'not_found':'']" v-loading="loading">
-        <div class="top">
+      <!--搜索部分--start-->
+      <search-tools-cmp>
+        <div slot="handlerBtnWrap"> 
           <el-checkbox
             @change="handlerSelectBtn"
           >
@@ -74,7 +27,6 @@
           </el-checkbox>
 
           <el-button 
-            style="float:right;margin-bottom:10px"
             v-show="queryObj.state ==1"
             :disabled="!multipleSelection.length"
             type="primary" 
@@ -85,7 +37,6 @@
           </el-button>
 
           <el-button 
-            style="float:right;margin-bottom:10px"
             v-show="queryObj.state ==0"
             type="primary" 
             size="mini"
@@ -95,14 +46,41 @@
           </el-button>   
 
           <el-button 
-            style="float:right;margin-bottom:10px;margin-right:10px"
             size="mini"
             type="primary" 
             @click.native="addNew"
           >
-          新增
-          </el-button>                 
+            新增
+          </el-button>                
         </div>
+        <div slot="moreSearch">
+          <el-cascader
+            expand-trigger="hover"
+            filterable
+            clearable
+            size="small"
+            :options="pageOptions"
+            v-model="modulePage">
+          </el-cascader>        
+
+          <el-button 
+            type="primary" 
+            size="small"
+            @click.native="clickSearchBtn"
+          >搜索</el-button>
+
+          <el-button 
+            type="primary" 
+            size="small"
+            @click.native="clickResetBtn"
+          >重置</el-button> 
+        </div>
+      </search-tools-cmp> 
+      <!---搜索部分---end-->    
+
+      <!---内容区--start-->
+      <!-- tableData: {{tableData}} -->
+      <div :class="['containerBox','marginT10',tableData.length<=0? 'not_found':'']" v-loading="loading">
 
         <el-table
           :data="tableData"
@@ -358,6 +336,7 @@
 <script type="text/ecmascript-6">
   import SaveFooter from '@/base/Save-footer/Save-footer'
   import PageComSetCmp from './pageComSetDialog-cmp'
+  import SearchToolsCmp from '@/base/NewStyle-cmp/common-cmp/searchTool-cmp'
   import { REQ_OK } from '@/api/config'
   import { 
     CompComponentList,
@@ -368,6 +347,7 @@
   } from '@/api/systemManage'
   export default {
     components:{
+      SearchToolsCmp,
       SaveFooter,
       PageComSetCmp
     },

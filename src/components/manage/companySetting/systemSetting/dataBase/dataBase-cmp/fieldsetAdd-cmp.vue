@@ -58,7 +58,7 @@
             
         <div class="containerBox u-f u-f-jsb">
             <!---左边--->
-            <div class="leftContent u-f1">
+            <div class="leftContent u-f-g1">
                 <field-select-tree-cmp
                     ref="userTree"
                     :obj="obj"

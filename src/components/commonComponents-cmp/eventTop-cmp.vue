@@ -34,7 +34,7 @@
 
       <div class="line u-f-ajc u-f-jsb u-f-wrap" v-show="selectedList.length">
         <el-divider></el-divider>          
-        <div class="line-item u-f0">
+        <div class="line-item u-f-g0">
           <span class="tit">
             员工号
           </span>
@@ -44,7 +44,7 @@
           </span>
         </div>
 
-        <div class="line-item u-f0">
+        <div class="line-item u-f-g0">
           <span class="tit">
             姓名
           </span>
@@ -53,7 +53,7 @@
           </span>
         </div>
 
-        <div class="line-item u-f0">
+        <div class="line-item u-f-g0">
           <span class="tit">
             组织
           </span>
@@ -62,7 +62,7 @@
           </span>
         </div>
 
-        <div class="line-item u-f0">
+        <div class="line-item u-f-g0">
           <span class="tit">
             职位
           </span>
@@ -72,7 +72,7 @@
         </div>
 
 
-        <div class="line-item u-f0">
+        <div class="line-item u-f-g0">
           <span class="tit">
             员工状态
           </span>
@@ -82,7 +82,7 @@
         </div>
 
 
-        <div class="line-item u-f0">
+        <div class="line-item u-f-g0">
           <span class="tit">
             员工类型
           </span>
@@ -104,7 +104,7 @@
       </div>
             
       <el-divider></el-divider>          
-      <div class="line-item u-f0">
+      <div class="line-item u-f-g0">
         <span class="tit">
           组织名
         </span>
@@ -114,7 +114,7 @@
         </span>
       </div>
 
-      <div class="line-item u-f0">
+      <div class="line-item u-f-g0">
         <span class="tit">
           组织码
         </span>
@@ -123,7 +123,7 @@
         </span>
       </div>
 
-      <div class="line-item u-f0">
+      <div class="line-item u-f-g0">
         <span class="tit">
           上级组织
         </span>
@@ -145,7 +145,7 @@
       </div>
 
       <el-divider></el-divider>          
-      <div class="line-item u-f0">
+      <div class="line-item u-f-g0">
         <span class="tit">
           组织名
         </span>
@@ -155,7 +155,7 @@
         </span>
       </div>
 
-      <div class="line-item u-f0">
+      <div class="line-item u-f-g0">
         <span class="tit">
           组织码
         </span>
@@ -164,7 +164,7 @@
         </span>
       </div>
 
-      <div class="line-item u-f0">
+      <div class="line-item u-f-g0">
         <span class="tit">
           上级组织
         </span>
@@ -173,7 +173,7 @@
         </span>
       </div>
 
-      <div class="line-item u-f0">
+      <div class="line-item u-f-g0">
         <span class="tit">
           职务
         </span>
@@ -194,7 +194,7 @@
       </div>
 
       <el-divider></el-divider>          
-      <div class="line-item u-f0">
+      <div class="line-item u-f-g0">
         <span class="tit">
           组织名
         </span>
@@ -204,7 +204,7 @@
         </span>
       </div>
 
-      <div class="line-item u-f0">
+      <div class="line-item u-f-g0">
         <span class="tit">
           组织码
         </span>

@@ -48,7 +48,6 @@
 </template>
 
 <script>
-const path = require('path')
 import { Navbar, Sidebar, AppMain, horizontalSidebar } from '@/components/layout'
 import { mapGetters } from 'vuex'
 let w = null
@@ -68,42 +67,10 @@ export default {
     ])
   },
   created(){
-    // 监听 webWorker 线程发送过来的信息
-    this.startWorker()    
+   
   },
   methods: {
-    startWorker(){
-      // 判断当前浏览器是否支持Worker
-      if(window.Worker){
-          // 判断是否有w
-          // if(typeof(w) == 'undefined'){
-              // 创建一个新的Worker对象，他会去执行demoWorkers.js这个文件下的JS代码
-              let path1 = path.join(__filename, '../../utils/pageConfigWorker.js')
-              // let path2 = path.
-              console.log(__filename)
-              console.log(path1)
-              w = new Worker(path1);
-              console.log("--------------w", w)
-          // }
-          w.postMessage("2")
-          // 给Worker添加一个事件监听器，Worker子线程返回消息时被调用，返回的数据在data里
-          w.onmessage = function (event) {
-            console.log("App 中 postmessage---打印worker线程发送给主线程的消息-----", event);
-            // document.getElementById('result').innerHTML = event.data;
-          }          
-      }else{
-          // 浏览器不支持Worker要做的事
-          // document.getElementById('result').innerHTML = '不支持Web Worker'
-          setTimeout(function(){
-            console.log("浏览器不支持worker")
-          }, 2000)
-      }      
-    },
-    endWorker(){
-      // 终止 web worker，并释放浏览器/计算机资源
-      w.terminate();
-      w = undefined;
-    },
+
   }
 }
 </script>

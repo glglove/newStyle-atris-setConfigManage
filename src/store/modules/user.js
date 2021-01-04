@@ -4,11 +4,19 @@ import { getMenu } from '@/api/permission'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import * as types from '../mutation-types'
 import {
+  setLocalStorage,
+  getLocalStorage
+} from '@/utils/auth'
+import {
   REQ_OK,
   ERR_PWD
 } from '@/api/config'
+import {
+  getCommonBusinessCode
+} from '@/api/newStyleConfig'
 const user = {
   state: {
+    commonConfigInfo: '',
     userType: '',
     status: '',
     userCode: '', // 员工id
@@ -25,6 +33,9 @@ const user = {
   },
 
   mutations: {
+    [types.SET_COMMON_CONFIGINFO] (state, obj) {
+      state.commonConfigInfo = obj
+    },
     [types.SET_USER_TYPE] (state, userType) {
       state.userType = userType
     },
@@ -64,15 +75,15 @@ const user = {
 
   actions: {
     // 用户名登录
-    LoginByUsername ({ commit, state }, userInfo) {
+    LoginByUsername ({ commit, dispatch, state }, userInfo) {
       const username = userInfo.username.trim()
       console.log(userInfo)
       // debugger
       return new Promise((resolve, reject) => {
         // 调用登陆接口 进行登陆
-        debugger
-        loginByUsername(username, userInfo.password).then(response => {
-          debugger
+        // debugger
+        loginByUsername(username, userInfo.password).then(async response => {
+          // debugger
           if( response.data.State != ERR_PWD ) {
             //
             const data = response.data.Data
@@ -82,7 +93,7 @@ const user = {
             commit(types.SET_TOKEN, data.TokenId)
   
             // 将用户的 身份(企业用户还是 系统用户)存入到 vuex 中
-            let type = 1
+            let type = 1  
             commit(types.SET_COMPANYORSYSTEM, type)
             console.log(state.isCompanyOrSystemUser)          
           }else {
@@ -97,13 +108,13 @@ const user = {
       })
     },
     // 获取用户信息
-    GetUserInfo ({ commit, state }) {
+    GetUserInfo ({ commit, dispatch, state }) {
       let t = getToken()
       // debugger
 
       return new Promise((resolve, reject) => {
         // 从cookie 中获取 tokenId， 本地环境 存入的 tokenKey 和 线上环境的 tokenkey 不一样，打包线上环境时要注意，在 @/utils/auth.js文件夹中
-        debugger
+        // debugger
         let t = getToken()
         if (typeof t === 'object') {
           t = t['Admin-Token']
@@ -116,8 +127,8 @@ const user = {
           // commit(types.SET_USER_ACCESSROUTERS, res.data.Data)
         // })
 
-        getUserInfo(t).then(response => {
-          debugger
+        getUserInfo(t).then(async response => {
+          // debugger
           if (!response.data) {
             reject('error')
           }
@@ -136,12 +147,37 @@ const user = {
           commit(types.SET_EMP_NO, data.companycode)
           commit(types.SET_COMPANY_CODE, data.companycode)
           commit(types.SET_AVATAR, data.companycode)          
+          // 将动态路由添加进入路由表中  user 模块中调用permission模块的action
+          await dispatch("GenerateRoutes", {}, { root: true })          
           resolve(response)
         }).catch(error => {
           reject(error)
         })
       })
     },  
+    // 获取配置信息
+    GetCommonConfigInfo ({commit, state}) {
+      // debugger
+      return new Promise((resolve, reject) => {
+        getCommonBusinessCode().then(res => {
+          // debugger
+          if(res && res.data.State === REQ_OK){
+            try {
+              // 缓存配置信息至localstorage              
+              setLocalStorage('commonConfig', JSON.stringify(res.data.Data))  
+            } catch (error) {
+              
+            }           
+            commit(types.SET_COMMON_CONFIGINFO, res.data.Data)
+          }else {
+            // 获取配置信息失败
+          }
+          resolve(res)
+        })
+      }).catch(err => {
+        reject(err)
+      })
+    },
     // 设置是 企业用户还是 系统用户 0 是企业用户  1 是系统用户
     setIsCompanyOrSystemUser ({commit, state}, type) {
       commit(types.SET_COMPANY_OR_SYSTEM, type)

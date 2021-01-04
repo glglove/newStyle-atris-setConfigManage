@@ -4,34 +4,10 @@
   功能：平台系统设置——用户管理-公司信息 
 -->
 <style lang="stylus" ref="stylesheet/stylus" scope>
-.distpicker-address-wrapper
-    // width 43%
-    display flex
-    flex-direction row
-    flex-wrap nowrap
-    justify-content space-between
-    padding-left 30px
-    box-sizing border-box
-    .selectBox
-        margin 0 2px
-        display inline-block
-        width: 32%
-        // flex-grow 1
-        flex-shrink 1
-.el-form-item__error
-    margin-left 30px !important
-.item
-    width 48%
-    .el-form-item
-        display flex
-        justify-content flex-start
-        .el-form-item__content
-            flex-grow 1
-            margin-left 0 !important
-            .el-select
-                width 100%
-            .el-date-editor
-                width 100%
+.el-select
+    width 100% !important
+.el-date-editor
+    width 100% !important
 .footerBox
     position fixed
     bottom -25px
@@ -52,9 +28,12 @@
             </el-button>
         </div>
         <!-- formObj: {{formObj}} -->
-        <el-card class="box-card marginT10">
+        <el-card 
+            class="marginT10"
+            shadow="never"
+        >
             <div slot="header" class="clearfix" style="padding: 5px 0; text-align:center">
-                <h4>企业相关信息</h4>
+                <h5>企业相关信息</h5>
                 <!-- <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button> -->
             </div>            
             <el-form 
@@ -63,127 +42,75 @@
                 :model="formObj" 
                 :rules="formObjRules"
                 label-width="120px">
-                <div class="u-f u-f-wrap">
-                    <div class="item">
+                <el-row>
+                    <el-col :span="12">
                         <el-form-item label="企业编码" prop="CompanyCode">
                             <el-input 
                                 :disabled="true"
                                 v-model="formObj.CompanyCode"
                                 placeholder="请输入企业编码"></el-input>
                         </el-form-item>
-                    </div>
-                    <div class="item">
+                    </el-col>
+                    <el-col :span="12">
                         <el-form-item label="企业名称" prop="CompanyNameCn">
                             <el-input 
                                 :disabled="!isEditing"
                                 v-model="formObj.CompanyNameCn"
                                 placeholder="请输入企业名称"></el-input>
                         </el-form-item>
-                    </div>   
+                    </el-col>   
                     <!-- ProvinceList: {{ProvinceList}}    -->
                     <!-- formObj: {{formObj}}
                     formObj.Province: {{formObj.Province}}
                     formObj.City: {{formObj.City}}
                     formObj.Area: {{formObj.Area}} -->
-                    <div class="item">
-                        <el-form-item  label="省市区" prop="Province">
-                            <!-- formObj.Created: {{formObj.Created}} -->
-                            <!-- <span>省市区</span> -->
-                            <dist-picker
-                                :placeholders="{
-                                    province: '--省--',
-                                    city: '--市--',
-                                    area: '--区--',
-                                }"
-                                :propCurrentProvince="formObj.Province*1"
-                                :propCurrentCity="formObj.City*1"
-                                :propCurrentArea="formObj.Area*1"
+                    <el-col :span="12">
+                    
+                        <el-form-item 
+                            label="省市区" 
+                            prop="province" 
+                            :rules="provinceRule"
+                        >
+                            <dist-picker-cmp
+                                :propObj.sync="formObj"
+                                :propCurrentProvince.sync="formObj.Province"
+                                :propCurrentCity.sync="formObj.City"
+                                :propCurrentArea.sync="formObj.Area"
                                 :disabled="!isEditing"
-                                @province="province"
-                                @city="city"
-                                @area="area"
-                            >
-                            </dist-picker>     
+                                @selectprovince="selectProvince"
+                                @selectcity="selectCity"
+                                @selectarea="selectArea"
+                            ></dist-picker-cmp>              
                         </el-form-item>
-                    </div>  
+                    </el-col>  
 
-                    <!-- <div class="item">
-                        <el-form-item label="省" prop="Province">
-                            <el-select 
-                                :disabled="!isEditing"
-                                clearable 
-                                v-model="formObj.Province"
-                            >
-                                <el-option 
-                                    v-for="(province, key) in ProvinceList"
-                                    :key="key"
-                                    :label="province.Name"
-                                    :value="province.Id"
-                                    >
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                    </div>   
-
-
-                    <div class="item">
-                        <el-form-item label="市" prop="City">
-                            <el-select :disabled="!isEditing" clearable v-model="formObj.City">
-                                <el-option 
-                                    v-for="(city, key) in CityList"
-                                    :key="key"
-                                    :label="city.Name"
-                                    :value="city.Id"
-                                    >
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                    </div>   
-
-
-                    <div class="item">
-                        <el-form-item label="区/县" prop="Area">
-                            <el-select :disabled="!isEditing" clearable v-model="formObj.Area">
-                                <el-option 
-                                    v-for="(area, key) in AreaList"
-                                    :key="key"
-                                    :label="area.Name"
-                                    :value="area.Id"
-                                    >
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                    </div>    -->
-
-
-
-                    <div class="item">
+                    <el-col :span="12">
                         <el-form-item label="企业传真" prop="Fax">
                             <el-input 
                                 :disabled="!isEditing"
                                 v-model="formObj.Fax"
                                 placeholder="请输入企业传真"></el-input>
                         </el-form-item>
-                    </div>   
-                    <div class="item">
+                    </el-col>   
+                    <el-col :span="12">
                         <el-form-item label="企业邮箱" prop="Email" :rules="formObjRules.Email">
                             <el-input 
                                 :disabled="!isEditing"
                                 v-model="formObj.Email"
                                 placeholder="请输入企业邮箱"></el-input>
                         </el-form-item>
-                    </div>    
+                    </el-col>    
 
-                    <div class="item">
+                    <el-col :span="12">
                         <el-form-item label="企业执照" prop="IDNumber">
                             <el-input 
                                 :disabled="!isEditing"
                                 v-model="formObj.IDNumber"
                                 placeholder="请输入企业执照"></el-input>
                         </el-form-item>
-                    </div>     
+                    </el-col>     
 
-                    <div class="item">
+                    <el-col :span="12">
                         <el-form-item label="企业电话" prop="LinkPhone" :rules="formObjRules.LinkPhone">
                             <el-input 
                                 :disabled="!isEditing"
@@ -191,18 +118,18 @@
                                 type="number"
                                 placeholder="请输入企业电话"></el-input>
                         </el-form-item>
-                    </div> 
+                    </el-col> 
 
-                    <div class="item">
+                    <el-col :span="12">
                         <el-form-item label="企业联系人" prop="LinkMan">
                             <el-input 
                                 :disabled="!isEditing"
                                 v-model="formObj.LinkMan"
                                 placeholder="请输入企业联系人"></el-input>
                         </el-form-item>
-                    </div>     
+                    </el-col>     
 
-                    <div class="item">
+                    <el-col :span="12">
                         <el-form-item 
                             label="企业备注" 
                             prop="Description"
@@ -210,13 +137,17 @@
                             <el-input 
                                 :disabled="!isEditing"
                                 type="textarea"
+                                autosize
                                 v-model="formObj.Description"
                                 placeholder="企业备注"></el-input>
                         </el-form-item>
-                    </div>   
+                    </el-col>   
                     <!-- CompanyLevelOptions： {{CompanyLevelOptions}} -->
-                    <div class="item">
-                        <el-form-item label="企业级别" prop="CompanyLevel">
+                    <el-col :span="12">
+                        <el-form-item 
+                            label="企业级别" 
+                            prop="CompanyLevel"
+                        >
                             <!-- <el-input 
                                 :disabled="!isEditing"
                                 v-model="formObj.CompanyLevel"
@@ -235,9 +166,9 @@
                                 </el-option>                                
                             </el-select>
                         </el-form-item>
-                    </div>    
+                    </el-col>    
 
-                    <div class="item">
+                    <el-col :span="12">
                         <el-form-item label="企业性质" prop="NatureType">
                             <!-- <el-input 
                                 :disabled="!isEditing"
@@ -257,9 +188,9 @@
                                 </el-option>                                
                             </el-select>                                
                         </el-form-item>
-                    </div>     
+                    </el-col>     
 
-                    <div class="item">
+                    <el-col :span="12">
                         <el-form-item label="企业人员规模" prop="CompanyScope">
                             <!-- <el-input 
                                 :disabled="!isEditing"
@@ -280,9 +211,9 @@
                                 </el-option>                                
                             </el-select>                                 
                         </el-form-item>
-                    </div>     
+                    </el-col>     
 
-                    <div class="item">
+                    <el-col :span="12">
                         <el-form-item label="所属行业" prop="BusinessType">
                             <!-- <el-input 
                                 :disabled="!isEditing"
@@ -302,9 +233,9 @@
                                 </el-option>                                
                             </el-select>                                   
                         </el-form-item>
-                    </div>   
+                    </el-col>   
 
-                    <div class="item">
+                    <el-col :span="12">
                         <el-form-item label="公司类别" prop="CompanyType">
                             <!-- <el-input 
                                 :disabled="!isEditing"
@@ -324,9 +255,9 @@
                                 </el-option>                                
                             </el-select>                                  
                         </el-form-item>
-                    </div>     
+                    </el-col>     
 
-                    <div class="item">
+                    <el-col :span="12">
                         <el-form-item label="创建时间" prop="Created">
                             <!-- formObj.Created: {{formObj.Created}} -->
                             <el-date-picker
@@ -338,8 +269,8 @@
                                 placeholder="选择日期时间">
                             </el-date-picker>                        
                         </el-form-item>
-                    </div>                         
-                </div>
+                    </el-col>                         
+                </el-row>
             </el-form>
         </el-card>
 
@@ -356,7 +287,7 @@
 import SaveFooter from '@/base/Save-footer/Save-footer'
 import { REQ_OK } from '@/api/config'
 import { validatEmail, validatMobilePhone, validatTel } from '@/utils/validate'
-import  DistPicker  from '@/base/DistPicker/DistPicker-cmp'
+import  DistPickerCmp  from '@/base/DistPicker/DistPicker-cmp'
 import { mapGetters } from 'vuex'
 import {
     GetAreaList,
@@ -369,7 +300,7 @@ export default {
     },
     components: {
         SaveFooter,
-        DistPicker
+        DistPickerCmp
     },
     data(){
         let phoneValid = (rule, value, callback) => {
@@ -402,6 +333,21 @@ export default {
             callback()            
         }
 
+        let validateProvince = (valid, rule, callback) => {
+            debugger
+            if(this.formObj.province && this.formObj.city && this.formObj.area){
+            callback()
+            }else {
+            if(!this.formObj.province && !this.formObj.city){
+                callback(new Error('省市为空'))
+                return
+            }else {
+                // 区为非必填项
+                callback()
+            }
+            }
+        }        
+
         return {
             loading: false, 
             isEditing: false, 
@@ -422,9 +368,12 @@ export default {
                 CompanyScope: [{required: true, message: '请填写企业人员规模', trigger: ['blur']}],
                 BusinessType: [{required: true, message: '请填写企业所属行业', trigger: ['blur']}],
                 CompanyType:[{required: true, message: '请填写公司类别', trigger: ['blur']}],
-                Province:[{required: true, validator: validAddress, trigger: ['blur']}],
+                // Province:[{required: true, validator: validAddress, trigger: ['blur']}],
                 // City:[{required: true, message: '请选择市', trigger: ['blur']}],
                 // Area:[{required: true, message: '请选择区/县', trigger: ['blur']}],
+            },
+            provinceRule: {
+                required: true, validator: validateProvince, trigger: ['change','blur']
             },
             ProvinceList: [], 
             CityList: [],
@@ -541,17 +490,17 @@ export default {
             this.isEditing = true
         },
         // 省市区组件中emit触发的事件
-        province(data){
+        selectProvince(data){
             debugger
             this.formObj.Province = data.code
         },
         // 省市区组件中emit触发的事件
-        city(data){
+        selectCity(data){
             debugger
             this.formObj.City = data.code
         },
         // 省市区组件中emit触发的事件
-        area(data){
+        selectArea(data){
             debugger
             this.formObj.Area = data.code
         },

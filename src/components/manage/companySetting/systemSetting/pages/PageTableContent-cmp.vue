@@ -38,46 +38,30 @@
         -----
         queryObj.moduleCode:{{queryObj.moduleCode}} -->
         <!--搜索部分--start-->
-        <div class="searchTopBox">
-            <search-tools-cmp 
-                :currentPcode="currentPcode" 
-                :currentKeyName="currentKeyName"
-                :currentTreeNodeObj="currentTreeNodeObj"
-                @emitRefreshTable="emitRefreshTable">
-            </search-tools-cmp>
-        </div>        
-        <!---搜索部分---end-->
+        <search-tools-cmp>
+            <div slot="handlerBtnWrap">
+                <el-checkbox
+                    @change="handlerSelectBtn"
+                >
+                    停用
+                </el-checkbox>    
 
-        <!-- queryObj.sysType: {{queryObj.sysType}} -->
-        <!---tab标签--->
-        <!-- <el-tabs 
-            v-model="queryObj.sysType" 
-            class="marginT10"
-            type="card" 
-            @tab-click="handleClickTab"
-        >
-            <el-tab-pane label="系统页面" name="1"></el-tab-pane>
-            <el-tab-pane label="企业页面" name="2"></el-tab-pane>
-        </el-tabs>    -->
+                <el-button 
+                    type="primary" 
+                    size="small" 
+                    @click.native="handlerAdd"
+                >新增</el-button>
+                <!-- <el-button type="primary" size="mini" @click.native="handlerSort">排序</el-button> --> 
+            </div>
+            <div slot="moreSearch">
+                <search-cmp
+                    @emitRefreshTable="emitRefreshTable"
+                ></search-cmp>
+            </div>
+        </search-tools-cmp> 
+        <!---搜索部分---end-->        
 
         <!-- queryObj: {{queryObj}} -->
-        <div class="contentTop clearfix marginB10">
-            <el-checkbox
-                style="float: left;margin-top:10px"
-                @change="handlerSelectBtn"
-            >
-                停用
-            </el-checkbox>    
-
-            <el-button 
-                style="float: right"
-                type="primary" 
-                size="mini" 
-                @click.native="handlerAdd"
-            >新增</el-button>
-            <!-- <el-button type="primary" size="mini" @click.native="handlerSort">排序</el-button> --> 
-        </div>
-
         <!--table表格区--start-->
         <!-- currentTableData： {{currentTableData}} -->
         <div class="tableContainerWrap">
@@ -400,7 +384,8 @@
 <script type="text/ecmascript-6">
 //   import MenuTreeCmp from '@/base/Manage-common-cmp/MenuTree-cmp'
   import SaveFooter from '@/base/Save-footer/Save-footer'
-  import SearchToolsCmp from './searchTools-cmp'
+  import SearchToolsCmp from '@/base/NewStyle-cmp/common-cmp/searchTool-cmp'
+  import SearchCmp from './searchTools-cmp'
   import SortItemCmp from './SortItem-cmp'
   import  { REQ_OK } from '@/api/config'
   import { 
@@ -438,6 +423,7 @@
         // }
     },
     components: {
+        SearchCmp,
         SearchToolsCmp,
         SortItemCmp,
         SaveFooter

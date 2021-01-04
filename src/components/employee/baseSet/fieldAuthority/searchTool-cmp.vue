@@ -9,7 +9,7 @@
 <template>
     <div class="searchBox u-f-ac">
         <div class="item u-f-ac u-f-jsb">
-            <span class="u-f0 marginR5">关键词</span>
+            <span class="u-f-g0 marginR5">关键词</span>
             <el-input 
                 clearable
                 v-model="queryObj.key"
@@ -18,7 +18,7 @@
         </div>
 
         <div class="item u-f-ac u-f-jsb marginL10">
-            <span class="u-f0 marginR5">事件名称</span>
+            <span class="u-f-g0 marginR5">事件名称</span>
             <el-select 
                 clearable
                 v-model="queryObj.businessType"
@@ -36,7 +36,7 @@
         </div>  
         
         <div class="item u-f-ac u-f-jsb marginL10">
-            <span class="u-f0 marginR5">创建日期</span>
+            <span class="u-f-g0 marginR5">创建日期</span>
             <el-date-picker
                 @change="changeDateRange()"
                 v-model="dateRange"

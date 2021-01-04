@@ -38,22 +38,9 @@
         -----
         currentCheckedPermissionObj: {{currentCheckedPermissionObj}} -->
         <!--搜索部分--start-->
-        <div class="searchTopBox">
-            <search-tools-cmp 
-                :currentPcode="currentPcode" 
-                :currentKeyName="currentKeyName"
-                @emitRefreshTable="emitRefreshTable">
-            </search-tools-cmp>
-        </div>        
-        <!---搜索部分---end-->
-
-        <!--table表格区--start-->
-        <div class="tableContainerWrap">
-            <!-- currentTableData： {{currentTableData}} -->
-            <div class="contentTop">
+        <search-tools-cmp>
+            <div slot="handlerBtnWrap">
                 <el-checkbox
-                    v-show="currentPcode"
-                    style="float: left"
                     v-model="isStoping"
                 >
                     停用
@@ -62,7 +49,6 @@
                     type="primary" 
                     size="mini"
                     @click.native="handlerAdd"
-                    v-show="currentPcode"
                 >添加许可权</el-button>
                 <!-- <el-button type="primary" @click.native="handlerAdd">添加到许可权</el-button> -->
                 <el-button 
@@ -79,7 +65,16 @@
                     @click.native="handlerScanLog"
                 >日志</el-button> -->
             </div>
+            <div slot="moreSearch">
+                <search-cmp
+                    @emitRefreshTable="emitRefreshTable"
+                ></search-cmp>
+            </div>
+        </search-tools-cmp> 
+        <!---搜索部分---end-->
 
+        <!--table表格区--start-->
+        <div class="tableContainerWrap">
             <!-- currentCheckedPermissionObj: {{currentCheckedPermissionObj}} -->
             <!-- currentTableData: {{currentTableData}} -->
             <!-- multipleSelection： {{multipleSelection}} -->
@@ -345,7 +340,8 @@
 <script type="text/ecmascript-6">
 //   import MenuTreeCmp from '@/base/Manage-common-cmp/MenuTree-cmp'
   import SaveFooter from '@/base/Save-footer/Save-footer'
-  import SearchToolsCmp from './searchTools-cmp'
+  import SearchToolsCmp from '@/base/NewStyle-cmp/common-cmp/searchTool-cmp'
+  import SearchCmp from './searchTools-cmp'
   import SortItemCmp from './SortItem-cmp'
   import AddPermitListCmp from '@/components/manage/userManage/userRole/roleManage/company-roleManage/roleManage-cmp/permitList-cmp'  
   import  { REQ_OK } from '@/api/config'
@@ -381,6 +377,7 @@
         }
     },
     components: {
+        SearchCmp,
         SearchToolsCmp,
         SortItemCmp,
         AddPermitListCmp,

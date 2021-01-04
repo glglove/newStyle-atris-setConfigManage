@@ -32,16 +32,16 @@
                 label-width="120px"> 
                 <el-form-item
                     label="许可权名"
-                    prop="PermissionPackageName"
+                    prop="permissionpackagename"
                 >
                     <el-input 
                         style="width: 300px"
-                        v-model="permitForm.PermissionPackageName"
+                        v-model="permitForm.permissionpackagename"
                     ></el-input>
                 </el-form-item>
                 <el-form-item
                     label="编号"
-                    prop="PermissionPackageCode"
+                    prop="permissionpackagecode"
                 >
                     <el-button
                         type="text"
@@ -50,25 +50,24 @@
 
                 <el-form-item
                     label="状态"
-                    prop="State"
+                    prop="state"
                 >
                     <el-switch
-                        v-model="permitForm.State"
-                        active-value= 1
-                        inactive-value= 0
+                        v-model="permitForm.state"
+                        :active-value= "1"
+                        :inactive-value= "0"
                     >
-                    
                     </el-switch>
                 </el-form-item>    
 
                 <el-form-item
                     label="描述"
-                    prop="Description"
+                    prop="description"
                 >
                     <el-input
                         style="width: 300px"
                         type="textarea"
-                        v-model="permitForm.Description"
+                        v-model="permitForm.description"
                     >
                     </el-input>
                 </el-form-item>                          
@@ -101,7 +100,7 @@
     // 引入公共的
     import permitSetCmp from '@/components/manage/userManage/userRole/roleManage/company-roleManage/roleManage-cmp/permitSet-cmp'    
     import { 
-        SaveComPermitPSet
+        addPermissionSet
     } from '@/api/systemManage'
     export default {
         props: {
@@ -118,20 +117,16 @@
                 currentTabIndex: 0,
                 showSetBtn: false,
                 addSuccessPermitObj: {
-                    PermissionPackageCode: ''
+                    permissionpackagecode: ''
                 },
                 permitForm: {
-                    "RoleNames":'',
-                    "CompanyCode": this.companyCode,
-                    "Id": 0,
-                    "PermissionPackageCode":'',
-                    "PermissionPackageName":'',
-                    "Description":"",
-                    "State":"1"                   
+                    permissionpackagename: '',
+                    state: 1,
+                    description: ''
                 },
                 permitFormRules: {
-                    PermissionPackageName: [{required: true, message: '请输入权限名称',trigger: ['blur','change']}],
-                    Description: [{required: true, message: '请输入描述',trigger: ['blur','change']}],
+                    permissionpackagename: [{required: true, message: '请输入权限名称',trigger: ['blur','change']}],
+                    description: [{required: true, message: '请输入描述',trigger: ['blur','change']}],
                 }
             }
         },
@@ -143,31 +138,22 @@
             ])
         },
         watch: {
-           'permitForm.permitForm': {
-               handler(newValue, oldValue){
-                //    if(newValue == '0'){
-                //        newValue = 0
-                //    }else if(newValue == '1') {
-                //        newValue = 1
-                //    }
-               },
-               immediate: true
-           }
+
         },
         methods: {
             _getComTables(){
 
             },
             // 添加保存许可权
-            _SaveComPermitPSet(){
+            _addPermissionSet(){
                 debugger
                 this.loading = true
-                SaveComPermitPSet(JSON.stringify(this.permitForm)).then(res => {
+                addPermissionSet(this.permitForm).then(res => {
                     this.loading = false
                     debugger
                     if(res && res.data.State === REQ_OK){
                         this.$message.success("保存成功")
-                        this.addSuccessPermitObj.PermissionPackageCode = res.data.Data
+                        this.addSuccessPermitObj.permissionpackagecode = res.data.Data
                         this.showSetBtn = true
                         this.activeTabName = 'second'
                         this.$emit("addPermitSuccess")
@@ -180,7 +166,7 @@
             save(){
                 this.$refs.addPermitForm.validate(valid => {
                     if(valid){
-                        this._SaveComPermitPSet()
+                        this._addPermissionSet()
                     }else {
 
                     }

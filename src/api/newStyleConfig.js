@@ -1,4 +1,4 @@
-
+import fetch from '@/utils/fetch'
 // pa在职员工 页面 pageCode
 // export const PA_PAGECODE_JOINEDEMPLOYEE = 'PG_PA_EEOnjob'
 export const PA_PAGECODE_JOINEDEMPLOYEE = 'P3'
@@ -40,3 +40,20 @@ export const Directlyonboard = 'P7'
 export const AddPFileLocat2 = 'P8'
 export const EditPFileLocat2 = 'P9'
 export const transferin = 'P10'
+
+
+// newStyle    config 配置接口
+/**
+ *  获取配置信息
+*/
+export function getCommonBusinessCode (){
+    return fetch({
+        url: '/common-business-code/findList',
+        method: 'post',
+        data: {
+            params: {
+
+            }
+        }
+    })
+}

@@ -19,42 +19,50 @@ import { Message } from 'element-ui'
 const whiteList = ['/login', '/authredirect', '/forgetWord', '/register']// 不重定向白名单
 
 // 路由守卫
-router.beforeEach((to, from, next) => {
+router.beforeEach(async(to, from, next) => {
   NProgress.start() // 开启Progress
   if (getToken()) { // 判断是否有token,从cookie 中获取的，在 @/util/auth.js文件中
+    // 有token
     // debugger
     if (to.path === '/login') {
-      next({ path: '/' })
+      // next({ path: '/' })
+      next()
       NProgress.done() // router在hash模式下 手动改变hash 重定向回来 不会触发afterEach 暂时hack方案
     } else {        
-      // debugger
+      debugger
       if (!store.getters.name) { // 判断当前用户是否已拉取完user_info信息
-        store.dispatch('GetUserInfo').then(res => { // 拉取user_info
-          // debugger
+        // 用户信息没有拉取完 重新获取用户信息
+        store.dispatch('GetUserInfo').then(async (res) => { // 拉取user_info
+          console.log("---store.getters.addRouters----", store.getters.addRouters)
+          debugger
           // const roles = res.data.Data.TokenId
-          store.dispatch('GenerateRoutes').then(() => {
-            // 生成可访问的路由表
-            router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
-            next({...to, replace: true}) // hack方法 确保addRoutes已完成
-          })
+          // await store.dispatch('GenerateRoutes')
+          // .then(async () => {
+          //   // 生成可访问的路由表
+          //   await router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
+          //   next({...to, replace: true}) // hack方法 确保addRoutes已完成
+          // })
+          next({...to})
         }).catch(() => {
-          // debugger
+          debugger
           store.dispatch('LogOut').then(() => {
             Message.error('验证过期,请重新登录！')
             next({ path: '/login' })
           })
         })
       } else {
+        // 用户信息已经获取完成
         // debugger
         next()
       }
     }
   } else {
-    // debugger
+    // 没有token
+    debugger
     if (whiteList.indexOf(to.path) !== -1) { // 在免登录白名单，直接进入
       next()
     } else {
-      next('/login') // 否则全部重定向到登录页
+      next('/login') // 否则全部重定向到登录页         
       console.log("permissin 中获取 getToken() 为空故跳转到了 login页面")
       NProgress.done() // router在hash模式下 手动改变hash 重定向回来 不会触发afterEach 暂时hack方案
     }

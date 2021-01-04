@@ -46,7 +46,7 @@
         </span>
       </div>
 
-      <div v-if="!isShowing" class="fieldValueWrap u-f0">
+      <div v-if="!isShowing" class="fieldValueWrap u-f-g0">
         <company-structure-cmp
           class="fieldValue"
           v-if="!isShowing"
@@ -60,7 +60,7 @@
       </div>
 
       <div 
-        class="fieldValueWrap showValue line-bottom u-f0" 
+        class="fieldValueWrap showValue line-bottom u-f-g0" 
         v-else
       >
         <span

@@ -46,7 +46,7 @@
         </span>
       </div>
 
-      <div v-if="!isShowing" class="fieldValueWrap u-f0">
+      <div v-if="!isShowing" class="fieldValueWrap u-f-g0">
         <!-- <icon-svg 
           class="fieldRequiredIcon"
           :icon-class="obj.FieldValue"
@@ -62,7 +62,7 @@
       </div>
 
       <div 
-        class="fieldValueWrap showValue line-bottom u-f0" 
+        class="fieldValueWrap showValue line-bottom u-f-g0" 
         v-else
       >
         <el-button

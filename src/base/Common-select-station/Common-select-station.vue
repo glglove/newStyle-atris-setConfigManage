@@ -8,7 +8,7 @@
   <div class="common-select-emp-container">
     <div class="dic-select el-select u-f-jst" style="display: block">
       <span>{{title}}：</span>
-      <div class="div-selected u-f0">
+      <div class="div-selected u-f-g0">
         <span class="el-tag el-tag--info el-tag--small" v-for="(item, index) in selectedPosList" :key="item.PositionCode">
           <span class="el-select__tags-text">{{ item.PositionName }}</span>
           <!--<i class="el-tag__close el-icon-close" @click="delOrgItem(base-info, item)"></i>-->

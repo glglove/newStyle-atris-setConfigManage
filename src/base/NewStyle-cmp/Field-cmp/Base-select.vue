@@ -47,7 +47,7 @@
 
       <!-- dataSource: {{dataSource}} -->
       <!-- obj.FieldValue: {{obj.FieldValue}} -->
-      <div v-if="!isShowing" class="fieldValueWrap u-f0">
+      <div v-if="!isShowing" class="fieldValueWrap u-f-g0">
         <el-cascader
           class="fieldValue"
           :placeholder="obj.ActRemind ||　'请选择'"
@@ -86,7 +86,7 @@
       </div>
 
       <div 
-        class="fieldValueWrap showValue line-bottom u-f0" 
+        class="fieldValueWrap showValue line-bottom u-f-g0" 
         v-else
       >
         <span 

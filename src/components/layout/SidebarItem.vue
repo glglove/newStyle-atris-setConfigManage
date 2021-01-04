@@ -98,6 +98,9 @@
 //         border-bottom 2px solid rgb(255, 208, 75)
 .menu-wrapper
   .parentName
+    display inline-block
+    // width 100%
+    // text-align center
     margin-right 20px
   .leftSidebar-submenu-title-noDropdown
     width 190px !important

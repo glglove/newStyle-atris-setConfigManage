@@ -56,7 +56,7 @@
         >
             <common-dic-tree
                 :propRowObj="currentRowObj"
-                :propDicCode="currentRowObj.Code"
+                :propDicCode="currentRowObj.DicCode"
                 :propDraggable="true"
                 :propMaxTier="currentRowObj.MaxTier"
             ></common-dic-tree> 
@@ -71,38 +71,6 @@ import {
     findDicList,
 } from '@/api/newStyle.js'
 import CommonDicTree from '@/base/NewStyle-cmp/Dic-cmp/Base-commonDicTree'
-let data = {
-    "State": 1,
-    "Data": [
-        {
-            "Id": 27,
-            "PCode": "",
-            "Code": "DC9f8e7605",
-            "Name": "东区",
-            "Description": "华东区Description",
-            "Changed": false,
-            "SortId": 1,
-            "Children": [
-                {
-                    "Id": 29,
-                    "PCode": "DC9f8e7605",
-                    "Code": "DC9f8e79f4",
-                    "Name": "东区1",
-                    "Description": "东区1",
-                    "Changed": false,
-                    "SortId": 1,
-                    "Children": []
-                }
-            ]
-        }
-    ],
-    "Error": "",
-    "DataCount": 0,
-    "PageIndex": 0,
-    "PageSize": 0,
-    "Total": 0,
-    "PageCount": 1
-}
 export default {
     components: {
         CommonDicTree
@@ -135,6 +103,7 @@ export default {
     },
     // 查看
     handleClick(rowObj){
+        debugger
         // this.loading = true
         this.currentRowObj = rowObj
         this.showScanDialog = true

@@ -14,7 +14,7 @@ import {
 
 onmessage = function(e){
     console.log("打印主线程发送给worker线程的消息", e)
-
+    self.postMessage('worker线程发送给主线程的消息')
 }
 // loginByUsername('90032', 'f7e47deccf3a607845ae1325e8cd0424', '80000000').then(res => {
 //     // postMessage()方法-它用于向HTML页面传回一段消息

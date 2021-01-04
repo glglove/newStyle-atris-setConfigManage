@@ -8,7 +8,7 @@
   <div class="common-select-org-container">
     <div class="dic-select el-select u-f-jst" style="display: block">
       <span>{{title}}：</span>
-      <div class="div-selected u-f0">
+      <div class="div-selected u-f-g0">
         <span class="el-tag el-tag--info el-tag--small" v-for="(item, index) in selectedOrgList" :key="item.value">
           <span class="el-select__tags-text">{{ item.label }}</span>
           <!--<i class="el-tag__close el-icon-close" @click="delOrgItem(base-info, item)"></i>-->

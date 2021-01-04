@@ -1,6 +1,6 @@
 import * as types from '../mutation-types'
 import { asyncRouterMap, constantRouterMap } from '@/router/index'
-
+import router from '@/router'
 /**
  * 通过meta.role判断是否与当前用户权限匹配
  * @param roles
@@ -71,7 +71,7 @@ const permission = {
   },
   actions: {
     GenerateRoutes ({ commit, state, rootState }) {
-      return new Promise((resolve, reject) => {
+      return new Promise(async (resolve, reject) => {
         // const { roles } = data
         // console.log('datta', data)
         // debugger
@@ -91,6 +91,10 @@ const permission = {
         // debugger
         commit(types.SET_ROUTERS, accessedRouters)
         commit(types.SET_ADD_ROUTERS, accessedRouters)
+        // 将添加的路由 写入到路由表
+        await router.addRoutes(accessedRouters) // 动态添加可访问路由表
+        // 路由 options 并不会随着 addRoutes 动态响应，所以要在这里进行设置
+        router.options.routes = constantRouterMap.concat(asyncRouterMap);        
         resolve()
       })
     }

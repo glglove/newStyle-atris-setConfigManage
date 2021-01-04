@@ -55,7 +55,7 @@
       <!-- dataSource: {{dataSource}}--- -->
       <!-- obj.FieldValue: {{obj.FieldValue}} -->
       <!-- isHasAddOrEditAuth(): {{isHasAddOrEditAuth()}} -->
-      <div v-if="!isShowing" class="fieldValueWrap u-f0">      
+      <div v-if="!isShowing" class="fieldValueWrap u-f-g0">      
         <el-radio-group
           v-if="!isShowing"
           v-model="obj.FieldValue"
@@ -74,7 +74,7 @@
       </div>
 
       <div 
-        class="fieldValueWrap showValue line-bottom u-f0" 
+        class="fieldValueWrap showValue line-bottom u-f-g0" 
         v-else
       >
         <span>{{obj.FieldValue}}</span>

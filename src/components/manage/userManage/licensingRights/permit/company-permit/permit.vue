@@ -23,80 +23,16 @@
 
 <template>
     <div class="permitRightsSetCmp animated fadeIn">
-      <div class="searchBox u-f-ac marginT10">
-        <!-- moduleOptions: {{moduleOptions}} -->
-        <div class="u-f-ac">
-            <div class="marginL10">
-                <span>
-                    <span>许可权名称：</span>
-                    <el-input
-                        v-model="queryObj.Name"
-                        placeholder="许可权名，编号"
-                        clearable
-                        style="width: 150px"
-                        @clear="clearSearch"
-                    ></el-input>
-                </span>
-                <span class="marginL5">
-                    <span>类型：</span>
-                    <el-select v-model="queryObj.sysType">
-                        <el-option 
-                            v-for="(item, key) in sysTypeOptions"
-                            :key="key"
-                            :value="item.value"
-                            :label="item.label"
-                        >
-                        </el-option>                           
-                    </el-select>
-                </span>
-                <!-- <span class="marginL5">
-                    <span>状态：</span>
-                    <el-select v-model="queryObj.State">
-                        <el-option 
-                            v-for="(item, key) in stateOptions"
-                            :key="key"
-                            :value="item.value"
-                            :label="item.label"
-                        >
-                        </el-option>
-                    </el-select>    
-                </span>                     -->
-            </div> 
-
-            <div class="marginL10">
-                <el-button 
-                    type="primary"
-                    @click.native="handlerSearch">
-                    搜索
-                </el-button>  
-                <el-button 
-                    type="primary" 
-                    @click.native="clearSearch"
-                >重置</el-button>
-            </div>                     
-        </div>  
-      </div> 
-
-
-        <!-- queryObj.sysType: {{queryObj.sysType}} -->
-        <!-- <el-tabs 
-            class="marginT10"
-            v-model="queryObj.sysType" 
-            type="card" 
-            @tab-click="handleClickTab">
-            <el-tab-pane label="全部" name="-1"></el-tab-pane>
-            <el-tab-pane label="系统" name="1"></el-tab-pane>
-            <el-tab-pane label="企业" name="2"></el-tab-pane>
-        </el-tabs> -->
-
-        <!-- tableData: {{tableData}} -->
-        <div class="contentBox">
-            <div class="btnBox marginB10" style="text-align: right">
+        <!--搜索部分--start-->
+        <search-tools-cmp>
+            <div slot="handlerBtnWrap">
                 <el-checkbox
-                    style="float: left;margin-top:10px"
+                    :true-label="1"
+                    :false-label="0"
+                    v-model="queryObj.state"
                     @change="handlerSelectBtn"
                 >
-                    停用
+                    启用
                 </el-checkbox>  
 
                 <el-button 
@@ -120,9 +56,45 @@
                     type="primary" 
                     size="mini"
                     @click.native="batchDataSafety"
-                >批量数据安全</el-button> -->
+                >批量数据安全</el-button> -->               
             </div>
+            <div slot="moreSearch">
+                <el-input
+                    v-model="queryObj.permissionpackagename"
+                    placeholder="许可权名，编号"
+                    clearable
+                    size="small"
+                    style="width: 150px"
+                    @clear="clearSearch"
+                ></el-input>
+                <span class="" style="font-size:12px">角色：</span>
+                <el-select 
+                    size="small"
+                    v-model="queryObj.permissionpackagetype"
+                >
+                    <el-option 
+                        v-for="(item, key) in commonDataSourceConfig.RoleTypeEnum"
+                        :key="key"
+                        :value="item.type"
+                        :label="item.des"
+                    >
+                    </el-option>                           
+                </el-select>   
+                <el-button 
+                    type="primary" 
+                    size="small"
+                    @click.native="handlerSearch"
+                >搜索</el-button>             
+            </div>
+        </search-tools-cmp> 
+        <!---搜索部分---end-->
 
+
+
+        <!-- queryObj.permissionpackagetype: {{queryObj.permissionpackagetype}} -->
+
+        <!-- tableData: {{tableData}} -->
+        <div class="contentBox">
             <!-- tableData： {{tableData}} -->
             <div :class="['tableBox', !tableData.length? 'not_found':'']" v-loading="loading">
                 <el-table
@@ -141,7 +113,7 @@
 
                     <el-table-column
                         label="许可权名称"
-                        prop="PermissionPackageName"
+                        prop="permissionpackagename"
                         width="150"
                         sortable
                         show-overflow-tooltip                           
@@ -153,14 +125,14 @@
                         sortable
                         width="300"
                         show-overflow-tooltip                        
-                        prop="PermissionPackageCode"
+                        prop="permissionpackagecode"
                     >
 
                     </el-table-column>
 
                     <el-table-column
                         label="引用的角色"
-                        prop="RoleNames"
+                        prop="Rolepermissionpackagenames"
                         sortable
                         show-overflow-tooltip                           
                     >
@@ -169,20 +141,20 @@
 
                     <el-table-column
                         label="系统配置"
-                        prop="SysType"
+                        prop="permissionpackagetype"
                         sortable
                         show-overflow-tooltip                           
                     >
                         <template slot-scope="scope">
-                            <!-- scope.row.SysType: {{scope.row.SysType}} -->
-                            <span v-if="scope.row.SysType ==1 " style="color: #409EFF">是</span>
-                            <span v-if="scope.row.SysType ==2 " style="color: #67C23A">否</span>                       
+                            <!-- scope.row.permissionpackagetype: {{scope.row.permissionpackagetype}} -->
+                            <span v-if="scope.row.permissionpackagetype == 'roleType_one'" style="color: #409EFF">是</span>
+                            <span v-if="scope.row.permissionpackagetype == 'roleType_two' " style="color: #67C23A">否</span>                       
                         </template>
                     </el-table-column>    
 
                     <el-table-column
                         label="描述"
-                        prop="Description"
+                        prop="description"
                         sortable
                         show-overflow-tooltip                           
                     >
@@ -191,16 +163,16 @@
 
                     <el-table-column
                         label="状态"
-                        prop="State"
+                        prop="state"
                         width="80"
                         sortable
                         show-overflow-tooltip                           
                     >
                         <template slot-scope="scope">
-                            <span v-if="scope.row.State == 1">
+                            <span v-if="scope.row.state == 1">
                                 启用
                             </span>
-                            <span v-if="scope.row.State == 0">
+                            <span v-if="scope.row.state == 0">
                                 停用
                             </span>                        
                         </template>
@@ -235,17 +207,17 @@
                                 移除
                             </el-button>   -->  
                             <el-button 
-                                v-if="scope.row.State == 1"
+                                v-if="scope.row.state == 1"
                                 type="text"
                                 size="mini"
-                                @click.native="handlerStopUsing(scope.row,0)">
+                                @click.native="handlerStopOrUsing(scope.row)">
                                 停用
                             </el-button>      
                             <el-button 
-                                v-if="scope.row.State == 0"
+                                v-if="scope.row.state == 0"
                                 type="text"
                                 size="mini"
-                                @click.native="handlerStartUsing(scope.row,1)">
+                                @click.native="handlerStopOrUsing(scope.row)">
                                 启用
                             </el-button>                                           
                         </template>
@@ -310,10 +282,10 @@
                 :close-on-click-modal="false"
             >
                 <div class="content u-f-ac">
-                    <h3>复制后名称：</h3>
+                    <h4>复制后名称：</h4>
                     <el-input 
                         style="width: 300px;display: inline-block"
-                        v-model="copyName"
+                        v-model="copypermissionpackagename"
                         placeholder="请输入名称"
                     ></el-input>
                 </div>
@@ -349,6 +321,7 @@
 <script type="text/ecmascript-6">
     import { REQ_OK } from '@/api/config'
     import SaveFooter from '@/base/Save-footer/Save-footer'
+    import SearchToolsCmp from '@/base/NewStyle-cmp/common-cmp/searchTool-cmp'
     // import DataSafetyCmp from './permit-cmp/DataSafe-cmp'
     import DataSafetyCmp from '@/components/manage/userManage/userRole/roleManage/company-roleManage/roleManage-cmp/dataSafety-cmp'
     import AddPermitCmp from './permit-cmp/addPermit-cmp'
@@ -356,16 +329,18 @@
     // 引入公用的 组件
     import PermitScanCmp from '@/components/manage/userManage/userRole/roleManage/company-roleManage/roleManage-cmp/permitScan-cmp'
     import { 
-        CompPermitPMgtList,
-        SetComPermitPState,
-        CopyComPermitP,
+        getPermissionList,
+        addPermissionSet,
         batchDelSecurityTypeGroup
     } from '@/api/systemManage'
+    import { CommonInterfaceMixin } from '@/utils/CommonInterfaceMixin'
     export default {
+        mixins: [CommonInterfaceMixin],
         props: {
 
         },
         components: {
+            SearchToolsCmp,
             DataSafetyCmp,
             AddPermitCmp,
             PermitScanCmp,
@@ -383,35 +358,14 @@
                 showEditDialog: false,
                 isScanOrEdit: false, 
                 scanOrEditTit: '',
-                copyName: '',
-                stateOptions: [
-                    {
-                        label: '停用',
-                        value: "0"
-                    },
-                    {
-                        label: '启用',
-                        value: "1"
-                    }
-                ],
-                sysTypeOptions: [
-                    {
-                        label: '全部',
-                        value: '-1'
-                    },
-                    {
-                        label: '系统',
-                        value: "1"
-                    },
-                    {
-                        label: '企业',
-                        value: "2"
-                    }                    
+                copypermissionpackagename: '',
+                permissionpackagetypeOptions: [
+                  
                 ],                
                 queryObj: {
-                    Name: '',
-                    sysType: '-1', //1系统，2企业 -1 全部
-                    State: 1, //状态，默认1启用，0禁用
+                    permissionpackagename: '',
+                    permissionpackagetype: '', 
+                    state: 1, //状态，默认1启用，0禁用
                     pageSize: 10,
                     pageNum: 1,
                     total: 0
@@ -419,34 +373,39 @@
             }
         },
         created(){
-            this._getComTables()
+            this._initData()
         },
         computed: {
 
         },
         watch: {
-            'queryObj.sysType': {
+            'queryObj.permissionpackagetype': {
                 handler(newValue, oldValue){
                     this._getComTables()
                 }
             }
         },
         methods: {
+            _initData(){
+                // 获取 通用的下拉源
+                this.commonDataSourceListMixin()  
+                this._getComTables()
+            },
             _getComTables(){
-                this._CompPermitPMgtList()
+                this._getPermissionList()
             },
             handleClickTab(tab, index){
                 debugger
-                this.queryObj.sysType = tab.name
+                this.queryObj.permissionpackagetype = tab.name
                 // this._getComTables()
             },
-            _CompPermitPMgtList(){
+            _getPermissionList(){
                 this.loading = true
-                CompPermitPMgtList(this.queryObj.Name, this.queryObj.State, this.queryObj.sysType, this.queryObj.pageSize, this.queryObj.pageNum).then(res => {
+                getPermissionList(this.queryObj).then(res => {
                     this.loading = false
                     if(res && res.data.State === REQ_OK){
-                        this.tableData = res.data.Data
-                        this.queryObj.total = res.data.Total
+                        this.tableData = res.data.Data.records
+                        this.queryObj.total = res.data.Data.total
                     }else {
                         this.$message.error(`获取许可权限列表数据失败,${res.data.Error}`)
                     }
@@ -466,18 +425,18 @@
             }, 
             // 清空搜索框
             clearSearch(){
-                if(this.queryObj.sysType == '-1'){
+                if(this.queryObj.permissionpackagetype == '-1'){
                     Object.assign(this.queryObj, {
-                        Name: '',
-                        sysType: '-1',
-                        State: '1'
+                        permissionpackagename: '',
+                        permissionpackagetype: '',
+                        state: 1
                     })   
                     this._getComTables()                 
                 }else {
                     Object.assign(this.queryObj, {
-                        Name: '',
-                        sysType: '-1',
-                        State: '1'
+                        permissionpackagename: '',
+                        permissionpackagetype: '',
+                        state: 1
                     })                       
                 }
             },      
@@ -518,51 +477,57 @@
                 this.currentRowObj = row
                 this.showDataSafetyDialog = true
             },
+            // 批量移除
+            handlerBatchDelete(){
+                debugger
+                let statusText = '批量删除'
+                let baseKey = 'sys_user'            
+                let name = ''
+                let ids = []
+                let length = this.multipleSelection.length
+                if(length){
+                    this.multipleSelection.forEach((item, key) => {
+                        item.id && ids.push(item.id)
+                        if(key != length-1){
+                            name += item.permissionpackagename + ','
+                        }else {
+                            name += item.permissionpackagename
+                        }
+                    })
+                    this.commonDeleteListMixin({
+                        statusText,
+                        name,
+                        ids,
+                        baseKey
+                    })                
+                }          
+            },
             // 移除
             handlerDelete(row){
-                this.currentRowObj = row
-                this.$confirm("确定要删除此安全组吗？","提示",{
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消'
-                }).then(() => {
-                    this._batchDelSecurityTypeGroup([this.currentRowObj])
-                }).catch(() => {
-                    this.$message.info("删除已取消")
-                })
+                debugger
+                this.currentRow = row            
+                if(row.id){
+                    let statusText = '删除'
+                    let name = row.permissionpackagename || ''
+                    let ids = row.id ? [row.id] : []
+                    let baseKey = 'sys_permissionpackageinfo'
+                    this.commonDeleteListMixin({
+                        statusText,
+                        name,
+                        ids,
+                        baseKey
+                    })
+                }            
             },
             // 启用/停用 筛选
             handlerSelectBtn(value){
                 debugger
-                if(value){
-                    this.queryObj.State = 0
-                    this.queryObj.pageNum = 1
-                }else {
-                    this.queryObj.State = 1
-                    this.queryObj.pageNum = 1
-                }
                 this._getComTables()        
             },             
             // 添加许可权限
             addPermit(){
                 debugger
                 this.showAddPermitDialog = true
-            },
-            // 批量移除许可权限
-            batchDeletePermit(){
-                debugger
-                if(!this.multipleSelection.length){
-                    this.$message.warning("请先选择要移除的许可权限")
-                    return
-                }else {
-                    this.$confirm("确定要批量移除许可权限吗？","提示",{
-                        confirmButtonText: '确定',
-                        cancelButtonText: '取消'
-                    }).then(res => {
-                        this._batchDelSecurityTypeGroup(this.multipleSelection)
-                    }).catch(() => {
-                        this.$message.info("批量删除已取消")
-                    })
-                }
             },
             // 复制许可权
             copyPermit(){
@@ -591,47 +556,24 @@
                 this._getComTables()
                 this.showEditDialog = false                
             },
-            // 启用/停用
-            _SetComPermitPState(data, type){
-                let text = type == 1 ? '启用': '停用'
-                SetComPermitPState(JSON.stringify([data]), type).then(res => {
-                    if(res && res.data.State === REQ_OK){
-                        this.$message.success(`${text}成功`)
-                        this._getComTables()
-                    }else {
-                        this.$message.error(`${text}失败,${res.data.Error}`)
-                    }
+            // 停用/启用
+            handlerStopOrUsing(row){
+                debugger           
+                let statusText = row.state == 1? '停用': '启用'
+                let name = row.permissionpackagename || ''
+                let ids = row.id ? [row.id] : []
+                let baseKey = 'sys_permissionpackageinfo'
+                this.commonSetStatusMixin({
+                    statusText,
+                    name,
+                    ids,
+                    baseKey
                 })
-            },
-            // 停用
-            handlerStopUsing(row,type){
-                debugger
-                this.currentRowObj = row
-                this.$confirm(`确定要停用${row.PermissionPackageName}吗？`,"提示",{
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消'
-                }).then(() => {
-                   this._SetComPermitPState(this.currentRowObj, 0) 
-                }).catch(() => {
-                    this.$message.info("已取消成功")
-                })
-            },
-            // 启用
-            handlerStartUsing(row,type){
-                this.currentRowObj = row
-                this.$confirm(`确定要启用${row.PermissionPackageName}吗？`,"提示",{
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消'
-                }).then(() => {
-                   this._SetComPermitPState(this.currentRowObj, 1) 
-                }).catch(() => {
-                    this.$message.info("已取消成功")
-                })                
-            },
-            _CopyComPermitP(){
+            }, 
+            _addPermissionSet(obj){
                 this.loading = true
-                let Id = this.multipleSelection[0].Id
-                CopyComPermitP(Id, this.copyName).then(res => {
+
+                addPermissionSet(obj).then(res => {
                     this.loading = false
                     if(res && res.data.State === REQ_OK){
                         this.$message.success("复制许可权成功")
@@ -644,11 +586,21 @@
             },            
             // 复制保存
             saveCopy(){
-                if(!this.copyName){
+                if(!this.copypermissionpackagename){
                     this.$message.warning("名称为空，请填写名称")
                     return
                 }
-                this._CopyComPermitP()
+                let {
+                    state,
+                    description
+                } = this.multipleSelection[0]
+                let newObj = {
+                    permissionpackagename: this.copypermissionpackagename,
+                    id: '',
+                    state: state,
+                    description: description
+                }                
+                this._addPermissionSet(newObj)
             },
             // 复制取消
             cancelCopy(){

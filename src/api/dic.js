@@ -392,24 +392,24 @@ export function newStyleGetDicByKey ( DicType = 'SYS', DicCode, ModuleCode = 'SY
 }
 
 
-/**
- *  保存字典表tree
- * @params {*} Data   数组 [{Pcode: '', Name: '', Description: ''}]
-*/
+//-------------newStyle  dic 20201221--------
 
-export function saveDicByKey ( DicCode, Data ) {
+/**
+ *  保存字典表树
+ *  * @params {*} arr   树形数组 [{Pcode: '', Name: '', Description: ''}]
+ */
+export function saveDicTree (arr) {
+  console.log("-----------------",arr)
   return fetch({
-      module: 'newStyle',
-      url: '/api/app/dic/saveDicByKey',
-      method: 'post',
-      data: {   
-        // get请求 这里需要是parmas， post 用 data
-        // Method: 'saveDicByKey',
-        DicCode,
-        Data,
-      }
+    url: '/sys-dic/saveList',
+    method: 'post',
+    module: 'testNew',
+    data: {
+      params: arr
+    }
   })
 }
+
 
 /**
  *  删除字典表tree
@@ -418,37 +418,36 @@ export function saveDicByKey ( DicCode, Data ) {
  * @parmas {*} Id 字典表数据id
 */
 
-export function deleteDicItem ( ModuleCode, DicCode, Id ) {
+export function deleteDicItem ( id ) {
   return fetch({
-      module: 'newStyle',
-      url: '/api/app/dic/dicItem',
-      method: 'delete',
-      params: {   
-        // get, delete请求 这里需要是parmas， post 用 data
-        // Method: 'deleteDicItem',
-        ModuleCode,
-        DicCode,
-        Id
-      }
-  })
-}
-
-
-//-------------newStyle  dic 20201221--------
-// /**
-//  * @params  DicType  字典表类型，默认SYS
-//  * @params DicCode 字典表code
-//  * @params ModuleCode 模块code，默认SYS
-// */
-
-export function newStyleGetDicTree (  ) {
-  return fetch({
-      url: '/sys-dic/tree',
+      url: '/sys-dic/deleteList',
       method: 'post',
-      params: {   
-        params: {
-
+      data: {   
+        // get, delete请求 这里需要是parmas， post 用 data
+        Method: 'deleteDicItem',
+        parmas: {
+          id
         }
       }
   })
 }
+
+
+/**
+ * 获取 字典表 tree
+ * @params parentdiccode 字典表code
+*/
+
+export function newStyleGetDicTree ( parentdiccode ) {
+  return fetch({
+    url: '/sys-dic/tree',
+    method: 'post',
+    data: {   
+      params: {
+        parentdiccode
+      }
+    }
+  })
+}
+
+

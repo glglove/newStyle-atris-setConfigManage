@@ -8,9 +8,7 @@
     padding 0 20px
     box-sizing border-box
     .searchTop
-        margin 5px 0 10px 0
     .item-container
-        margin-top 5px
         display inline-block
         >>>.el-input
             display inline-block !important
@@ -34,22 +32,11 @@
 
 <template>
     <div class="menuContentSet-cmp">
-
         <!--搜索部分--start-->
-        <div class="searchTopBox">
-            <search-tools-cmp 
-                :currentPcode="currentPcode" 
-                :currentKeyName="currentKeyName"
-                @emitRefreshTable="emitRefreshTable">
-            </search-tools-cmp>
-        </div>        
-        <!---搜索部分---end-->
-
-        <!--table表格区--start-->
-        <div class="tableContainerWrap">
-            <!-- currentTableData： {{currentTableData}} -->
-            <!-- currentPcode: {{currentPcode}} -->
-            <div class="contentTop">
+        <search-tools-cmp>
+            <div slot="handlerBtnWrap">
+                <!-- <el-button type="primary" size="mini" @click.native="handlerAdd">新增</el-button> -->
+                <!-- <el-button v-if="currentTableData.length" type="primary" size="mini" @click.native="handlerSort">排序</el-button> -->                    
                 <el-button 
                     type="primary" 
                     size="mini"
@@ -61,17 +48,24 @@
                     @click.native="handlerBatchDelete">
                     批量移除
                 </el-button>
-                <!-- <el-button type="primary" size="mini" @click.native="handlerAdd">新增</el-button> -->
-                <!-- <el-button v-if="currentTableData.length" type="primary" size="mini" @click.native="handlerSort">排序</el-button> -->
             </div>
+            <div slot="moreSearch">
+                <search-cmp
+                    @emitRefreshTable="emitRefreshTable"
+                ></search-cmp>
+            </div>
+        </search-tools-cmp> 
+        <!---搜索部分---end-->
 
+        <!--table表格区--start-->
+        <div class="tableContainerWrap">
             <!-- currentTableData： {{currentTableData}} -->
-            <div :class="['tableList',currentTableData.length<=0? 'not_found':'']" v-loading = "loading">
+            <div :class="['tableList']">
                 <el-table
+                    v-loading = "loading"
                     style="width:100%"
                     max-height="500"
                     border 
-                    empty-text=" "
                     :data="currentTableData"
                     @selection-change="handleSelectionChange"
                 >
@@ -82,7 +76,7 @@
 
                     <el-table-column
                         label="用户名"
-                        prop="UserName"
+                        prop="accountname"
                         show-overflow-tooltip
                         sortable
                     >
@@ -90,7 +84,7 @@
 
                     <el-table-column
                         label="用户编号"
-                        prop="UserId"
+                        prop="companycode"
                         show-overflow-tooltip
                         sortable                        
                     >
@@ -98,15 +92,15 @@
 
                     <el-table-column
                         label="状态"
-                        prop="State"
+                        prop="state"
                         show-overflow-tooltip
                         sortable                        
                     >
                         <template slot-scope="scope">
-                            <span v-if="scope.row.State == 0">
+                            <span v-if="scope.row.state == 0">
                                 冻结
                             </span>
-                            <span v-if="scope.row.State == 1">
+                            <span v-if="scope.row.state == 1">
                                 激活
                             </span>                            
                         </template>
@@ -114,7 +108,7 @@
 
                     <el-table-column
                         label="更新人"
-                        prop="UpdateBy"
+                        prop="updateby"
                         show-overflow-tooltip
                         sortable                        
                     >
@@ -122,13 +116,13 @@
 
                     <el-table-column
                         label="更新日期"
-                        prop="Updated"
+                        prop="updated"
                         show-overflow-tooltip
                         sortable                        
                     >
                         <template slot-scope="scope">
                             <span>
-                                {{scope.row.Updated}}
+                                {{scope.row.updated}}
                             </span>
                         </template>
                     </el-table-column>
@@ -144,6 +138,13 @@
                                 @click.native="handlerEdit(scope.row, scope.$index)">
                                 编辑
                             </el-button>   -->
+
+                            <el-button 
+                                type="text" 
+                                size="mini"
+                                @click.native="handlerStopOrUsing(scope.row, scope.$index)">
+                                {{scope.row.state == 1? '停用':'启用'}}
+                            </el-button>
 
                             <el-button 
                                 type="text" 
@@ -215,12 +216,12 @@
                     <!-- userOptions: {{userOptions}} -->
                     <!-- <div class="item-container">
                         <el-form-item label="所属用户组">
-                           <el-select v-model="currentRow.UserGroupCode">
+                           <el-select v-model="currentRow.usergroupcode">
                                <el-option 
                                 v-for="(item, index) in userOptions"
                                 :key="index"
                                 :label="item.UserGroupName"
-                                :value="item.UserGroupCode"
+                                :value="item.usergroupcode"
                                 >
                                </el-option>
                            </el-select> 
@@ -293,7 +294,7 @@
                 <add-to-usergroup-cmp 
                     @emitAddToUserOrGroup="emitAddToUserOrGroup"
                     @closeDialog = 'closeAddToRoleGroupDialog'
-                    :currentCode = 'queryObj.userGroupCode'
+                    :currentCode = 'queryObj.usergroupcode'
                     :propGroupObjArr="[currentTreeNodeObj]"
                 ></add-to-usergroup-cmp>
             </el-dialog>
@@ -303,56 +304,39 @@
 </template>
 
 <script type="text/ecmascript-6">
-//   import MenuTreeCmp from '@/base/Manage-common-cmp/MenuTree-cmp'
   import SaveFooter from '@/base/Save-footer/Save-footer'
-  import SearchToolsCmp from './searchTools-cmp'
+  import SearchToolsCmp from '@/base/NewStyle-cmp/common-cmp/searchTool-cmp'
+  import SearchCmp from './searchTools-cmp.vue'
   import SortItemCmp from './SortItem-cmp'
   import AddToUsergroupCmp from '@/base/Manage-common-cmp/addToUsergroup-cmp/addToUsergroupWrap-cmp'
+  import { CommonInterfaceMixin } from '@/utils/CommonInterfaceMixin'
   import  { REQ_OK } from '@/api/config'
   import { 
-    getCompUserList,
+    getUserGroupList,
     BatchDelComUserFromGroup,
     getCompUserGroupTree,
     setCompUserToGroup,
     saveComUserGroup,
   }from '@/api/systemManage'
   export default {
+    mixins: [CommonInterfaceMixin],
     props:{
         currentTreeNodeObj:{
             type: Object,
             default: () => {
                 return {}
             }
-        },
-        // 左边树组件选中的当前菜单
-        currentPcode: {
-            type: String,
-            default: ''
-        },
-        currentKeyName: {
-            type: String,
-            default: ''
         }
     },
     components: {
         SearchToolsCmp,
+        SearchCmp,
         SortItemCmp,
         SaveFooter,
         AddToUsergroupCmp
     },
     watch: {
-        currentPcode:{
-            handler(newValue, oldValue){
-                this.queryObj.pcode = newValue
-            },
-            immediate: true
-        },
-        currentKeyName:{
-            handler(newValue, oldValue){
-                this.queryObj.key = newValue
-            },
-            immediate: true
-        }
+
     },
     data(){
       return {
@@ -380,9 +364,8 @@
             pageSize: 10,
             pageNum: 1,
             total: 0,
-            key: '',
-            userGroupCode: '',
-            permissionId:''
+            username: '', // 搜索关键词
+            usergroupcode: '',
         },
         fileList: [
                 // {   name: 'food.jpeg', 
@@ -397,18 +380,17 @@
             AccountName: [{required: true, trigger: 'blur', message: '请输入名称'}],
             // EmpId: [{required: true, trigger: 'blur', message: '请输入用户编号'}],
             // range: [{required: true, trigger: ['change'], message: '请选择范围'}],
-            UserGroupCode: [{required: true, trigger: ['change'], message: '请选择所属用户组'}],
+            usergroupcode: [{required: true, trigger: ['change'], message: '请选择所属用户组'}],
             Description: [{required: true, trigger: ['blur'], message: '请填写备注'}]
         }
       }
     },
     created(){
-        // 获取table表格数据
-        // this._getCompUserList()
         this.$nextTick(() => {
-            this.$bus.$on("currentMenuObj", (obj) => {
-                this.queryObj.userGroupCode = obj.UserGroupCode
-                this._getCompUserList()
+            this.$bus.$on("treeEmitBus", (obj) => {
+                debugger
+                this.queryObj.usergroupcode = obj.usergroupcode
+                this._getComTables()
             })
         })
     },
@@ -416,53 +398,59 @@
         this.$bus.$off("currentMenuObj")
     },
     methods: {
+        clickMoreConditionBtn(){
+
+        },        
+        _refreshData(){
+            this._getComTables()
+        },
         _getComTables(){
-            this._getCompUserList()
+            this._getUserGroupList()
         },
         // 全选/取消全选
         handleSelectionChange(val){
             this.multipleSelection = val
         },
-        emitAddToUserOrGroup(userGroupCode){
+        emitAddToUserOrGroup(usergroupcode){
             // 重新定位 树  和 刷新列表
-            this.queryObj.userGroupCode = userGroupCode
-            this.$bus.$emit("resetTreeActive", userGroupCode)
+            this.queryObj.usergroupcode = usergroupcode
+            this.$bus.$emit("resetTreeActive", usergroupcode)
             this._getComTables()
         },      
         // 获取 表格数据
-        _getCompUserList(userGroupCode, Key){
+        _getUserGroupList(){
             debugger
             this.loading = true
-            getCompUserList(this.queryObj.userGroupCode, this.queryObj.key, this.queryObj.permissionId).then(res => {
+            getUserGroupList(this.queryObj).then(res => {
                 debugger
                 this.loading = false
-            if(res && res.data.State === REQ_OK){
-                this.currentTableData = res.data.Data 
-                this.queryObj.total = res.data.Total           
-            }else {
-                this.$message.error(`获取企业菜单列表数据失败,${res.data.Error}`)
-            }
+                if(res && res.data.State === REQ_OK){
+                    this.currentTableData = res.data.Data.records
+                    this.queryObj.total = res.data.Data.total           
+                }else {
+                    this.$message.error(`获取用户组列表数据失败,${res.data.Error}`)
+                }
             }).catch(() => {
-                // this.$message.warning("获取企业菜单列表数据出错了")
+
             })
         },
         emitRefreshTable(obj){
             debugger
             Object.assign(this.queryObj, obj)
-            this._getCompUserList()
+            this._getUserGroupList()
         },
         // 分页--每页多少条
         handleSizeChange (val) {
             this.queryObj.pageSize = val
-            this._getCompUserList()
+            this._getUserGroupList()
         },
         // 分页--当前页
         handleCurrentChange (val) {
             this.queryObj.pageNum = val
-            this._getCompUserList()
+            this._getUserGroupList()
         },   
         // 获取用户组所属下拉源
-        _getUserGroupOption(){
+        _getUserGroupOption () {
             debugger
             getCompUserGroupTree('', -1).then(res => {
                 debugger
@@ -472,7 +460,21 @@
                     this.$message.error(`获取用户组所属下拉源数据失败,${res.data.Error}`)
                 }
             })
-        },     
+        },  
+        // 停用/启用
+        handlerStopOrUsing(row){
+            debugger           
+            let statusText = row.state == 1? '停用': '启用'
+            let name = row.accountname || ''
+            let ids = row.id ? [row.id] : []
+            let baseKey = 'sys_usergroup'
+            this.commonSetStatusMixin({
+                statusText,
+                name,
+                ids,
+                baseKey
+            })
+        },    
         // 编辑
         handlerEdit(row, index) {
             debugger
@@ -484,7 +486,7 @@
             this.currentRow = row
             this.currentRow.State = "" + this.currentRow.State
         },
-        _setCompUserToGroup(userGroupCode, strJson){
+        _setCompUserToGroup(usergroupcode, strJson){
             debugger
             setCompUserToGroup().then(res => {
                 if(res && res.data.State === REQ_OK){
@@ -535,7 +537,7 @@
         },
         // 搜索
         clickSearchBtn(){
-            this._getCompUserList()
+            this._getUserGroupList()
         },
         // 重置
         clickResetBtn(){
@@ -544,68 +546,52 @@
                 pageNum: 1,
                 total: 0,
                 key: '',
-                userGroupCode: '',
+                usergroupcode: '',
                 permissionId: ''             
             })
-            this._getCompUserList()
-        },
-        // 删除列表
-        _BatchDelComUserFromGroup(data){
-            this.loading = true
-            BatchDelComUserFromGroup(JSON.stringify(data)).then(res => {
-                debugger
-                this.loading = false
-                if(res.data.State === REQ_OK){
-                    this.$message.success("删除成功")
-                    this._getCompUserList()
-                }else {
-                    this.$message.error(`删除失败,${res.data.Error}`)
-                }
-            }).catch(() => {
-                this.$message.warning("删除出错了")
-            })
+            this._getUserGroupList()
         },
         // 批量移除
         handlerBatchDelete(){
             debugger
-            let str = ''
+            let statusText = '批量删除'
+            let baseKey = 'sys_usergroup'            
+            let name = ''
+            let ids = []
             let length = this.multipleSelection.length
             if(length){
                 this.multipleSelection.forEach((item, key) => {
+                    item.id && ids.push(item.id)
                     if(key != length-1){
-                        str += item.AccountName + ','
+                        name += item.accountname + ','
                     }else {
-                        str += item.AccountName
+                        name += item.accountname
                     }
                 })
-            }
-            this.$confirm(`确定要移除"${str}"吗？`,"提示", {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消'
-            }).then(()=>{
-                this._BatchDelComUserFromGroup(this.multipleSelection)
-            }).catch(() =>{
-                this.$message({
-                    type: 'info',
-                    message: '已取消删除'
-                })
-            })            
+                this.commonDeleteListMixin({
+                    statusText,
+                    name,
+                    ids,
+                    baseKey
+                })                
+            }          
         },
         // 移除
         handlerDelete(row, index){
             debugger
-            this.currentRow = row
-            this.$confirm(`确定要移除"${row.AccountName}"吗？`,"提示", {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消'
-            }).then(()=>{
-                this._BatchDelComUserFromGroup([this.currentRow])
-            }).catch(() =>{
-                this.$message({
-                    type: 'info',
-                    message: '已取消删除'
+            this.currentRow = row            
+            if(row.id){
+                let statusText = '删除'
+                let name = row.accountname || ''
+                let ids = row.id ? [row.id] : []
+                let baseKey = 'sys_usergroup'
+                this.commonDeleteListMixin({
+                    statusText,
+                    name,
+                    ids,
+                    baseKey
                 })
-            })
+            }            
         },
         // 删除前的回调
         handleRemove(file, fileList) {
@@ -629,7 +615,7 @@
                 this.sortDialogLoading = false
                 if(res && res.data.State === REQ_OK){
                     this.$message.success('排序保存成功')
-                    this._getCompUserList()
+                    this._getUserGroupList()
                 }else {
                     this.$message.error(`保存排序失败,${res.data.Error}`)
                 }
@@ -654,7 +640,7 @@
                 if(res && res.data.State ===REQ_OK ){
                     this.$message.success("保存成功")
                     this.showEditDialog = false
-                    this._getCompUserList()
+                    this._getUserGroupList()
                 }else {
                     this.$message.error(`保存失败,${res.data.Error}`)
                 }

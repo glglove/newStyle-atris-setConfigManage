@@ -5,6 +5,8 @@
 -->
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 .titHead
+  .backWrap
+    width: 30px
   .stepWrap
     .setItem
       margin 0 10px
@@ -53,121 +55,124 @@
           opacity .7
 </style>
 <template>
-<el-row>
-  <el-col :span="24" style="padding: 20px;height: 100vh">
-    <div class="titHead line-bottom">
-      <ul class="stepWrap u-f-ajc">
-        <li
-          v-for="(item, key) in titList" 
-          :key="key"
-          class="setItem u-fi-ajc u-f0" 
-          :class="currentIndex == key?'current':''"
-          @click="handlerClickTit(item,key)"
-        >
-          <span class="stepNum">{{item.num}}</span>
-          <span class="setTit">{{item.tit}}</span>
-        </li>
-      </ul>          
-    </div>
+  <el-row>
+    <el-col :span="24" style="padding: 20px;height: 100vh">
+      <div class="titHead line-bottom u-f-jst">
+        <div class="backWrap u-f-ajc u-f-g0" @click="backToLogin">
+          <i class="el-icon-back"></i>
+        </div>      
+        <ul class="stepWrap u-f-ajc u-f-g2">
+          <li
+            v-for="(item, key) in titList" 
+            :key="key"
+            class="setItem u-fi-ajc u-f-g0" 
+            :class="currentIndex == key?'current':''"
+            @click="handlerClickTit(item,key)"
+          >
+            <span class="stepNum">{{item.num}}</span>
+            <span class="setTit">{{item.tit}}</span>
+          </li>
+        </ul>          
+      </div>
 
-    <div class="valideAccount" v-show="currentIndex == 0">
-      <el-form 
-        ref="valideAccountForm"
-        label-width="100px" 
-        :model="valideAccountForm" 
-        :rules="accountRules">
-        <el-row>
-          <el-col  :span="24">
-            <el-form-item label="用户名" prop="userAccount">
-              <el-input v-model="valideAccountForm.userAccount" label="请输入用户名"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-col  :span="24">
-          <el-form-item label="手机号" prop="phone">
-            <el-col :span="24" class="u-f-ajc">
-              <el-input 
-                v-model.number="valideAccountForm.phone"
-                placeholder="请输入账号绑定的手机号" 
-                class="marginR5">
-              </el-input>
-              <el-button 
-                :disabled="!getCodeStatus || !this.valideAccountForm.phone"
-                @click.native="getCodeByNamePhone"
-              >{{codeBtnTit}}</el-button>
+      <div class="valideAccount" v-show="currentIndex == 0">
+        <el-form 
+          ref="valideAccountForm"
+          label-width="100px" 
+          :model="valideAccountForm" 
+          :rules="accountRules">
+          <el-row>
+            <el-col  :span="24">
+              <el-form-item label="用户名" prop="userAccount">
+                <el-input v-model="valideAccountForm.userAccount" label="请输入用户名"></el-input>
+              </el-form-item>
             </el-col>
-          </el-form-item>
-        </el-col>  
+          </el-row>
 
-
-        <el-col  :span="24" v-if="showCodeLine">
-          <el-form-item label="验证码" prop="mobileCode">
-            <el-input v-model="valideAccountForm.mobileCode" placeholder="请输入验证码"></el-input>
-          </el-form-item>
-
-          <el-form-item label="新密码" prop="newPwd">
-            <el-input v-model="valideAccountForm.newPwd" placeholder="请输入新密码"></el-input>
-          </el-form-item>
-
-          <el-form-item label="确认密码" prop="reNewPwd">
-            <el-input v-model="valideAccountForm.reNewPwd" placeholder="再次输入新密码"></el-input>
-          </el-form-item>                            
-        </el-col>  
-
-      </el-form>
-
-      <el-col  class="sureBtnWrap" :span="24" v-if="showCodeLine">
-        <el-button type="primary" class="sureBtn" @click.native="submitChange">
-          确认修改
-        </el-button>
-      </el-col>          
-
-      <!-- <el-col  class="nextBtnWrap" :span="24">
-        <el-button type="primary" class="nextBtn">
-          下一步
-        </el-button>
-      </el-col>     -->
-    </div>
-
-    <!-- <div class="resetWord" v-show="currentIndex == 1">
-      form2
-      <el-form 
-        label-width="100px" 
-        :model="valideAccountForm" 
-        :rules="accountRules">
-        <el-row>
           <el-col  :span="24">
-            <el-form-item label="用户名">
-              <el-input label="请输入用户名"></el-input>
+            <el-form-item label="手机号" prop="phone">
+              <el-col :span="24" class="u-f-ajc">
+                <el-input 
+                  v-model.number="valideAccountForm.phone"
+                  placeholder="请输入账号绑定的手机号" 
+                  class="marginR5">
+                </el-input>
+                <el-button 
+                  :disabled="!getCodeStatus || !this.valideAccountForm.phone || getMobileCodeStatus"
+                  @click.native="getCodeByNamePhone"
+                >{{codeBtnTit}}</el-button>
+              </el-col>
             </el-form-item>
-          </el-col>
-          <el-col  :span="24">
-            <el-form-item label="验证码">
-              <el-input label="请输入验证码"></el-input>
-            </el-form-item>
-          </el-col>            
-        </el-row>   
-      </el-form>
-      
-      <el-col  class="nextBtnWrap" :span="24">
-        <el-button type="primary" class="nextBtn">
-          下一步
-        </el-button>
-      </el-col>    
-    </div> -->    
+          </el-col>  
 
-    <div class="setSuccess" v-if="currentIndex == 1">
-      <el-col  :span="24" class="setSuccessBtnWrap">
-        <p class="center">密码修改成功!</p>        
-        <el-button type="primary" class="setSuccessBtn" style="margin-top: 30px" @click.native="gotoLogin">
-          去登录
-        </el-button>           
-      </el-col>      
-    </div>     
-  
-  </el-col>
-</el-row>
+
+          <el-col  :span="24" v-if="showCodeLine">
+            <el-form-item label="验证码" prop="mobileCode">
+              <el-input v-model="valideAccountForm.mobileCode" placeholder="请输入验证码"></el-input>
+            </el-form-item>
+
+            <el-form-item label="新密码" prop="newPwd">
+              <el-input v-model="valideAccountForm.newPwd" placeholder="请输入新密码"></el-input>
+            </el-form-item>
+
+            <el-form-item label="确认密码" prop="reNewPwd">
+              <el-input v-model="valideAccountForm.reNewPwd" placeholder="再次输入新密码"></el-input>
+            </el-form-item>                            
+          </el-col>  
+
+        </el-form>
+
+        <el-col  class="sureBtnWrap" :span="24" v-if="showCodeLine">
+          <el-button type="primary" class="sureBtn" @click.native="submitChange">
+            确认修改
+          </el-button>
+        </el-col>          
+
+        <!-- <el-col  class="nextBtnWrap" :span="24">
+          <el-button type="primary" class="nextBtn">
+            下一步
+          </el-button>
+        </el-col>     -->
+      </div>
+
+      <!-- <div class="resetWord" v-show="currentIndex == 1">
+        form2
+        <el-form 
+          label-width="100px" 
+          :model="valideAccountForm" 
+          :rules="accountRules">
+          <el-row>
+            <el-col  :span="24">
+              <el-form-item label="用户名">
+                <el-input label="请输入用户名"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col  :span="24">
+              <el-form-item label="验证码">
+                <el-input label="请输入验证码"></el-input>
+              </el-form-item>
+            </el-col>            
+          </el-row>   
+        </el-form>
+        
+        <el-col  class="nextBtnWrap" :span="24">
+          <el-button type="primary" class="nextBtn">
+            下一步
+          </el-button>
+        </el-col>    
+      </div> -->    
+
+      <div class="setSuccess" v-if="currentIndex == 1">
+        <el-col  :span="24" class="setSuccessBtnWrap">
+          <p class="center">密码修改成功!</p>        
+          <el-button type="primary" class="setSuccessBtn" style="margin-top: 30px" @click.native="gotoLogin">
+            去登录
+          </el-button>           
+        </el-col>      
+      </div>     
+    
+    </el-col>
+  </el-row>
 </template>
 
 <script type="text/ecmascript-6">
@@ -191,10 +196,17 @@
     },
     data () {
       let validatePhone = (rule, value, callback) => {
-        if(validatMobilePhone(this.valideAccountForm.phone)){
-          callback()
+        if(this.valideAccountForm.phone){
+          if(validatMobilePhone(this.valideAccountForm.phone)){
+            this.getMobileCodeStatus = false
+            callback()
+          }else {
+            this.getMobileCodeStatus = true
+            callback(new Error("手机格式不正确"))
+          }
         }else {
-          callback(new Error("手机格式不正确"))
+          this.getMobileCodeStatus = true
+          callback(new Error('手机号为空'))          
         }
       }
 
@@ -224,12 +236,13 @@
           },                    
         ],
         timer: null,
+        getMobileCodeStatus: true,  // 手机号码是否有效
         getCodeStatus: true,
         countdown: 60,
         showCodeLine: true,  
         valideAccountForm: {
-          userAccount: 18674070272,
-          phone: 17607178201,   
+          userAccount: '',
+          phone: '',   
           mobileCode: '',  // 短信验证码   
           newPwd: '',
           reNewPwd: ''
@@ -239,7 +252,7 @@
             {required: true, message: '请输入用户名',  trigger: 'blur'}
           ],
           phone: [
-            {required: true, validator: validatePhone, trigger: 'blur'}
+            {required: true, validator: validatePhone, trigger: ['blur','change']}
           ],  
           mobileCode: [
             {required: true, message: '请输入短信验证码',  trigger: 'blur'}
@@ -273,6 +286,11 @@
 
     },
     methods: {
+      backToLogin(){
+        this.$router.push({
+          path: '/login'
+        })
+      },      
       handlerClickTit(item, index){
         debugger
         // this.currentIndex = index

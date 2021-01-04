@@ -34,7 +34,7 @@
         </span>
       </div>
 
-      <div v-if="!isShowing" class="fieldValueWrap u-f0">
+      <div v-if="!isShowing" class="fieldValueWrap u-f-g0">
         <aitrs-editor
           v-if="!isShowing"
           ref="aitrsEditor"
@@ -51,7 +51,7 @@
 
       <div 
         v-else
-        class="fieldValueWrap showValue line-bottom u-f0"
+        class="fieldValueWrap showValue line-bottom u-f-g0"
         v-html="obj.DefaultValue"
       ></div>
 

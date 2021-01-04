@@ -459,3 +459,102 @@ export function TimeStampToDateRange (timeStampArr) {
   }
   return arr[0]+ '—' + arr[1]
 }
+
+/**
+ * 控件类型转化为汉字
+ *
+ *
+ */
+export function controlTypeSwitch (controlType) {
+  switch (controlType) {
+    case '1':
+        // return BaseInput
+        return '单行文本输入框'
+    case '2':
+        // return TextareaInput
+        return '多行文本输入框'
+    case '3':
+        // return NumInput
+        return '数字输入框'
+    case '4':
+        // return MoneyInput
+        return '金额输入框'
+    case '5':
+        // return BaseSelect
+        return '单选下拉框'
+    case '6':
+        // return MultipleSelect
+        return '多选下拉框'
+    case '7':
+        // return BaseDate
+        return '年月日'
+    case '8':
+        // return RangeDate
+        return '时间区间'
+    case '9':
+        // return TimeDate
+        return '时分'
+    case '10':
+        // return MonthSelect
+        return '月份'
+    case '11':
+        // return BaseSwitch
+        return 'switch选择器'
+    case '12':
+        // return BaseRadio
+        return '单选radio'
+    case '13':
+        // return BaseCheckbox
+        return '多选checkbox'
+    case '14':
+        // return BaseImgUpload
+        return '图片上传'
+    case '15':
+        // return BaseFileUpload
+        return '附件上传'
+    case '16':
+        // return BaseCalculate
+        return '计算公式'
+    case '17': 
+        // return table     // 表格                
+        return '表格'
+    case '19':
+        // return BaseEmpSelect
+        return '人员选择器'
+    case '20':
+        // return BaseOrgSelect
+        return '组织选择器'
+    // case '21':
+    //     return OrgAndEmpSelect
+    //   return '组织和人员选择'
+    case '22':
+        // return BaseMapSelect
+        return '地点'
+    case '23':
+        // return BaseEditor
+        return '富文本编辑器'
+    case '24':
+        // return BaseExplain
+        return '说明'
+    case '25':
+        // return 'guanlianshenpi'
+    case '27':
+        // return BaseProvinces
+        return '省市区'
+    case '28':
+        // return BaseFieldSelect    
+        return '字段选择器'
+    case '29':
+        // return BaseFieldSet
+        return '字段设置器'
+    case '30':
+        // return BasePageLinkField                                                           
+        return '页面跳转'
+    case '31':
+        // return RangeNum
+        return '数字区间'
+    case '32':
+        // return BaseSwitchSelect
+        return '是否下拉选择'
+}  
+}

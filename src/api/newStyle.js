@@ -141,14 +141,49 @@ export function getDicCollection ( DicType = 'SYS', ModuleCode = "ALL") {
  */
 export function findDicList ( ) {
     return fetch({
-      url: 'sys-dic-index/findPage',
+      url: '/sys-dic-index/findPage',
       method: 'post',
-      params: {
+      data: {
         Method: 'findDicList',
         params: {
 
         }
       }
     })
-  }
+}
 
+
+// -------------------------------------------------------------------------------------
+/****************newStyle上传图片、文件***********/
+/**
+ * 上传头像 file
+ */ 
+export function UploadAttachments (file) {
+    debugger
+    let param = new FormData() // 创建form对象
+    // console.log('selectFile', file)
+    param.append('file',file[0].raw)
+    // for (let i = 0; i < file.length; i++) {
+    //   if(file[i].raw){
+    //     // 发起界面上传 附件时用的是elementui 的上传组件，读取的file对象中有 raw属性
+    //     param.append(file[i].name, file[i].raw) // 通过append向form对象添加数据
+    //   }else {
+    //     // 流转里面的比如 意见框上传关联附件 用的是原生模拟的上传文件，读取到的file对象没有 raw属性
+    //     param.append(file[i].name, file[i]) // 通过append向form对象添加数据
+    //   }
+    // }
+    // param.append(file[0].name, file[0]) // 通过append向form对象添加数据
+    // param.append('Method', 'UploadAttachments') // 添加form表单中其他数据
+    // param.append('companyCode', store.getters.companyCode) // 添加form表单中其他数据
+    // param.append('UserId', store.getters.userCode) // 添加form表单中其他数据
+    // param.append('TokenId', getToken()) // 添加form表单中其他数据
+    return fetch({
+      Method: 'upload',
+      url: '/base/uploadByOss',
+      method: 'post',
+      noQS: true,
+      headers: {'Content-Type': 'multipart/form-data'},
+      data: param,
+      withCredentials: false
+    })
+  }

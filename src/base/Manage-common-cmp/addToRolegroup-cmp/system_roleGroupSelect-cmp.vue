@@ -72,7 +72,7 @@
                             </span>
 
                             <div class="itemBox u-f u-f-ac u-f-wrap">
-                                <div class="group_item u-f0">
+                                <div class="group_item u-f-g0">
                                     <span>
                                         <el-checkbox>
                                             角色组item1
@@ -81,7 +81,7 @@
                                     <tooltip-popper-cmp></tooltip-popper-cmp>                                
                                 </div>
 
-                                <div class="group_item u-f0">
+                                <div class="group_item u-f-g0">
                                     <el-checkbox>
                                         角色组item2
                                     </el-checkbox>
@@ -97,27 +97,27 @@
                             </span>
 
                             <div class="itemBox u-f u-f-ac u-f-wrap">
-                                <div class="group_item u-f0">
+                                <div class="group_item u-f-g0">
                                     <el-checkbox>未分组item1</el-checkbox> 
                                     <tooltip-popper-cmp></tooltip-popper-cmp>                                
                                 </div>
 
-                                <div class="group_item u-f0">
+                                <div class="group_item u-f-g0">
                                     <el-checkbox>未分组item2</el-checkbox> 
                                     <tooltip-popper-cmp></tooltip-popper-cmp>                                
                                 </div>
 
-                                <div class="group_item u-f0">
+                                <div class="group_item u-f-g0">
                                     <el-checkbox>未分组item3</el-checkbox> 
                                     <tooltip-popper-cmp></tooltip-popper-cmp>                                
                                 </div>
 
-                                <div class="group_item u-f0">
+                                <div class="group_item u-f-g0">
                                     <el-checkbox>未分组item4</el-checkbox> 
                                     <tooltip-popper-cmp></tooltip-popper-cmp>                                
                                 </div>
 
-                                <div class="group_item u-f0">
+                                <div class="group_item u-f-g0">
                                     <el-checkbox>未分组item5</el-checkbox> 
                                     <tooltip-popper-cmp></tooltip-popper-cmp>                                
                                 </div>   

@@ -5,7 +5,8 @@
 -->
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 .search-cmp
-    padding 0 20px
+    width 100%
+    position relative
     box-sizing border-box
     .searchTop
         margin 5px 0 10px 0
@@ -15,7 +16,8 @@
         >>>.el-input
             display inline-block !important
             width 200px
-
+        .item
+            margin 2px 10px
 </style>
 
 <template>
@@ -23,22 +25,27 @@
         <!--搜索部分--start-->
         <div class="searchTop">
             <!-- currentPcode: {{currentPcode}} -->
-            <div class="item-container">
+            <div class="item-container u-f-jst">
                 <!-- <span class="tit">关键词</span> -->
                 <el-input 
-                    v-model="queryObj.key"
+                    class="item"
+                    v-model="queryObj.username"
                     clearable
+                    size="small"
                     placeholder="用户名,编号">
                 </el-input>
-            </div>
-            <div class="item-container" v-show="currentPcode">
+
                 <el-button 
                     type="primary" 
+                    size="small"
                     @click.native="clickSearchBtn"
                 >搜索</el-button>    
-                <el-button type="primary"  @click.native="clickResetBtn">重置</el-button>    
-            </div>                          
-
+                <!-- <el-button 
+                    type="primary" 
+                    size="mini" 
+                    @click.native="clickResetBtn"
+                >重置</el-button>     -->                                                                                                                                                                                                                                   
+            </div>                      
         </div>        
         <!---搜索部分---end-->
     </div>
@@ -68,33 +75,17 @@
     components: {
         // SaveFooter
     },
+    computed: {
+    },
     watch: {
 
     },
     data(){
       return {
         queryObj: {
-            key: ''           
-        }
-      }
-    },
-    watch: {
-        currentPcode:{
-            handler(newValue, oldValue){
-                if(newValue){
-                    debugger
-                    this.queryObj.pcode = newValue
-                    this.$emit("emitRefreshTable", this.queryObj)
-                }
-            },
-            immediate: true
+            username: ''           
         },
-        currentKeyName:{
-            handler(newValue, oldValue){
-                this.queryObj.key = newValue
-            },
-            immediate: true
-        }               
+      }
     },
     created(){
 
@@ -108,7 +99,7 @@
         // 重置
         clickResetBtn(){
             Object.assign(this.queryObj, {
-                key: '',    
+                username: '',    
             })
             // this._getSysMenuList()
             this.$emit("emitRefreshTable", this.queryObj)

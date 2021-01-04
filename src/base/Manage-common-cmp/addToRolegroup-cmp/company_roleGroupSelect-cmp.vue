@@ -116,7 +116,7 @@
                             </span>
 
                             <div :class="['itemBox', 'u-f', 'u-f-ac', 'u-f-wrap',roleGroupData.length<=0?'not_found':'']">
-                                <div class="group_item u-f0"
+                                <div class="group_item u-f-g0"
                                     v-for="(item, index) in roleGroupData"
                                     :key="item.RoleGroupCode"
                                 >

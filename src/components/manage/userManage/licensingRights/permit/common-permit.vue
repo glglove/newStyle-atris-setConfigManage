@@ -25,7 +25,8 @@
             class="companyPermitRightsSet"
             v-if="!isCompanyOrSystemUser"
         >
-            <system-permit-cmp></system-permit-cmp>
+            <!-- <system-permit-cmp></system-permit-cmp> -->
+            <company-permit-cmp></company-permit-cmp>
         </div>     
         <!--系统--end-->   
     </div>

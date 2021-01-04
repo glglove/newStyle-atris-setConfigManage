@@ -20,12 +20,12 @@
    right:20px;
    bottom:0;
    margin:0 auto;
-   width: 500px;
+  //  width: 500px;
    input:-webkit-autofill
      -webkit-box-shadow: 0 0 0px 1000px #293444 inset !important;
      -webkit-text-fill-color: #fff !important;
    input
-     background: transparent;
+     background: rgba(203, 200, 200, 0.1)
      border: 0px;
      -webkit-appearance: none;
      border-radius: 0px;
@@ -35,7 +35,6 @@
    .el-input
      display: inline-block;
      height: 47px;
-     width: 85%;
    .tips
      font-size: 14px;
      color: #fff;
@@ -80,10 +79,9 @@
       text-align center
    .el-form-item
      border-1px()
-     background: rgba(203, 200, 200, 0.1);
      border-radius: 5px;
      color: $color-input;
-     border 1px solid #f3dcdc;
+    //  border 1px solid #f3dcdc;
      margin-bottom: 15px !important
      .el-form-item__content
       display flex
@@ -122,44 +120,49 @@
               :type="isAdminOrUser == 2?'primary':''"
               :icon="isAdminOrUser == 2?'el-icon-circle-check':''"
               class="admin" 
-              @click="switchAdmin">管理员</el-button>
+              @click="switchAdmin"
+            >管理员</el-button>
           </div>
 
           <el-form-item 
-            prop="businessCode" v-show="isAdminOrUser == 1">
-            <span class="svg-container svg-container_login">
-              <i class="el-icon-mobile-phone"></i>
-            </span>
+            prop="businessCode" 
+            v-show="isAdminOrUser == 1"
+          >
             <el-input 
+              prefix-icon="iconfont el-icon-mobile-phone"
               name="username" 
               type="text" 
               v-model="loginForm.businessCode" 
               autoComplete="on" 
-              placeholder="企业编号" />
+              placeholder="企业编号" 
+            />
           </el-form-item>    
 
-          <el-form-item prop="username">
-            <span class="svg-container svg-container_login">
-              <i class="el-icon-mobile-phone"></i>
-            </span>
+          <el-form-item 
+            prop="username" 
+          >
             <el-input 
+              prefix-icon="iconfont el-icon-mobile-phone"
               name="username"
-                type="text" 
-                v-model="loginForm.username" 
-                autoComplete="on" placeholder="用户名" />
+              type="text" 
+              v-model="loginForm.username" 
+              autoComplete="on" placeholder="用户名" />
           </el-form-item>
-          <el-form-item prop="password">
-            <span class="svg-container">
-              <i class="el-icon-bell"></i>
-            </span>
-            <el-input name="password"
-                      :type="pwdType"
-                      @keyup.enter.native="handleLogin"
-                      v-model="loginForm.password"
-                      autoComplete="on"
-                      placeholder="密码"
-            />
-            <span class='show-pwd' @click='showPwd'><i class="el-icon-view"></i></span>
+
+          <el-form-item 
+            prop="password"
+          >
+            <el-input 
+              prefix-icon="iconfont el-icon-bell"
+              name="password"
+              :type="pwdType"
+              @keyup.enter.native="handleLogin"
+              v-model="loginForm.password"
+              autoComplete="on"
+              placeholder="密码"              
+            >
+              <i slot="suffix" class="el-icon-view" @click="showPwd"></i>            
+            </el-input>
           </el-form-item>
 
           <sliding-validate-cmp @slidingSuccess="slidingSuccess"></sliding-validate-cmp>
@@ -195,6 +198,7 @@
   import * as config from 'api/config'
   import { Message } from 'element-ui'
   import slidingValidateCmp from '@/base/SlidingValid/SlidingValid'
+  import store from '@/store'
   export default {
     name: 'login',
     components: {
@@ -228,7 +232,7 @@
           // businessCode: '80000000',
           // username: '90032',
           // password: '868686'
-          username: '18674070272',
+          username: '17607178201',
           password: '123456'
         },
         loginRules: {
@@ -252,7 +256,7 @@
         }
       },
       slidingSuccess(){
-        debugger
+        // debugger
         this.slidingValidStatus = true
       },
       switchUser(){
@@ -267,7 +271,7 @@
         })
       },   
       handlerForgetPassWord(){
-        debugger
+        // debugger
         this.$router.push({
           path: '/forgetWord'
         })
@@ -278,27 +282,36 @@
           return 
         }
         this.$refs.loginForm.validate(valid => {
-          debugger
+          // debugger
           if (valid) {
             this.loading = true
             // 验证通过之后，store 中 调用接口异步存入
-            debugger
+            // debugger
             this.$store.dispatch('LoginByUsername', this.loginForm).then((res) => {
-              debugger
+              // debugger
               this.loading = false
               if (res == 1) {
                 // 1 是表示登陆成功
                 debugger
                 this.$router.push({path: '/'})
+                // 获取配置信息
+                this.$store.dispatch('GetCommonConfigInfo').then(res => {
+                  if(res) {
+                    console.log("获取配置信息成功")
+                  }else {
+                    console.log("获取配置信息失败")
+                  }
+                }).catch(err => {
+                  console.log("获取配置信息失败")
+                })
               } else {
-                debugger
+                debugger                
                 this.switchError(res)
                 Message.error(`登录失败，${this.errorText}，请重试!`)
               }
             }).catch(() => {
               this.loading = false
-              Message.error('登录失败，网络超时，请重试!')
-              // this.$router.push({path: '/'})
+              // Message.error('登录失败，网络超时，请重试!')
             })
           } else {
             return false

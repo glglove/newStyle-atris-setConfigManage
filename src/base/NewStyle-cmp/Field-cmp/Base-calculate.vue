@@ -75,7 +75,7 @@
       </div>
 
       <div 
-        class="fieldValueWrap u-f0" 
+        class="fieldValueWrap u-f-g0" 
         v-if="!isShowing"
       >
         <el-input 
@@ -94,7 +94,7 @@
       </div>
       
       <div 
-        class="fieldValueWrap showValue line-bottom u-f0" 
+        class="fieldValueWrap showValue line-bottom u-f-g0" 
         v-else
       >
         <span> {{obj.CalculateRule}} = {{obj.FieldValue || '无'}}</span>

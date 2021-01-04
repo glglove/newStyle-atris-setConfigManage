@@ -38,20 +38,14 @@
         -----
         currentCheckedPermissionObj: {{currentCheckedPermissionObj}} -->
         <!--搜索部分--start-->
-        <div class="searchTopBox">
-            <search-tools-cmp 
-                :currentPcode="currentPcode" 
-                :currentKeyName="currentKeyName"
-                @emitRefreshTable="emitRefreshTable">
-            </search-tools-cmp>
-        </div>        
-        <!---搜索部分---end-->
-
-        <!--table表格区--start-->
-        <div class="tableContainerWrap">
-            <!-- currentTableData： {{currentTableData}} -->
-            <div class="contentTop">
-                <el-button type="primary" @click.native="handlerAdd">添加角色权限</el-button>
+        <search-tools-cmp>
+            <div slot="handlerBtnWrap">
+                <el-button 
+                    type="primary" 
+                    @click.native="handlerAdd"
+                >
+                    添加角色权限
+                </el-button>
                 <el-button 
                     v-show="currentTableData.length && multipleSelection.length" 
                     type="primary"  
@@ -60,6 +54,17 @@
                     批量移除
                 </el-button>
             </div>
+            <div slot="moreSearch">
+                <search-cmp
+                    @emitRefreshTable="emitRefreshTable"
+                ></search-cmp>
+            </div>
+        </search-tools-cmp> 
+        <!---搜索部分---end-->
+
+        <!--table表格区--start-->
+        <div class="tableContainerWrap">
+            <!-- currentTableData： {{currentTableData}} -->
 
             <div :class="['tableList',currentTableData.length<=0? 'not_found':'']" v-loading = "loading">
                 <el-table
@@ -308,7 +313,8 @@
 <script type="text/ecmascript-6">
 //   import MenuTreeCmp from '@/base/Manage-common-cmp/MenuTree-cmp'
   import SaveFooter from '@/base/Save-footer/Save-footer'
-  import SearchToolsCmp from './searchTools-cmp'
+  import SearchToolsCmp from '@/base/NewStyle-cmp/common-cmp/searchTool-cmp'
+  import SearchCmp from './searchTools-cmp'
   import SortItemCmp from './SortItem-cmp'
   import  { REQ_OK } from '@/api/config'
   import { 
@@ -343,6 +349,7 @@
         }
     },
     components: {
+        SearchCmp,
         SearchToolsCmp,
         SortItemCmp,
         SaveFooter

@@ -26,17 +26,9 @@
 
     <div v-if="type != 'mobile'" class="u-f-jsb">
       <!--省--->
-      <el-form-item prop="propCurrentProvince" :rules="[
-          { required: true, trigger: ['blur', 'change'], validator: (valid, rule, callback) => {
-            if(valid){
-              callback()
-            }else {
-              callback(new Error('省市区不能为空'))
-            }
-          }},
-        ]"
+      <el-form-item prop="propCurrentProvince" :rules="provinceRules"
       >
-        <span :class="['selectBox', 'u-f1','u-f-s1',showStyle === 'vertical'? 'vertical': '']">
+        <span :class="['selectBox', 'u-f-g1','u-f-s1',showStyle === 'vertical'? 'vertical': '']">
           <span class="tit" v-if="showStyle === 'vertical'">省份</span>
           <el-select 
             class="provinceSelect"
@@ -63,11 +55,9 @@
 
       <template v-if="!onlyProvince">
         <!---市--->
-        <el-form-item prop="propCurrentCity" :rules="[
-            { required: false, message: '市不能为空'},
-          ]"
+        <el-form-item prop="propCurrentCity" :rules="cityRules"
         >
-          <span :class="['selectBox','u-f1','u-f-s1', showStyle === 'vertical'? 'vertical': '']">
+          <span :class="['selectBox','u-f-g1','u-f-s1', showStyle === 'vertical'? 'vertical': '']">
             <span class="tit" v-if="showStyle === 'vertical'">城市</span>
             <el-select    
               class="citySelect"    
@@ -99,7 +89,7 @@
         >
           <span 
             v-if="!hideArea" 
-            :class="['selectBox', 'u-f1','u-f-s1', showStyle === 'vertical'? 'vertical': '']">
+            :class="['selectBox', 'u-f-g1','u-f-s1', showStyle === 'vertical'? 'vertical': '']">
             <span class="tit" v-if="showStyle === 'vertical'">区/县</span>
             <el-select 
               class="areaSelect"
@@ -230,7 +220,29 @@ export default {
       areas: [],
       currentProvince: {},
       currentCity: {},
-      currentArea: {}
+      currentArea: {},
+      provinceRules: { 
+        required: true, 
+        trigger: ['change','blur'], 
+        validator: (rule, value, callback) => {
+          if(this.currentProvince){
+            callback()
+          }else {
+            callback(new Error('省为空'))
+          }
+        }
+      },
+      cityRules: { 
+        required: true, 
+        trigger: ['change', 'blur'], 
+        validator: (rule, value, callback) => {
+          if(this.currentCity){
+            callback()
+          }else {
+            callback(new Error('市不能为空'))
+          }
+        }
+      },      
     }
   },
   created() {
@@ -238,7 +250,7 @@ export default {
     console.log(typeof(DISTRICTS))
     console.log(DISTRICTS)
     if (this.type != 'mobile') {
-      this.currentCity = this.placeholders.province
+      this.currentProvince = this.placeholders.province
       this.provinces = this.getDistricts()
       this.cities = this.province ? this.getDistricts(this.getAreaCode(this.determineType(this.province))) : []
       this.areas = this.city ? this.getDistricts(this.getAreaCode(this.determineType(this.city), this.area)) : []

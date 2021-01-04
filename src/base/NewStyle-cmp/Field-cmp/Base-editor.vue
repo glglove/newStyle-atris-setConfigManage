@@ -36,7 +36,7 @@
       </div>
 
       <!-- obj: {{obj}} -->
-      <div v-if="!isShowing" class="fieldValueWrap u-f0">
+      <div v-if="!isShowing" class="fieldValueWrap u-f-g0">
         <aitrs-editor
           v-if="!isShowing"
           ref="aitrsEditor"
@@ -52,7 +52,7 @@
       </div>    
 
       <div 
-        class="fieldValueWrap showValue line-bottom u-f0" 
+        class="fieldValueWrap showValue line-bottom u-f-g0" 
         v-else
       >
         <p v-html="obj.FieldValue"></p>

@@ -57,7 +57,7 @@
         <!-- roleGroupData： {{roleGroupData}} -->
         <div class="containerBox u-f u-f-jsb">
             <!---左边--->
-            <div class="leftContent u-f1">
+            <div class="leftContent u-f-g1">
                 <company-user-select-tree
                     ref="userTree"
                     :currentCode="currentCode"

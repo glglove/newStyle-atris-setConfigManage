@@ -8,6 +8,8 @@ export const isCompanyOrSystemUser = state => state.user.isCompanyOrSystemUser
 
 export const token = state => state.user.token
 
+export const commonConfigInfo = state => state.user.commonConfigInfo
+
 export const avatar = state => state.user.avatar
 
 export const name = state => state.user.name

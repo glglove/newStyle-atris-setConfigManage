@@ -2208,22 +2208,6 @@ export function compRolePermitList (RoleId, pageSize=10, pageNum=1) {
 }
 
 /**
- * 角色管理  许可权列表  【企业】
- * @params {*} permissionPackageCode  权限包编码
- */
-export function getPermissionList (permissionPackageCode) {
-    return fetch({
-        module: 'SystemManage',
-        url: '/SystemManage/CompPermitPSecuritySet',
-        method: 'post',
-        data: {
-            Method: 'GetPermissionList',
-            permissionPackageCode
-        }
-    })
-}
-
-/**
  * 角色管理  数据安全组  【企业】
  * @params {*} permissionPackageCode  权限包编码,用逗号分隔多个值
  */
@@ -2951,3 +2935,242 @@ export function SaveComPageComponentConfig (strJson) {
 }
 
 /********************************管理- 企业-系统设置-组件管理*********************end******************** */
+
+
+
+/************newStyle 20201223************** */
+/**
+ * 获取用户组树
+ * @parmas state  1 启用 0 停用 不传为全部
+ */
+export function getUserGroupTree (obj) {
+    let {
+        state,
+        pageSize = 10, 
+        pageNum = 1
+    } = obj    
+    return fetch({
+        module: 'SystemManage',
+        url: '/sys-usergroup/tree',
+        method: 'post',
+        data: {
+            Method: 'getUserGroupTree',
+            size: pageSize,
+            current: pageNum,            
+            params: {
+                state
+            }
+        }
+    })
+}
+
+/**
+ * 保存用户组
+ * @params {*} arr   树形数组 [{Pcode: '', Name: '', Description: ''}]
+ */
+export function saveUserGroup (arr) {
+    return fetch({
+        module: 'SystemManage',
+        url: '/sys-usergroup/saveList',
+        method: 'post',
+        data: {
+            Method: 'saveUserGroup',
+            params: arr
+        }
+    })
+}
+
+/**
+ *  用户组中获取用户列表
+ * @parmas usergroupcode 用户组code
+ * @parmas size 每页显示多少条
+ * @parmas current 当前页码
+ */
+export function getUserGroupList (obj) {
+    let {
+        usergroupcode, 
+        username, 
+        pageSize = 10, 
+        pageNum = 1
+    } = obj
+    return fetch({
+        module: 'SystemManage',
+        url: '/sys-user/findPage',
+        method: 'post',
+        data: {
+            Method: 'getUserGroupList',
+            size: pageSize,
+            current: pageNum,
+            params: {
+                usergroupcode,
+                username
+            }
+        }
+    })
+}
+
+
+/**----------角色------------------------------- */
+/**
+ *  角色管理获取角色列表
+ * @parmas rolename 角色
+ * @parmas rolegroupcode 角色组
+ * @parmas roletype 角色类型  系统/自定义
+ * @parmas state 状态  1 启用 0 停用
+ */
+export function getRoleList (obj) {
+    let {
+        rolename,
+        rolegroupcode,
+        roletype,
+        state,
+        pageSize = 10, 
+        pageNum = 1
+    } = obj
+    return fetch({
+        module: 'SystemManage',
+        url: '/sys-role/findPage',
+        method: 'post',
+        data: {
+            Method: 'getRoleList',
+            size: pageSize,
+            current: pageNum,
+            params: {
+                rolename,
+                rolegroupcode,
+                roletype,
+                state,
+            }
+        }
+    })
+}
+
+/**
+ *  角色管理——新增角色的保存
+ */
+export function addComRoleNew (obj) {
+    debugger
+    let {
+        id,
+        rolename,
+        roletype,
+        rolelevel,
+        state,
+        description
+    } = obj
+    return fetch({
+        module: 'SystemManage',
+        url: '/sys-role/addOne',
+        method: 'post',
+        data: {
+            Method: 'addComRoleNew',
+            params: {
+                id,
+                rolename,
+                roletype,
+                rolelevel,
+                state,
+                description
+            }
+        }
+    })
+}
+
+/**
+ *  角色管理、角色组 获取角色组的树形数据
+ */
+export function getRoleGroupTree (obj) {
+    let {
+        state,
+        pageSize = 10, 
+        pageNum = 1
+    } = obj       
+    return fetch({
+        module: 'SystemManage',
+        url: '/sys-rolegroup/tree',
+        method: 'post',
+        data: {
+            Method: 'getRoleGroupTree',
+            size: pageSize,
+            current: pageNum,
+            params: {
+                state
+            }
+        }
+    })
+}
+
+/**
+ * 保存角色组
+ * @params {*} arr   树形数组 [{Pcode: '', Name: '', Description: ''}]
+ */
+export function saveRoleGroup (arr) {
+    return fetch({
+        module: 'SystemManage',
+        url: '/sys-rolegroup/saveList',
+        method: 'post',
+        data: {
+            Method: 'saveRoleGroup',
+            params: arr
+        }
+    })
+}
+
+/***-----------许可权配置------------- */
+
+/**
+ * 获取许可权配置列表
+ * @params 
+ */
+export function getPermissionList (obj) {
+    let {
+        state = 1,
+        pageSize = 10,
+        pageNum = 1,
+        permissionpackagename,
+        permissionpackagetype
+    } = obj
+    return fetch({
+        module: 'SystemManage',
+        url: '/sys-permissionpackageinfo/findPage',
+        method: 'post',
+        data: {
+            Method: 'getPermissionList',
+            current: pageNum,
+            size: pageSize,
+            params: {
+                state,
+                permissionpackagename,
+                permissionpackagetype
+            }
+        }
+    })
+}
+
+
+/**
+ * 新增许可权配置
+ * @params 
+ */
+export function addPermissionSet (obj) {
+    let {
+        id = '',
+        permissionpackagename,
+        state = 1,
+        description
+    } = obj
+    return fetch({
+        module: 'SystemManage',
+        url: '/sys-permissionpackageinfo/addOne',
+        method: 'post',
+        data: {
+            Method: 'addPermissionSet',
+            params: {
+                id,
+                permissionpackagename,
+                state,
+                description
+            }
+        }
+    })
+}

@@ -1,25 +1,63 @@
 /**
  * Created by Administrator on 2018/10/11.
- * function : 员工(PA)
  */
 import fetch from '@/utils/fetch'
 import store from '../store'
 import { getToken } from '@/utils/auth'
 
 // ------------------------------------------------------------------------------------
-// 字典项API
+// 通用接口
 /**
- * 
- * @param {*} moduleCode  模块code
+ *  启用/停用
+ * @param {*} baseKey   
+ * @param {*} ids  数组
  */
-export function GetAuthority (moduleCode = 'PA') {
+export function commonSetStatus (baseKey,ids) {
     return fetch({
-        module: '',
-        url: '/SystemManage',   
+        url: '/base/statusOn',   
         method: 'post',
         data: {
-            Method: 'GetAuthority',   
-            moduleCode,
+            params: {
+                Method: 'commonSetStatus',   
+                baseKey,
+                ids
+            }
+        }
+    })
+}
+
+/**
+ *  通用的 删除 接口
+ * @param {*}    baseKey
+ * @param {*} ids  id的数组
+ */
+export function commonDeleteList (baseKey,ids) {
+    return fetch({
+        url: '/base/deleteList',   
+        method: 'post',
+        data: {
+            params: {
+                Method: 'commonDeleteList',   
+                baseKey,
+                ids
+            }
+        }
+    })
+}
+
+/**
+ * 获取通用的 数据源
+ * @param {*}    baseKey
+ * @param {*} ids  id的数组
+ */
+export function commonDataSourceList () {
+    return fetch({
+        url: '/common-business-code/getAllEnum',   
+        method: 'post',
+        data: {
+            params: {
+                Method: 'commonDataSourceList',   
+            }
         }
     })
 }

@@ -6,12 +6,12 @@
 -->
 <template>
   <div class="horizontal-wrapper u-fi">
-    <div class="companyName u-f0">
+    <div class="companyName u-f-g0">
       <img src="./companyAvatar.png" height="0" alt="">
       <span class="name">{{ name }}</span>
     </div>
 
-    <div class="menuWrap u-f0">
+    <div class="menuWrap u-f-g0">
       <!-- $route.path:{{$route.path}}
       activeIndex: {{activeIndex}} -->
       <el-menu 
@@ -30,7 +30,7 @@
       </el-menu>
     </div>
 
-    <div class="avatar-container u-f-ajc u-f0">
+    <div class="avatar-container u-f-ajc u-f-g0">
       <div class="message">
         <icon-svg :icon-class="message"></icon-svg>
       </div>

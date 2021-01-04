@@ -49,7 +49,7 @@
         </span>
       </div> 
 
-      <div v-if="!isShowing" class="fieldValueWrap u-f0 u-f-ac">    
+      <div v-if="!isShowing" class="fieldValueWrap u-f-g0 u-f-ac">    
         <el-input 
           disabled 
           size="mini" 
@@ -70,7 +70,7 @@
 
 
       <div 
-        class="fieldValueWrap showValue line-bottom u-f0" 
+        class="fieldValueWrap showValue line-bottom u-f-g0" 
         v-else
       >
         <span class="ellipsis2">{{obj.FieldValue.LocationName}}</span>

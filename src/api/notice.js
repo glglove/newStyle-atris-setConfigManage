@@ -37,6 +37,9 @@ export function getNoticeType () {
   return fetch({
     url: '/Notice/Notice',
     method: 'post',
+    // headers: {
+    //   'Content-Type': 'application/x-www-form-urlencoded'      
+    // },
     data: {
       Method: 'GetNoticeTypeList',
       pageSize: 100

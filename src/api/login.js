@@ -38,7 +38,7 @@ export async function loginByUsername (accountname, password ) {
     url: '/sys-user/login',
     method: 'post',
     Method: 'logon',
-    params: {
+    data: {
       params:  {
         accountname,
         // password: MD5(password)
@@ -70,7 +70,7 @@ export function getUserInfo () {
   return fetch({
     url: '/sys-user/getUserInfo',
     method: 'post',
-    params: {
+    data: {
       Method: 'getUserInfo',
     }
   })
@@ -86,7 +86,7 @@ export function saveAccountCompany (companyObj) {
   return fetch({
     url: 'sys-account/saveAccountCompany',
     method: 'post',
-    params: {
+    data: {
       Method: 'saveAccountCompany',
       params: {
         ...companyObj
@@ -106,7 +106,7 @@ export function getMobileCode (phone) {
   return fetch({
     url: '/sys-user/getCode',
     method: 'post',
-    params: {
+    data: {
       Method: 'getMobileCode',
       params: {
         phone
@@ -125,7 +125,7 @@ export function checkPhoneCode (phone, code) {
   return fetch({
     url: '/sys-user/checkCode',
     method: 'post',
-    params: {
+    data: {
       Method: 'validateMobileCode',
       params: {
         phone,
@@ -142,7 +142,7 @@ export function getCodeByNamePhone ( phone, userAccount ) {
   return fetch({
     url: '/sys-user/getCodeByNamePhone',
     method: 'post',
-    params: {
+    data: {
       Method: 'getMobileCode',
       params: {
         phone,
@@ -159,7 +159,7 @@ export function resetPassword ( phone, userAccount, code, password ) {
   return fetch({
     url: '/sys-user/resetPassword',
     method: 'post',
-    params: {
+    data: {
       Method: 'getMobileCode',
       params: {
         phone,

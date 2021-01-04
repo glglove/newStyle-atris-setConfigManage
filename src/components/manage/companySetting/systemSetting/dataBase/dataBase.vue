@@ -14,11 +14,43 @@
 <template>
     <div class="displayGroup">
 
-      <div class="searchWrap u-f-ac">
-        <div class="search-item">
-          模块
+      <!-- <el-tabs v-model="currentTab" type="card" @tab-click="handleClickTab">
+        <el-tab-pane label="系统" name="first">用户管理</el-tab-pane>
+        <el-tab-pane label="企业自定义" name="second">配置管理</el-tab-pane>
+      </el-tabs> -->
+
+      <!--搜索部分--start-->
+      <search-tools-cmp>
+        <div slot="handlerBtnWrap"> 
+          <el-checkbox 
+            v-model="isStopFlag"
+          >停用</el-checkbox>
+          <el-button 
+            type="primary" 
+            size="mini"
+            @click.native="handlerAddGroup"
+          >新增</el-button>
+          <el-button 
+            type="primary" 
+            v-if="isStopFlag"
+            :disabled="!mutipleSelection.length"
+            size="mini"
+            @click.native="batchUsing(1)"
+          >批量启用</el-button>
+          <el-button 
+            v-if="!isStopFlag"
+            :disabled="!mutipleSelection.length"
+            type="primary" 
+            size="mini"
+            @click.native="batchUsing(0)"
+          >批量停用</el-button>
+          <!-- <el-button type="primary" size="mini">日志</el-button> -->            
+        </div>
+
+        <div slot="moreSearch">
           <el-select 
             clearable
+            size="small"
             v-model="queryObj.moduleCode">
             <el-option
               v-for="(item, key) in moduleSource"
@@ -28,44 +60,19 @@
             >
             </el-option>
           </el-select>
+          <el-button 
+            type="primary" 
+            size="small"
+            @click.native="handlerSearch"
+          >搜索</el-button>
+          <el-button 
+            type="primary" 
+            size="small"
+            @click.native="handlerReset"
+          >重置</el-button>
         </div>
-
-        <div class="marginL10">
-          <el-button type="primary" @click.native="handlerSearch">搜索</el-button>
-          <el-button type="primary" @click.native="handlerReset">重置</el-button>
-        </div>
-      </div>
-
-      <!-- <el-tabs v-model="currentTab" type="card" @tab-click="handleClickTab">
-        <el-tab-pane label="系统" name="first">用户管理</el-tab-pane>
-        <el-tab-pane label="企业自定义" name="second">配置管理</el-tab-pane>
-      </el-tabs> -->
-
-      <div class="topBox marginB10 marginT10" style="text-align: right">
-        <el-checkbox 
-          v-model="isStopFlag"
-          style="float: left"
-        >停用</el-checkbox>
-        <el-button 
-          type="primary" 
-          size="mini"
-          @click.native="handlerAddGroup"
-        >新增</el-button>
-        <el-button type="primary" 
-          v-if="isStopFlag"
-          :disabled="!mutipleSelection.length"
-          size="mini"
-          @click.native="batchUsing(1)"
-        >批量启用</el-button>
-        <el-button 
-          v-if="!isStopFlag"
-          :disabled="!mutipleSelection.length"
-          type="primary" 
-          size="mini"
-          @click.native="batchUsing(0)"
-        >批量停用</el-button>
-        <!-- <el-button type="primary" size="mini">日志</el-button> -->
-      </div>
+      </search-tools-cmp> 
+      <!---搜索部分---end-->
 
       <div
         :class="['tableBox', tableData.length<=0? 'not_found':'']"
@@ -510,6 +517,7 @@
 <script type="text/ecmascript-6">
   import FieldSetCmp from './dataBase-cmp/fieldSet-cmp'
   import SaveFooter from '@/base/Save-footer/Save-footer'
+  import SearchToolsCmp from '@/base/NewStyle-cmp/common-cmp/searchTool-cmp'
   import { REQ_OK } from '@/api/config'
   import { 
     GetModuleList,
@@ -521,6 +529,7 @@
   } from '@/api/systemManage.js'
   export default {
     components: {
+      SearchToolsCmp,
       FieldSetCmp,
       SaveFooter
     },

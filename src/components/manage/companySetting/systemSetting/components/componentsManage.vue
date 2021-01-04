@@ -15,84 +15,82 @@
 
 <template>
     <div class="componentsManage animated fadeIn">
-      <!-- currentRowObj： {{currentRowObj}} -->
-      <!-----搜索头--start--->
-      <div class="searchBox">
-        <el-input 
-          v-model="queryObj.componentName"
-          style="width:300px"
-          clearable
-          placeholder="组件名">
-        </el-input>
-        <el-select 
-          placeholder="基模块"
-          clearable
-          v-model="queryObj.moduleCode">
-          <el-option
-            v-for="(item, key) in moduleSource"
-            :key="key"
-            :label="item.ModuleName"
-            :value="item.ModuleCode"
-          >
-          </el-option>
-        </el-select>
-        <el-button type="primary" size="small" @click.native="clickSearchBtn">搜索</el-button>
-        <el-button type="primary" size="small" @click.native="clickClearBtn">重置</el-button>
-      </div>
-      <!---搜索头--end-->
+      <!-- currentRowObj： {{currentRowObj}} -->       
 
       <!-- queryObj.sysType: {{queryObj.sysType}} -->
       <!---tab标签--->
       <el-tabs 
         v-model="queryObj.sysType" 
-        class="marginT10"
-        type="card" 
         @tab-click="handleClickTab"
       >
         <el-tab-pane label="系统组件" name="1"></el-tab-pane>
         <el-tab-pane label="企业组件" name="2"></el-tab-pane>
       </el-tabs>      
 
-      <!---内容区--start-->
-      <!-- multipleSelection: {{multipleSelection}} -->
-      <div class="top clearfix">
-        <el-checkbox
-          style="float: left"
-          @change="handlerSelectBtn"
-        >
-          停用
-        </el-checkbox>  
-        <el-button 
-          v-if="queryObj.state==0"
-          :disabled="!multipleSelection.length"
-          style="float: right;margin-right:5px"
-          type="primary"
-          size="mini"
-          @click.native="handlerBathchUsing">
-          批量启用
-        </el-button>
-        <el-button
-          v-if="queryObj.state==1"
-          :disabled="!multipleSelection.length"
-          style="float: right; margin-right:5px"
-          type="primary"
-          size="mini"
-          @click.native="handlerBatchStopUsing"
-        >
-          批量停用
-        </el-button>    
-        <el-button 
-          style="float: right"
-          v-show="queryObj.sysType == 2"
-          class="animated fadeIn marginR10"
-          type="primary" 
-          size="mini"
-          @click.native="addNew"
-        >
-        新增
-        </el-button>            
-      </div>      
+      <!--搜索部分--start-->
+      <search-tools-cmp>
+        <div slot="handlerBtnWrap"> 
+          <el-checkbox
+            @change="handlerSelectBtn"
+          >
+            停用
+          </el-checkbox>  
+          <el-button 
+            v-if="queryObj.state==0"
+            :disabled="!multipleSelection.length"
+            type="primary"
+            size="mini"
+            @click.native="handlerBathchUsing">
+            批量启用
+          </el-button>
+          <el-button
+            v-if="queryObj.state==1"
+            :disabled="!multipleSelection.length"
+            type="primary"
+            size="mini"
+            @click.native="handlerBatchStopUsing"
+          >
+            批量停用
+          </el-button>    
+          <el-button 
+            v-show="queryObj.sysType == 2"
+            class="animated fadeIn marginR10"
+            type="primary" 
+            size="mini"
+            @click.native="addNew"
+          >
+          新增
+          </el-button>                  
+        </div>
 
+        <div slot="moreSearch">
+          <el-input 
+            v-model="queryObj.componentName"
+            style="width:300px"
+            size="small"
+            clearable
+            placeholder="组件名">
+          </el-input>
+          <el-select 
+            placeholder="基模块"
+            clearable
+            size="small"
+            v-model="queryObj.moduleCode">
+            <el-option
+              v-for="(item, key) in moduleSource"
+              :key="key"
+              :label="item.ModuleName"
+              :value="item.ModuleCode"
+            >
+            </el-option>
+          </el-select>
+          <el-button type="primary" size="small" @click.native="clickSearchBtn">搜索</el-button>
+          <el-button type="primary" size="small" @click.native="clickClearBtn">重置</el-button>
+        </div>
+      </search-tools-cmp> 
+      <!---搜索部分---end-->  
+
+      <!---内容区--start-->
       <!-- tableData: {{tableData}} -->
       <div :class="['containerBox',tableData.length<=0?'not_found':'']" v-loading="loading">
         <el-table
@@ -352,6 +350,7 @@
 <script type="text/ecmascript-6">
   import SaveFooter from '@/base/Save-footer/Save-footer'
   import ComponentsSetDialogCmp from './ComponentsSetDialog-cmp'
+  import SearchToolsCmp from '@/base/NewStyle-cmp/common-cmp/searchTool-cmp'
   import { REQ_OK } from '@/api/config'
   import { 
     GetModuleList,
@@ -361,6 +360,7 @@
   } from '@/api/systemManage'
   export default {
     components:{
+      SearchToolsCmp,
       SaveFooter,
       // DisplayGroupCmp
       ComponentsSetDialogCmp

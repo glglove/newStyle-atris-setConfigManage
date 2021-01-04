@@ -9,7 +9,7 @@
 <template>
     <div class="searchBox u-f-ac">
         <div class="item u-f-ac u-f-jsb">
-            <span class="u-f0 marginR5">关键词</span>
+            <span class="u-f-g0 marginR5">关键词</span>
             <el-input 
                 clearable
                 v-model="queryObj.KeyWord"
@@ -19,7 +19,7 @@
 
         <!-- queryObj:{{queryObj}} -->
         <!-- <div class="item u-f-ac u-f-jsb marginL10">
-            <span class="u-f0 marginR5">省</span>
+            <span class="u-f-g0 marginR5">省</span>
             <el-select clearable v-model="queryObj.Province">
                 <el-option 
                     v-for="(province, key) in ProvinceList"
@@ -32,7 +32,7 @@
         </div>  
 
         <div class="item u-f-ac u-f-jsb marginL10">
-            <span class="u-f0 marginR5">市</span>
+            <span class="u-f-g0 marginR5">市</span>
             <el-select clearable v-model="queryObj.City">
                 <el-option 
                     v-for="(city, key) in CityList"
@@ -45,7 +45,7 @@
         </div>  
 
         <div class="item u-f-ac u-f-jsb marginL10">
-            <span class="u-f0 marginR5">区/县</span>
+            <span class="u-f-g0 marginR5">区/县</span>
             <el-select clearable v-model="queryObj.Area">
                 <el-option 
                     v-for="(area, key) in AreaList"
@@ -59,7 +59,7 @@
 
         <div class="item u-f-ac u-f-jsb marginL10">
             <!-- eventNameOptions: {{eventNameOptions}} -->
-            <span class="u-f0 marginR5">事件名称</span>
+            <span class="u-f-g0 marginR5">事件名称</span>
             <el-select 
                 clearable
                 v-model="queryObj.EventCode"
@@ -78,7 +78,7 @@
 
 
         <!-- <div class="item u-f-ac u-f-jsb marginL10">
-            <span class="u-f0 marginR5">规模</span>
+            <span class="u-f-g0 marginR5">规模</span>
             <el-input 
                 clearable
                 v-model="queryObj.companyScope"
@@ -87,7 +87,7 @@
         </div>   
 
         <div class="item u-f-ac u-f-jsb marginL10">
-            <span class="u-f0 marginR5">企业性质</span>
+            <span class="u-f-g0 marginR5">企业性质</span>
             <el-input 
                 clearable
                 v-model="queryObj.natureType"
@@ -98,7 +98,7 @@
         
 
         <div class="item u-f-ac u-f-jsb marginL10">
-            <span class="u-f0 marginR5">创建日期</span>
+            <span class="u-f-g0 marginR5">创建日期</span>
             <el-date-picker
                 @change="changeDateRange()"
                 v-model="dateRange"
@@ -110,7 +110,7 @@
         </div>    
 
         <div class="item u-f-ac u-f-jsb marginL10">
-            <span class="u-f0 marginR5">状态</span>
+            <span class="u-f-g0 marginR5">状态</span>
             <el-select 
                 v-model="queryObj.State">
                 <el-option

@@ -13,7 +13,7 @@
             <company-user-manage-cmp></company-user-manage-cmp>
         </div>
         <div v-else>
-            系统
+            <company-user-manage-cmp></company-user-manage-cmp>            
         </div>        
     </div>
 </template>

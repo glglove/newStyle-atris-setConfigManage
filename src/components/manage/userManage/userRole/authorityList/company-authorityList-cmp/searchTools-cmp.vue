@@ -23,9 +23,10 @@
         <!--搜索部分--start-->
         <div class="searchTop">
             <div class="item-container">
-                <span class="tit">关键词</span>
+                <!-- <span class="tit">关键词</span> -->
                 <el-input 
                     v-model="queryObj.key"
+                    size="small"
                     placeholder="许可权名/编号/角色">
                 </el-input>
             </div>
@@ -43,9 +44,17 @@
                 </el-select>
             </div> -->
 
-            <div class="item-container" v-show="currentPcode">
-                <el-button type="primary"  @click.native="clickSearchBtn">搜索</el-button>    
-                <el-button type="primary"  @click.native="clickResetBtn">重置</el-button>    
+            <div class="item-container">
+                <el-button 
+                    type="primary"  
+                    @click.native="clickSearchBtn"
+                    size="small"
+                >搜索</el-button>    
+                <el-button 
+                    type="primary"  
+                    @click.native="clickResetBtn"
+                    size="small"
+                >重置</el-button>    
             </div>                          
 
         </div>        

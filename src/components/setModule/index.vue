@@ -75,7 +75,7 @@
                     <i class="el-icon-back"></i>
                     <el-button type="text" style="font-size: 16px;color: #000000">返回</el-button>
                 </div>
-                <div class="right-header u-f2 u-f-jsb">
+                <div class="right-header u-f-g2 u-f-jsb">
                     <div class="u-f-jst">
                         <el-button 
                             type="text" 

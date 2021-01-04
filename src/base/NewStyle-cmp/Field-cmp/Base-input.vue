@@ -38,7 +38,7 @@
         </span>
       </div>
 
-      <div v-if="!isShowing" class="fieldValueWrap u-f0">  
+      <div v-if="!isShowing" class="fieldValueWrap u-f-g0">  
         isPassWordField： {{isPassWordField}}
         <el-input 
           v-if="!isShowing"
@@ -53,7 +53,7 @@
       </div>
 
       <div 
-        class="fieldValueWrap showValue line-bottom u-f0" 
+        class="fieldValueWrap showValue line-bottom u-f-g0" 
         v-else
       >
         <span class="ellipsis2">{{obj.FieldValue}}</span>

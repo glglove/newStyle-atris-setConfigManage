@@ -5,10 +5,12 @@
 -->
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 .titHead
+  .backWrap
+    width: 30px
   .stepWrap
     .setItem
-      margin 0 10px
-      padding 5px 10px
+      margin 0 5px
+      padding 5px 5px
       font-size 14px
       box-sizing border-box
       &.current
@@ -69,12 +71,15 @@
 <template>
 <el-row>
   <el-col :span="24" style="padding: 20px;position: relative">
-    <div class="titHead line-bottom">
-      <ul class="stepWrap u-f-ajc">
+    <div class="titHead line-bottom u-f-jst">
+      <div class="backWrap u-f-ajc u-f-g0" @click="backToLogin">
+        <i class="el-icon-back"></i>
+      </div>
+      <ul class="stepWrap u-f-ajc u-f-g2">
         <li
           v-for="(item, key) in titList" 
           :key="key"
-          class="setItem u-fi-ajc u-f0" 
+          class="setItem u-fi-ajc u-f-g0" 
           :class="currentIndex == key?'current':''"
           @click="handlerClickTit(item,key)"
         >
@@ -228,12 +233,7 @@
           </el-col>        
 
           <el-col :span="24">
-            <el-form-item label="省市区" prop="province">
-              <!-- <el-input
-                type="textarea"
-                v-model="companyForm.province"
-              >
-              </el-input> -->
+            <el-form-item label="省市区" prop="province" :rules="provinceRule">
               <dist-picker-cmp
                 :propObj.sync="companyForm"
                 :propCurrentProvince.sync="companyForm.province"
@@ -481,7 +481,13 @@
         if(this.companyForm.province && this.companyForm.city && this.companyForm.area){
           callback()
         }else {
-          callback(new Error('省市区为空'))
+          if(!this.companyForm.province && !this.companyForm.city){
+            callback(new Error('省市为空'))
+            return
+          }else {
+            // 区为非必填项
+            callback()
+          }
         }
       }
 
@@ -572,9 +578,9 @@
           linkman: [
             {required: true, message:'联系人为空', trigger: 'blur'}            
           ],
-          province: [
-            {required: false, validator: validateProvince, trigger: ['change','blur']}            
-          ],            
+          // province: [
+          //   {required: false, validator: validateProvince, trigger: ['change','blur']}            
+          // ],            
           street: [
             {required: true, message:'企业地址为空', trigger: 'blur'}            
           ],          
@@ -590,7 +596,11 @@
           hasChecked: [
             {required: true, validator: validateHasChecked, trigger: 'blur'}            
           ]                                     
-        }
+        },
+        provinceRule: {
+          required: false, validator: validateProvince, trigger: ['change','blur']
+        }            
+
       }
     },
     computed: {
@@ -613,6 +623,11 @@
 
     },
     methods: {
+      backToLogin(){
+        this.$router.push({
+          path: '/login'
+        })
+      },
       handlerClickTit(item, index){
         // this.currentIndex = index
       },

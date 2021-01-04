@@ -115,7 +115,7 @@
 
                             <!-- userGroupData: {{userGroupData}} -->
                             <div :class="['itemBox', 'u-f', 'u-f-ac', 'u-f-wrap']" >
-                                <div class="group_item u-f0"
+                                <div class="group_item u-f-g0"
                                     v-for="(item, index) in userGroupData"
                                     :key="item.UserGroupCode"
                                 >

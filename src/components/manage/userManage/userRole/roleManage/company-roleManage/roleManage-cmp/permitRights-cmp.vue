@@ -75,7 +75,7 @@
         </div>  -->
 
 
-        <!-- tableData: {{tableData}} -->
+        tableData: {{tableData}}
         <div 
             class="tableBox marginT10" 
             :class="!tableData.length? 'not_found':''">
@@ -117,7 +117,7 @@
                     </el-table-column>
                     <el-table-column
                         label="许可权"
-                        prop="PermissionPackageCode"
+                        prop="permissionpackagecode"
                         show-overflow-tooltip
                         sortable
                     >
@@ -126,7 +126,7 @@
 
                     <el-table-column
                         label="许可权名称"
-                        prop="PermissionPackageName"
+                        prop="permissionpackagename"
                         show-overflow-tooltip
                         sortable
                     >
@@ -144,20 +144,20 @@
 
                     <el-table-column
                         label="系统配置"
-                        prop="SysType"
+                        prop="permissionpackagetype"
                         width="120"
                         sortable
                         show-overflow-tooltip
                     >
                         <template slot-scope="scope">
-                            <span v-if="scope.row.SysType ==1 " style="color: #409EFF">是</span>
-                            <span v-if="scope.row.SysType ==2 " style="color: #67C23A">否</span>                    
+                            <span v-if="scope.row.permissionpackagetype == 'roleType_one' " style="color: #409EFF">是</span>
+                            <span v-if="scope.row.permissionpackagetype == 'roleType_two' " style="color: #67C23A">否</span>                    
                         </template>
                     </el-table-column>                   
 
                     <el-table-column
                         label="描述"
-                        prop="Description"
+                        prop="description"
                         show-overflow-tooltip
                     >
                     
@@ -165,15 +165,15 @@
 
                     <el-table-column
                         label="状态"
-                        prop="State"
+                        prop="state"
                         sortable
                         width="80"
                     >
                         <template slot-scope="scope">
-                            <span v-if="scope.row.State == 1">
+                            <span v-if="scope.row.state == 1">
                                 启用
                             </span>
-                            <span v-if="scope.row.State == 0">
+                            <span v-if="scope.row.state == 0">
                                 停用
                             </span>                        
                         </template>
@@ -261,7 +261,7 @@
                     :obj="currentRowObj"
                     :batchSafetyArr="multipleSelection"
                     :isBatchSafety="isBatchSafety"
-                    :propPermissionPackageName="propPermissionPackageName"
+                    :proppermissionpackagename="proppermissionpackagename"
                 ></data-safety-cmp>
             </el-dialog>
         </div>
@@ -298,12 +298,14 @@
     import PermitScanCmp from './permitScan-cmp'
     import { 
         compRolePermitList,
-        CompUserPermitList,
+        getPermissionList,
         batchDelSecurityTypeGroup,
         BatchDelComRolePermit,
         BatchDelComUserPermit
     } from '@/api/systemManage'
+    import { CommonInterfaceMixin } from '@/utils/CommonInterfaceMixin'
     export default {
+        mixins: [CommonInterfaceMixin],
         props: {
             obj: {
                 type: Object,
@@ -345,9 +347,11 @@
                 showEditDialog: false,  // 编辑弹框
                 isScanOrEdit: false, // false 查看 true 编辑
                 isBatchSafety: false,
-                propPermissionPackageName: '',
+                proppermissionpackagename: '',
                 queryObj: {
-                    componentName: '',
+                    permissionpackagename: '',
+                    permissionpackagetype: '', 
+                    state: 1, //状态，默认1启用，0禁用
                     pageSize: 10,
                     pageNum: 1,
                     total: 0
@@ -364,10 +368,10 @@
             _getComTables(){
                 if(!this.isFromUserManageFlag){
                     // 角色管理/用户角色 进入的 许可权
-                    this._compRolePermitList()
+                    this._getPermissionList()
                 }else {
                     // 用户管理模块中 进入的 许可权
-                    this._CompUserPermitList()
+                    this._compRolePermitList()
                 }                
             },
             _compRolePermitList(){
@@ -382,18 +386,18 @@
                     }
                 })
             },   
-            _CompUserPermitList(){
+            _getPermissionList(){
                 this.loading = true
-                CompUserPermitList(JSON.stringify(this.obj), this.queryObj.pageSize, this.queryObj.pageNum).then(res => {
+                getPermissionList(this.queryObj).then(res => {
                     this.loading = false
                     if(res && res.data.State === REQ_OK){
-                        this.tableData = res.data.Data
-                        this.queryObj.total = res.data.Total
+                        this.tableData = res.data.Data.records
+                        this.queryObj.total = res.data.Data.total
                     }else {
                         this.$message.error(`获取许可权限列表数据失败,${res.data.Error}`)
                     }
                 })
-            },               
+            },              
             _batchDelSecurityTypeGroup(data){
                 this.loading = true
                 batchDelSecurityTypeGroup(JSON.stringify(data)).then(res => {
@@ -442,56 +446,71 @@
             handlerDataSafety(row){
                 debugger
                 this.currentRowObj = row
-                this.propPermissionPackageName = row.PermissionPackageName
+                this.proppermissionpackagename = row.permissionpackagename
                 this.isBatchSafety = false
                 this.showDataSafetyDialog = true
-            },
-            // 单个移除
-            handlerDelete(row){
-                this.currentRowObj = row
-                this.$confirm(`确定要删除"${row.PermissionPackageName}"权限吗？`,"提示",{
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消'
-                }).then(() => {
-                    if(!this.isFromUserManageFlag){
-                        this._BatchDelComRolePermit([this.currentRowObj])
-                    }else {
-                        // 用户管理——许可权 列表中的移除 
-                        this._BatchDelComUserPermit([this.currentRowObj])
-                    }
-                }).catch(() => {
-                    this.$message.info("删除已取消")
-                })
             },
             // 添加许可权限
             addPermit(){
                 debugger
                 this.showAddPermitDialog = true
             },
-            // 移除/批量移除 许可权 (用户管理——许可权界面)
-            _BatchDelComUserPermit(data){
-                this.loading = true
-                BatchDelComUserPermit(JSON.stringify(data)).then(res => {
-                    this.loading = false
-                    if(res && res.data.State === REQ_OK){
-                        this.$message.success("删除成功")
-                        this._getComTables()
-                    }else {
-                        this.$message.error(`删除失败,${res.data.Error}`)
-                    }
+            // 停用/启用
+            handlerStopOrUsing(row){
+                debugger           
+                let statusText = row.state == 1? '停用': '启用'
+                let name = row.permissionpackagename || ''
+                let ids = row.id ? [row.id] : []
+                let baseKey = 'sys_permissionpackageinfo'
+                this.commonSetStatusMixin({
+                    statusText,
+                    name,
+                    ids,
+                    baseKey
                 })
-            },            
-            // 移除/批量移除 许可权 （角色管理/用户角色——许可权界面）
-            _BatchDelComRolePermit(data){
-                BatchDelComRolePermit(JSON.stringify(data)).then(res => {
-                    if(res && res.data.State === REQ_OK){
-                        this.$message.success("删除成功")
-                        this._getComTables()
-                    }else {
-                        this.$message.error(`删除失败,${res.data.Error}`)
-                    }
-                })
+            },           
+            // 批量移除
+            handlerBatchDelete(){
+                debugger
+                let statusText = '批量删除'
+                let baseKey = 'sys_user'            
+                let name = ''
+                let ids = []
+                let length = this.multipleSelection.length
+                if(length){
+                    this.multipleSelection.forEach((item, key) => {
+                        item.id && ids.push(item.id)
+                        if(key != length-1){
+                            name += item.permissionpackagename + ','
+                        }else {
+                            name += item.permissionpackagename
+                        }
+                    })
+                    this.commonDeleteListMixin({
+                        statusText,
+                        name,
+                        ids,
+                        baseKey
+                    })                
+                }          
             },
+            // 移除
+            handlerDelete(row){
+                debugger
+                this.currentRow = row            
+                if(row.id){
+                    let statusText = '删除'
+                    let name = row.permissionpackagename || ''
+                    let ids = row.id ? [row.id] : []
+                    let baseKey = 'sys_permissionpackageinfo'
+                    this.commonDeleteListMixin({
+                        statusText,
+                        name,
+                        ids,
+                        baseKey
+                    })
+                }            
+            },            
             // 批量移除许可权限 
             batchDeletePermit(){
                 debugger
@@ -503,9 +522,9 @@
                     this.multipleSelection.forEach((item, key) => {
                         let length = this.multipleSelection.length
                         if(key!=(length-1)){
-                            str += item.PermissionPackageName + "、"
+                            str += item.permissionpackagename + "、"
                         }else if(key == (length - 1)) {
-                            str += item.PermissionPackageName 
+                            str += item.permissionpackagename 
                         }
                     }) 
                     this.$confirm(`确定要批量移除"${str}"许可权限吗？`,"提示",{
@@ -532,12 +551,12 @@
                 let str = ''
                 this.multipleSelection.forEach((item, key) => {
                     if(key != (length-1)){
-                        str += item.PermissionPackageName + ', '
+                        str += item.permissionpackagename + ', '
                     }else {
-                        str += item.PermissionPackageName
+                        str += item.permissionpackagename
                     }
                 })
-                this.propPermissionPackageName = str
+                this.proppermissionpackagename = str
                 this.isBatchSafety = true
                 this.showDataSafetyDialog = true
             },

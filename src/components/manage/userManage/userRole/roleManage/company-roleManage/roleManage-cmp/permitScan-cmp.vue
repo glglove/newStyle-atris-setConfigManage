@@ -17,9 +17,9 @@
             </el-tabs>   
         </div>
 
-        <!-- permitForm: {{permitForm}}
+        permitForm: {{permitForm}}
         ----
-        obj: {{obj}} -->
+        obj: {{obj}}
         <!--基本信息---->
         <div class="content marginT10" v-if="activeTabName === 'first'">
             <el-form 
@@ -29,43 +29,43 @@
                 label-width="120px"> 
                 <el-form-item
                     label="许可权名"
-                    prop="PermissionPackageName"
+                    prop="permissionpackagename"
                 >
                     <el-input 
-                        clearable
+                        :clearable="isScanOrEdit"
                         style="width: 300px"
-                        v-model="permitForm.PermissionPackageName"
+                        v-model="permitForm.permissionpackagename"
                     ></el-input>
                 </el-form-item>
                 <el-form-item
                     label="编号"
-                    prop="PermissionPackageCode"
+                    prop="permissionpackagecode"
                 >
                     <el-button
                         type="text"
-                    >{{permitForm.PermissionPackageCode}}</el-button>
+                    >{{permitForm.permissionpackagecode}}</el-button>
                 </el-form-item>    
 
                 <el-form-item
                     label="描述"
-                    prop="Description"
+                    prop="description"
                 >
                     <el-input
                         style="width: 300px"
                         type="textarea"
-                        v-model="permitForm.Description"
+                        v-model="permitForm.description"
                     >
                     </el-input>
                 </el-form-item>
 
                 <el-form-item
                     label="状态"
-                    prop="State"
+                    prop="state"
                 >
                     <el-switch
-                        v-model="permitForm.State"
-                        active-value="1"
-                        inactive-value="0"
+                        v-model="permitForm.state"
+                        :active-value="1"
+                        :inactive-value="0"
                     >
                     
                     </el-switch>
@@ -91,11 +91,12 @@
         >
             <!-- obj: {{obj}} -->
             <permit-set-cmp 
+                v-if="activeTabName === 'second'"
                 ref="setCmp" 
                 :isScanOrEdit="isScanOrEdit"
                 :propShowTitBox="false" 
                 :obj="obj" 
-                :code="obj.PermissionPackageCode"
+                :code="obj.permissionpackagecode"
             ></permit-set-cmp>
         </div>
 
@@ -110,7 +111,7 @@
     // 应用公用的 配置组件
     // import permitSetCmp from '@/components/manage/userManage/userRole/roleManage/company-roleManage/roleManage-cmp/permitRights-cmp'
     import { 
-        SaveComPermitPSet
+        addPermissionSet
     } from '@/api/systemManage'
     export default {
         props: {
@@ -135,17 +136,15 @@
                 activeTabName: 'first',
                 currentTabIndex: 0,
                 permitForm: {
-                    "RoleNames": this.obj.RoleNames,
-                    "CompanyCode": this.companyCode,
-                    "Id": this.obj.Id,
-                    "PermissionPackageCode": this.obj.PermissionPackageCode,
-                    "PermissionPackageName": this.obj.PermissionPackageName,
-                    "Description": this.obj.Description,
-                    "State": "" + this.obj.State              
+                    "id": this.obj.id,
+                    "permissionpackagecode": this.obj.permissionpackagecode,
+                    "permissionpackagename": this.obj.permissionpackagename,
+                    "description": this.obj.description,
+                    "state": this.obj.state              
                 },
                 permitFormRules: {
-                    PermissionPackageName: [{required: true, message: '请输入权限名称',trigger: ['blur','change']}],
-                    Description: [{required: true, message: '请输入描述',trigger: ['blur','change']}],
+                    permissionpackagename: [{required: true, message: '请输入权限名称',trigger: ['blur','change']}],
+                    description: [{required: true, message: '请输入描述',trigger: ['blur','change']}],
                 }
             }
         },
@@ -164,14 +163,16 @@
 
             },
             // 添加保存许可权
-            _SaveComPermitPSet(){
+            _addPermissionSet(){
                 debugger
                 this.loading = true
-                SaveComPermitPSet(JSON.stringify(this.permitForm)).then(res => {
+                addPermissionSet(this.permitForm).then(res => {
                     this.loading = false
                     debugger
                     if(res && res.data.State === REQ_OK){
                         this.$message.success("保存成功")
+                        this.showSetBtn = true
+                        this.activeTabName = 'second'
                         this.$emit("editPermitSuccess")
                     }else {
                         this.$message.error(`保存失败,${res.data.Error}`)
@@ -182,7 +183,7 @@
             save(){
                 this.$refs.addPermitForm.validate(valid => {
                     if(valid){
-                        this._SaveComPermitPSet()
+                        this._addPermissionSet()
                     }else {
 
                     }

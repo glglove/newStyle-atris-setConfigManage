@@ -5,7 +5,8 @@
 -->
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 .search-cmp
-    padding 0 20px
+    width 100%
+    position relative
     box-sizing border-box
     .searchTop
         margin 5px 0 10px 0
@@ -15,7 +16,8 @@
         >>>.el-input
             display inline-block !important
             width 200px
-
+        .item
+            margin 10px
 </style>
 
 <template>
@@ -25,7 +27,8 @@
             <div class="item-container">
                 <!-- <span class="tit">关键词</span> -->
                 <el-input 
-                    v-model="queryObj.key"
+                    size="small"
+                    v-model="queryObj.rolename"
                     clearable
                     placeholder="角色名,编号">
                 </el-input>
@@ -33,15 +36,14 @@
             <!-- currentPcode: {{currentPcode}} -->
             <div class="item-container">
                 <el-button 
-                    v-show="currentPcode"
                     type="primary" 
+                    size="small"
                     @click.native="clickSearchBtn"
                 >搜索</el-button>    
-                <el-button 
-                    v-show="currentPcode"
+                <!-- <el-button 
                     type="primary"  
                     @click.native="clickResetBtn"
-                >重置</el-button>    
+                >重置</el-button>     -->
             </div>                          
 
         </div>        
@@ -75,27 +77,12 @@
     data(){
       return {
         queryObj: {
-            key: ''           
+            rolename: ''          
         }
       }
     },
     watch: {
-        currentPcode:{
-            handler(newValue, oldValue){
-                if(newValue){
-                    debugger
-                    this.queryObj.pcode = newValue
-                    // this.$emit("emitRefreshTable", this.queryObj)
-                }
-            },
-            immediate: true
-        },
-        currentKeyName:{
-            handler(newValue, oldValue){
-                this.queryObj.key = newValue
-            },
-            immediate: true
-        }               
+              
     },
     created(){
 
@@ -109,7 +96,7 @@
         // 重置
         clickResetBtn(){
             Object.assign(this.queryObj, {
-                key: '',    
+                rolename: '',    
             })
             // this._getSysMenuList()
             this.$emit("emitRefreshTable", this.queryObj)

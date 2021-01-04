@@ -151,7 +151,7 @@
             >
                 <div class="listItemBox u-f u-f-wrap">
                     <div 
-                        class="listItem u-f0"
+                        class="listItem u-f-g0"
                         v-if="row.FieldValueSet && row.FieldValueSet.length" 
                         v-for="(field, index) in row.FieldValueSet" :key="field.Id"
                     >

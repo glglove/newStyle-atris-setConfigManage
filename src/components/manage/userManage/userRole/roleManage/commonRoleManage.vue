@@ -9,17 +9,17 @@
 </style>
 <template>
     <div class="roleManageCommon animated fadeIn">
-        <div
+        <!-- <div
             v-atris-authrity="{
-            page: 'page1',
-            name: 'com1',
-            parent: 'page1',
-            eleStyle: 8,
-            displayStyle: 'block'
+                page: 'page1',
+                name: 'com1',
+                parent: 'page1',
+                eleStyle: 8,
+                displayStyle: 'block'
             }"            
-        >
+        > -->
             <company-role-manage-cmp></company-role-manage-cmp>   
-        </div>
+        <!-- </div> -->
     </div>
 </template>
 

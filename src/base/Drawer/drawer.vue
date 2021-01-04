@@ -12,6 +12,7 @@
             :direction="direction"
             :wrapperClosable="wrapperClosable"
             :size="size"
+            :modal="modal"
             :append-to-body="appendToBody"
             :modal-append-to-body="modalAppendToBody"
             custom-class="atris-drawer"
@@ -24,6 +25,7 @@
                     v-if="showFooterBox" 
                     class="drawer_footer u-f-ajc">
                     <el-button 
+                        :size="saveBtnSize"
                         @click="cancelForm"
                     >
                         取 消
@@ -31,6 +33,7 @@
                     <el-button 
                         v-if="showSaveBtn"
                         type="primary" 
+                        :size="saveBtnSize"
                         @click="clickSureBtn" 
                         :loading="loading"
                     >
@@ -76,29 +79,38 @@
                 type: [String, Number],
                 default: '30%'
             },
-            appendToBody: {
+            modal: {
                 type: Boolean,
                 default: true
+            },
+            appendToBody: {
+                type: Boolean,
+                default: false
             },
             modalAppendToBody: {
                 type: Boolean,
                 default: false
+            },
+            saveBtnSize: {
+                type: String,
+                default: 'small'
             }
         },
         data() {
             return {
                 loading: false,
-                dialogShow: this.dialog
             }
         },
         computed: {
-
+            dialogShow(){
+                return this.dialog
+            }
         },
         watch: {
             dialogShow:{
                 handler(newValue, oldValue){
                     debugger
-                    this.$emit("update:dialog", newValue)
+                    this.$emit("update:dialog", false)
                 }
             }
         },
@@ -108,7 +120,7 @@
                     return;
                 }
                 this.loading = false
-                this.dialogShow = false                
+                this.$emit("update:dialog", false)                
                 // this.$confirm('确定要提交表单吗？').then(_ => {
                 //     this.loading = true
                 //     this.timer = setTimeout(() => {
@@ -128,7 +140,7 @@
                 },
                 cancelForm() {
                     this.loading = false
-                    this.dialogShow = false
+                    this.$emit("update:dialog", false)
                     // clearTimeout(this.timer)
                 }
             }

@@ -15,6 +15,7 @@
     :rules="rules"
     v-if="isShowField">
     <!-- obj：{{obj}} -->
+    localDicDataSourceList: {{localDicDataSourceList}}
     <div 
       class="filedContentWrap u-f-ac u-f-jst"
     >
@@ -39,7 +40,7 @@
 
       <!-- dataSource: {{dataSource}}--- -->
       <!-- obj.FieldValue: {{obj.FieldValue}} -->
-      <div v-if="!isShowing" class="fieldValueWrap u-f0">
+      <div v-if="!isShowing" class="fieldValueWrap u-f-g0">
         <el-checkbox-group 
           v-model="obj.FieldValue" 
           class="fieldValue"
@@ -57,7 +58,7 @@
       </div>
  
       <div 
-        class="fieldValueWrap showValue line-bottom u-f0" 
+        class="fieldValueWrap showValue line-bottom u-f-g0" 
         v-else
       >
         <span
@@ -76,7 +77,9 @@
   import { newStyleGetDicByKey } from '@/api/dic'
   import { validatEmail, validatMobilePhone, validatTel, validateViewAuth } from '@/utils/validate'
   import iconSvg from '@/base/Icon-svg/index'
+  import { fieldsDataSourceMixin } from '@/utils/fieldsDataSourceMixins.js'
   export default {
+    mixins: [fieldsDataSourceMixin],
     props: {
       //是否需要校验
       isNeedCheck: {
@@ -197,14 +200,15 @@
       },      
     },
     created () {
-
+      this._initData()
     },
     mounted () {
-      this.$nextTick(() => {
-        this._newStyleGetDicByKey( this.obj.Dstype, this.obj.DataSource )
-      })
+
     },
     methods: {
+      _initData(){
+        // this._newStyleGetDicByKey( this.obj.Dstype, this.obj.DataSource )
+      },
       // 新增/编辑页面 是否有权限编辑
       isHasAddOrEditAuth(){
         return this.resAuth.addorEditViewEdit == 1 ? true : false

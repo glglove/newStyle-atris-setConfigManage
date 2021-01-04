@@ -8,9 +8,7 @@
     padding 0 20px
     box-sizing border-box
     .searchTop
-        margin 5px 0 10px 0
     .item-container
-        margin-top 5px
         display inline-block
         >>>.el-input
             display inline-block !important
@@ -36,18 +34,8 @@
     <div class="menuContentSet-cmp">
 
         <!--搜索部分--start-->
-        <div class="searchTopBox">
-            <search-tools-cmp 
-                :currentPcode="currentPcode" 
-                @emitRefreshTable="emitRefreshTable">
-            </search-tools-cmp>
-        </div>        
-        <!---搜索部分---end-->
-        <!-- currentTreeNodeObj：{{currentTreeNodeObj}} -->
-        <!--table表格区--start-->
-        <div class="tableContainerWrap">
-            <!-- currentTableData： {{currentTableData}} -->
-            <div class="contentTop">
+        <search-tools-cmp>
+            <div slot="handlerBtnWrap">
                 <el-button 
                     type="primary" 
                     size="mini"
@@ -62,13 +50,22 @@
                 <!-- <el-button type="primary" size="mini" @click.native="handlerAdd">新增</el-button> -->
                 <!-- <el-button v-if="currentTableData.length" type="primary" size="mini" @click.native="handlerSort">排序</el-button> -->
             </div>
+            <div slot="moreSearch">
+                <search-cmp
+                    @emitRefreshTable="emitRefreshTable"
+                ></search-cmp>
+            </div>
+        </search-tools-cmp> 
+        <!---搜索部分---end-->
 
-            <div :class="['tableList',currentTableData.length<=0? 'not_found':'']" v-loading = "loading">
+        <!--table表格区--start-->
+        <div class="tableContainerWrap">
+            currentTableData： {{currentTableData}}
+            <div :class="['tableList']" v-loading = "loading">
                 <el-table
                     style="width:100%"
                     max-height="500px"
                     border 
-                    empty-text=" "
                     :data="currentTableData"
                     @selection-change="handleSelectionChange"
                 >
@@ -79,7 +76,7 @@
 
                     <el-table-column
                         label="角色名"
-                        prop="RoleName"
+                        prop="rolename"
                         sortable
                         show-overflow-tooltip
                     >
@@ -87,7 +84,7 @@
 
                     <el-table-column
                         label="编号"
-                        prop="RoleId"
+                        prop="roleid"
                         width="150"
                         sortable
                         show-overflow-tooltip
@@ -96,15 +93,15 @@
 
                     <el-table-column
                         label="角色类型"
-                        prop="RoleType"
+                        prop="roletype"
                         sortable
                         show-overflow-tooltip                        
                     >
                         <template slot-scope="scope">
-                            <span v-if="scope.row.RoleType == 1"> 
+                            <span v-if="scope.row.roletype == 'roleType_one'"> 
                                 系统角色
                             </span>
-                            <span v-if="scope.row.RoleType == 2"> 
+                            <span v-if="scope.row.roletype == 'roleType_two'"> 
                                 企业自定义角色
                             </span>                            
                         </template>                    
@@ -112,19 +109,19 @@
 
                     <el-table-column
                         label="角色级别"
-                        prop="RoleLevel"
+                        prop="rolelevel"
                         sortable
                         show-overflow-tooltip                        
                     >
                         <template slot-scope="scope">
-                            <!-- scope.row.RoleLevel： {{scope.row.RoleLevel}} -->
-                            <span v-if="scope.row.RoleLevel == 1"> 
+                            <!-- scope.row.rolelevel： {{scope.row.rolelevel}} -->
+                            <span v-if="scope.row.rolelevel == 'roleLevel_one'"> 
                                 总部
                             </span>
-                            <span v-if="scope.row.RoleLevel == 2"> 
+                            <span v-if="scope.row.rolelevel == 'roleLevel_two'"> 
                                 分部
                             </span>      
-                            <span v-if="scope.row.RoleLevel == 3"> 
+                            <span v-if="scope.row.rolelevel == 'roleLevel_three'"> 
                                 部门
                             </span>                                                    
                         </template>
@@ -132,19 +129,19 @@
 
                     <!-- <el-table-column
                         label="最大授权人数"
-                        prop="MaxAuthNum"
+                        prop="maxauthnum"
                     >
                         <template slot-scope="scope">
-                            <span v-if="scope.row.MaxAuthNum == 0">
+                            <span v-if="scope.row.maxauthnum == 0">
                                 无限制
                             </span>
-                            <span v-else>{{scope.row.MaxAuthNum}}</span>
+                            <span v-else>{{scope.row.maxauthnum}}</span>
                         </template>
                     </el-table-column>   -->
 
                     <el-table-column
                         label="描述"
-                        prop="Description"
+                        prop="description"
                         show-overflow-tooltip                        
                     >
 
@@ -152,14 +149,14 @@
 
                     <el-table-column
                         label="状态"
-                        prop="State"
+                        prop="state"
                         sortable
                     >
                         <template slot-scope="scope">
-                            <span v-if="scope.row.State == 0">
+                            <span v-if="scope.row.state == 0">
                                 停用
                             </span>
-                            <span v-if="scope.row.State == 1">
+                            <span v-if="scope.row.state == 1">
                                 启用
                             </span>                            
                         </template>
@@ -176,6 +173,14 @@
                             >
                                 编辑
                             </el-button> -->
+
+                            <el-button 
+                                type="text" 
+                                size="mini"
+                                @click.native="handlerStopOrUsing(scope.row, scope.$index)">
+                                {{scope.row.state == 1? '停用':'启用'}}
+                            </el-button>   
+
                             <el-button 
                                 type="text" 
                                 size="mini"
@@ -214,16 +219,16 @@
                     <div class="item-container">
                         <el-form-item
                             label="名称"
-                            prop="RoleName"
+                            prop="rolename"
                         >
-                            <el-input v-model='currentRow.RoleName' placeholder="请输入"></el-input>
+                            <el-input v-model='currentRow.rolename' placeholder="请输入"></el-input>
                         </el-form-item>
                     </div>
 
                     <div class="item-container">
                         <el-form-item
                             label="角色类型"
-                            prop="RoleType"
+                            prop="roletype"
                         >
                             <!-- <el-switch
                                 v-model="currentRow.IsSys"
@@ -239,21 +244,21 @@
                                     系统角色
                                 </span>  
                             </template> -->
-                            <!-- currentRow.RoleType {{currentRow.RoleType}} -->
-                            <el-button type="text" size="mini" v-if="currentRow.RoleType ==1">系统角色</el-button>
-                            <el-button type="text" size="mini" v-if="currentRow.RoleType ==2">企业自定义角色</el-button>
+                            <!-- currentRow.roletype {{currentRow.roletype}} -->
+                            <el-button type="text" size="mini" v-if="currentRow.roletype ==1">系统角色</el-button>
+                            <el-button type="text" size="mini" v-if="currentRow.roletype ==2">企业自定义角色</el-button>
                         </el-form-item>
                     </div> 
 
                     <div class="item-container">
                         <!-- roleOptions: {{roleOptions}} -->
-                        <el-form-item label="所属角色组" prop="RoleGroupCode">
-                           <el-select v-model="currentRow.RoleGroupCode">
+                        <el-form-item label="所属角色组" prop="rolegroupcode">
+                           <el-select v-model="currentRow.rolegroupcode">
                                <el-option 
                                 v-for="(item, index) in roleOptions"
                                 :key="index"
                                 :label="item.RoleGroupName"
-                                :value="item.RoleGroupCode"
+                                :value="item.rolegroupcode"
                                 >
                                </el-option>
                            </el-select> 
@@ -263,19 +268,19 @@
                     <div class="item-container">
                         <el-form-item
                             label="描述"
-                            prop="Description"
+                            prop="description"
                         >
-                            <el-input v-model='currentRow.Description' placeholder="请输入"></el-input>
+                            <el-input v-model='currentRow.description' placeholder="请输入"></el-input>
                         </el-form-item>
                     </div>                      
 
                     <div class="item-container">
                         <el-form-item
                             label="状态"
-                            prop="State"
+                            prop="state"
                         >
                             <el-switch
-                                v-model="currentRow.State"
+                                v-model="currentRow.state"
                                 active-value="1"
                                 inactive-value="0"                            
                             ></el-switch>
@@ -320,8 +325,7 @@
                     :roleGroupShow="true"
                     @emitAddToUserOrGroup="emitAddToUserOrGroup"
                     @closeDialog = 'closeAddToRoleGroupDialog'
-                    :currentCode = 'queryObj.roleGroupCode'
-                    :propGroupObjArr="[currentTreeNodeObj]"
+                    :currentCode = 'queryObj.rolegroupcode'
                 ></add-to-rolegroup-cmp>
             </el-dialog>
         </div>
@@ -330,53 +334,35 @@
 </template>
 
 <script type="text/ecmascript-6">
-//   import MenuTreeCmp from '@/base/Manage-common-cmp/MenuTree-cmp'
   import SaveFooter from '@/base/Save-footer/Save-footer'
-  import SearchToolsCmp from './searchTools-cmp'
+  import SearchToolsCmp from '@/base/NewStyle-cmp/common-cmp/searchTool-cmp'
+  import SearchCmp from './searchTools-cmp.vue'  
   import SortItemCmp from './SortItem-cmp'
   import AddToRolegroupCmp from '@/base/Manage-common-cmp/addToRolegroup-cmp/addToRolegroupWrap-cmp'
   import  { REQ_OK } from '@/api/config'
+  import { CommonInterfaceMixin } from '@/utils/CommonInterfaceMixin'
   import { 
-    getCompRoleList,
+    getRoleList,
     batchDelComRoleGroup,
     getCompRoleGroupTree,
     setCompUserToGroup,
     saveComRoleGroup,
   }from '@/api/systemManage'
+  import { easingAnimate, NewAnimateFn } from '@/utils/easingAnimation.js'
   export default {
+    mixins: [CommonInterfaceMixin],
     props:{
-        // 左边点击的树节点传过来的
-        currentTreeNodeObj:{
-            type: Object,
-            default: () => {
-                return {}
-            }
-        },        
-        // 左边树组件选中的当前菜单
-        currentPcode: {
-            type: String,
-            default: ''
-        }
+
     },
     components: {
+        SearchCmp,
         SearchToolsCmp,
         SortItemCmp,
         SaveFooter,
         AddToRolegroupCmp
     },
     watch: {
-        currentPcode:{
-            handler(newValue, oldValue){
-                this.queryObj.pcode = newValue
-            },
-            immediate: true
-        },
-        currentKeyName:{
-            handler(newValue, oldValue){
-                this.queryObj.key = newValue
-            },
-            immediate: true
-        }
+
     },
     data(){
       return {
@@ -389,24 +375,26 @@
         multipleSelection: [], // 全选
         showAddToRoleGroup: false,  // 添加到角色组弹框显示/隐藏
         currentRow: {
-            Id: '',
-            CompanyCode: '', //企业编号
-            RoleId: '',   //角色组编号
-            RoleName: '', // 角色组名称
-            Description: '',  // 描述说明
-            RoleType: '',  // 角色类型
-            RoleLevel: '', // 角色级别
-            MaxAuthNum: '', // 最大授权人数  0 不受限制
-            State:  "1"// 状态  1 启用        
+            id: '',
+            companycode: '', //企业编号
+            roleid: '',   //角色组编号
+            rolename: '', // 角色组名称
+            description: '',  // 描述说明
+            roletype: '',  // 角色类型
+            rolelevel: '', // 角色级别
+            maxauthnum: '', // 最大授权人数  0 不受限制
+            state:  1// 状态  1 启用        
         },  // 当前的row
         currentTableData: [],  // 右边table表格的数据
         queryObj: {
-            pageSize: 10,
-            pageNum: 1,
-            total: 0,
-            key: '',
-            roleGroupCode: '',
-            permissionId:''
+          pageSize: 10,
+          pageNum: 1,
+          total: 0,
+          rolename: '',
+          rolegroupcode: '',
+          roleGroup: [],
+          roletype: '',
+          state: '',
         },
         fileList: [
                 // {   name: 'food.jpeg', 
@@ -418,73 +406,72 @@
                 // }
             ],
         dialogObjRules: {
-            RoleName: [{required: true, trigger: 'blur', message: '请输入名称'}],
+            rolename: [{required: true, trigger: 'blur', message: '请输入名称'}],
             // range: [{required: true, trigger: ['change'], message: '请选择范围'}],
-            RoleGroupCode:[{required: true, trigger: 'change', message: '请选择角色组名'}],
-            RoleId: [{required: true, trigger: ['change'], message: '请选择所属角色组'}],
-            // Description: [{required: true, trigger: ['blur'], message: '请填写备注'}]
+            rolegroupcode:[{required: true, trigger: 'change', message: '请选择角色组名'}],
+            roleid: [{required: true, trigger: ['change'], message: '请选择所属角色组'}],
+            // description: [{required: true, trigger: ['blur'], message: '请填写备注'}]
         }
       }
     },
     created(){
         // 获取table表格数据
-        // this._getCompRoleList()
+        // this._getRoleList()
         this.$nextTick(() => {
-            this.$bus.$on("currentMenuObj", (obj) => {
+            this.$bus.$on("treeEmitBus", (obj) => {
                 debugger
-                this.queryObj.roleGroupCode = obj.RoleGroupCode
-                this._getCompRoleList()
+                this.queryObj.rolegroupcode = obj.rolegroupcode
+                this._getRoleList()
             })
         })
+
     },
     beforeDestroy(){
         this.$bus.$off("currentMenuObj")
     },
     methods: {
         _getComTables(){
-            this._getCompRoleList()
+            this._getRoleList()
         },
         // 全选/取消全选
         handleSelectionChange(val){
             this.multipleSelection = val
         },
-        emitAddToUserOrGroup(roleGroupCode){
+        emitAddToUserOrGroup(rolegroupcode){
             // 重新定位 树  和 刷新列表
-            this.queryObj.roleGroupCode = roleGroupCode
-            this.$bus.$emit("resetTreeActive", roleGroupCode)
+            this.queryObj.rolegroupcode = rolegroupcode
+            this.$bus.$emit("resetTreeActive", rolegroupcode)
             this._getComTables()
-        },           
-        // 获取 表格数据
-        _getCompRoleList(){
+        }, 
+        // 获取table列表数据
+        _getRoleList(){
             debugger
             this.loading = true
-            getCompRoleList(this.queryObj.roleGroupCode, this.queryObj.permissionId, this.queryObj.key).then(res => {
-                debugger
-                this.loading = false
-            if(res && res.data.State === REQ_OK){
-                this.currentTableData = res.data.Data 
-                this.queryObj.total = res.data.Total     
+            getRoleList(this.queryObj).then(res => {
+            debugger
+            this.loading = false
+            if(res && res.data.State === REQ_OK) {
+                this.currentTableData = res.data.Data.records
+                this.queryObj.total = res.data.Data.total
             }else {
-                this.$message.error(`获取系统菜单列表数据失败,${res.data.Error}`)
+                this.$message.error(`获取列表数据失败,${res.data.Error}`)
             }
-            }).catch(() => {
-                // this.$message.warning("获取系统菜单列表数据出错了")
             })
-        },
+        },                  
         emitRefreshTable(obj){
             debugger
             Object.assign(this.queryObj, obj)
-            this._getCompRoleList()
+            this._getRoleList()
         },
         // 分页--每页多少条
         handleSizeChange (val) {
             this.queryObj.pageSize = val
-            this._getCompRoleList()
+            this._getRoleList()
         },
         // 分页--当前页
         handleCurrentChange (val) {
             this.queryObj.pageNum = val
-            this._getCompRoleList()
+            this._getRoleList()
         },   
         // 获取角色组所属下拉源
         _getRoleGroupOption(){
@@ -497,17 +484,59 @@
                     this.$message.error(`获取角色组所属下拉源数据失败,${res.data.Error}`)
                 }
             })
-        },     
+        }, 
+        // 批量移除
+        handlerBatchDelete(){
+            debugger
+            let statusText = '批量删除'
+            let baseKey = 'sys_rolegroup'            
+            let name = ''
+            let ids = []
+            let length = this.multipleSelection.length
+            if(length){
+                this.multipleSelection.forEach((item, key) => {
+                    item.id && ids.push(item.id)
+                    if(key != length-1){
+                        name += item.rolename + ','
+                    }else {
+                        name += item.rolename
+                    }
+                })
+                this.commonDeleteListMixin({
+                    statusText,
+                    name,
+                    ids,
+                    baseKey
+                })                
+            }          
+        },
+        // 移除
+        handlerDelete(row, index){
+            debugger
+            this.currentRow = row            
+            if(row.id){
+                let statusText = '删除'
+                let name = row.rolename || ''
+                let ids = row.id ? [row.id] : []
+                let baseKey = 'sys_rolegroup'
+                this.commonDeleteListMixin({
+                    statusText,
+                    name,
+                    ids,
+                    baseKey
+                })
+            }            
+        },            
         // 编辑
         handlerEdit(row, index) {
             debugger
             this.addOrEditFlag = 1
-            if(row.State == 1){
-                row.State = '1'
-            }else if(row.State == 0){
-                row.State = '0'
+            if(row.state == 1){
+                row.state = '1'
+            }else if(row.state == 0){
+                row.state = '0'
             }else {
-                row.State = '1'
+                row.state = '1'
             }
 
             this._getRoleGroupOption()
@@ -515,7 +544,7 @@
 
             this.currentRow = row
         },
-        _setCompUserToGroup(roleGroupCode, strJson){
+        _setCompUserToGroup(rolegroupcode, strJson){
             debugger
             setCompUserToGroup().then(res => {
                 if(res && res.data.State === REQ_OK){
@@ -547,15 +576,15 @@
         handlerAdd(){
             this.addOrEditFlag = 0
             Object.assign(this.currentRow, {
-                Id: 0,
-                CompanyCode: '', //企业编号
-                RoleId: '',   //角色组编号
-                RoleName: '', // 角色组名称
-                Description: '',  // 描述说明
-                RoleType: '',  // 角色类型
-                RoleLevel: '', // 角色级别
-                MaxAuthNum: '', // 最大授权人数  0 不受限制
-                State: "1" // 状态  1 启用        
+                id: 0,
+                companycode: '', //企业编号
+                roleid: '',   //角色组编号
+                rolename: '', // 角色组名称
+                description: '',  // 描述说明
+                roletype: '',  // 角色类型
+                rolelevel: '', // 角色级别
+                maxauthnum: '', // 最大授权人数  0 不受限制
+                state: "1" // 状态  1 启用        
             })
             this.showEditDialog = true
         },
@@ -566,7 +595,7 @@
         },
         // 搜索
         clickSearchBtn(){
-            this._getCompRoleList()
+            this._getRoleList()
         },
         // 重置
         clickResetBtn(){
@@ -575,69 +604,25 @@
                 pageNum: 1,
                 total: 0,
                 key: '',
-                roleGroupCode: '',
-                permissionId: ''             
+                rolegroupcode: '',
+                permissionid: ''             
             })
-            this._getCompRoleList()
+            this._getRoleList()
         },
-        // 删除列表
-        _batchDelComRoleGroup(data){
-            this.loading = true
-            batchDelComRoleGroup(JSON.stringify(data)).then(res => {
-                debugger
-                this.loading = false
-                if(res.data.State === REQ_OK){
-                    this.$message.success("删除成功")
-                    this._getCompRoleList()
-                }else {
-                    this.$message.error(`删除失败,${res.data.Error}`)
-                }
-            }).catch(() => {
-                this.$message.warning("删除出错了")
+        // 停用/启用
+        handlerStopOrUsing(row){
+            debugger           
+            let statusText = row.state == 1? '停用': '启用'
+            let name = row.rolename || ''
+            let ids = row.id ? [row.id] : []
+            let baseKey = 'sys_rolegroup'
+            this.commonSetStatusMixin({
+                statusText,
+                name,
+                ids,
+                baseKey
             })
-        },
-        // 移除
-        handlerDelete(row, index){
-            debugger
-            this.currentRow = row
-            this.$confirm(`确定要移除"${row.RoleName}"吗？`,"提示", {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消'
-            }).then(()=>{
-                this._batchDelComRoleGroup([this.currentRow])
-            }).catch(() =>{
-                this.$message({
-                    type: 'info',
-                    message: '已取消删除'
-                })
-            })
-        },
-        // 批量移除
-        handlerBatchDelete(){
-            debugger
-            let str = ''
-            let length = this.multipleSelection.length
-            if(length){
-                this.multipleSelection.forEach((item, key) => {
-                    if(key != length-1){
-                        str += item.RoleName + ','
-                    }else {
-                        str += item.RoleName
-                    }
-                })
-            }
-            this.$confirm(`确定要移除"${str}"吗？`,"提示", {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消'
-            }).then(()=>{
-                this._batchDelComRoleGroup(this.multipleSelection)
-            }).catch(() =>{
-                this.$message({
-                    type: 'info',
-                    message: '已取消删除'
-                })
-            })            
-        },
+        },         
         // 删除前的回调
         handleRemove(file, fileList) {
             console.log(file, fileList);
@@ -660,7 +645,7 @@
                 this.sortDialogLoading = false
                 if(res && res.data.State === REQ_OK){
                     this.$message.success('排序保存成功')
-                    this._getCompRoleList()
+                    this._getRoleList()
                 }else {
                     this.$message.error(`保存排序失败,${res.data.Error}`)
                 }
@@ -671,7 +656,7 @@
         saveSort(data){
             if(data && data.length){
                 data.forEach((item, key) => {
-                    item.SortId = key
+                    item.Sortid = key
                 })
             }
             this._sortSysMenu(data)
@@ -685,7 +670,7 @@
                 if(res && res.data.State ===REQ_OK ){
                     this.$message.success("保存成功")
                     this.showEditDialog = false
-                    this._getCompRoleList()
+                    this._getRoleList()
                 }else {
                     this.$message.error(`保存失败,${res.data.Error}`)
                 }
