@@ -42,7 +42,8 @@ router.beforeEach(async(to, from, next) => {
           //   await router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
           //   next({...to, replace: true}) // hack方法 确保addRoutes已完成
           // })
-          next({...to})
+          // next({...to})
+          next({...to, replace: true}) // hack方法 确保addRoutes已完成
         }).catch(() => {
           debugger
           store.dispatch('LogOut').then(() => {

@@ -32,7 +32,7 @@
           class="tit ellipsis2"
           :style="fieldLabelStyle"
         >
-          {{isTitle ? obj.DisplayName : ''}}
+          {{isTitle ? obj.conname : ''}}
           <icon-svg 
             class="fieldRequiredIcon"
             v-show="!isShowing && obj.Require"
@@ -46,10 +46,14 @@
         </span>
       </div>
 
-      <div v-if="!isShowing" class="fieldValueWrap u-f-g0">
+      <div 
+        v-if="!isShowing" 
+        class="fieldValueWrap u-f-g0"
+        :style="fieldValueWrapStyle"
+      >
         <!-- <icon-svg 
           class="fieldRequiredIcon"
-          :icon-class="obj.FieldValue"
+          :icon-class="obj.convalue"
         ></icon-svg>           -->
         <el-button
           size="mini"
@@ -64,13 +68,14 @@
       <div 
         class="fieldValueWrap showValue line-bottom u-f-g0" 
         v-else
+        :style="fieldValueWrapStyle"
       >
         <el-button
           size="mini"
           type="primary"
           icon="el-icon-s-promotion"
           @click.native="handlerClickLinkPageBtn(obj)"          
-          :disabled="obj.Readonly || !isHasAddOrEditAuth()"
+          :disabled="isDisabledField"
         >
           跳转到{{obj.Link}}页面
         </el-button>
@@ -101,9 +106,16 @@
 <script type="text/ecmascript-6">
   // import FieldLinkDetail from '@/base/NewStyle-cmp/Field-cmp/Base-fieldLink-detail'
   import { validatEmail, validatMobilePhone, validatTel, validateViewAuth } from '@/utils/validate'
-  import iconSvg from '@/base/Icon-svg/index'  
+  import iconSvg from '@/base/Icon-svg/index' 
+  import { commonFiledsViewFns } from './common-fields-mixins.js'
   export default {
+    mixins: [ commonFiledsViewFns ],
     props: {
+      //是否需要调取下拉源
+      isNeedGetDataSource: {
+        type: Boolean,
+        default: false  // 默认不需要
+      },       
       //是否需要校验
       isNeedCheck: {
         type: Boolean,
@@ -147,24 +159,15 @@
           return
         }
   
-        if (this.obj.Require && !this.obj.FieldValue.length) {
-          callback(new Error('请选择' + this.obj.DisplayName))
-        } else if (this.obj.Max > 0 && this.obj.FieldValue.length > this.obj.Max) {
-          callback(new Error(`${this.obj.DisplayName}最多选择${this.obj.Max}个`))
+        if (this.obj.Require && !this.obj.convalue.length) {
+          callback(new Error('请选择' + this.obj.conname))
+        } else if (this.obj.Max > 0 && this.obj.convalue.length > this.obj.Max) {
+          callback(new Error(`${this.obj.conname}最多选择${this.obj.Max}个`))
         } else {
           callback()
         }
       }
-      return {
-        resAuth: {
-          "scanViewEncry": 0,  // 查看视图是否加密   1 和 0 区分
-          "addorEditViewEdit": 1,  // 新增/编辑视图是否可编辑   1 和 0 区分
-          "scanViewShow": 1,  // 查看视图是否可见   1 和 0 区分
-          "editViewShow": 1,  // 编辑视图是否可见   1 和 0 区分
-          "addViewShow": 1,  // 新增视图是否   1 和 0 区分          
-        },         
-        RequiredSvg: 'Required',
-        fieldLabelStyle: 'color: #000000;width: 100px',        
+      return {       
         rules: {
           required: this.obj.Require,
           type: 'array',
@@ -175,48 +178,7 @@
       }
     },
     computed: {
-      // 是否显示字段
-      isShowField(){
-        // {
-        //   "scanViewEncry": str.split("")[4],  // 查看视图是否加密   1 和 0 区分
-        //   "addorEditViewEdit": str.split("")[3],  // 新增/编辑视图是否可编辑   1 和 0 区分
-        //   "scanViewShow": str.split("")[2],  // 查看视图是否可见   1 和 0 区分
-        //   "editViewShow": str.split("")[1],  // 编辑视图是否可见   1 和 0 区分
-        //   "addViewShow": str.split("")[0],  // 新增视图是否   1 和 0 区分
-        // }
-
-        // '' 和View-TM 直接显示   新增：Add-TM  编辑：Edit-TM 删除：Del-TM  查看：View-TM  表的话就是Add-SH，Edit-SH，Del-SH，View-SH
-        switch(this.viewType){
-          case 'View-TM':  //查看页面 
-          case 'View-SH':
-          case  '3001':
-            this.resAuth = Object.assign(this.resAuth, validateViewAuth(this.obj.Vr, this.obj))            
-            return true
-          case  'Add-TM':  // 新增页面
-          case  'Add-SH':  
-          case  '3002':
-            if(this.obj.Vr) {
-              // 视图的 显示编辑权限
-              this.resAuth = Object.assign(this.resAuth, validateViewAuth(this.obj.Vr, this.obj))
-              return this.resAuth.addViewShow == 1 ? true: false
-            } 
-          case  'Edit-TM': // 编辑页面
-          case  'Edit-SH': 
-          case  '3003': 
-          case  '3005': 
-            if(this.obj.Vr) {
-              // 视图的 显示编辑权限
-              this.resAuth = Object.assign(this.resAuth, validateViewAuth(this.obj.Vr, this.obj))
-              // debugger
-              // alert(222222)
-              return this.resAuth.addViewShow == 1 ? true: false
-            } 
-          default:
-            this.resAuth = Object.assign(this.resAuth, validateViewAuth(this.obj.Vr, this.obj))            
-            // 默认情况下 都显示字段
-            return true
-        }
-      },    
+   
     },    
     created () {
       // this.$set(this.obj, 'CombineType', '0030303')
@@ -231,10 +193,6 @@
     mounted () {
     },
     methods: {
-      // 新增/编辑页面 是否有权限编辑
-      isHasAddOrEditAuth(){
-        return this.resAuth.addorEditViewEdit == 1 ? true : false
-      },
       // 页面跳转link
       handlerClickLinkPageBtn(obj){
         debugger

@@ -11,7 +11,7 @@
     :prop="prop"
     :rules="rules"
     v-if="isShowField">
-    obj：{{obj}}
+    eventTypeResult： {{eventTypeResult}}
     <div 
       class="filedContentWrap u-f-ac u-f-jst"
     >
@@ -20,7 +20,7 @@
           class="tit ellipsis2"
           :style="fieldLabelStyle"
         >
-          {{isTitle ? obj.DisplayName : ''}}
+          {{isTitle ? obj.conname : ''}}
           <icon-svg 
             class="fieldRequiredIcon"
             v-show="!isShowing && obj.Require"
@@ -34,14 +34,18 @@
         </span>
       </div>
 
-      <div v-if="!isShowing" class="fieldValueWrap u-f-g0">      
+      <div 
+        v-if="!isShowing" 
+        class="fieldValueWrap u-f-g0"
+        :style="fieldValueWrapStyle"
+      >      
         <el-input 
           v-if="!isShowing"
           class="fieldValue"
           clearable 
-          v-model="obj.FieldValue" 
+          v-model="obj.convalue" 
           size="mini" 
-          :disabled="obj.Readonly || !isHasAddOrEditAuth()"        
+          :disabled="isDisabledField"        
           :type="isPassWordField? 'password':'number'"          
           :placeholder="obj.ActRemind ||　'请输入'"
           @change="numChange">
@@ -51,8 +55,9 @@
       <div 
         class="fieldValueWrap showValue line-bottom u-f-g0" 
         v-else
+        :style="fieldValueWrapStyle"
       >
-        <span class="ellipsis2">{{obj.FieldValue}}</span>
+        <span class="ellipsis2">{{obj.convalue}}</span>
       </div>    
     <!-- <span class="unit">{{obj.Unit === '1' ? '' : obj.Unit}}</span> -->
     </div>
@@ -60,10 +65,17 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import { validatEmail, validatMobilePhone, validatTel, validatMoney, validateViewAuth } from '@/utils/validate'
+  import { validatEmail, validatMobilePhone, validatTel, validatMoney } from '@/utils/validate'
   import iconSvg from '@/base/Icon-svg/index'
+  import { commonFiledsViewFns } from './common-fields-mixins.js'
   export default {
+    mixins: [ commonFiledsViewFns ],
     props: {
+      //是否需要调取下拉源
+      isNeedGetDataSource: {
+        type: Boolean,
+        default: false  // 默认不需要
+      },       
       //是否需要校验
       isNeedCheck: {
         type: Boolean,
@@ -102,24 +114,15 @@
           return
         }
         
-        if (this.obj.Require && (this.obj.FieldValue === '' || !this.obj.FieldValue)) {
-          callback(new Error(this.obj.DisplayName + '不能为空'))
-        } else if (this.obj.Require && !validatMoney(this.obj.FieldValue, this.obj.Digit)) {
+        if (this.obj.Require && (this.obj.convalue === '' || !this.obj.convalue)) {
+          callback(new Error(this.obj.conname + '不能为空'))
+        } else if (this.obj.Require && !validatMoney(this.obj.convalue, this.obj.Digit)) {
           callback(new Error(`格式输入不正确，且小数点后最多${this.obj.Digit}位`))
         } else {
           callback()
         }
       }
-      return {
-        resAuth: {
-          "scanViewEncry": 0,  // 查看视图是否加密   1 和 0 区分
-          "addorEditViewEdit": 1,  // 新增/编辑视图是否可编辑   1 和 0 区分
-          "scanViewShow": 1,  // 查看视图是否可见   1 和 0 区分
-          "editViewShow": 1,  // 编辑视图是否可见   1 和 0 区分
-          "addViewShow": 1,  // 新增视图是否   1 和 0 区分          
-        },          
-        RequiredSvg: 'Required',
-        fieldLabelStyle: 'color: #000000;width: 100px',         
+      return {         
         rules: {
           required: this.obj.Require,
           fieldLabelStyle: 'color: #000000;width: 100px',
@@ -129,60 +132,11 @@
       }
     },
     computed: {
-      // 是否显示字段
-      isShowField(){
-        // {
-        //   "scanViewEncry": str.split("")[4],  // 查看视图是否加密   1 和 0 区分
-        //   "addorEditViewEdit": str.split("")[3],  // 新增/编辑视图是否可编辑   1 和 0 区分
-        //   "scanViewShow": str.split("")[2],  // 查看视图是否可见   1 和 0 区分
-        //   "editViewShow": str.split("")[1],  // 编辑视图是否可见   1 和 0 区分
-        //   "addViewShow": str.split("")[0],  // 新增视图是否   1 和 0 区分
-        // }
-
-        // '' 和View-TM 直接显示   新增：Add-TM  编辑：Edit-TM 删除：Del-TM  查看：View-TM  表的话就是Add-SH，Edit-SH，Del-SH，View-SH
-        switch(this.viewType){
-          case 'View-TM':  //查看页面 
-          case 'View-SH':
-          case  '3001':
-            this.resAuth = Object.assign(this.resAuth, validateViewAuth(this.obj.Vr, this.obj))            
-            return true
-          case  'Add-TM':  // 新增页面
-          case  'Add-SH':  
-          case  '3002':
-            if(this.obj.Vr) {
-              // 视图的 显示编辑权限
-              this.resAuth = Object.assign(this.resAuth, validateViewAuth(this.obj.Vr, this.obj))
-              return this.resAuth.addViewShow == 1 ? true: false
-            } 
-          case  'Edit-TM': // 编辑页面
-          case  'Edit-SH': 
-          case  '3003': 
-          case  '3005': 
-            if(this.obj.Vr) {
-              // 视图的 显示编辑权限
-              this.resAuth = Object.assign(this.resAuth, validateViewAuth(this.obj.Vr, this.obj))
-              // debugger
-              // alert(222222)
-              return this.resAuth.addViewShow == 1 ? true: false
-            } 
-          default:
-            this.resAuth = Object.assign(this.resAuth, validateViewAuth(this.obj.Vr, this.obj))            
-            // 默认情况下 都显示字段
-            return true
-        }
-      }, 
-      // 是否加密显示字段
-      isPassWordField(){
-        return this.resAuth.scanViewEncry == 1 ? true: false
-      }      
+     
     },    
     created () {
     },
-    methods: {
-      // 新增/编辑页面 是否有权限编辑
-      isHasAddOrEditAuth(){
-        return this.resAuth.addorEditViewEdit == 1 ? true : false
-      },        
+    methods: {        
       // 发起页面中，数字输入变化后，需要触发一个事件 到时 计算公式(/table-control-rule-cmp/base=calculate.vue)的组件需要相应来自动计算值
       numChange(){
         // this.$bus.$emit('numChange',this.trObj, this.tdIndex)
@@ -193,12 +147,6 @@
         handler (newValue, oldValue) {
           // 每当obj的值改变则发送事件update:obj , 并且把值传过去
           this.$emit('update:obj', newValue)
-          // 发起页面中，数字输入变化后，需要触发一个事件 到时 计算公式(/table-control-rule-cmp/base=calculate.vue)的组件需要相应来自动计算值
-          try{
-            this.$bus.$emit('numChange',this.trObj, this.tdIndex)
-          }catch(error){
-
-          }
         },
         deep: true
       }

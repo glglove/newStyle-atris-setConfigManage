@@ -7,6 +7,8 @@ import ElementUI from 'element-ui' // element组件
 import '../theme/index.css'  // 引入 自定义主题样式
 import { Message, Notify } from 'element-ui'
 import vueQuillEditor from 'vue-quill-editor' // vue 富文本组件
+import mavonEditor from 'mavon-editor'
+// import 'mavon-editor/dist/css/index.css'
 import App from './App'
 import * as filters from './filters/index' // 全局 filter
 import router from './router' // vue-router 路由
@@ -18,9 +20,9 @@ import './authority-directives.js' // 全局自定义指令
 import './authority-directives1.js' // 全局自定义指令
 import VueDND from 'awe-dnd'  // 拖拽
 import BaiduMap from 'vue-baidu-map'  // 百度地图
-// import toExcel from '@/utils/exportExcel' // 导入封装好 导出excel的方法
 import eGuideLayer from '@/utils/guide/e-guide-layer.umd'  // 引导组件
-import './utils/guide/e-guide-layer.css'
+import './utils/guide/e-guide-layer.css'  // 引导组件
+import { debounce } from '@/utils/debounce.js'
 
 // 全局的 抽屉组件
 import AtrisDrawer from '@/base/Drawer/drawer'
@@ -37,6 +39,7 @@ Vue.config.productionTip = false
 Vue.use(ElementUI)
 // 使用 富文本编辑器
 Vue.use(vueQuillEditor)
+// Vue.use(mavonEditor)
 Vue.use(require('vue-wechat-title'))
 // 使用 引用的 拖拽 组件
 Vue.use(VueDND)
@@ -48,12 +51,15 @@ Vue.use(BaiduMap, {
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
+
 Vue.prototype.$bus = new Vue()
 // 将导出excel 的方法挂入 vue 的原型中
 Vue.prototype.$isArray = function (data) {
   return Object.prototype.toString.apply(data) === '[object Array]'? true: false 
 }
-// Vue.prototype.$toExcel = toExcel
+
+Vue.prototype.$debounce = debounce
+
 /* eslint-disable no-new */
 new Vue({
   router,

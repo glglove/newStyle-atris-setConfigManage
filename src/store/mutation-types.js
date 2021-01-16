@@ -1,4 +1,6 @@
 
+export const SET_CRYPTO = 'SET_CRYPTO'
+
 export const NETWORKSTATUS = "NETWORKSTATUS"
 
 export const SET_TOGGLE_SIDEBAR = 'SET_TOGGLE_SIDEBAR'

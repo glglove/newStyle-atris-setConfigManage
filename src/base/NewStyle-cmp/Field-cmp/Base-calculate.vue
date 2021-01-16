@@ -60,7 +60,7 @@
           class="tit ellipsis2"
           :style="fieldLabelStyle"
         >
-        {{isTitle ? obj.DisplayName : ''}}
+        {{isTitle ? obj.conname : ''}}
         <icon-svg 
           class="fieldRequiredIcon"
           v-show="!isShowing && obj.Require"
@@ -88,7 +88,7 @@
         <el-button 
           size="small" 
           type="primary" 
-          :disabled="obj.Readonly || !isHasAddOrEditAuth()"          
+          :disabled="isDisabledField"          
           @click.native="dialogVisible = true"
         >配置</el-button>        
       </div>
@@ -97,7 +97,7 @@
         class="fieldValueWrap showValue line-bottom u-f-g0" 
         v-else
       >
-        <span> {{obj.CalculateRule}} = {{obj.FieldValue || '无'}}</span>
+        <span> {{obj.CalculateRule}} = {{obj.convalue || '无'}}</span>
       </div> 
 
 
@@ -125,8 +125,8 @@
                     <div 
                       v-for="(item, key) in numFieldList"
                       :key="key">
-                      <div style="margin-bottom: 10px" @click="handleNumFieldOrMark(item.FieldName)">
-                        <el-tag style="width: 100%;text-align: center">{{item.FieldName}}</el-tag>
+                      <div style="margin-bottom: 10px" @click="handleNumFieldOrMark(item.conname)">
+                        <el-tag style="width: 100%;text-align: center">{{item.conname}}</el-tag>
                       </div>
                     </div>
                   </div>
@@ -169,10 +169,17 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import { validatEmail, validatMobilePhone, validatTel, validateViewAuth } from '@/utils/validate'
+  import { validatEmail, validatMobilePhone, validatTel } from '@/utils/validate'
   import iconSvg from '@/base/Icon-svg/index'
+  import { commonFiledsViewFns } from './common-fields-mixins.js'
   export default {
+    mixins: [ commonFiledsViewFns ],
     props: {
+      //是否需要调取下拉源
+      isNeedGetDataSource: {
+        type: Boolean,
+        default: false  // 默认不需要
+      },             
       // 是否需要校验
       isNeedCheck: {
         type: Boolean,
@@ -218,15 +225,6 @@
     },
     data () {
       return {
-        resAuth: {
-          "scanViewEncry": 0,  // 查看视图是否加密   1 和 0 区分
-          "addorEditViewEdit": 1,  // 新增/编辑视图是否可编辑   1 和 0 区分
-          "scanViewShow": 1,  // 查看视图是否可见   1 和 0 区分
-          "editViewShow": 1,  // 编辑视图是否可见   1 和 0 区分
-          "addViewShow": 1,  // 新增视图是否   1 和 0 区分          
-        },         
-        RequiredSvg: 'Required',
-        fieldLabelStyle: 'color: #000000;width: 100px',
         rules: {
           required: false
         },        
@@ -245,52 +243,7 @@
       }
     },
     computed: {
-      // 是否显示字段 
-      isShowField(){
-        // {
-        //   "scanViewEncry": str.split("")[4],  // 查看视图是否加密   1 和 0 区分
-        //   "addorEditViewEdit": str.split("")[3],  // 新增/编辑视图是否可编辑   1 和 0 区分
-        //   "scanViewShow": str.split("")[2],  // 查看视图是否可见   1 和 0 区分
-        //   "editViewShow": str.split("")[1],  // 编辑视图是否可见   1 和 0 区分
-        //   "addViewShow": str.split("")[0],  // 新增视图是否   1 和 0 区分
-        // }
 
-        // '' 和View-TM 直接显示   新增：Add-TM  编辑：Edit-TM 删除：Del-TM  查看：View-TM  表的话就是Add-SH，Edit-SH，Del-SH，View-SH
-        switch(this.viewType){
-          case 'View-TM':  //查看页面 
-          case 'View-SH':
-          case  '3001':
-            this.resAuth = Object.assign(this.resAuth, validateViewAuth(this.obj.Vr, this.obj))            
-            return true
-          case  'Add-TM':  // 新增页面
-          case  'Add-SH':  
-          case  '3002':
-            if(this.obj.Vr) {
-              // 视图的 显示编辑权限
-              this.resAuth = Object.assign(this.resAuth, validateViewAuth(this.obj.Vr, this.obj))
-              return this.resAuth.addViewShow == 1 ? true: false
-            } 
-          case  'Edit-TM': // 编辑页面
-          case  'Edit-SH': 
-          case  '3003': 
-          case  '3005': 
-            if(this.obj.Vr) {
-              // 视图的 显示编辑权限
-              this.resAuth = Object.assign(this.resAuth, validateViewAuth(this.obj.Vr, this.obj))
-              // debugger
-              // alert(222222)
-              return this.resAuth.addViewShow == 1 ? true: false
-            } 
-          default:
-            this.resAuth = Object.assign(this.resAuth, validateViewAuth(this.obj.Vr, this.obj))            
-            // 默认情况下 都显示字段
-            return true
-        }
-      }, 
-      // 是否加密显示字段
-      isPassWordField(){
-        return this.resAuth().scanViewEncry == 1 ? true: false
-      },
     },
     created () {
       // 获取数字和金额控件
@@ -317,10 +270,6 @@
       // 销毁
     },
     methods: {
-      // 新增/编辑页面 是否有权限编辑
-      isHasAddOrEditAuth(){
-        return this.resAuth.addorEditViewEdit == 1 ? true : false
-      },
       // 点击数字或符号控件
       handleNumFieldOrMark (item) {
         if (item === '清空') {

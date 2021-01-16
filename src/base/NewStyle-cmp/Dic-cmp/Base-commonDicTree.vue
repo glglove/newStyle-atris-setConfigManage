@@ -13,38 +13,40 @@
         border: 1px solid red
     }
 }
->>>.el-tree-node__content
-    height 45px !important;
-    .el-tree-node__expand-icon
-        margin-top -5px; 
->>>.el-form-item__content
-    line-height 30px !important
->>>.el-input__inner 
-    height 20px !important;
-    line-height 20px !important;
->>>.el-input__icon
-    line-height 30px !important
->>>.el-select-dropdown
-    top 195px !important
->>>.el-color-picker
-    vertical-align top
->>>.el-image
-    vertical-align middle
->>>.el-tree-node>.el-tree-node__children
-    overflow visible !important
-.treeBox
-    margin-left 50px
-.showFilterWrap
-.markWrap
-    padding 0 10px 10px 10px;
-    font-size 12px;
-    line-height 15px;
-    .text
-        color: #909399
-.dic-tree
-    margin 10px 20px
+
+.dicCmpTreeWrap
+    >>>.el-tree-node__content
+        height 45px !important;
+        .el-tree-node__expand-icon
+            margin-top -5px; 
+    >>>.el-form-item__content
+        line-height 30px !important
+    >>>.el-input__inner 
+        height 20px !important;
+        line-height 20px !important;
+    >>>.el-input__icon
+        line-height 30px !important
+    >>>.el-select-dropdown
+        top 195px !important
+    >>>.el-color-picker
+        vertical-align top
+    >>>.el-image
+        vertical-align middle
+    >>>.el-tree-node>.el-tree-node__children
+        overflow visible !important
+    .treeBox
+        margin-left 50px
+    .showFilterWrap
+    .markWrap
+        padding 0 10px 10px 10px;
+        font-size 12px;
+        line-height 15px;
+        .text
+            color: #909399
+    .dic-tree
+        margin 10px 20px
 .commonDicCmp
-    .custom-tree-wrap
+    >>>.custom-tree-wrap
         height 100%
         display inline-block
         .nameBox,.descriptionBox,.remarkBox,.colorBox,.picBox,.cmpExplainBox,.childCmpBox,.cmpIsrequiredBox
@@ -82,8 +84,8 @@
 </style>
 <template>
     <div class="commonDicCmp" v-loading = 'loading'>
-        treeData: {{treeData}}    
-        <el-row class="dic-row">              
+        treeData: {{treeData}}  
+        <el-row class="dic-row dicCmpTreeWrap">              
             <el-col :span="24">
                 <div class="addNewTreeBox">
                     <el-button 
@@ -400,25 +402,30 @@
         <atris-drawer-cmp
           v-if="showAddNew"
           tit="新增"    
-          :dialog.sync="showAddNew"        
+          :dialog.sync="showAddNew"    
+          width="400px"    
           @emitClickSureBtn="saveAdd"
         >  
             <el-form 
                 slot="container-slot" 
                 ref="addNewForm" 
-                label-width="120px" 
+                label-width='50px'
                 :model="addNewObj" 
                 :rules="addNewObjRules"
             >
                 <el-form-item  label="名称" prop="dicName">
                     <el-input
+                        style="width: 250px;"
                         v-model="addNewObj.dicName"
+                        size="small"
                         placeholder="请输入名称"
                     >
                     </el-input>
                 </el-form-item>  
                 <el-form-item label="描述" prop="description">
                     <el-input
+                        size="small"
+                        style="width: 250px;"
                         v-model="addNewObj.description"
                         placeholder="请输入描述"
                     >
@@ -507,6 +514,9 @@ export default {
                 showIsConfig: false
             },
             showAddNew: false,
+            getDicSourceParams: {
+                dicCode: this.propDicCode,
+            },
             addNewObj: {
                 treeId: ++treeId, 
                 parentdiccode: this.propDicCode,
@@ -546,15 +556,15 @@ export default {
     },
     methods:{
         _refreshData(){
-            this._newStyleGetDicTree(this.propDicCode)
+            this._newStyleGetDicTree()
         },       
         _initData(){
             // 初始获取树形数据
-            this._newStyleGetDicTree(this.propDicCode)
+            this._newStyleGetDicTree()
         },
-        _newStyleGetDicTree(parentdiccode){
+        _newStyleGetDicTree(){
             this.loading = true
-            newStyleGetDicTree(parentdiccode).then(res => {
+            newStyleGetDicTree(this.getDicSourceParams).then(res => {
                 this.loading = false
                 if(res && res.data.State === REQ_OK){
                     this.treeData = res.data.Data.records

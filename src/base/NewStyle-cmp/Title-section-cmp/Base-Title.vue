@@ -11,7 +11,8 @@
             <div 
                 v-for="(item, key) in sectionData.SectionData"
                 :key="key"
-                v-html="item.Value"></div>
+                v-html="item.Value"
+            ></div>
         </el-col>
     </el-row>
 </template>

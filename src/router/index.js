@@ -2113,7 +2113,18 @@ export const asyncRouterMap = [
         children: [
           {
             path: 'dataBase',
-            component: () => import('@/components/manage/companySetting/systemSetting/dataBase/dataBase'),
+            component: () => import('@/components/manage/companySetting/systemSetting/dataBase/index'),
+            name: '物理表',
+            noDropdown: true,
+            hidden: false,
+            meta: {
+              title: '物理表',
+              hidden: false
+            }                
+          },          
+          {
+            path: 'showTable',
+            component: () => import('@/components/manage/companySetting/systemSetting/showTable/showTable'),
             name: '显示表',
             noDropdown: true,
             hidden: false,

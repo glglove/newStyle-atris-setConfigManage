@@ -51,6 +51,7 @@ export function getCommonBusinessCode (){
         url: '/common-business-code/findList',
         method: 'post',
         data: {
+            Method: 'getCommonBusinessCode',
             params: {
 
             }

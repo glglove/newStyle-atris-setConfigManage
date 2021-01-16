@@ -10,14 +10,14 @@
         <el-button 
           @click.native="cancel" 
           v-if="isCancel"
-          :size="saveBtnSize"
+          :size="cancelBtnSize"
         >{{cancelText}}</el-button>
       </span>
       <span v-show="saveBtnIsShow">
         <el-button  
           v-atris-flowRuleScan="{styleBlock:'inline-block'}" 
           type="primary" 
-          :size="cancelBtnSize"
+          :size="saveBtnSize"
           @click.native="save"
         >{{saveText}}</el-button>
       </span>

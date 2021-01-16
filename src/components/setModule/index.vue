@@ -40,6 +40,7 @@
         height: calc(100% - 60px);
         overflow: hidden;
         margin-top: 20px;
+        padding-left: 20px;
         >>>.leftSectionWrap {
             height: 100%;
             width: 300px;
@@ -69,7 +70,7 @@
 </style>
 <template>
     <el-row class="setModule u-f u-f-column">
-        <el-col :span="24" class="topWrap">
+        <el-col :span="24" class="topWrap" v-if="showTopNav">
             <div class="headerWrap u-f">
                 <div class="left-header">
                     <i class="el-icon-back"></i>
@@ -103,7 +104,9 @@
         </el-col>
         <el-col :span="24" class="containerWrap u-f">
             <el-col :span="4" class="leftSectionWrap">
-                <left-cmp @leftChangeEmit="leftChangeEmit"></left-cmp>
+                <left-cmp 
+                    @leftChangeEmit="leftChangeEmit"
+                ></left-cmp>
             </el-col>
             <el-col :span="16" class="middleSectionWrap">
                 currentLeftSelectArr: {{currentLeftSelectArr}}
@@ -126,21 +129,24 @@
     </el-row>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
     import LeftCmp from './leftSection/LeftSection-cmp.vue'
     import MiddleCmp from './middleSection/MiddleSection-cmp.vue'
     import RightCmp from './rightSection/RightSection-cmp.vue'
     import { 
         REQ_OK
     } from '@/api/config'
-    import { 
-
-    } from '@/api/newStyleConfig'
     import {
         // setLocalStorage,
         // getLocalStorage
     } from '@/utils/auth.js'
     export default {
+        props: {
+            showTopNav: {
+                type: Boolean,
+                default: true
+            }
+        },
         components: {
             LeftCmp,
             MiddleCmp,
@@ -148,16 +154,18 @@
         },
         data(){
             return {
-               currentLeftSelectArr: [],
-               currentMiddleSelectObj: null,
-               currentMiddleSelectObjIndex: '',
-               activeHeaderText: '页面设置'
+                currentLeftSelectArr: [],
+                currentMiddleSelectObj: null,
+                currentMiddleSelectObjIndex: '',
+                activeHeaderText: '页面设置'
             }
         },
         created(){
-            
         },
         methods: {
+            initData(){
+            
+            },
             clickHeaderText(tit){
                 this.activeHeaderText = tit
             },

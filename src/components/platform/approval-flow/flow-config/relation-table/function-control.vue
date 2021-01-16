@@ -249,7 +249,7 @@
         tableMain: {},  
         tableDetail: {},
         tableAttachment: {},
-        roleRange: '', // 当前的rolerange
+        roleRange: '', // 当前的versions
         flowId: 0, // 当前的 flowId
         flowMain: {},  // 主表数据
         flowDetail: {}, // 明细表数据

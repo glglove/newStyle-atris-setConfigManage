@@ -18,7 +18,7 @@ import fetch from '@/utils/fetch'
 //     url: '/SystemManage/Account',
 //     method: 'post',
 //     data:  {
-//       Method: 'logon',
+//       Method: 'login',
 //       UserName,
 //       pwd: MD5(pwd),
 //       companyCode
@@ -37,7 +37,7 @@ export async function loginByUsername (accountname, password ) {
   return fetch({
     url: '/sys-user/login',
     method: 'post',
-    Method: 'logon',
+    Method: 'login',    
     data: {
       params:  {
         accountname,
@@ -72,6 +72,9 @@ export function getUserInfo () {
     method: 'post',
     data: {
       Method: 'getUserInfo',
+      params: {
+        username: 'gaol'
+      }
     }
   })
 }

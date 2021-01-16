@@ -35,7 +35,7 @@
         class="tit ellipsis2"
         :style="fieldLabelStyle"
       >
-        {{isTitle ? obj.DisplayName : ''}}
+        {{isTitle ? obj.conname : ''}}
         <icon-svg 
           class="fieldRequiredIcon"
           v-show="!isShowing && obj.Require"
@@ -49,7 +49,11 @@
       </span>
     </div>  
 
-    <div v-if="!isShowing" class="fieldValueWrap u-f-g0">
+    <div 
+      v-if="!isShowing" 
+      class="fieldValueWrap u-f-g0"
+      :style="fieldValueWrapStyle"
+    >
       <el-upload
         v-if="!isShowing"
         class="upload-demo fieldValue"
@@ -68,9 +72,9 @@
         :on-exceed="handleExceed"
         :file-list="fileList"
       >
-        <el-button slot="trigger" :disabled="obj.Readonly || !isHasAddOrEditAuth()" size="small" type="primary">选择</el-button>
+        <el-button slot="trigger" :disabled="isDisabledField" size="small" type="primary">选择</el-button>
         <el-button 
-          :disabled="isUploading || obj.Readonly || !isHasAddOrEditAuth()" 
+          :disabled="isUploading || isDisabledField" 
           style="margin-left: 10px;" 
           size="small" 
           type="success" 
@@ -83,7 +87,7 @@
       </el-upload>
 
       <div 
-        v-if="obj.Readonly || !isHasAddOrEditAuth()"
+        v-if="isDisabledField"
         class="shade"
       >
       </div>
@@ -92,11 +96,12 @@
     <div 
       class="fieldValueWrap showValue line-bottom u-f-g0" 
       v-else
+      :style="fieldValueWrapStyle"
     >
-      <!-- <span class="ellipsis2">{{obj.FieldValue}}</span> -->
+      <!-- <span class="ellipsis2">{{obj.convalue}}</span> -->
       <el-image 
         style="width: 100px"
-        v-for="(item, key) in obj.FieldValue"
+        v-for="(item, key) in obj.convalue"
         :key="key"
         :src="item.Url"
         fit="fill"
@@ -108,15 +113,22 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import { validatEmail, validatMobilePhone, validatTel, validateViewAuth } from '@/utils/validate'
+  import { validatEmail, validatMobilePhone, validatTel } from '@/utils/validate'
   import { REQ_OK } from '@/api/config'
   import {
     UploadAttachments,
     DeleteAttachment
   } from '@/api/employee'
   import { mapGetters } from 'vuex';
+  import { commonFiledsViewFns } from './common-fields-mixins.js'
   export default {
+    mixins: [ commonFiledsViewFns ],
     props: {
+      //是否需要调取下拉源
+      isNeedGetDataSource: {
+        type: Boolean,
+        default: false  // 默认不需要
+      },       
       //是否需要校验
       isNeedCheck: {
         type: Boolean,
@@ -152,23 +164,14 @@
           return
         }
 
-        if (this.obj.Require && this.obj.FieldValue && !this.obj.FieldValue.length) {
-          // callback(new Error('请选择' + this.obj.DisplayName))
+        if (this.obj.Require && this.obj.convalue && !this.obj.convalue.length) {
+          // callback(new Error('请选择' + this.obj.conname))
           callback()
         } else {
           callback()
         }   
       }
-      return {
-        resAuth: {
-          "scanViewEncry": 0,  // 查看视图是否加密   1 和 0 区分
-          "addorEditViewEdit": 1,  // 新增/编辑视图是否可编辑   1 和 0 区分
-          "scanViewShow": 1,  // 查看视图是否可见   1 和 0 区分
-          "editViewShow": 1,  // 编辑视图是否可见   1 和 0 区分
-          "addViewShow": 1,  // 新增视图是否   1 和 0 区分          
-        },         
-        RequiredSvg: 'Required',
-        fieldLabelStyle: 'color: #000000;width: 100px',        
+      return {       
         rules: {
           required: this.obj.Require,
           validator: validatePass,
@@ -186,49 +189,7 @@
     computed: {
       ...mapGetters([
         'currentEmpObj'
-      ]),
-      // 是否显示字段
-      isShowField(){
-        // {
-        //   "scanViewEncry": str.split("")[4],  // 查看视图是否加密   1 和 0 区分
-        //   "addorEditViewEdit": str.split("")[3],  // 新增/编辑视图是否可编辑   1 和 0 区分
-        //   "scanViewShow": str.split("")[2],  // 查看视图是否可见   1 和 0 区分
-        //   "editViewShow": str.split("")[1],  // 编辑视图是否可见   1 和 0 区分
-        //   "addViewShow": str.split("")[0],  // 新增视图是否   1 和 0 区分
-        // }
-
-        // '' 和View-TM 直接显示   新增：Add-TM  编辑：Edit-TM 删除：Del-TM  查看：View-TM  表的话就是Add-SH，Edit-SH，Del-SH，View-SH
-        switch(this.viewType){
-          case 'View-TM':  //查看页面 
-          case 'View-SH':
-          case  '3001':
-            this.resAuth = Object.assign(this.resAuth, validateViewAuth(this.obj.Vr, this.obj))            
-            return true
-          case  'Add-TM':  // 新增页面
-          case  'Add-SH':  
-          case  '3002':
-            if(this.obj.Vr) {
-              // 视图的 显示编辑权限
-              this.resAuth = Object.assign(this.resAuth, validateViewAuth(this.obj.Vr, this.obj))
-              return this.resAuth.addViewShow == 1 ? true: false
-            } 
-          case  'Edit-TM': // 编辑页面
-          case  'Edit-SH': 
-          case  '3003': 
-          case  '3005': 
-            if(this.obj.Vr) {
-              // 视图的 显示编辑权限
-              this.resAuth = Object.assign(this.resAuth, validateViewAuth(this.obj.Vr, this.obj))
-              // debugger
-              // alert(222222)
-              return this.resAuth.addViewShow == 1 ? true: false
-            } 
-          default:
-            this.resAuth = Object.assign(this.resAuth, validateViewAuth(this.obj.Vr, this.obj))            
-            // 默认情况下 都显示字段
-            return true
-        }
-      },      
+      ]),    
       proStatus () { // 上传状态
         if (this.pass) {
           return 'success'
@@ -241,15 +202,15 @@
     },
     created () {
       debugger
-      if(this.obj.FieldCode === 'PEEPhoto'){
+      if(this.obj.concode === 'PEEPhoto'){
         // 员工照片时 每次只允许上传 一张
         this.limitNum = 1
       }
-      console.log("*************",this.obj.FieldValue)
-      if (!this.obj.FieldValue) {
-        this.obj.FieldValue = []
-      } else if (this.obj.FieldValue.length) {
-        this.fileList = this.obj.FieldValue.map(i => {
+      console.log("*************",this.obj.convalue)
+      if (!this.obj.convalue) {
+        this.obj.convalue = []
+      } else if (this.obj.convalue.length) {
+        this.fileList = this.obj.convalue.map(i => {
           if(i.Name){
             // 初始进入时
             return {
@@ -269,11 +230,7 @@
       }
       console.log("base-img-upload-created中打印的fileList", this.fileList)
     },
-    methods: {
-      // 新增/编辑页面 是否有权限编辑
-      isHasAddOrEditAuth(){
-        return this.resAuth.addorEditViewEdit == 1 ? true : false
-      },      
+    methods: {   
       // 删除
       delete (url, AttachmentId) {
         debugger
@@ -296,8 +253,8 @@
             }       
             
             debugger
-            // 处理 obj.FieldValue中的数据
-            this.obj.FieldValue = this.fileList
+            // 处理 obj.convalue中的数据
+            this.obj.convalue = this.fileList
 
             console.log("删除成功后打印 this.fileList", this.fileList)
           } else {
@@ -316,7 +273,7 @@
       // 删除前的回调
       beforeRemove (file, fileList) {
         debugger
-        console.log(file, fileList, this.obj.FieldValue)
+        console.log(file, fileList, this.obj.convalue)
         if (this.obj.Role && this.obj.Role !== 2) {
           this.$message({
             type: 'info',
@@ -336,8 +293,8 @@
               // 证明是还未上传到服务器上面的
               item.uid === file.uid && arr.splice(key, 1)
 
-              // 处理 obj.FieldValue中的数据
-              this.obj.FieldValue = this.fileList     
+              // 处理 obj.convalue中的数据
+              this.obj.convalue = this.fileList     
                        
               if(!fileList.length) this.progress = 0
             }else {
@@ -405,7 +362,7 @@
             // 将上传成功后返回的数据做处理
             res.data.Data.forEach(i => {
               debugger
-              this.obj.FieldValue = this.obj.FieldValue.concat([{
+              this.obj.convalue = this.obj.convalue.concat([{
                 Name: i.Name,
                 Url: i.Url,
                 AttachmentId: i.AttachmentId,
@@ -422,7 +379,7 @@
 
             debugger
             console.log("上传成功后打印 this.fieldList", this.fileList)
-            console.log("上传成功后打印this.obj.FieldValue",this.obj.FieldValue)
+            console.log("上传成功后打印this.obj.convalue",this.obj.convalue)
             // this.$refs.imgForm.handleSuccess('success', this.selectFileList[0].raw)
           } else {
             this.$message.error(res.data.Error)

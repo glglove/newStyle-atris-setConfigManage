@@ -1,3 +1,5 @@
+export const cryptoInfo = state => state.user.cryptoInfo
+
 export const sidebar = state => state.app.sidebar
 
 export const netWorkStatus = state => state.app.online

@@ -19,8 +19,8 @@ export const NO_USER = -2
 // 用户被限制登录
 export const LIMIT_LOGIN = -3
 
-// 密码错误
-export const ERR_PWD = 1000
+// 密码错误  参数错误
+export const ERR = 1000
 
 // 多设备登录
 export const DOUBLE_DEVICE = -5

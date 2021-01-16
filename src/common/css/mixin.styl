@@ -17,6 +17,24 @@ no-wrap()
   display: none;
 }
 
+// select框后 隐藏 边框
+// :focus-within {
+//   border: none;
+//   outline: none;
+// }
+>>>.el-select--medium{
+  vertical-align: bottom !important;
+}
+.el-select--medium{
+  vertical-align: bottom !important;
+}
+.el-dialog{ 
+  -webkit-backface-visibility: hidden; 
+}
+>>>.el-dialog{ 
+  -webkit-backface-visibility: hidden; 
+}
+
 // 扩展点击区域
 extend-click()
   position: relative
@@ -208,7 +226,13 @@ leave-active()
   flex-wrap: wrap !important
 }
 
-
+.topTitleNav {
+  height: 30px;
+  line-height: 30px;
+  padding-right: 50px;
+  background-color: #fff;
+  border-bottom: 2px dotted rgba(0,0,0,0.1)
+}
 
 .bgAnimation {
   position: relative;
@@ -226,7 +250,7 @@ leave-active()
   }
 }
 
-@keyframes bgAnimation {
+@keyframes testBgAnimation {
   0% {
     width: 1%;
     opacity: 0.5;

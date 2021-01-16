@@ -26,6 +26,10 @@ const vuexLocal = new VuexPersistense({
         tableCodeCustomer: val.directive.tableCodeCustomer,
         flowRuleScanFlag: val.directive.flowRuleScanFlag,
         currentTabStr: val.directive.currentTabStr
+      },
+      // 引入user模板，对象里面可配置需要持久化的status
+      user: {
+        cryptoInfo: val.user.cryptoInfo
       }
     }
   }

@@ -11,36 +11,36 @@
             :visible.sync="dialogShow"
             :direction="direction"
             :wrapperClosable="wrapperClosable"
-            :size="size"
+            :size="width"
             :modal="modal"
             :append-to-body="appendToBody"
             :modal-append-to-body="modalAppendToBody"
             custom-class="atris-drawer"
             ref="atrisDrawer"
         >
-            <div class="content">
+            <div class="drawerBox-content-wrap">
                 <slot name="container-slot">
                 </slot>
-                <div
-                    v-if="showFooterBox" 
-                    class="drawer_footer u-f-ajc">
-                    <el-button 
-                        :size="saveBtnSize"
-                        @click="cancelForm"
-                    >
-                        取 消
-                    </el-button>
-                    <el-button 
-                        v-if="showSaveBtn"
-                        type="primary" 
-                        :size="saveBtnSize"
-                        @click="clickSureBtn" 
-                        :loading="loading"
-                    >
-                        {{ loading ? '提交中 ...' : '确 定' }}
-                    </el-button>
-                </div>
             </div>
+            <div
+                v-if="showFooterBox" 
+                class="drawer_footer u-f-ajc">
+                <el-button 
+                    :size="saveBtnSize"
+                    @click="cancelForm"
+                >
+                    取 消
+                </el-button>
+                <el-button 
+                    v-if="showSaveBtn"
+                    type="primary" 
+                    :size="saveBtnSize"
+                    @click="clickSureBtn" 
+                    :loading="loading"
+                >
+                    {{ loading ? '提交中 ...' : '确 定' }}
+                </el-button>
+            </div>            
         </el-drawer>        
     </div>
 </template>
@@ -75,7 +75,7 @@
                 type: Boolean,
                 default: false
             },
-            size: {
+            width: {
                 type: [String, Number],
                 default: '30%'
             },
@@ -150,4 +150,8 @@
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 >>>.atris-drawer
     overflow auto
+    .el-drawer__body
+        .drawerBox-content-wrap
+            min-height calc(100vh - 150px)
+            padding 20px !important
 </style>

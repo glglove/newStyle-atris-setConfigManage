@@ -9,13 +9,18 @@ import {
 } from '@/utils/auth'
 import {
   REQ_OK,
-  ERR_PWD
+  ERR
 } from '@/api/config'
 import {
   getCommonBusinessCode
 } from '@/api/newStyleConfig'
 const user = {
   state: {
+    cryptoInfo: {
+      isCrypto: false,
+      publicKey: '',
+      privateKey: '',  
+    },
     commonConfigInfo: '',
     userType: '',
     status: '',
@@ -33,6 +38,11 @@ const user = {
   },
 
   mutations: {
+    [types.SET_CRYPTO] (state, obj) {
+      state.cryptoInfo.isCrypto = obj.isCrypto
+      state.cryptoInfo.publicKey = obj.publicKey
+      state.cryptoInfo.privateKey = obj.privateKey
+    },
     [types.SET_COMMON_CONFIGINFO] (state, obj) {
       state.commonConfigInfo = obj
     },
@@ -83,14 +93,20 @@ const user = {
         // 调用登陆接口 进行登陆
         // debugger
         loginByUsername(username, userInfo.password).then(async response => {
-          // debugger
-          if( response.data.State != ERR_PWD ) {
+          debugger
+          if( response.data.State != ERR ) {
             //
             const data = response.data.Data
             // 登陆后 将 tokenId 值存入 cookie中 ，本地环境 存入的 tokenKey 和 线上环境的 tokenkey 不一样，打包线上环境时要注意，在 @/utils/auth.js文件夹中
             setToken(response.data.Data.TokenId)
             // 同时将 tokenId 存入一份到 vuex 中
             commit(types.SET_TOKEN, data.TokenId)
+            // 将是否加密 及秘钥 存入 vuex中
+            commit(types.SET_CRYPTO, {
+              isCrypto: data.isCrypto,
+              publicKey: data.publicKey,
+              privateKey: data.privateKey,
+            })
   
             // 将用户的 身份(企业用户还是 系统用户)存入到 vuex 中
             let type = 1  
@@ -102,7 +118,7 @@ const user = {
           
           resolve(response.data.State)   
         }).catch(error => {
-          debugger
+          // debugger
           reject(error)
         })
       })

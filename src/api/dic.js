@@ -435,16 +435,29 @@ export function deleteDicItem ( id ) {
 
 /**
  * 获取 字典表 tree
- * @params parentdiccode 字典表code
+ * @params versions 版本
+ * @params modulecode 模块code    
+ * @params dsType 字典表类型
+ * @params dicCode 字典表code
+ * @params levelNum 字典表数据源级数
+ * 
 */
 
-export function newStyleGetDicTree ( parentdiccode ) {
+export function newStyleGetDicTree ( getDicSourceParams ) {
+  let obj = {
+    versions: 1,
+    modulecode: '',
+    dsType: 1,
+    dicCode: 1,
+    levelNum: 0
+  }
+  Object.assign(obj, getDicSourceParams)
   return fetch({
     url: '/sys-dic/tree',
     method: 'post',
     data: {   
       params: {
-        parentdiccode
+        ...obj
       }
     }
   })

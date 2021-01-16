@@ -69,18 +69,22 @@
 
     import SeriesBarCmp from '@/base/NewStyle-cmp/Content-section-cmp/Echarts-cmp/Base-seriesBar'
 
-
     import {
         REQ_OK
     } from '@/api/config.js'
     import { 
         GetComponentData,
         teamField,
-        teamFieldValue
+        teamconvalue
     } from '@/api/newStyle.js'    
     // 底部保存组件
     export default {
         props: {
+            //是否需要调取下拉源
+            isNeedGetDataSource: {
+                type: Boolean,
+                default: false  // 默认不需要
+            },               
             columnNum: {
                 type: [String, Number],
                 default: () => {

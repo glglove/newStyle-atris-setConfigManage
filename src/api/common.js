@@ -6,7 +6,7 @@ import store from '../store'
 import { getToken } from '@/utils/auth'
 
 // ------------------------------------------------------------------------------------
-// 通用接口
+// 通用接口 newStyle
 /**
  *  启用/停用
  * @param {*} baseKey   

@@ -31,7 +31,7 @@
         <!-- pageModel: {{pageModel}} -->
         <!----组件部分------>
         <!-- <up-text-cmp sectionData='<div style="color: red">重新入职说明区1</div>'></up-text-cmp> -->
-        <el-row>          
+        <el-row>         
             <el-col 
                 :span="24" 
                 class="sectionItem marginT20"

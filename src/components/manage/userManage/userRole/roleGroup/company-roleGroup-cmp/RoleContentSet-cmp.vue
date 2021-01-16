@@ -60,7 +60,7 @@
 
         <!--table表格区--start-->
         <div class="tableContainerWrap">
-            currentTableData： {{currentTableData}}
+            <!-- currentTableData： {{currentTableData}} -->
             <div :class="['tableList']" v-loading = "loading">
                 <el-table
                     style="width:100%"

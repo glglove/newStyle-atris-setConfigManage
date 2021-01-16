@@ -3174,3 +3174,159 @@ export function addPermissionSet (obj) {
         }
     })
 }
+
+/**
+ * 获取物理表 列表
+ */
+export function getDataBaseList () {
+    return fetch({
+        module: 'SystemManage',
+        url: '/sys-dbs/findPage',
+        method: 'post',
+        data: {
+            Method: 'getDataBaseList',
+            params: {
+                
+            }
+        }
+    })
+}
+
+
+
+/***-----------物理表------------- */
+/**
+ * 新增物理表
+ * @params {} dbcode  物理表code
+ * @params {} name  物理表code
+ * @params {} dbcode  物理表code
+ */
+export function addDataBase (obj) {
+    let {
+        dbcode,
+        name,
+        description,
+        hasmore
+    } = obj    
+    return fetch({
+        module: 'SystemManage',
+        url: '/sys-dbs/addOne',
+        method: 'post',
+        data: {
+            Method: 'addDataBase',
+            params: {
+               ...obj 
+            }
+        }
+    })
+}
+
+/**
+ * 获取所有控件信息
+ * @params {}
+ */
+export function getControlInfo (obj) {
+    let {
+        relateb
+    } = obj
+    return fetch({
+        module: 'SystemManage',
+        url: '/control-types/tree',
+        method: 'post',
+        data: {
+            Method: 'getControlInfo',
+            params: {
+                
+            }
+        }
+    })
+}
+
+
+/**
+ *  物理表设置 中间部分的回显数据
+ * @params {} relateb  
+ */
+export function getMiddleSetData (obj) {
+    let {
+        relateb
+    } = obj    
+    return fetch({
+        module: 'SystemManage',
+        url: '/control-types/getControList',
+        method: 'post',
+        data: {
+            Method: 'getMiddleSetData',
+            params: {
+               ...obj 
+            }
+        }
+    })
+}
+
+
+/**
+ * 获取 某个控件的属性
+ * @params {} controlType  控件类型
+ */
+export function getControlAttributes (obj) {
+    let {
+        controlType,
+        relateb
+    } = obj    
+    return fetch({
+        module: 'SystemManage',
+        url: '/control-types/getAttributionList',
+        method: 'post',
+        data: {
+            Method: 'getControlAttributes',
+            params: {
+               ...obj 
+            }
+        }
+    })
+}
+
+
+/**
+ * 保存 物理表的设置属性
+ * @params {} relateb  
+ * @params {} controlType  
+ * @params {[]} controlValueList: [{unicode, convalue, sortId}] 
+ */
+export function saveControlAttributes (obj) {
+    let {
+        relateb,
+        list
+    } = obj    
+    return fetch({
+        module: 'SystemManage',
+        url: '/team-control-value/addList',
+        method: 'post',
+        data: {
+            Method: 'saveControlAttributes',
+            params: obj
+        }
+    })
+}
+
+/**
+ * 获取 控件配置的事件类型
+ * @params {} unicode  
+ */
+export function getEventResult (obj) {
+    let {
+        unicode,
+    } = obj    
+    return fetch({
+        module: 'SystemManage',
+        url: '/plat-sysmg-sys-linkeventreslut/getList',
+        method: 'post',
+        data: {
+            Method: 'getEventResult',
+            params: {
+                ...obj
+            }
+        }
+    })
+}

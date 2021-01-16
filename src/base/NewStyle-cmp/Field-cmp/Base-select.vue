@@ -31,45 +31,49 @@
           class="tit ellipsis2"
           :style="fieldLabelStyle"
         >
-          {{isTitle ? obj.DisplayName : ''}}
+          {{isTitle ? obj.conname : ''}}
           <icon-svg 
             class="fieldRequiredIcon"
             v-show="!isShowing && obj.Required"
             :icon-class="RequiredSvg"
           ></icon-svg>    
           <el-tooltip 
-            v-if="obj.Description"
-            :content="obj.Description">
+            v-if="obj.description"
+            :content="obj.description">
             <i class="el-icon-info"></i>
           </el-tooltip>               
         </span>
       </div>  
 
       <!-- dataSource: {{dataSource}} -->
-      <!-- obj.FieldValue: {{obj.FieldValue}} -->
-      <div v-if="!isShowing" class="fieldValueWrap u-f-g0">
+      <!-- obj.convalue: {{obj.convalue}} -->
+      <div 
+        v-if="!isShowing" 
+        class="fieldValueWrap u-f-g0"
+        :style="fieldValueWrapStyle"
+      >
         <el-cascader
           class="fieldValue"
           :placeholder="obj.ActRemind ||　'请选择'"
           :options="dataSource"
-          v-model="obj.FieldValue"
+          v-model="obj.convalue"
           clearable
           :props="{
-            'children': 'Children',
-            'label':'Name',
-            'value': 'Code'
+            'children': 'childrenList',
+            'label':'dicName',
+            'value': 'dicCode'
           }"
           filterable
           size="mini"
         >
           <template slot-scope="{ node, data }">
             <span class="u-f-ac">
-              {{ data.Name }}
+              {{ data.dicName }}
               <el-tooltip 
-                v-if="data.Description"
+                v-if="data.description"
                 class="item" 
                 effect="dark" 
-                :content="data.Description" 
+                :content="data.description" 
                 placement="top-start"
               >
                 <i class="el-icon-info" style="margin-left:5px"></i>
@@ -79,7 +83,7 @@
         </el-cascader>
 
         <div         
-          v-if="obj.Readonly || !isHasAddOrEditAuth()"
+          v-if="isDisabledField"
           class="shade"
         >
         </div>  
@@ -88,13 +92,14 @@
       <div 
         class="fieldValueWrap showValue line-bottom u-f-g0" 
         v-else
+        :style="fieldValueWrapStyle"
       >
         <span 
           class="ellipsis2"
-          v-for="(item, key) in obj.FieldValue"
+          v-for="(item, key) in obj.convalue"
           :key="key"
         >
-          {{item.Name}}
+          {{item.dicName}}
         </span>
       </div>             
     </div>
@@ -106,8 +111,16 @@
   import { newStyleGetDicByKey } from '@/api/dic'
   import { validatEmail, validatMobilePhone, validatTel, validateViewAuth } from '@/utils/validate'
   import iconSvg from '@/base/Icon-svg/index'  
+  import { commonFiledsViewFns } from './common-fields-mixins.js'
+  import { fieldsDataSourceMixin } from '@/utils/fieldsDataSourceMixins.js'
   export default {
-    props: {
+    mixins: [commonFiledsViewFns, fieldsDataSourceMixin],
+    props: {   
+      //是否需要调取下拉源
+      isNeedGetDataSource: {
+        type: Boolean,
+        default: true  // 默认需要
+      },       
       //是否需要校验
       isNeedCheck: {
         type: Boolean,
@@ -169,11 +182,11 @@
         if (this.dataSource) {
           if (!this.dataSource.length) {
               // 业务领域存在 但是 dataSource 为空（获取业务领域接口时，返回的业务领域为空，需要重新配置表单）
-            // callback(new Error(this.obj.DisplayName + '所关联的字段范围无数据，请重新配置表单'))
+            // callback(new Error(this.obj.conname + '所关联的字段范围无数据，请重新配置表单'))
             callback()
-          } else if (this.obj.Require && (this.obj.FieldValue === '' || !this.obj.FieldValue)) {
-            // 需要校验，并且 this.obj.FieldValue 为空
-            callback(new Error(this.obj.DisplayName + '不能为空'))
+          } else if (this.obj.Require && (this.obj.convalue === '' || !this.obj.convalue)) {
+            // 需要校验，并且 this.obj.convalue 为空
+            callback(new Error(this.obj.conname + '不能为空'))
           } else {
             callback()
           }
@@ -181,15 +194,6 @@
       }
 
       return {
-        resAuth: {
-          "scanViewEncry": 0,  // 查看视图是否加密   1 和 0 区分
-          "addorEditViewEdit": 1,  // 新增/编辑视图是否可编辑   1 和 0 区分
-          "scanViewShow": 1,  // 查看视图是否可见   1 和 0 区分
-          "editViewShow": 1,  // 编辑视图是否可见   1 和 0 区分
-          "addViewShow": 1,  // 新增视图是否   1 和 0 区分          
-        }, //         
-        RequiredSvg: 'Require',
-        fieldLabelStyle: 'color: #000000;width: 100px',
         rules: {
           required: this.obj.Require,
           required: true,
@@ -200,108 +204,20 @@
       }
     },
     computed: {
-      // 是否显示字段
-      isShowField(){
-        // {
-        //   "scanViewEncry": str.split("")[4],  // 查看视图是否加密   1 和 0 区分
-        //   "addorEditViewEdit": str.split("")[3],  // 新增/编辑视图是否可编辑   1 和 0 区分
-        //   "scanViewShow": str.split("")[2],  // 查看视图是否可见   1 和 0 区分
-        //   "editViewShow": str.split("")[1],  // 编辑视图是否可见   1 和 0 区分
-        //   "addViewShow": str.split("")[0],  // 新增视图是否   1 和 0 区分
-        // }
-
-        // '' 和View-TM 直接显示   新增：Add-TM  编辑：Edit-TM 删除：Del-TM  查看：View-TM  表的话就是Add-SH，Edit-SH，Del-SH，View-SH
-        switch(this.viewType){
-          case 'View-TM':  //查看页面 
-          case 'View-SH':
-          case  '3001':
-            this.resAuth = Object.assign(this.resAuth, validateViewAuth(this.obj.Vr, this.obj))            
-            return true
-          case  'Add-TM':  // 新增页面
-          case  'Add-SH':  
-          case  '3002':
-            if(this.obj.Vr) {
-              // 视图的 显示编辑权限
-              this.resAuth = Object.assign(this.resAuth, validateViewAuth(this.obj.Vr, this.obj))
-              return this.resAuth.addViewShow == 1 ? true: false
-            } 
-          case  'Edit-TM': // 编辑页面
-          case  'Edit-SH': 
-          case  '3003': 
-          case  '3005': 
-            if(this.obj.Vr) {
-              // 视图的 显示编辑权限
-              this.resAuth = Object.assign(this.resAuth, validateViewAuth(this.obj.Vr, this.obj))
-              // debugger
-              // alert(222222)
-              return this.resAuth.addViewShow == 1 ? true: false
-            } 
-          default:
-            this.resAuth = Object.assign(this.resAuth, validateViewAuth(this.obj.Vr, this.obj))            
-            // 默认情况下 都显示字段
-            return true
-        }
-      },    
+   
     },    
     created () {
-      // 获取option 下拉框的数据源
-      this._newStyleGetDicByKey(this.obj.Dstype, this.obj.DataSource)
+
     },
     mounted () {
-      debugger     
     },
     beforeDestroy() {
     },
     watch: {
-      obj: {
-        handler (newValue, oldValue) {
-          // 每当obj的值改变则发送事件update:obj , 并且把值传过去，利用的是数据的双向绑定，父组件通过 .sync 向子组件传值，此方法会实现数据的双向绑定
-          this.$emit('update:obj', newValue)
-        },
-        deep: true
-      }
+
     },
-    methods: {  
-      // 新增/编辑页面 是否有权限编辑
-      isHasAddOrEditAuth(){
-        return this.resAuth.addorEditViewEdit == 1 ? true : false
-      },     
-      _changeData(data){
-        if(data && data.length){
-          data.forEach(item => {
-            if(item.hasOwnProperty("Children")){
-              if(!item.Children.length){
-                delete item.Children
-              }else {
-                this._changeData(item.Children)
-              }
-            }
-          });
-        }
-      }, 
-      // 获取字典表数据源数据
-      _newStyleGetDicByKey (DicType, DicCode) {
-        debugger
-        console.log('dicType', DicType)
-        console.log('DicCode', DicCode)
+    methods: {      
 
-        // 获取数据字典
-        newStyleGetDicByKey(DicType, DicCode).then(res => {
-          debugger
-          if (res.data.State === REQ_OK) {
-            if (res.data.Data.length) {
-                this.dataSource = res.data.Data
-                console.log( "this.dataSource", res.data.Data )
-              if (!this.dataSource.length) return
-
-              // 处理数据 
-              this._changeData(this.dataSource)
-            }else {
-              // 获取的数据源集合为 []
-            }
-          }
-        })
-      }
     }
   }
 </script>

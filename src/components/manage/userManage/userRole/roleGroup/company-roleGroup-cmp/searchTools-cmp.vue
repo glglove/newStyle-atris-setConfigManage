@@ -9,7 +9,7 @@
     position relative
     box-sizing border-box
     .searchTop
-        margin 5px 0 10px 0
+        // margin 5px 0 10px 0
     .item-container
         margin-top 5px
         display inline-block

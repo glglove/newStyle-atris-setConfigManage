@@ -6,7 +6,14 @@ import { Message } from 'element-ui'
 import qs from 'qs'
 import store from '../store'
 // import MD5 from 'js-md5'
-
+import { 
+  REQ_OK,
+  ERR
+} from '@/api/config'
+import {
+  EncRsa,
+  DecRsa
+} from '@/utils/RsaEncrypt.js'
 
 // 创建axios实例
 
@@ -21,12 +28,13 @@ const service = axios.create({
 
 // request拦截器
 service.interceptors.request.use(config => {
-  console.log(store.getters)
-  config.baseURL = 'http://192.168.0.101:9990'   
+  let storeObj = store.getters
+  let encFlag = storeObj.cryptoInfo.isCrypto || false
+  console.log("---------打印是否需要加密传输encFlag----------", encFlag)
+  console.log("--store--",store.getters)
   // debugger
-  // if(config.data.Method === 'GetNoticeTypeList'){
-  //   config.baseURL = 'http://192.168.0.101:801'
-  // }
+  // config.baseURL = 'http://192.168.0.101:9990'   
+  // config.baseURL = 'http://39.106.116.139:9990/'   
   let data = {}
   if(config.method === 'post'){
     // 上传接口时
@@ -38,92 +46,91 @@ service.interceptors.request.use(config => {
   }else if(config.method === 'get' || config.method === 'delete'){
     data = config.params
   }
-
-  
-  if (!config.noQS && config.Method !== 'logon') {
+  debugger
+  if(config.Method === 'login'){
+    // 登录接口
+    // 本地的登录接口login  此时只需要传 商户码、用户名、密码 
+    config.data = JSON.stringify(data)
+  }else {
     // 非登录接口
-    // 测试 newStyle
-    if ( config.module === 'newStyle' ) {
-      // 旧的 newStyle
-      // config.headers['Content-Type'] = 'application/x-www-form-urlencoded'    
-      if (process.env.NODE_ENV === "development"){
-        // debugger
-        // 开发环境
-        console.log(process.env)
-        config.baseURL = 'https://www.caihuiyun.cn/ddd'
-        // config.baseURL = 'http://192.168.0.101'
-        // console.log(config.baseURL)
-      } else if (process.env.NODE_ENV === 'production'){
-        // 生产环境
-        config.baseURL = 'https://www.caihuiyun.cn/ddd'
-        // config.baseURL = 'http://192.168.0.101'
-      }   
-      
+    if(encFlag) {
+      // 需要加密， 需要将data.params 删除掉 给data添加一个 encryptParams 属性
+      // 将data 中的parmas进行加密
+      data.encryptParams = EncRsa(JSON.stringify(data.params))
+      delete data.params
+      // 加上统一参数
       Object.assign(data, {
         'token': getToken(),
         'TenantId': store.getters.companyCode,  // 企业号
         // 'PersonId': store.getters.userCode,  // 员工id
         // 'PersonNo': store.getters.empNo,   // 员工号
         'UserId': store.getters.userCode
-      })
+      })      
+      console.log("打印加密后的data", data)     
 
-      // config.params = JSON.stringify(data)
-      config.params = data  // get 请求 此处需要是 config.params
-    } else {
+    }else {
+      // 不需要加密
+      // 加上统一参数
+      Object.assign(data, {
+        'token': getToken(),
+        'TenantId': store.getters.companyCode,  // 企业号
+        // 'PersonId': store.getters.userCode,  // 员工id
+        // 'PersonNo': store.getters.empNo,   // 员工号
+        'UserId': store.getters.userCode
+      }) 
+    }
 
-      let newData = {}
-      if(config.module === 'testNew'){
-        // config.data = JSON.stringify(data)
-        newData = data
-      }else {
-        // 将 data 里面的参数进行md5 加密
-        newData = Object.assign(data, {
-          'token': getToken(),
-          'TenantId': store.getters.companyCode,  // 企业号
-          'UserId': store.getters.userCode
-        }) 
-      }        
-      config.data = JSON.stringify(newData)       
-    }       
-  } else if (config.Method === 'logon') {
-    // 登录接口
-    config.baseURL = 'http://192.168.0.101:9990'   
-    // config.baseURL = 'https://www.caihuiyun.cn/'   
-    debugger
-    // 本地的登录接口logon  此时只需要传 商户码、用户名、密码 
+    // 序列化data传给后端
     config.data = JSON.stringify(data)
-  }    
-
+  } 
   return config
 }, error => {
-  // 请求错误
-  // Message({
-  //   message: '请求错误，请刷新重试！',
-  //   type: 'error',
-  //   duration: 2000
-  // }) // for debug
   console.log(error)
   return Promise.reject(error)
 })
 
 // respone拦截器
-service.interceptors.response.use(
+service.interceptors.response.use(  
   response => {  
-    // debugger 
-    // debugger
-    response = {
-      data: {
-        Data: response.data.data,
-        State: response.data.code,
-        Error: response.data.msg,
-        
+    debugger
+    let storeObj = store.getters
+    let encFlag = storeObj.cryptoInfo.isCrypto || false
+    let resObj = JSON.parse(JSON.stringify(response))
+    if(response.data.code === REQ_OK){
+      // debugger
+      if(resObj.config.Method != "login") {
+        // response 进行解密
+        if(encFlag) {
+          // debugger
+          resObj.data.data = DecRsa(response.data.data) 
+          console.log("打印解密后的resData", resObj.data.data) 
+        }else {
+      
+        }
+      }else {
+
       }
+
+      response = {
+        data: {
+          Data: resObj.data.data,
+          State: resObj.data.code,
+          Error: resObj.data.msg,
+          
+        }
+      }
+      return response      
+    }else {
+      Message({
+        message: response.data.msg ? response.data.msg : "请求错误,请重试!",
+        type: 'error',
+        duration: 2000
+      })
     }
-    return response
   },
   error => {
     Message({
-      message: '请求错误，请刷新重试！',
+      message: '请求超时,服务器异常',
       type: 'error',
       duration: 2000
     })

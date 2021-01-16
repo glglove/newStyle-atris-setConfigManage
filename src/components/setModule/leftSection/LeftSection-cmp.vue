@@ -7,7 +7,7 @@
 .leftCmp {
     width: 100%;
     .topContent {
-        border-bottom: 1px solid silver;
+        // border-bottom: 1px solid silver;
         .item {
             padding: 10px;
         }

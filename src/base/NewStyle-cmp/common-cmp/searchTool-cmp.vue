@@ -8,14 +8,14 @@
     position relative
     margin 0 0px 10px 0
     box-sizing border-box
-.serchContent
+.searchContent
     opacity 0;
     height 1px;
     overflow hidden
     transition all .8s
     border-radius 5px
     padding 5px
-.serchContent.show
+.searchContent.show
     display block
     opacity 1
     border 1px dotted rgba(0,0,0,.1)
@@ -30,7 +30,7 @@
             class="more-search-conditions-cmp"
         >
             <div 
-                :class="['serchContentWrap']" 
+                :class="['searchContentWrap']" 
                 style="width:100%"
             >
                 <div class="allBtnBox u-f-jsb">
@@ -51,11 +51,18 @@
                     </div>  
                 </div>
 
+                <!-- showMoreSearchWrap: {{showMoreSearchWrap}}
+                ---
+                searchContentStyle: {{searchContentStyle}} -->
                 <div 
-                    :class="['serchContent', showMoreSearchWrap? 'show':'']" 
-                    :style="serchContentStyle"
+                    class="323"
                 >
-                    <slot name="moreSearch"></slot>
+                    <div 
+                        :class="['searchContent', 'u-f-ajc', 'u-f-column',showMoreSearchWrap? 'show':'']" 
+                        :style="{searchContentStyle}"
+                    >
+                        <slot name="moreSearch"></slot>
+                    </div>
                 </div>
             </div>
         </div>
@@ -71,7 +78,7 @@
 
     },
     computed: {
-        serchContentStyle(){
+        searchContentStyle(){
             return `height:${this.searchContentHeight}px`
         }
     },
@@ -81,7 +88,7 @@
     data(){
       return {
         showMoreSearchWrap: false,
-        searchContentHeight: '',  // 搜索内容的宽度
+        searchContentHeight: 0,  // 搜索内容的宽度
       }
     },
     created(){
@@ -93,13 +100,17 @@
             this.$emit("emitRefreshTable", this.queryObj)
             this.showMoreSearchWrap = !this.showMoreSearchWrap
             // debugger
-            let newObj = document.getElementsByClassName("serchContent")[0]
+            let newObj = document.getElementsByClassName("searchContent")[0]
             if(this.showMoreSearchWrap){
-                this.searchContentHeight = document.getElementsByClassName("serchContent")[0].scrollHeight || 0
-                // console.log(document.getElementsByClassName("serchContent")[0].scrollHeight)
-                document.getElementsByClassName("serchContent")[0].style.height = this.searchContentHeight + 'px'
+                document.getElementsByClassName("searchContent")[0].style.display = 'block'
+                this.searchContentHeight = (document.getElementsByClassName("searchContent")[0].scrollHeight) || 0
+                console.log("--------", document.getElementsByClassName("searchContent")[0].scrollHeight + 5)
+                document.getElementsByClassName("searchContent")[0].style.height = this.searchContentHeight +'px'
+                console.log("-------------",document.getElementsByClassName("searchContent")[0].style.height)
             }else {
-                document.getElementsByClassName("serchContent")[0].style.height = '1px'
+                this.searchContentHeight = 0
+                document.getElementsByClassName("searchContent")[0].style.height = '1px'
+                // document.getElementsByClassName("searchContent")[0].style.display = 'none'
             }
         }
     }

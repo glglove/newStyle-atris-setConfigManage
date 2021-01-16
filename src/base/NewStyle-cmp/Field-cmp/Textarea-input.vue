@@ -23,7 +23,7 @@
           class="tit ellipsis2"
           :style="fieldLabelStyle"
         >
-          {{isTitle ? obj.DisplayName : ''}}
+          {{isTitle ? obj.conname : ''}}
           <icon-svg 
             class="fieldRequiredIcon"
             v-show="!isShowing && obj.Require"
@@ -37,13 +37,17 @@
         </span>
       </div>
 
-      <div v-if="!isShowing" class="fieldValueWrap u-f-g0">      
+      <div 
+        v-if="!isShowing" 
+        class="fieldValueWrap u-f-g0"
+        :style="fieldValueWrapStyle"
+      >      
         <el-input
           v-if="!isShowing"
           clearable
           class="textarea-input-rule fieldValue"
-          v-model="obj.FieldValue"
-          :disabled="obj.Readonly || !isHasAddOrEditAuth()" 
+          v-model="obj.convalue"
+          :disabled="isDisabledField" 
           :type="isPassWordField? 'password':'textarea'"  
           :placeholder="obj.ActRemind || '请输入'"
           :maxlength="obj.Max"
@@ -55,18 +59,26 @@
       <div 
         class="fieldValueWrap showValue line-bottom u-f-g0" 
         v-else
+        :style="fieldValueWrapStyle"
       >
-        <span class="ellipsis2">{{obj.FieldValue}}</span>
+        <span class="ellipsis2">{{obj.convalue}}</span>
       </div>        
     </div>
   </el-form-item>
 </template>
 
 <script type="text/ecmascript-6">
-  import { validatEmail, validatMobilePhone, validatTel, validateViewAuth } from '@/utils/validate'
+  import { validatEmail, validatMobilePhone, validatTel } from '@/utils/validate'
   import iconSvg from '@/base/Icon-svg/index'
+  import { commonFiledsViewFns } from './common-fields-mixins.js'
   export default {
+    mixins: [ commonFiledsViewFns ],
     props: {
+      //是否需要调取下拉源
+      isNeedGetDataSource: {
+        type: Boolean,
+        default: false  // 默认不需要
+      },       
       //是否需要校验
       isNeedCheck: {
         type: Boolean,
@@ -105,32 +117,23 @@
           return
         }
         
-        if (this.obj.Require && (this.obj.FieldValue === '' || !this.obj.FieldValue)) {
-          callback(new Error(this.obj.DisplayName + '不能为空'))
-        } else if (this.obj.FieldValue && this.obj.FieldValue.length > 3000) {
+        if (this.obj.Require && (this.obj.convalue === '' || !this.obj.convalue)) {
+          callback(new Error(this.obj.conname + '不能为空'))
+        } else if (this.obj.convalue && this.obj.convalue.length > 3000) {
           callback(new Error('长度不能大于3000字符'))
         } 
-        else if (this.obj.ValidData === '邮箱' && !validatEmail(this.obj.FieldValue)) {
+        else if (this.obj.ValidData === '邮箱' && !validatEmail(this.obj.convalue)) {
           callback(new Error('邮箱格式不正确'))
-        } else if (this.obj.ValidData === '手机' && !validatMobilePhone(this.obj.FieldValue)) {
+        } else if (this.obj.ValidData === '手机' && !validatMobilePhone(this.obj.convalue)) {
           callback(new Error('手机格式不正确'))
-        } else if (this.obj.ValidData === '电话' && !validatTel(this.obj.FieldValue)) {
+        } else if (this.obj.ValidData === '电话' && !validatTel(this.obj.convalue)) {
           callback(new Error('电话格式不正确'))
         }
          else {
           callback()
         }
       }
-      return {
-        resAuth: {
-          "scanViewEncry": 0,  // 查看视图是否加密   1 和 0 区分
-          "addorEditViewEdit": 1,  // 新增/编辑视图是否可编辑   1 和 0 区分
-          "scanViewShow": 1,  // 查看视图是否可见   1 和 0 区分
-          "editViewShow": 1,  // 编辑视图是否可见   1 和 0 区分
-          "addViewShow": 1,  // 新增视图是否   1 和 0 区分          
-        },        
-        RequiredSvg: 'Required',
-        fieldLabelStyle: 'color: #000000;width: 100px',        
+      return {       
         rules: {
           required: this.obj.Require,
           validator: validatePass,
@@ -139,60 +142,12 @@
       }
     },
     computed: {
-      // 是否显示字段
-      isShowField(){
-        // {
-        //   "scanViewEncry": str.split("")[4],  // 查看视图是否加密   1 和 0 区分
-        //   "addorEditViewEdit": str.split("")[3],  // 新增/编辑视图是否可编辑   1 和 0 区分
-        //   "scanViewShow": str.split("")[2],  // 查看视图是否可见   1 和 0 区分
-        //   "editViewShow": str.split("")[1],  // 编辑视图是否可见   1 和 0 区分
-        //   "addViewShow": str.split("")[0],  // 新增视图是否   1 和 0 区分
-        // }
 
-        // '' 和View-TM 直接显示   新增：Add-TM  编辑：Edit-TM 删除：Del-TM  查看：View-TM  表的话就是Add-SH，Edit-SH，Del-SH，View-SH
-        switch(this.viewType){
-          case 'View-TM':  //查看页面 
-          case 'View-SH':
-          case  '3001':
-            this.resAuth = Object.assign(this.resAuth, validateViewAuth(this.obj.Vr, this.obj))            
-            return true
-          case  'Add-TM':  // 新增页面
-          case  'Add-SH':  
-          case  '3002':
-            if(this.obj.Vr) {
-              // 视图的 显示编辑权限
-              this.resAuth = Object.assign(this.resAuth, validateViewAuth(this.obj.Vr, this.obj))
-              return this.resAuth.addViewShow == 1 ? true: false
-            } 
-          case  'Edit-TM': // 编辑页面
-          case  'Edit-SH': 
-          case  '3003': 
-          case  '3005': 
-            if(this.obj.Vr) {
-              // 视图的 显示编辑权限
-              this.resAuth = Object.assign(this.resAuth, validateViewAuth(this.obj.Vr, this.obj))
-              // debugger
-              // alert(222222)
-              return this.resAuth.addViewShow == 1 ? true: false
-            } 
-          default:
-            this.resAuth = Object.assign(this.resAuth, validateViewAuth(this.obj.Vr, this.obj))            
-            // 默认情况下 都显示字段
-            return true
-        }
-      }, 
-      // 是否加密显示字段
-      isPassWordField(){
-        return this.resAuth.scanViewEncry == 1 ? true: false
-      }
     },    
     created () {
     },
     methods: {
-      // 新增/编辑页面 是否有权限编辑
-      isHasAddOrEditAuth(){
-        return this.resAuth.addorEditViewEdit == 1 ? true : false
-      },       
+      
     },
     watch: {
       obj: {

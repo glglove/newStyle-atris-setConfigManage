@@ -326,7 +326,7 @@
           case config.LIMIT_LOGIN:
             this.errorText = '用户被限制登录'
             break
-          case config.ERR_PWD:
+          case config.ERR:
             this.errorText = '密码错误'
             break
           case config.DOUBLE_DEVICE:
@@ -345,6 +345,7 @@
     },
     created () {
       // window.addEventListener('hashchange', this.afterQRScan)
+      // alert(this.$base64("中国"))
     },
     destroyed () {
       // window.removeEventListener('hashchange', this.afterQRScan)
