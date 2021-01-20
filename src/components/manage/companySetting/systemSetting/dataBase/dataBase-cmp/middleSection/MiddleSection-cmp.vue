@@ -45,16 +45,15 @@
 </style>
 <template>
     <div class="middleCmp">
-        <div 
+        <div
             @dragover="overDrag($event)"
             @dragenter="enterDrag($event)"   
             @dragleave="leaveDrag($event)" 
-            @drop="dropDrag($event)"
-            class="containerBox"             
+            @drop="dropDrag($event)"        
+            class="containerBox"    
+            data-containerBox="middleCmpContainerBox"         
         >
-            <!-- 配置板块——中间 -->
-            <!-- cmpsList: {{cmpsList}}        
-             滑动设置部分 -->
+            <!-- 配置板块——中间 -->    
             <!-- {{contentCmpsList}}  -->
             <el-form>
                 <vuedraggable 
@@ -70,8 +69,10 @@
                     :clone="cloneFuc"
                     @change="change"
                     @start="start"
-                    @end="end"                
-                    :move='allow'
+                    @end="end"  
+                    @add="dragedAdd"  
+                    @update="drageUpdate"                              
+                    :move='checkMove'
                 >
                     <transition-group>
                         <div  
@@ -118,51 +119,33 @@
     import { 
         REQ_OK
     } from '@/api/config'
-    import { 
-
-    } from '@/api/newStyleConfig'
     import {
         // setLocalStorage,
         // getLocalStorage
     } from '@/utils/auth.js'
+    import {
+        getMiddleSetData
+    } from '@/api/systemManage.js'
     import Vuedraggable from 'vuedraggable'
-    // import BaseInput from './components-item-cmp/baseInput-cmp'
-    // import BaseSectionShowF from './components-item-cmp/base-sectionShowF-cmp'
-    // import BaseSectionUpText from './components-item-cmp/base-sectionUpText-cmp'
-    // import BaseSectionUpBtn from './components-item-cmp/base-sectionUpBtn-cmp'
-    // import BaseSectionContent from './components-item-cmp/base-sectionContent-cmp'
-    // import BaseSectionDownBtn from './components-item-cmp/base-sectionDownBtn-cmp'
-    // import BaseSectionDownText from './components-item-cmp/base-sectionDownText-cmp'
-    // import BaseSectionLink from './components-item-cmp/base-sectionLink-cmp'
-    // import BaseSectionTail from './components-item-cmp/base-sectionTail-cmp'
     import { fieldControlTypeMixin } from '@/utils/newStyleMixins-fields.js'
     export default {
         mixins: [ fieldControlTypeMixin ],
         props:{
-            cmpsList: {
-                type: Array,
+            objP: {
+                type: Object,
                 default: () => {
-                    return []
+                    return {}
                 }
-            }
+            }             
         },
         components: {
             Vuedraggable,
-            // BaseInput,
-            // BaseSectionShowF,
-            // BaseSectionUpText,
-            // BaseSectionUpBtn,
-            // BaseSectionContent,
-            // BaseSectionDownBtn,
-            // BaseSectionDownText,
-            // BaseSectionLink,
-            // BaseSectionTail
         },
         data(){
             return {
+                loading: false,
                 contentCmpsList: [],
-                currentClickItemObjIndex: 0,
-                currentClickItemObj: null               
+                currentClickItemObjIndex: '',
             }
         },
         computed: {
@@ -176,24 +159,52 @@
             }              
         },
         watch: {
-            cmpsList: {
-                handler(newValue, oldValue) {
-                   this.contentCmpsList = newValue 
+            currentClickItemObjIndex: {
+                handler(newValue, oldValue){
+                    debugger
+                    let obj = this.contentCmpsList[newValue]
+                    this.$bus.$emit("middleClickEmit", obj, newValue)
+                },
+                immediate: true
+            },
+            'contentCmpsList.length': {
+                handler(newValue, oldValue){
+                    this.$bus.$emit("rightDataArr", this.contentCmpsList)
                 }
             }
         },
         created(){
+            this.$nextTick(() => {
+                this.$bus.$on("leftClickItem", (obj, callback) => {
+                    this.contentCmpsList.push(obj)
+                    this.currentClickItemObjIndex = (this.contentCmpsList.length)-1
+                    if(callback){
+                        callback(obj,true)
+                    }
+                })
+            })
+            this.getMiddleSetData()
+        },
+        beforeDestroy(){
+            this.$bus.$off("leftClickItem")
         },
         mounted () {
 
         },
         methods: {
-            currentCmp(obj){
-                let controlType = obj.controlType
-                switch(controlType){
-                    case '1':
-                        return BaseInput
+            getMiddleSetData(){
+                this.loading = true
+                let obj = {
+                    relateb: this.objP.relateb
                 }
+                // 获取中间部分的回显数据
+                getMiddleSetData(obj).then(res => {
+                    this.loading = false
+                    this.contentCmpsList = res.data.Data
+                    if(this.contentCmpsList.length){
+                        this.currentClickItemObjIndex = 0                
+                    }
+                })
             },
             // 拖起来的元素进入到目标区域中时触发事件
             enterDrag(event, sourceId) {
@@ -203,7 +214,6 @@
                 console.log("middleSection拖拽进入到目标元素",e)   
                 // e.dataTransfer.dropEffect = "copy" // 允许拖放复制    
                 document.getElementsByClassName('containerBox')[0].className += ' droping'                      
-                this.currentClickItemObjIndex = 0
             },  
             // 拖动元素在目标区域中移动时触发事件
             overDrag(event){
@@ -211,38 +221,44 @@
                 let e = event || window.event
                 e.preventDefault()
                 console.log("middleSection中拖拽进行中", e)
-            },   
+            }, 
+            // 当拖动元素离开目标区域时触发事件
+            leaveDrag(event, sourceId){
+                // debugger
+                let e = event || window.event
+                console.log("middleSection拖拽离开目标元素",e)                
+                // debugger
+            },                
             // 拖拽释放时                    
             dropDrag(event){
                 debugger
                 let e = event || window.event
                 e.preventDefault();
                 console.log("middleSection中拖拽释放时", e)
-                // let data = e.dataTransfer.getData("currentItemStr");
+                let data = JSON.parse(e.dataTransfer.getData("currentItemStr"));
                 // this.$emit("middleDraggedEmit", this.contentCmpsList, JSON.parse(data))         
-                this.$emit("DraggedFromLeft", this.contentCmpsList)
+                // this.$emit("DraggedFromLeft", this.contentCmpsList)
+                let str = e.currentTarget.dataset.containerbox
+                if(str === 'middleCmpContainerBox'){
+                    // 释放时 是在 middle 中
+                    this.contentCmpsList.push(data)
+                    this.$bus.$emit("changeBadageNum", data, true)
+                    this.currentClickItemObjIndex = (this.contentCmpsList.length)-1
+                }
                 document.getElementsByClassName('containerBox')[0].classList.remove("droping")
-
             }, 
             cloneFuc(obj){
                 // debugger
-            },
-            // 当拖动元素离开目标区域时触发事件
-            leaveDrag(event, sourceId){
-                let e = event || window.event
-                console.log("middleSection拖拽离开目标元素",e)                
-                // debugger
-            },                   
+                console.log("-----------cloneFuc----")
+            },                 
             clickCmpItem(obj, index){
                 debugger
                 this.currentClickItemObjIndex = index
-                this.currentClickItemObj = obj
-                this.$emit("middleClickEmit", this.currentClickItemObj, index)
             },
             // 点击 复制的图标
             handlerClickCopy(obj, index){
                 debugger
-                this.$emit("middleCopyEmit", obj, index)
+                // this.$emit("middleCopyEmit", obj, index)
             },
             // 点击 删除的图标
             handlerClickDelete(obj, index){
@@ -250,16 +266,43 @@
                     confirmButtonText: '确定',
                     cancelButtonText: '取消'
                 }).then(res => {
-                    this.$emit("middleDeleteEmit", obj, index)
-                    this.$bus.$emit("middleDeleteEmitChange", obj)
+                    this.contentCmpsList.splice(index,1)
+                    this.$bus.$emit("changeBadageNum", obj, false)
                 }).catch(err => {
                     // this.$message.info("删除已取消")
                 })
             },            
             //evt里面有两个值，一个evt.added 和evt.removed  可以分别知道移动元素的ID和删除元素的ID
             change: function (evt) {
-                console.log(evt)
+                debugger
+                console.log("vuedragable拖拽完成后打印", evt)
             },
+            dragedAdd(evt){
+                debugger
+                // var itemEl = evt.item; // dragged HTMLElement
+                // evt.to; // target list
+                // evt.from; // previous list
+                // evt.oldIndex; // tag's old index within old parent
+                // evt.newIndex; // tag's new index within new parent
+                // evt.clone; // the clone tag
+                // evt.pullMode; // when item is in another sortable: `"clone"` if cloning, `true` if moving
+                // console.log("移出子列表下标" + evt.oldIndex);
+                // console.log("拖入子列表下标" + evt.newIndex);
+                // this.evtoldIndex = evt.oldIndex;
+                // this.evtnewIndex = evt.newIndex;
+                console.log("0000000000000000000000",JSON.parse(evt.item.dataset.itemdata))
+            },  
+            drageUpdate(evt){
+                // 排序后的更新操作
+                debugger
+                console.log("updated", evt)
+                let evtoldIndex = evt.oldIndex;
+                let evtnewIndex = evt.newIndex;
+                this.currentClickItemObjIndex = evtnewIndex
+                // console.log("updated", this.contentCmpsList)
+                this.$bus.$emit("sortRightDataArr", this.contentCmpsList, evtnewIndex)
+
+            },                       
             //start ,end ,add,update, sort, remove 得到的都差不多
             start: function (evt) {
                 console.log("@@@@@@@@@@@",evt)
@@ -274,10 +317,11 @@
                 // evt.newIndex  // 可以知道拖动后的位置
                 console.log("拖动结束后打印contentCmpsList", this.contentCmpsList)
                 let oldIndex = evt.oldIndex, newIndex = evt.newIndex
-                this.$emit("middleDraggedEmitVueDraged", oldIndex, newIndex)
-            },            
-            allow(evt, originalEvent){
+                // this.$emit("middleDraggedEmitVueDraged", oldIndex, newIndex)
+            },                       
+            checkMove(evt, originalEvent){
                 debugger
+                console.log("---排序后contentCmpsList---", this.contentCmpsList)
                 console.log(originalEvent) //鼠标位置
                 console.log(evt.draggedContext.index)
                 console.log(evt.draggedContext.element)
@@ -286,7 +330,10 @@
                 console.log(evt.relatedContext.element)
                 console.log(evt.relatedContext.list)
                 console.log(evt.relatedContext.component)
+                // 排序后
+                // console.log("---排序后打印 evt.draggedContext.futureIndex---", evt.draggedContext.futureIndex)
+                // this.currentClickItemObjIndex = evt.draggedContext.futureIndex
             }            
         }
     }
-</script>-
+</script>

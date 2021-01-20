@@ -10,7 +10,10 @@
   <el-form-item
     :prop="prop"
     :rules="rules"
-    v-if="!obj.Hide && isShowField">
+    v-show="(beforeHasShow==1) && isShowField"
+  >
+    prop: {{prop}}
+    // eventTypeResult: {{eventTypeResult}}
     <div 
       class="filedContentWrap u-f-ac u-f-jst"
     >
@@ -22,12 +25,14 @@
           {{isTitle ? obj.conname : ''}}
           <icon-svg 
             class="fieldRequiredIcon"
-            v-show="!isShowing && obj.Require"
+            v-show="!isShowing && obj.require"
             :icon-class="RequiredSvg"
           ></icon-svg> 
           <el-tooltip 
-            v-if="obj.Description"
-            :content="obj.Description">
+            v-if="!obj.description"
+            :content="obj.description"
+            effect="dark"
+          >
             <i class="el-icon-info"></i>
           </el-tooltip>                    
         </span>
@@ -46,7 +51,7 @@
           size="mini" 
           :type="isPassWordField? 'password':''"
           :disabled="isDisabledField"
-          :placeholder="obj.ActRemind || '请输入'"
+          :placeholder="obj.actremind || '请输入'"
           class="fieldValue">
         </el-input>  
       </div>
@@ -113,19 +118,19 @@
           return
         }
 
-        console.log("this.obj.Require----", this.obj.Require)
+        console.log("this.obj.require----", this.obj.require)
         console.log("this.obj.convalue-----",this.obj.convalue)
 
-        if (this.obj.Require && (this.obj.convalue === '' || !this.obj.convalue)) {
+        if (this.obj.require && (this.obj.convalue === '' || !this.obj.convalue)) {
           callback(new Error(this.obj.conname + '不能为空'))
         } 
-        else if (this.obj.Require && this.obj.convalue && this.obj.convalue.length > 20) {
+        else if (this.obj.require && this.obj.convalue && this.obj.convalue.length > 20) {
           callback(new Error('长度不能大于20字符'))
-        } else if (this.obj.Require && this.obj.ValidData === '邮箱' && !validatEmail(this.obj.convalue)) {
-          callback(this.obj.Require && new Error('邮箱格式不正确'))
-        } else if (this.obj.Require && this.obj.ValidData === '手机' && !validatMobilePhone(this.obj.convalue)) {
+        } else if (this.obj.require && this.obj.ValidData === '邮箱' && !validatEmail(this.obj.convalue)) {
+          callback(this.obj.require && new Error('邮箱格式不正确'))
+        } else if (this.obj.require && this.obj.ValidData === '手机' && !validatMobilePhone(this.obj.convalue)) {
           callback(new Error('手机格式不正确'))
-        } else if (this.obj.Require && this.obj.ValidData === '电话' && !validatTel(this.obj.convalue)) {
+        } else if (this.obj.require && this.obj.ValidData === '电话' && !validatTel(this.obj.convalue)) {
           callback(new Error('电话格式不正确'))
         } 
         else {
@@ -134,7 +139,7 @@
       }
       return {
         rules: {
-          required: this.obj.Require,
+          required: this.obj.require,
           validator: validatePass,
           trigger: 'blur'
         }

@@ -46,7 +46,7 @@ service.interceptors.request.use(config => {
   }else if(config.method === 'get' || config.method === 'delete'){
     data = config.params
   }
-  debugger
+  // debugger
   if(config.Method === 'login'){
     // 登录接口
     // 本地的登录接口login  此时只需要传 商户码、用户名、密码 
@@ -92,7 +92,7 @@ service.interceptors.request.use(config => {
 // respone拦截器
 service.interceptors.response.use(  
   response => {  
-    debugger
+    // debugger
     let storeObj = store.getters
     let encFlag = storeObj.cryptoInfo.isCrypto || false
     let resObj = JSON.parse(JSON.stringify(response))

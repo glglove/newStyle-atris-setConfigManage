@@ -6,7 +6,6 @@ import { fieldEventObj } from '@/utils/fieldEvent'
 import {
   getEventResult
 } from '@/api/systemManage.js'
-let thatM = null
 export const commonFiledsViewFns = {
     props: {
       //是否需要disable
@@ -17,23 +16,26 @@ export const commonFiledsViewFns = {
     },
     data(){
       return {
+        dataSource: [],
         // control1: 字段1完成或者符合逻辑条件值,跳转到字段6,中间字段隐藏
         // control2: 字段1符合逻辑条件值，字段6只能选择A1,A2
         // control3: 字段1 符合逻辑条件值，跳转到字段6, 中间字段隐藏
         // control4: 字段1符合逻辑条件值，字段6赋值为Y
         resAuth: {
-            "addViewShow": 1,  // 新增视图是否   1 和 0 区分
-            "editViewShow": 1,  // 编辑视图是否可见   1 和 0 区分    
-            "scanViewShow": 1,  // 查看视图是否可见   1 和 0 区分  
-            "addorEditViewEdit": 1,  // 新增/编辑视图是否可编辑   1 和 0 区分                          
-            "scanViewEncry": 0,  // 查看视图是否加密   1 和 0 区分
-          },         
+          "addViewShow": 1,  // 新增视图是否   1 和 0 区分
+          "editViewShow": 1,  // 编辑视图是否可见   1 和 0 区分    
+          "scanViewShow": 1,  // 查看视图是否可见   1 和 0 区分  
+          "addorEditViewEdit": 1,  // 新增/编辑视图是否可编辑   1 和 0 区分                          
+          "scanViewEncry": 0,  // 查看视图是否加密   1 和 0 区分
+        },         
         RequiredSvg: 'Required',
         eventTypeResult: [], // 字段配置的事件规则数据信息(一个字段配置的可以影响多个字段)
-        beforeConvalue: JSON.parse(JSON.stringify(this.obj.convalue)),  
-        beforeDataSource: JSON.parse(JSON.stringify(this.dataSource)),  
-        beforeHasHide: JSON.parse(JSON.stringify(this.isShowField)),  
-        fieldEventOnInfo: [   // 存储每次响应字段事件后的所有对象信息
+        beforeConvalue: this.obj.convalue,  
+        // beforeDataSource: JSON.parse(JSON.stringify(this.dataSource)),  
+        beforeDataSource: [],  
+        // beforeHasShow: JSON.parse(JSON.stringify(this.isShowField)),  
+        beforeHasShow: 1,  
+        fieldEventOnInfo: [  // 存储每次响应字段事件后的所有对象信息
           // {
           //   triggertype,  
           //   conditions,
@@ -54,12 +56,24 @@ export const commonFiledsViewFns = {
           //   afterConvalue: '',  // 此次事件 触发后的convalue值
           //   beforeDataSource: '',    //     此次事件 触发前的dataSource值
           //   afterDataSource: '',    //     此次事件 触发后的dataSource值
-          //   beforeHasHide: '',    //     此次事件 触发前的hasHide值
+          //   beforeHasShow: '',    //     此次事件 触发前的hasHide值
           //   afterHasHide: '',    //     此次事件 触发后的hasHide值
           // }
         ], 
         fieldEventEmitInfo: [  // 存储每次触发字段事件后的相关信息
-
+          // {
+          //   from:unicode,
+          //   to: targetUnicode,
+          //   calculateDoway: calculateDoway,
+          //   triggertype,  
+          //   conditions,
+          //   conditionValue,
+          //   unicode,
+          //   resultcondition,
+          //   resultValue,
+          //   para,  
+          //   resultcode 
+          // }          
         ]
       }
     },    
@@ -101,14 +115,14 @@ export const commonFiledsViewFns = {
             case 'View-TM':  //查看页面 
             case 'View-SH':
             case  '3001':
-              this.resAuth = Object.assign(this.resAuth, validateViewAuth(this.obj.Vr, this.obj))            
+              // this.resAuth = Object.assign(this.resAuth, validateViewAuth(this.obj.Vr, this.obj))            
               return true
             case  'Add-TM':  // 新增页面
             case  'Add-SH':  
             case  '3002':
               if(this.obj.Vr) {
                 // 视图的 显示编辑权限
-                this.resAuth = Object.assign(this.resAuth, validateViewAuth(this.obj.Vr, this.obj))
+                // this.resAuth = Object.assign(this.resAuth, validateViewAuth(this.obj.Vr, this.obj))
                 return this.resAuth.addViewShow == 1 ? true: false
               } 
             case  'Edit-TM': // 编辑页面
@@ -117,7 +131,7 @@ export const commonFiledsViewFns = {
             case  '3005': 
               if(this.obj.Vr) {
                 // 视图的 显示编辑权限
-                this.resAuth = Object.assign(this.resAuth, validateViewAuth(this.obj.Vr, this.obj))
+                // this.resAuth = Object.assign(this.resAuth, validateViewAuth(this.obj.Vr, this.obj))
                 // debugger
                 // alert(222222)
                 return this.resAuth.addViewShow == 1 ? true: false
@@ -129,7 +143,8 @@ export const commonFiledsViewFns = {
         }, 
         // 是否加密显示字段
         isPassWordField(){
-          return this.resAuth.scanViewEncry == 1 ? true: false
+          // return this.resAuth.scanViewEncry == 1 ? true: false
+          return false
         }, 
         // 是否 disable的显示
         isDisabledField(){
@@ -151,22 +166,24 @@ export const commonFiledsViewFns = {
       // 监听 值的变化 然后进行 触发相应的字段事件
       'obj.convalue': {
         handler(newValue, oldValue){
+          debugger
           // 值变化就去 进行触发变动事件  值变化的时候 触发分为两种 一种是触发变动 一种是还原变动
-          if(this.eventTypeResult.length){
+          if(this.eventTypeResult && this.eventTypeResult.length){
             // 先看是否达标
-            this.commonFieldEventEmit(thatM, this.eventTypeResult)
+            this.commonFieldEventEmit(this, this.eventTypeResult, this.obj)
           }
-
         },
         // immediate: true
       }
     },
     created(){
-      thatM = this
-      this.commonFieldfnInit()
+      // 获取该控件是否配置有事件
+      this.commonFieldfnInit()      
       this.$nextTick(() => {
-        // 接收 字段的eventbus事件
-        this.commonFieldEventOn(thatM)
+        this.beforeHasShow = this.isShowField        
+        this.beforeDataSource = this.dataSource || []   
+        // 注册接收 字段的eventbus事件(改变 和 还原的 事件)
+        this.commonFieldEventOn()      
       })
     },
     beforeDestroy(){
@@ -186,29 +203,36 @@ export const commonFiledsViewFns = {
         })
       },
       // 响应 字段变化事件
-      commonFieldEventOn(vueObj){
+      commonFieldEventOn(){
+        // 改变的事件
         this.$bus.$on(`fieldEventChange_${this.obj.unicode}`, (currentEventResultObj) => {
-          fieldEventObj.excuteChangeEvent(vueObj, currentEventResultObj)
+          debugger
+          fieldEventObj.excuteChangeEvent(this, currentEventResultObj, this.obj)
         })
-        this.$bus.$on(`fieldEventBack_${this.obj.unicode}`, (currentEventResultObj) => {
-          fieldEventObj.excuteBackEvent(vueObj, currentEventResultObj)
-        })
+        // 恢复的事件
+        this.$bus.$on(`fieldEventBack_${this.obj.unicode}`, (currentEventResultObj, calculateDoway) => {
+          debugger
+          fieldEventObj.excuteBackEvent(this, currentEventResultObj, calculateDoway, this.obj)
+        })  
       },
       // 触发 其他字段变化事件
-      commonFieldEventEmit(vueObj, totalEventResult){
-        fieldEventObj.emitChangeEvent(vueObj, totalEventResult)
+      commonFieldEventEmit(vueObj, totalEventResult, controlObj){
+        fieldEventObj.emitChangeEvent(vueObj, totalEventResult, controlObj)
       },
       // 销毁字段 eventbus事件
       commonFieldOff(){
         this.$bus.$off(`fieldEventChange_${this.obj.unicode}`)
+        this.$bus.$off(`fieldEventBack_${this.obj.unicode}`)
       },
       // 获取事件规则及要影响的目标字段等具体信息    
       getEventResult(params){
         getEventResult(params).then(res => {
-          console.log("-------获取字段事件详情配置结果----------", res.data.Data)
+          console.log(`-------获取${this.obj.conname}字段事件详情配置结果----------`, res.data.Data)
           this.eventTypeResult = res.data.Data
           // 触发变动事件
-          this.commonFieldEventEmit(thatM, this.eventTypeResult)
+          if(this.eventTypeResult && this.eventTypeResult.length){
+            this.commonFieldEventEmit(this, this.eventTypeResult, this.obj)
+          }
         })
       },
       // 新增/编辑页面 是否有权限编辑

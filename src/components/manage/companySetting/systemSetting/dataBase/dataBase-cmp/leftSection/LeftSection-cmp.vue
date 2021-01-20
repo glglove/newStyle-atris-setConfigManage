@@ -7,6 +7,9 @@
 >>>.el-collapse {
     border-bottom: none !important
 }
+>>>.el-collapse-item__wrap {
+    overflow visible !important
+}
 >>>.el-collapse-item {
     margin: 10px 0;
     &.is-active {
@@ -74,6 +77,7 @@
 <template>
     <div class="leftCmp">
         <div class="topContent" v-loading="loading">
+            <!-- objP: {{objP}} -->
             <el-collapse 
                 :accordion="true"
                 v-model="activeIndex"
@@ -82,6 +86,7 @@
                     v-for="(cmpItem, index) in cmps"
                     :key="index"
                     :name="index"
+                    class="collapseItem"
                 >
                     <span slot="title">
                         {{cmpItem.controlName}}
@@ -90,7 +95,7 @@
 
                     <div class="setCmpContentBox">
                         <vuedraggable 
-                            class="wrapper" 
+                            class="wrapper u-f-jst u-f-wrap" 
                             data-flag="leftFlag"
                             v-model="cmpItem.childrenList"  
                             v-bind="dragOptions"
@@ -105,13 +110,16 @@
                             @end="end"                
                             :move='allow'
                         >
-                            <transition-group>
+                            <!-- <transition-group> -->
                                 <li
                                     v-for="(controlItem, index) in cmpItem.childrenList"
                                     :key="controlItem.controlType"
                                     class="item u-f-s1"
                                     draggable="true"
-                                    :class="controlItem.controlType"            
+                                    :class="controlItem.controlType"    
+                                    :data-itemData="JSON.stringify(controlItem)"  
+                                    @dragstart="dragstart($event, controlItem, index)"
+                                    @dragend="dragend($event, controlItem, index)"                                          
                                 >
                                     <el-badge 
                                         v-if="controlItem.flagNum"
@@ -137,7 +145,7 @@
                                         {{controlItem.controlType}} - {{controlItem.controlName}} - {{controlItem.controlEnName}}
                                     </el-button>                            
                                 </li>                    
-                            </transition-group>
+                            <!-- </transition-group> -->
                         </vuedraggable>       
                     
                     </div>
@@ -217,9 +225,8 @@
             return {
                 loading: false,
                 cmps: [],
-                activeIndex: 0,
-                currentObj: {},
                 currentClickObjIndex: '',
+                activeIndex: 0,
             }
         },
         computed: {
@@ -240,7 +247,7 @@
             this.initData()  
             this.$nextTick(() => {
                 debugger
-                this.$bus.$on("middleDeleteEmitChange", (obj) => {
+                this.$bus.$on("changeBadageNum", (obj, flag) => {
                     debugger
                     let result = that.cmps.filter(item => {
                         return item.unicode === obj.pcode
@@ -249,7 +256,7 @@
                     let resArr = result[0].childrenList.filter((item, key) => {
                         return item.controlType === obj.controlType
                     })
-                    that.changeBadageNum(resArr[0], false)
+                    that.changeBadageNum(resArr[0], flag)
                 })
             })    
         },
@@ -258,56 +265,16 @@
         },
         methods: {
             offEvent(){
-                this.$bus.$off("middleDeleteEmitChange")
-                this.$bus.$off("middleDraggedEnd")
+                this.$bus.$off("changeBadageNum")
             },
             initData(){
                 this.getControlInfo()
-            },
-            // 添加 属性
-            addObjRightAttribute(obj){
-                debugger
-                this.$set(obj, 'rightAttributes', {})
-            },  
-            getControlAttributes (obj) {
-                debugger
-                let parmasObj = {
-                    controlType: obj.controlType,
-                    relateb: this.objP.relateb
-                }
-                if(obj.rightAttributes){
-                    if(Object.keys(obj.rightAttributes).length){
-                        
-                    }else {
-                        // 触发 右边 loading
-                        // this.$bus.$emit("rightLoading",true)                    
-                        getControlAttributes(parmasObj).then(res => {
-                            debugger
-                            obj.rightAttributes = {
-                                unicode: obj.unicode,
-                                controlName: obj.controlName,
-                                controlType: obj.controlType,
-                                pcode: obj.pcode,
-                                groupAttributeArr: res.data.Data                        
-                            } 
-                            // this.$bus.$emit("rightLoading",false)
-                        }).catch(err => {
-                            // this.$bus.$emit("rightLoading",false)
-                        })
-                    }
-                }else {
-
-                }
-                return obj
-            },                      
+            },                     
             cloneFuc(controlItem){
                 // 处理 拖拽的元素
-                this.currentObj = controlItem
-                // this.changeBadageNum(controlItem, true)
-                this.addObjRightAttribute(controlItem)
-                // 获取 右侧 控件属性
-                // this.$emit("leftChangeEmit", this.currentObj)                
-                return this.getControlAttributes(controlItem)                  
+                // this.currentObj = controlItem
+                // this.changeBadageNum(controlItem, true)              
+                // return controlItem                 
             },
             //evt里面有两个值，一个evt.added 和evt.removed  可以分别知道移动元素的ID和删除元素的ID
             change: function (evt) {
@@ -315,22 +282,23 @@
             },
             //start ,end ,add,update, sort, remove 得到的都差不多
             start: function (evt) {
-                console.log("-----",evt)
+                console.log("--start---",evt)
             },
             end(evt) {
-                debugger
+                // debugger
                 console.log("----------------000---------------",evt)
                 // evt.item //可以知道拖动的本身
                 // evt.to    // 可以知道拖动的目标列表
                 // evt.from  // 可以知道之前的列表
                 // evt.oldIndex  // 可以知道拖动前的位置
                 // evt.newIndex  // 可以知道拖动后的位置
+                
+
             },            
             allow(evt, originalEvent){
                 // debugger
                 console.log(originalEvent) //鼠标位置
                 console.log(evt.draggedContext.index)
-                this.currentClickObjIndex = evt.draggedContext.index
                 console.log(evt.draggedContext.element)
                 console.log(evt.draggedContext.futureIndex)
                 console.log(evt.relatedContext.index)
@@ -346,10 +314,10 @@
             },            
             getControlInfo(){
                 this.loading = true
-                let parmas = {
+                let params = {
                     relateb: this.objP.relateb
                 }
-                getControlInfo(parmas).then(res => {
+                getControlInfo(params).then(res => {
                     this.loading = false
                     this.cmps = res.data.Data.records
                 })
@@ -364,35 +332,15 @@
             },        
             selectTag(item, index){
                 debugger
-                this.currentObj = item
-                this.currentClickObjIndex = index
-                this.changeBadageNum(item, true)
-                this.$emit("leftChangeEmit", this.currentObj)
+                this.$bus.$emit("leftClickItem", item, this.changeBadageNum)
+                // this.changeBadageNum(item, true)
             },
             dragstart(event, sourceItem, index){
-                debugger
-                // let e = event || window.event
-                // console.log(e)
-                // console.log('开始拖拽');
-                // e.dataTransfer.setData('currentItemStr',JSON.stringify(sourceItem))
-            },
-            enterDrag(event, sourceId, index) {
+                // debugger
                 let e = event || window.event
-                e.preventDefault()
-                console.log("拖拽进入到目标元素",e)                
-                debugger                
-            },
-            overDrag(event, sourceId){
-                let e = event || window.event
-                e.preventDefault()
-                console.log("拖拽在目标元素中拖拽",e)                
-                debugger                
-            },
-            leaveDrag(event, sourceId){
-                let e = event || window.event
-                e.preventDefault()
-                console.log("拖拽离开目标元素",e)                
-                debugger
+                console.log(e)
+                console.log('开始拖拽');
+                e.dataTransfer.setData('currentItemStr',JSON.stringify(sourceItem))
             },
             dragend(event, sourceId, index){
                 // let e = event || window.event
@@ -400,7 +348,7 @@
                 // console.log("拖拽结束",e)      
                 // this.currentClickObjIndex = index   
                 // this.changeBadageNum(sourceId, true)       
-                debugger
+                // debugger
             },            
         }
     }

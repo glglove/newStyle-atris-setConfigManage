@@ -1,7 +1,7 @@
 /**
  * RSA 加密/解密  对请求接口的参数进行 RSA加密/解密(非对称加密)
 */
-import JSEncrypt from 'jsencrypt';
+// import JSEncrypt from 'jsencrypt';
 import store from '../store'
 const  NodeRSA = require('node-rsa');
 

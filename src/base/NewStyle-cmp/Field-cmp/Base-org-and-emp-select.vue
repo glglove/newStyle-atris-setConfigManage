@@ -9,9 +9,9 @@
     :label="isTitle ? obj.conname : ''"
     :prop="prop"
     :rules="rules"
-    v-if="isShowField"
+    v-show="(beforeHasShow==1) && isShowField"
   >
-
+    eventTypeResult: {{eventTypeResult}}
     <div 
       class="filedContentWrap u-f-ac u-f-jst"
     >
@@ -23,12 +23,12 @@
           {{isTitle ? obj.conname : ''}}
           <icon-svg 
             class="fieldRequiredIcon"
-            v-show="!isShowing && obj.Require"
+            v-show="!isShowing && obj.require"
             :icon-class="RequiredSvg"
           ></icon-svg>      
           <el-tooltip 
-            v-if="obj.Description"
-            :content="obj.Description">
+            v-if="obj.description"
+            :content="obj.description">
             <i class="el-icon-info"></i>
           </el-tooltip>             
         </span>
@@ -123,7 +123,7 @@
           return
         }
         
-        if (this.obj.Require && this.obj.convalue && !this.obj.convalue.length) {
+        if (this.obj.require && this.obj.convalue && !this.obj.convalue.length) {
           callback(new Error('请选择' + this.obj.conname))
         } else if (this.obj.Max > 0 && this.obj.convalue.length > this.obj.Max) {
           callback(new Error(`${this.obj.conname}最多选择${this.obj.Max}个`))
@@ -133,7 +133,7 @@
       }
       return {        
         rules: {
-          required: this.obj.Require,
+          required: this.obj.require,
           type: 'array',
           validator: validatePass,
           trigger: 'change'

@@ -25,8 +25,9 @@
   <el-form-item
     :prop="prop"
     :rules="rules"
-    v-if="isShowField"
+    v-show="(beforeHasShow==1) && isShowField"
   >
+    eventTypeResult: {{eventTypeResult}}
     <div 
       class="filedContentWrap u-f-ac u-f-jst"
     >
@@ -38,12 +39,12 @@
           {{isTitle ? obj.conname : ''}}
           <icon-svg 
             class="fieldRequiredIcon"
-            v-show="!isShowing && obj.Require"
+            v-show="!isShowing && obj.require"
             :icon-class="RequiredSvg"
           ></icon-svg>    
           <el-tooltip 
-            v-if="obj.Description"
-            :content="obj.Description">
+            v-if="obj.description"
+            :content="obj.description">
             <i class="el-icon-info"></i>
           </el-tooltip>               
         </span>
@@ -58,7 +59,7 @@
           disabled 
           size="mini" 
           v-model="obj.convalue.LocationName" 
-          :placeholder="obj.ActRemind || '请选择地点'"
+          :placeholder="obj.actremind || '请选择地点'"
         ></el-input>
         <el-button 
           :disabled="isDisabledField"
@@ -134,7 +135,7 @@
           return
         }
         
-        if (this.obj.Require && (!this.obj.convalue.LocationName)) {
+        if (this.obj.require && (!this.obj.convalue.LocationName)) {
           callback(new Error('请选择' + this.obj.conname))
         } else {
           callback()
@@ -142,7 +143,7 @@
       }
       return {      
         rules: {
-          required: this.obj.Require,
+          required: this.obj.require,
           type: 'array',
           validator: validatePass,
           trigger: ['change']

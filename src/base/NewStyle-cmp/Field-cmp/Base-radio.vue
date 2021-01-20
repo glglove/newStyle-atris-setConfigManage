@@ -26,8 +26,10 @@
   <el-form-item
     :prop="prop"
     :rules="rules"
-    :v-show="isShowField">
+    v-show="(beforeHasShow==1) && isShowField"
+  >
     <!-- obj：{{obj}} -->
+    eventTypeResult: {{eventTypeResult}}    
     <div 
       class="filedContentWrap u-f-ac u-f-jst"
     >
@@ -39,12 +41,12 @@
           {{isTitle ? obj.conname : ''}}
           <icon-svg 
             class="fieldRequiredIcon"
-            v-show="!isShowing && obj.Require"
+            v-show="!isShowing && obj.require"
             :icon-class="RequiredSvg"
           ></icon-svg> 
           <el-tooltip 
-            v-if="obj.Description"
-            :content="obj.Description">
+            v-if="obj.description"
+            :content="obj.description">
             <i class="el-icon-info"></i>
           </el-tooltip>                 
         </span>
@@ -53,7 +55,9 @@
 
 
       <!-- dataSource: {{dataSource}}--- -->
-      <!-- obj.convalue: {{obj.convalue}} -->
+      obj.convalue: {{obj.convalue}}
+      ---
+      obj.concode: {{obj.concode}}
       <!-- isHasAddOrEditAuth(): {{isHasAddOrEditAuth()}} -->
       <div 
         v-if="!isShowing" 
@@ -71,8 +75,8 @@
             v-for="source in dataSource"
             :key="source.dicId"
             :disabled="isDisabledField"
-            :label="source.dicName">
-            {{source.dicName}}
+            :label="source.dicId">
+            {{source.itemName}}
           </el-radio>
         </el-radio-group>
       </div>
@@ -139,7 +143,7 @@
           return
         }
 
-        if (this.obj.Require && !this.obj.convalue) {
+        if (this.obj.require && !this.obj.convalue) {
           callback(new Error('请选择' + this.obj.conname))
         } else {
           callback()
@@ -148,7 +152,7 @@
       }
       return {
         rules: {
-          required: this.obj.Require,
+          required: this.obj.require,
           validator: validatePass,
           trigger: ['change']
         },
@@ -167,6 +171,7 @@
     methods: {
       // radio value 值改变
       changeRadioValue (val) {
+
       }
     },
     watch: {

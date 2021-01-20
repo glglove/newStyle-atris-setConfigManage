@@ -49,9 +49,10 @@
   <el-form-item
     :prop="prop"
     :rules="rules"
-    v-if="isShowField">
+    v-show="(beforeHasShow==1) && isShowField"
+  >
     <!-- obj：{{obj}} -->
-
+    eventTypeResult: {{eventTypeResult}}
     <div 
       class="filedContentWrap u-f-ac u-f-jst"
     >
@@ -63,12 +64,12 @@
         {{isTitle ? obj.conname : ''}}
         <icon-svg 
           class="fieldRequiredIcon"
-          v-show="!isShowing && obj.Require"
+          v-show="!isShowing && obj.require"
           :icon-class="RequiredSvg"
         ></icon-svg>   
         <el-tooltip 
-          v-if="obj.Description"
-          :content="obj.Description">
+          v-if="obj.description"
+          :content="obj.description">
           <i class="el-icon-info"></i>
         </el-tooltip>                
         </span>

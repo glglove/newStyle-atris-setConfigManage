@@ -47,6 +47,15 @@
         </div>
 
         <div slot="moreSearch">
+          关键词:
+          <el-input 
+            clearable
+            size="small"
+            style="width: 200px"
+            v-model="queryObj.moduleCode"
+          >
+          </el-input>            
+          模块:
           <el-select 
             clearable
             size="small"
@@ -59,6 +68,71 @@
             >
             </el-option>
           </el-select>
+          标签:
+          <el-select 
+            clearable
+            size="small"
+            v-model="queryObj.moduleCode">
+            <el-option
+              v-for="(item, key) in moduleSource"
+              :key="key"
+              :label="item.ModuleName"
+              :value="item.ModuleCode"
+            >
+            </el-option>
+          </el-select>     
+          类型:
+          <el-select 
+            clearable
+            size="small"
+            v-model="queryObj.moduleCode">
+            <el-option
+              v-for="(item, key) in moduleSource"
+              :key="key"
+              :label="item.ModuleName"
+              :value="item.ModuleCode"
+            >
+            </el-option>
+          </el-select>   
+          子类型:
+          <el-select 
+            clearable
+            size="small"
+            v-model="queryObj.moduleCode">
+            <el-option
+              v-for="(item, key) in moduleSource"
+              :key="key"
+              :label="item.ModuleName"
+              :value="item.ModuleCode"
+            >
+            </el-option>
+          </el-select>      
+          属性:
+          <el-select 
+            clearable
+            size="small"
+            v-model="queryObj.moduleCode">
+            <el-option
+              v-for="(item, key) in moduleSource"
+              :key="key"
+              :label="item.ModuleName"
+              :value="item.ModuleCode"
+            >
+            </el-option>
+          </el-select>   
+          模板号:
+          <el-select 
+            clearable
+            size="small"
+            v-model="queryObj.moduleCode">
+            <el-option
+              v-for="(item, key) in moduleSource"
+              :key="key"
+              :label="item.ModuleName"
+              :value="item.ModuleCode"
+            >
+            </el-option>
+          </el-select>                                         
           <el-button 
             type="primary" 
             size="small"
@@ -76,7 +150,7 @@
       <div
         :class="['tableBox', tableData.length<=0? 'not_found':'']"
         v-loading="loading">
-        <!-- tableData: {{tableData}} -->
+        tableData: {{tableData}}
         <el-table
           :data="tableData"
           border
@@ -92,42 +166,30 @@
           </el-table-column>
 
           <el-table-column
-            label="项码"
-            prop="TeamCode"
-            width="200"
-            show-overflow-tooltip
-            sortable          
-          >
-            <template slot-scope="scope">
-              <span>{{scope.row.TeamCode}}</span>
-            </template>
-          </el-table-column>
-
-          <el-table-column
             label="模块"
-            prop="ModuleName"
+            prop="controlEnName"
             show-overflow-tooltip
             sortable          
           >
             <template slot-scope="scope">
-              <span>{{scope.row.ModuleName}}</span>
+              <span>{{scope.row.controlEnName}}</span>
             </template>
           </el-table-column>
 
           <el-table-column
-            label="自定义名"
-            prop="TeamName"
+            label="类型"
+            prop="controlType"
             show-overflow-tooltip
             sortable     
             width="120"     
           >
             <template slot-scope="scope">
-              <span>{{scope.row.TeamName}}</span>
+              <span>{{scope.row.controlType}}</span>
             </template>
           </el-table-column>
 
           <el-table-column
-            label="系统名"
+            label="子系统"
             prop="SysName"
             show-overflow-tooltip
             sortable   
@@ -139,7 +201,7 @@
           </el-table-column>   
 
           <el-table-column
-            label="所属群"
+            label="编号"
             prop="GroupName"
             show-overflow-tooltip
             sortable     
@@ -151,7 +213,7 @@
           </el-table-column>            
 
           <el-table-column
-            label="所属组"
+            label="名称"
             prop="ParentTeamName"
             show-overflow-tooltip
             sortable     
@@ -163,7 +225,7 @@
           </el-table-column>             
 
           <el-table-column
-            label="引用组件"
+            label="简称"
             prop="RefComponentNames"
             show-overflow-tooltip
             sortable        
@@ -175,7 +237,7 @@
           </el-table-column>    
 
           <el-table-column
-            label="系统配置"
+            label="属性"
             prop="IsSys"
             show-overflow-tooltip
             sortable
@@ -194,16 +256,87 @@
 
 
           <el-table-column
-            label="描述"
+            label="主键"
             width="200"
             show-overflow-tooltip
-            prop="Description"
+            prop="description"
           >
             <template slot-scope="scope">
-              <span>{{scope.row.Description}}</span>
+              <span>{{scope.row.description}}</span>
             </template>
           </el-table-column>         
 
+
+          <el-table-column
+            label="验证关键词"
+            show-overflow-tooltip
+            sortable          
+          >
+            <template slot-scope="scope">
+              <span v-if="scope.row.state == 0">停用</span>
+              <span v-if="scope.row.state == 1">启用</span>              
+            </template>
+          </el-table-column>    
+
+          <el-table-column
+            label="内容"
+            show-overflow-tooltip
+            sortable          
+          >
+            <template slot-scope="scope">
+              <span>{{scope.row.tip}}</span>            
+            </template>
+          </el-table-column>       
+
+          <el-table-column
+            label="关系"
+            show-overflow-tooltip
+            sortable          
+          >
+            <template slot-scope="scope">
+              <span>{{scope.row.tip}}</span>            
+            </template>
+          </el-table-column>    
+
+          <el-table-column
+            label="描述"
+            show-overflow-tooltip
+            sortable          
+          >
+            <template slot-scope="scope">
+              <span>{{scope.row.tip}}</span>            
+            </template>
+          </el-table-column>    
+
+          <el-table-column
+            label="模板号"
+            show-overflow-tooltip
+            sortable          
+          >
+            <template slot-scope="scope">
+              <span>{{scope.row.tip}}</span>            
+            </template>
+          </el-table-column>         
+
+          <el-table-column
+            label="参数"
+            show-overflow-tooltip
+            sortable          
+          >
+            <template slot-scope="scope">
+              <span>{{scope.row.tip}}</span>            
+            </template>
+          </el-table-column>     
+
+          <el-table-column
+            label="事件"
+            show-overflow-tooltip
+            sortable          
+          >
+            <template slot-scope="scope">
+              <span>{{scope.row.tip}}</span>            
+            </template>
+          </el-table-column>  
 
           <el-table-column
             label="状态"
@@ -211,18 +344,19 @@
             sortable          
           >
             <template slot-scope="scope">
-              <!-- <span v-if="scope.row.IsSys == 0">
-                <span v-if="scope.row.SysState == 0">无效</span>
-                <span v-if="scope.row.SysState == 1">有效</span>
-              </span>
-              <span v-if="scope.row.IsSys == 1">
-                <span v-if="scope.row.State == 0">无效</span>
-                <span v-if="scope.row.State == 1">有效</span>
-              </span> -->
-              <span v-if="scope.row.State == 0">停用</span>
-              <span v-if="scope.row.State == 1">启用</span>              
+              <span>{{scope.row.tip}}</span>            
             </template>
-          </el-table-column>            
+          </el-table-column>    
+
+          <el-table-column
+            label="标签"
+            show-overflow-tooltip
+            sortable          
+          >
+            <template slot-scope="scope">
+              <span>{{scope.row.tip}}</span>            
+            </template>
+          </el-table-column>                                                                   
 
 
           <el-table-column
@@ -231,65 +365,24 @@
             fixed="right"
           >
             <template slot-scope="scope">
-              <!-- <span v-if="scope.row.IsSys == 0">
-                <el-button 
-                  v-if="scope.row.SysState == 0"
-                  type="text" 
-                  size="mini"
-                  @click.native="handlerUsing(scope.row, 1)"
-                >启用</el-button>
-                <el-button 
-                  v-if="scope.row.SysState == 1"
-                  type="text" 
-                  size="mini"
-                  @click.native="handlerUsing(scope.row, 0)"
-                >停用</el-button>                
-              </span>
-              <span v-if="scope.row.IsSys == 1">
-                <el-button 
-                  v-if="scope.row.State == 0"
-                  type="text" 
-                  size="mini"
-                  @click.native="handlerUsing(scope.row, 1)"
-                >启用</el-button>
-                <el-button 
-                  v-if="scope.row.State == 1"
-                  type="text" 
-                  size="mini"
-                  @click.native="handlerUsing(scope.row, 0)"
-                >停用</el-button>                
-              </span>       -->
-
               <el-button 
-                v-if="scope.row.State == 0"
+                v-if="scope.row.state == 0"
                 type="text" 
                 size="mini"
                 @click.native="handlerUsing(scope.row, 1)"
-              >启用</el-button>
-              <el-button 
-                v-if="scope.row.State == 1"
-                type="text" 
-                size="mini"
-                @click.native="handlerUsing(scope.row, 0)"
-              >停用</el-button>      
-
-              <!-- <el-button 
-                type="text" 
-                size="mini" 
-                @click.native="handleTableSet(scope.row, scope.$index)"
-              >表设置</el-button>                        -->
+              >{{scope.row.state ===1 ? '停用': '启用'}}</el-button>   
 
               <el-button 
                 type="text" 
                 size="mini" 
                 @click.native="handleFieldSet(scope.row, scope.$index)"
-              >字段设置</el-button>
+              >标签</el-button>
 
               <el-button 
                 type="text" 
                 size="mini" 
                 @click.native="handleEdit(scope.row, scope.$index)"
-              >编辑</el-button>
+              >编辑分组</el-button>
             </template>
           </el-table-column>     
         </el-table>
@@ -347,12 +440,12 @@
               <el-input 
                 v-model="formData.TeamName"
                 placeholder="自定义名称" 
-                style="width: 300px"></el-input>
+                style="width: 200px"></el-input>
             </el-form-item>   
             <el-form-item label="模块" prop="ModuleCode">
               <el-select 
                 :disabled="isAddOrEdit == 1"
-                style="width: 300px"
+                style="width: 200px"
                 clearable
                 v-model="formData.ModuleCode">
                 <el-option
@@ -367,7 +460,7 @@
             <el-form-item label="所属群" prop="GroupCode">
               <el-select 
                 :disabled="formData.IsSys == 1 && isAddOrEdit ==1"
-                style="width: 300px"
+                style="width: 200px"
                 clearable
                 v-model="formData.GroupCode">
                 <el-option
@@ -382,7 +475,7 @@
             <el-form-item label="所属组" prop="ParentTeamCode">
               <el-cascader
                 :disabled="formData.IsSys == 1 && isAddOrEdit ==1"              
-                style="width: 300px"
+                style="width: 200px"
                 v-model="formData.ParentTeamCode"
                 placeholder="选择所属组"
                 :options="belongToGroupOptions"
@@ -395,16 +488,16 @@
                 change-on-select
               ></el-cascader>              
             </el-form-item>
-            <el-form-item label="描述" prop="Description">
+            <el-form-item label="描述" prop="description">
               <el-input 
-                v-model="formData.Description"              
-                style="width: 300px" 
+                v-model="formData.description"              
+                style="width: 200px" 
                 type="textarea" 
                 autosize></el-input>
             </el-form-item>
             <el-form-item label="状态">
               <el-switch
-                v-model="formData.State"                
+                v-model="formData.state"                
                 active-value="1"
                 inactive-value="0"
               ></el-switch>
@@ -449,12 +542,12 @@
               <el-input 
                 v-model="formData.TeamName"
                 placeholder="自定义名称" 
-                style="width: 300px"></el-input>
+                style="width: 200px"></el-input>
             </el-form-item>   
             <el-form-item label="模块" prop="ModuleCode">
               <el-select 
                 :disabled="isAddOrEdit == 1"
-                style="width: 300px"
+                style="width: 200px"
                 clearable
                 v-model="formData.ModuleCode">
                 <el-option
@@ -469,7 +562,7 @@
             <el-form-item label="所属群" prop="GroupCode">
               <el-select 
                 :disabled="formData.IsSys == 1 && isAddOrEdit ==1"
-                style="width: 300px"
+                style="width: 200px"
                 clearable
                 v-model="formData.GroupCode">
                 <el-option
@@ -484,7 +577,7 @@
             <el-form-item label="所属组" prop="ParentTeamCode">
               <el-cascader
                 :disabled="formData.IsSys == 1 && isAddOrEdit ==1"              
-                style="width: 300px"
+                style="width: 200px"
                 v-model="formData.ParentTeamCode"
                 placeholder="选择所属组"
                 :options="belongToGroupOptions"
@@ -497,16 +590,16 @@
                 change-on-select
               ></el-cascader>              
             </el-form-item>
-            <el-form-item label="描述" prop="Description">
+            <el-form-item label="描述" prop="description">
               <el-input 
-                v-model="formData.Description"              
-                style="width: 300px" 
+                v-model="formData.description"              
+                style="width: 200px" 
                 type="textarea" 
                 autosize></el-input>
             </el-form-item>
             <el-form-item label="状态">
               <el-switch
-                v-model="formData.State"                
+                v-model="formData.state"                
                 active-value="1"
                 inactive-value="0"
               ></el-switch>
@@ -553,12 +646,12 @@
                 <el-input 
                   v-model="formAddData.TeamName"
                   placeholder="自定义名称" 
-                  style="width: 300px"></el-input>
+                  style="width: 200px"></el-input>
               </el-form-item>   
               <el-form-item label="模块" prop="ModuleCode">
                 <!-- formAddData.ModuleCode: {{formAddData.ModuleCode}} -->
                 <el-select 
-                  style="width: 300px"
+                  style="width: 200px"
                   clearable
                   v-model="formAddData.ModuleCode">
                   <el-option
@@ -575,7 +668,7 @@
                 <!-- formAddData.belongAddToQun: {{formAddData.belongAddToQun}} -->
                 <!-- formAddData.GroupCode: {{formAddData.GroupCode}} -->
                 <el-select 
-                  style="width: 300px"
+                  style="width: 200px"
                   clearable
                   v-model="formAddData.GroupCode">
                   <el-option
@@ -590,7 +683,7 @@
               <el-form-item label="所属组" prop="ParentTeamCode">
                 <!-- belongToGroupOptions: {{belongToGroupOptions}} -->
                 <!-- <el-select 
-                  style="width: 300px"
+                  style="width: 200px"
                   clearable
                   v-model="formAddData.belongToGroup">
                   <el-option
@@ -603,7 +696,7 @@
                 </el-select> -->
                 <!-- formAddData.ParentTeamCode: {{formAddData.ParentTeamCode}} -->
                 <el-cascader
-                  style="width: 300px"
+                  style="width: 200px"
                   v-model="formAddData.ParentTeamCode"
                   placeholder="选择所属组"
                   :options="belongToGroupOptions"
@@ -616,16 +709,16 @@
                   change-on-select
                 ></el-cascader>              
               </el-form-item>
-              <el-form-item label="描述" prop="Description">
+              <el-form-item label="描述" prop="description">
                 <el-input 
-                  v-model="formAddData.Description"              
-                  style="width: 300px" 
+                  v-model="formAddData.description"              
+                  style="width: 200px" 
                   type="textarea" 
                   autosize></el-input>
               </el-form-item>
               <el-form-item label="状态">
                 <el-switch
-                  v-model="formAddData.State"                
+                  v-model="formAddData.state"                
                   active-value="1"
                   inactive-value="0"
                 ></el-switch>
@@ -682,7 +775,7 @@
   import { REQ_OK } from '@/api/config'
   import { 
     GetModuleList,
-    CompTeamDataSet,
+    getShowGroupList,
     SetComTeamConfigState,
     ComGroups,
     ComTeamTree,
@@ -749,8 +842,7 @@
           pageSize: 10,
           pageNum: 1,
           total: 0,
-          state: 1,
-          moduleCode: ''
+          state: 1
         },
         formData: {     
           ModuleCode: '',    
@@ -761,8 +853,8 @@
           TeamName: '',
           ParentTeamCode: '',
           ModuleName: '',
-          Description: '',
-          State: '1',
+          description: '',
+          state: '1',
           TeamCode: '',
           GroupCode: ''
         },
@@ -771,14 +863,14 @@
           ModuleCode: [{required: true, message: '请选择模块', trigger: ['change','blur']}],
           GroupCode: [{required: true, validator: validBelongToQun, trigger: ['change','blur']}],
           // TeamCode: [{required: true, validator: validBelongToGroup, trigger: ['change','blur']}],
-          Description: [{required: true, message: '请填写描述', trigger: ['change','blur']}],
+          description: [{required: true, message: '请填写描述', trigger: ['change','blur']}],
         },
         formAddRules: {
           TeamName: [{required: true, message: '请输入自定义名称', trigger: ['change','blur']}],
           ModuleCode: [{required: true, message: '请选择模块', trigger: ['change','blur']}],
           GroupCode: [{required: true, validator: validBelongToQun, trigger: ['change','blur']}],
           // TeamCode: [{required: true, validator: validBelongToGroup, trigger: ['change','blur']}],
-          Description: [{required: true, message: '请填写描述', trigger: ['change','blur']}],
+          description: [{required: true, message: '请填写描述', trigger: ['change','blur']}],
         },        
         tableData: [],
         currentEditRow: {},
@@ -893,12 +985,15 @@
       }             
     },
     created(){
-      this.GetModuleList()
-      this._getCommTables()
+      // this.GetModuleList()
+      this.initData()
     },
     methods: {
+      initData(){
+        this._getCommTables()
+      },
       _getCommTables(){
-        this._CompTeamDataSet()
+        this._getShowGroupList()
       },
       // 搜索
       handlerSearch(){
@@ -936,7 +1031,7 @@
           tCode = this.formData.TeamCode
         }
         ComTeamTree(moduleCode, groupCode, tCode ).then(res => {
-          if(res && res.data.State === REQ_OK){
+          if(res && res.data.state === REQ_OK){
             this.belongToGroupOptions = res.data.Data
             // 处理数据
             this._changeData(this.belongToGroupOptions)
@@ -950,7 +1045,7 @@
       // 获取所属群下拉源
       _ComGroups(moduleCode){
         ComGroups(moduleCode).then(res => {
-          if(res && res.data.State === REQ_OK){
+          if(res && res.data.state === REQ_OK){
             this.belongToQunOptions = res.data.Data
           }else {
             this.$message.error(`获取所属群下拉源数据失败，${res.data.Error}`)
@@ -962,7 +1057,7 @@
       // 获取模块下拉源
       GetModuleList(pageSize, pageNum){
         GetModuleList(65556).then(res => {
-          if(res && res.data.State === REQ_OK){
+          if(res && res.data.state === REQ_OK){
             this.moduleSource = res.data.Data
           }else {
             this.$message({
@@ -985,7 +1080,7 @@
       },  
       _SaveComTeamConfig(data){
         SaveComTeamConfig(JSON.stringify(data)).then(res => {
-          if(res && res.data.State === REQ_OK){
+          if(res && res.data.state === REQ_OK){
             this.$message.success('保存成功')
             if(this.isAddOrEdit == 1){
               this.closeEditDialog()
@@ -998,15 +1093,15 @@
           }
         })
       },
-      _CompTeamDataSet(){
+      _getShowGroupList(){
         this.loading = true
-        CompTeamDataSet(this.queryObj.moduleCode, this.queryObj.state, this.queryObj.pageSize, this.queryObj.pageNum).then(res => {
+        getShowGroupList(this.queryObj).then(res => {
           this.loading = false
-          if(res && res.data.State === REQ_OK){
-            this.tableData = res.data.Data
-            this.queryObj.total = res.data.Total
+          if(res && res.data.state === REQ_OK){
+            this.tableData = res.data.Data.records
+            this.queryObj.total = res.data.total
           }else {
-            this.$message.error(`获取显示组表数据失败,${res.data.Error}`)
+
           }
         })
       },
@@ -1014,7 +1109,7 @@
       _SetComTeamConfigState(data, type){
         let text = type == 1 ? '启用':'停用'
         SetComTeamConfigState(JSON.stringify(data), type).then(res => {
-          if(res && res.data.State === REQ_OK){
+          if(res && res.data.state === REQ_OK){
             this.$message.success(`${text}成功`)
             this._getCommTables()
           }else {
@@ -1096,8 +1191,8 @@
           TeamName: '',
           ModuleName: '',
           ParentTeamCode: '',
-          Description: '',
-          State: '1',
+          description: '',
+          state: '1',
           TeamCode: '',
           GroupCode: ''          
         }
@@ -1113,7 +1208,7 @@
         this.formData = JSON.parse(JSON.stringify(row))
         // this.formData.belongToQun = ''
         // this.formData.belongToGroup = ''
-        this.formData.State += ''
+        this.formData.state += ''
         console.log("-------",this.formData)
         // if(!this.belongToGroupOptions.length){
         //   this._ComTeamTree(this.currentEditRow.ModuleCode,'')

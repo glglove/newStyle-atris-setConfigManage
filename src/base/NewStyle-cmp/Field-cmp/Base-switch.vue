@@ -27,8 +27,10 @@
   <el-form-item
     :prop="prop"
     :rules="rules"
-    v-if="isShowField">
+    v-show="(beforeHasShow==1) && isShowField"
+  >
     <!-- obj：{{obj}} -->
+    eventTypeResult: {{eventTypeResult}}
     <div 
       class="filedContentWrap u-f-ac u-f-jst"
     >
@@ -40,12 +42,12 @@
           {{isTitle ? obj.conname : ''}}
           <icon-svg 
             class="fieldRequiredIcon"
-            v-show="!isShowing && obj.Require"
+            v-show="!isShowing && obj.require"
             :icon-class="RequiredSvg"
           ></icon-svg>   
           <el-tooltip 
-            v-if="obj.Description"
-            :content="obj.Description">
+            v-if="obj.description"
+            :content="obj.description">
             <i class="el-icon-info"></i>
           </el-tooltip>                
         </span>
@@ -73,7 +75,7 @@
         v-else
         :style="fieldValueWrapStyle"
       >
-        <span class="ellipsis2">{{obj.convalue? '是':'否'}}</span>
+        <span class="ellipsis2">{{obj.convalue=="1"? '是':'否'}}</span>
       </div>          
     </div>
   </el-form-item>
@@ -129,7 +131,7 @@
           return
         }
 
-        if (this.obj.Require) {
+        if (this.obj.require) {
           callback()
         } else {
           callback()
@@ -137,7 +139,7 @@
       }
       return {
         rules: {
-          required: this.obj.Require,
+          required: this.obj.require,
           validator: validatePass,
           trigger: ['change']
         }
@@ -155,7 +157,7 @@
     watch: {
       obj: {
         handler (newValue, oldValue) {
-          debugger
+          // debugger
           // 每当obj的值改变则发送事件update:obj , 并且把值传过去
           this.$emit('update:obj', newValue)
         },

@@ -8,10 +8,10 @@
 </style>
 <template>
     <div class="fieldGroup-cmp">
-        <!-- groupObj: {{groupObj}} -->
+        <!-- groupObj.groupAttributeArr: {{groupObj.groupAttributeArr}} -->
         <el-form
-            v-for="(formObj, key) in groupObj.groupAttributeArr"
-            :key="key"
+            v-for="(formObj, index) in groupObj.groupAttributeArr"
+            :key="index"
             :ref="`team_${formObj.mainCode}`"
             :model="formObj"
         >
@@ -19,14 +19,17 @@
                 <i class="header-icon el-icon-info"></i>                
                 {{formObj.desc}}
             </h3>
+
             <div class="setCmpContentBox">
                 <component 
                     v-for="(field, key) in formObj.teamControlList"
                     :key="key"                
                     :is="currentFieldComponentMixin(field.controltype)"
                     :obj.sync="field"
+                    :prop="'field.' + key + '.convalue'"
                     :isNeedGetDataSource="true"
                     :disableFlag="false"
+                    :isNeedCheck="true"
                 ></component>
             </div>             
         </el-form>
@@ -68,9 +71,11 @@ export default {
     },
     methods:{
         //重新刷新获取数据
-        _refreshData(){
+        _refreshData () {
+
         },
         _getComTables(){
+
         },
         //启用/停用
         handlerStopOrUsing(){

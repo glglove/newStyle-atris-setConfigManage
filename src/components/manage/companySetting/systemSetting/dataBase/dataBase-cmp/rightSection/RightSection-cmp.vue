@@ -42,11 +42,12 @@
                 ></component>
             </div>            
         </el-form> -->
+        <!-- currentRightIndex: {{currentRightIndex}} -->
         <div
             v-for="(cmp, key) in contentCmpsList"
             :key="key"
             class="controlListWrap"
-            v-show="key == currentRightIndex"
+            v-show="key === currentRightIndex"
         >
             <h1>{{cmp.controlName}}</h1>
             <field-group-cmp
@@ -61,21 +62,10 @@
         REQ_OK
     } from '@/api/config'
     import { 
+        getControlAttributes,
         saveControlAttributes
     } from '@/api/systemManage'
-    import {
-        // setLocalStorage,
-        // getLocalStorage
-    } from '@/utils/auth.js'
     import FieldGroupCmp from '@/base/NewStyle-cmp/common-cmp/FieldGroup-cmp/FieldGroup-cmp'
-    // import setCmpShowF from './components-setCmpItem-cmp/setCmpShowF'
-    // import setCmpUpText from './components-setCmpItem-cmp/setCmpUpText'
-    // import setCmpUpBtn from './components-setCmpItem-cmp/setCmpUpBtn'
-    // import setCmpContent from './components-setCmpItem-cmp/setCmpContent'
-    // import setCmpDownBtn from './components-setCmpItem-cmp/setCmpDownBtn'
-    // import setCmpDownText from './components-setCmpItem-cmp/setCmpDownText'
-    // import setCmpLink from './components-setCmpItem-cmp/setCmpLink'
-    // import setCmpTail from './components-setCmpItem-cmp/setCmpTail'
     import { fieldControlTypeMixin } from '@/utils/newStyleMixins-fields.js'
     let that = null
     export default {
@@ -87,25 +77,11 @@
                     return []
                 }
             },            
-            currentMiddleSelectObj: {
-                type: Object,
-                default: () => {
-                    return {}
-                }
-            },
-            currentMiddleSelectObjIndex: {
-                type: [String, Number],
-                default: ''
-            },
             showAllSetItem: {
                 type: Boolean,
                 default: () => {
                     return true
                 }
-            },
-            currentRightIndex: {
-                type: Number,
-                default: 0
             },
             objP: {
                 type: Object,
@@ -128,35 +104,32 @@
         data(){
             return {
                 loading: false,
-                activeIndex: 0,
-                beforeActiveIndex: 0
+                contentCmpsList: [],
+                currentRightIndex: 0,
             }
         },
         computed: {
-            contentCmpsList(){
-                let length = this.cmpsList.length
-                if(length > 0){
-                    return this.cmpsList
-                }else {
-                    return []
-                }
-            }            
+          
         },
         watch: {
-            currentMiddleSelectObjIndex(newValue, oldValue){
-                this.activeIndex = newValue
-            }
+
         },
         created(){
             that = this
             this.$nextTick(() => {
-                this.$bus.$on("rightLoading", (res) => {
-                   if(res){
-                       this.loading = true
-                   }else {
-                       this.loading = false
-                   }
-
+                this.$bus.$on("rightDataArr", (arr) => {
+                    this.contentCmpsList = arr
+                })
+                this.$bus.$on("middleClickEmit", (obj, index) => {
+                    this.currentRightIndex = index
+                    // 获取当前点击控件的属性
+                    this.getCurrentObjAttributes(obj)
+                })
+                this.$bus.$on("sortRightDataArr", (arr, index) => {
+                    debugger
+                    this.currentRightIndex = index
+                    this.contentCmpsList = arr
+                    this.getCurrentObjAttributes(arr[this.currentRightIndex])
                 })
             })
         },
@@ -165,45 +138,105 @@
         },
         methods: {
             offEventBus(){
-                this.$bus.$off("rightLoading")
+                this.$bus.$off("rightDataArr")
+                this.$bus.$off("middleClickEmit")
+                this.$bus.$off("sortRightDataArr")
             },
-            changeData(arr){
-                let list = []
-                if(arr && arr.length){
+            async getCurrentObjAttributes(obj){
+                if(obj.rightAttributes){
+                    if(Object.keys(obj.rightAttributes).length){
+
+                    }else {
+                        return await this.getControlAttributes(obj)
+                    }
+                }else {
+                    this.addObjRightAttribute(obj)
+                    return await this.getControlAttributes(obj)
+                }                
+            },
+            // 添加 属性
+            addObjRightAttribute(obj){
+                debugger
+                this.$set(obj, 'rightAttributes', {})
+            },  
+            async getControlAttributes (obj) {
+                this.loading = true
+                debugger
+                let parmasObj = {
+                    controlType: obj.controlType,
+                    relateb: this.objP.relateb
+                }                 
+                return await getControlAttributes(parmasObj).then(res => {
+                    this.loading = false
                     debugger
-                    console.log("****************", arr)
-                    arr.forEach((item, key) => {
-                        let itemGroupAttributeArr =  item.rightAttributes.groupAttributeArr
-                        if(itemGroupAttributeArr.length){
-                            let arr = []
-                            itemGroupAttributeArr.forEach((value, index) => {
-                                let itemTeamControlList = value.teamControlList
-                                if(itemTeamControlList.length) {
-                                    itemTeamControlList.forEach((groupItem, groupItemKey) => {
-                                        arr.push({
-                                            unicode: groupItem.unicode,
-                                            convalue: groupItem.convalue
-                                        })
-                                    })
-                                }                               
-                            })
-                            list.push({
-                                controlType: item.controlType,
-                                sortId: key,
-                                controlValueList: arr
-                            }) 
-                        }
-                    })
-                    // console.log("-------*******---------", list)
+                    obj.rightAttributes = {
+                        unicode: obj.unicode,
+                        controlName: obj.controlName,
+                        controlType: obj.controlType,
+                        pcode: obj.pcode,
+                        groupAttributeArr: res.data.Data                        
+                    } 
+                    return obj
+                    // this.$bus.$emit("rightLoading",false)
+                }).catch(err => {
+                    // this.$bus.$emit("rightLoading",false)
+                })
+            },             
+            async changeData(arr){
+                if(arr && arr.length){
+                    for(let i =0,length=arr.length;i<length;i++){
+                        let item = arr[i]
+                        if(!item.rightAttributes) {
+                           await this.getControlAttributes(item)                 
+                        }else {
+                            
+                        } 
+                    }
                 }
-                return list
+                return arr
             },
-            saveControlAttributes(){
+            getFinalParamsData(arr){
+                
+                let list = []
+                debugger
+                arr.forEach((item, key) => {
+                    let itemGroupAttributeArr = item.rightAttributes.groupAttributeArr
+                    if(itemGroupAttributeArr.length){
+                        let controlValueListArr = []
+                        itemGroupAttributeArr.forEach((value, index) => {
+                            let itemTeamControlList = value.teamControlList
+                            if(itemTeamControlList.length) {
+                                itemTeamControlList.forEach((groupItem, groupItemKey) => {
+                                    controlValueListArr.push({
+                                        unicode: groupItem.unicode,
+                                        convalue: groupItem.convalue
+                                    })
+                                })
+                            }                               
+                        })
+                        list.push({
+                            controlType: item.controlType,
+                            sortId: key,
+                            controlValueList: controlValueListArr
+                        }) 
+                    } 
+                })
+                console.log("-------*******---------", list)
+                return list               
+            },
+            async saveControlAttributes () {
+                debugger
                 that.loading = true
                 let params = {
                     relateb: this.objP.relateb,
-                    list: that.changeData(that.contentCmpsList)
+                    list: []
                 }
+                let finalArr =  await that.changeData(that.contentCmpsList)
+                // console.log("----finalArr----",finalArr)
+                debugger
+                params.list = this.getFinalParamsData(finalArr)
+                debugger
+                console.log("保存时 最终的 params", params)
                 saveControlAttributes(params).then(res => {
                     that.loading = false
                     that.$message({

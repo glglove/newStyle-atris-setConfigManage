@@ -13,8 +13,10 @@
   <el-form-item
     :prop="prop"
     :rules="rules"
-    v-if="isShowField">
+    v-show="(beforeHasShow==1) && isShowField"
+  >
     <!-- obj：{{obj}} -->
+    eventTypeResult: {{eventTypeResult}}    
     <div 
       class="filedContentWrap u-f-ac u-f-jst"
     >
@@ -26,12 +28,12 @@
           {{isTitle ? obj.conname : ''}}
           <icon-svg 
             class="fieldRequiredIcon"
-            v-show="!isShowing && obj.Require"
+            v-show="!isShowing && obj.require"
             :icon-class="RequiredSvg"
           ></icon-svg>   
           <el-tooltip 
-            v-if="obj.Description"
-            :content="obj.Description">
+            v-if="obj.description"
+            :content="obj.description">
             <i class="el-icon-info"></i>
           </el-tooltip>                
         </span>
@@ -51,7 +53,7 @@
                 size="mini" 
                 :disabled="obj.Readonly || !isHasAddOrEditAuth()"        
                 :type="isPassWordField? 'password':'number'"          
-                :placeholder="obj.ActRemind ||　'请输入最小值'"
+                :placeholder="obj.actremind ||　'请输入最小值'"
                 @change="numChange"
             >
             </el-input> 
@@ -64,7 +66,7 @@
             size="mini" 
             :disabled="isDisabledField"        
             :type="isPassWordField? 'password':'number'"          
-            :placeholder="obj.ActRemind ||　'请输入最大值'"
+            :placeholder="obj.actremind ||　'请输入最大值'"
             @change="numChange">
             </el-input>   
         </div>         
@@ -131,7 +133,7 @@
           return
         }
         
-        if (this.obj.Require && (!this.obj.convalue.length || this.obj.convalue.length<2)) {
+        if (this.obj.require && (!this.obj.convalue.length || this.obj.convalue.length<2)) {
           callback(new Error(this.obj.conname + '需输入完整'))
         } else {
             if(this.obj.convalue[0]< this.obj.Min || this.obj.convalue[1] > this.obj.Max){
@@ -143,7 +145,7 @@
       }
       return {         
         rules: {
-          required: this.obj.Require,         
+          required: this.obj.require,         
           validator: validatePass,
           trigger: 'blur'
         }

@@ -13,8 +13,10 @@
   <el-form-item
     :prop="prop"
     :rules="rules"
-    v-if="isShowField">
+    v-show="(beforeHasShow==1) && isShowField"
+  >
     <!-- obj：{{obj}} -->
+    eventTypeResult: {{eventTypeResult}}    
     <div 
       class="filedContentWrap u-f-ac u-f-jst"
     >
@@ -26,12 +28,12 @@
           {{isTitle ? obj.conname : ''}}
           <icon-svg 
             class="fieldRequiredIcon"
-            v-show="!isShowing && obj.Require"
+            v-show="!isShowing && obj.require"
             :icon-class="RequiredSvg"
           ></icon-svg> 
           <el-tooltip 
-            v-if="obj.Description"
-            :content="obj.Description">
+            v-if="obj.description"
+            :content="obj.description">
             <i class="el-icon-info"></i>
           </el-tooltip>                  
         </span>
@@ -49,7 +51,7 @@
           v-model="obj.convalue"
           :disabled="isDisabledField" 
           :type="isPassWordField? 'password':'textarea'"  
-          :placeholder="obj.ActRemind || '请输入'"
+          :placeholder="obj.actremind || '请输入'"
           :maxlength="obj.Max"
           :autosize="{ minRows: 1, maxRows: 4}"
         >
@@ -117,7 +119,7 @@
           return
         }
         
-        if (this.obj.Require && (this.obj.convalue === '' || !this.obj.convalue)) {
+        if (this.obj.require && (this.obj.convalue === '' || !this.obj.convalue)) {
           callback(new Error(this.obj.conname + '不能为空'))
         } else if (this.obj.convalue && this.obj.convalue.length > 3000) {
           callback(new Error('长度不能大于3000字符'))
@@ -135,7 +137,7 @@
       }
       return {       
         rules: {
-          required: this.obj.Require,
+          required: this.obj.require,
           validator: validatePass,
           trigger: 'blur'
         }

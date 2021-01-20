@@ -69,5 +69,5 @@ export function setLocalStorage (key, data) {
 // 获取localStorage
 export function getLocalStorage (key) {
   console.log(`----auth.js中localstorage获取-${key}-- `)  
-  return localStorage.getItem(key)
+  return (localStorage.getItem(key))
 }

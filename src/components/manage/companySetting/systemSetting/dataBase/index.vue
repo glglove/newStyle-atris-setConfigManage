@@ -5,8 +5,6 @@
 -->
 
 <style lang="stylus" ref="stylesheet/stylus" scoped>
-.el-form-item
-  margin-bottom 17px !important
 .dataBase
   padding 0 20px
   box-sizing border-box
@@ -320,9 +318,7 @@
           <atris-drawer-cmp
             :tit="dialogTit"    
             :dialog.sync="showAddGroup"  
-            width="20%"     
             @emitClickSureBtn="saveAddDataBase"
-
           >
             <el-form 
               ref="formAddData" 
@@ -530,6 +526,7 @@
         debugger
         // let resHtml = document.getElementById('middleCmpRef').innerHTML
         // test(document.getElementById('middleCmpRef').innerHTML)
+        // this.loading = true
         // 触发 right 组件中的保存方法
         this.$debounce(this.$refs.tableSetCmp.$refs.setModuleCmp.$refs.rightCmpRef.saveControlAttributes())
       },
@@ -635,6 +632,7 @@
       },   
       // 物理表设置
       handleTableSet(row, index){
+        debugger
         this.currentTableSetRow = JSON.parse(JSON.stringify(row))
         this.showTableSetDialog  = true
       },    

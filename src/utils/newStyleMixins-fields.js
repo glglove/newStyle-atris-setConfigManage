@@ -40,64 +40,93 @@ export const fieldControlTypeMixin = {
         currentFieldComponentMixin (controltype) {
             switch (controltype) {
                 case '1':
+                case 1:
                     return BaseInput
                 case '2':
+                case 2:
                     return TextareaInput
                 case '3':
+                case 3:
                     return NumInput
                 case '4':
+                case 4:
                     return MoneyInput
                 case '5':
+                case 5:
                     return BaseSelect
                 case '6':
+                case 6:
                     return MultipleSelect
                 case '7':
+                case 7:
                     return BaseDate
                 case '8':
+                case 8:
                     return RangeDate
                 case '9':
+                case 9:
                     return TimeDate
                 case '10':
+                case 10:
                     return MonthSelect
                 case '11':
+                case 11:
                     return BaseSwitch
                 case '12':
+                case 12:
                     return BaseRadio
                 case '13':
+                case 13:
                     return BaseCheckbox
                 case '14':
                     return BaseImgUpload
                 case '15':
+                case 15:
                     return BaseFileUpload
                 case '16':
+                case 16:
                     return BaseCalculate
                 case '17': 
+                case 17: 
                     // return table     // 表格                
                 case '19':
+                case 19:
                     return BaseEmpSelect
                 case '20':
+                case 20:
                     return BaseOrgSelect
                 // case '21':
+                // case 21:
                 //     return OrgAndEmpSelect
                 case '22':
+                case 22:
                     return BaseMapSelect
                 case '23':
+                case 23:
                     return BaseEditor
                 case '24':
+                case 24:
                     return BaseExplain
                 case '25':
+                case 25:
                     // return 'guanlianshenpi'
                 case '27':
+                case 27:
                     return BaseProvinces
                 case '28':
+                case 28:
                     return BaseFieldSelect    
                 case '29':
+                case 29:
                     return BaseFieldSet
                 case '30':
+                case 30:
                     return BasePageLinkField                                                           
                 case '31':
+                case 31:
                     return RangeNum
                 case '32':
+                case 32:
                     return BaseSwitchSelect
                 default: 
                     return BaseInput

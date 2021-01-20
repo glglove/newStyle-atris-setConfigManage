@@ -33,8 +33,9 @@ export const fieldsDataSourceMixin = {
             this._checkDicLocalStorage().then(res => {
                 // debugger
                 if(res){
-                    // 缓存中没有 则去获取 数据源 然后进行缓存
-                    this._newStyleGetDicTree( this.getDicSourceParams )                     
+                    // // 缓存中没有 则去获取 数据源 然后进行缓存
+                    // this._newStyleGetDicTree( this.getDicSourceParams )                     
+                    this.dataSource = this.localDicDataSourceList
                 }else {
                     // 缓存中没有 则去获取 数据源 然后进行缓存
                     this._newStyleGetDicTree( this.getDicSourceParams )                

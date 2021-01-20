@@ -20,9 +20,10 @@
   <el-form-item
     :prop="prop"
     :rules="rules"
-    v-if="isShowField"
+    v-show="(beforeHasShow==1) && isShowField"
   >
     <!-- obj: {{obj}} -->
+    eventTypeResult: {{eventTypeResult}}    
     <div 
       class="filedContentWrap u-f-ac u-f-jst"
     >
@@ -38,8 +39,8 @@
             :icon-class="RequiredSvg"
           ></icon-svg>     
           <el-tooltip 
-            v-if="obj.Description"
-            :content="obj.Description">
+            v-if="obj.description"
+            :content="obj.description">
             <i class="el-icon-info"></i>
           </el-tooltip>              
         </span>
@@ -56,14 +57,14 @@
         <el-cascader
           class="fieldValue"
           v-if="!isShowing"
-          :placeholder="obj.ActRemind ||　'请选择'"
+          :placeholder="obj.actremind ||　'请选择'"
           :options="dataSource"
           v-model="obj.convalue"
           :props="{
-            'children': 'Children',
-            'label':'Name',
-            'value': 'Code',
-            'multiple': true
+            'children': 'childrenList',
+            'label':'itemName',
+            'value': 'dicId',
+            'multiple': true,
           }"
           clearable
           :collapse-tags="false"
@@ -72,12 +73,12 @@
         >
           <template slot-scope="{ node, data }">
             <span class="u-f-ac">
-              {{ data.Name }}
+              {{ data.itemName }}
               <el-tooltip 
-                v-if="data.Description"
+                v-if="data.description"
                 class="item" 
                 effect="dark" 
-                :content="data.Description" 
+                :content="data.description" 
                 placement="top-start"
               >
                 <i class="el-icon-info" style="margin-left:5px"></i>
@@ -187,7 +188,7 @@
               // 业务领域存在 但是 dataSource 为空（获取业务领域接口时，返回的业务领域为空，需要重新配置表单）
             // callback(new Error(this.obj.conname + '所关联的字段范围无数据，请重新配置表单'))
             callback()
-          } else if (this.obj.Require && (this.obj.convalue === '' || !this.obj.convalue)) {
+          } else if (this.obj.require && (this.obj.convalue === '' || !this.obj.convalue)) {
             // 需要校验，并且 this.obj.convalue 为空
             callback(new Error(this.obj.conname + '不能为空'))
           } else {
@@ -198,7 +199,7 @@
 
       return {
         rules: {
-          required: this.obj.Require,
+          required: this.obj.require,
           required: true,
           validator: validatePass,
           trigger: ['change', 'blur']

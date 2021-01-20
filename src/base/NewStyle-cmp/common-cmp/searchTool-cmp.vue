@@ -55,7 +55,7 @@
                 ---
                 searchContentStyle: {{searchContentStyle}} -->
                 <div 
-                    class="323"
+                    class="moreSearchWrap"
                 >
                     <div 
                         :class="['searchContent', 'u-f-ajc', 'u-f-column',showMoreSearchWrap? 'show':'']" 

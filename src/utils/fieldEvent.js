@@ -1,8 +1,11 @@
+/**
+ * 控件配置的事件统一管理
+ */
 export const fieldEventObj = {
     eventTypeConfig: {
         control1: {    // 场景1：  字段1 完成或者符合逻辑条件值,跳转到字段6,中间字段隐藏
             doWay: 1, //  该场景下 进行 隐藏操作
-            evenType: [
+            eventType: [
                 {
                     type: 1,
                     des: '包含',
@@ -105,7 +108,7 @@ export const fieldEventObj = {
         },
         control2: {  // 场景2： 字段1符合逻辑条件值, 字段6 只能选择 A1, A2
             doWay: 2, //  该场景下 进行 数据源的操作         
-            evenType: [
+            eventType: [
                 {
                     type: 1,
                     des: '包含',
@@ -208,7 +211,7 @@ export const fieldEventObj = {
         },
         control3: {  // 场景3:  字段1符合逻辑条件值,跳转到 字段6, 中间字段隐藏
             doWay: 1, //  该场景下 进行 隐藏操作      
-            evenType: [
+            eventType: [
                 {
                     type: 1,
                     des: '包含',
@@ -311,7 +314,7 @@ export const fieldEventObj = {
         },  
         control4: {   // 场景4： 字段1符合逻辑条件值, 字段6赋值为Y
             doWay: 3, //  该场景下 进行  convalue的改变值操作
-            evenType: [
+            eventType: [
                 {
                     type: 1,
                     des: '包含',
@@ -417,136 +420,223 @@ export const fieldEventObj = {
     getEventTypeRusult: function () {
         let _this = this
     },
-    isFitConditionFn(triggertype, calculateRelation_sign){
+    // 判断达到 条件
+    isFitConditionFn(triggertype, calculateRelation_sign, currentValue, conditionValue, controlObj){
+        let flag = false
         switch(triggertype) {
             case 'control1': // 场景1
                 switch(calculateRelation_sign){ // 计算规则
                     case 'contain':  // 包含关系
-                        return currentValue >= conditionValue
+                        // if(currentValue){
+                        //     //场景1 有值 就算达到了条件  
+                        // }else {
+                        //     // 场景1 没有值 才去和 conditionValue 比较
+                        // }
+                        flag =  (currentValue.indexOf(conditionValue) > 0)
+                        break
                     case 'not-contain':  // 不包含关系
-                        return currentValue === conditionValue
+                        flag =  (currentValue.indexOf(conditionValue) < 0)
+                        break
                     case 'is':  // 是关系
-                        return 
+                        flag =  (currentValue === conditionValue)
+                        break                    
                     case 'notis': // 不是关系
-                        return 
+                        flag =  (currentValue != conditionValue)
+                        break                           
                     case 'startWith': // 开头为 关系
-                        return 
+                        flag =  ((new RegExp(`^${conditionValue}.*$`)).test(conditionValue))
+                        break                            
                     case 'endWith':  // 结尾为 关系
-                        return 
+                        flag = ((new RegExp(`${conditionValue}$`)).test(conditionValue))
+                        break 
                     case 'betweenIn': // 在范围内 关系
-                        return 
+                        let arr = conditionValue.split(conditionValue)
+                        flag = ( (arr[0]<= currentValue)  && (currentValue <= arr[1]) )
+                        break 
                     case 'betweenOut': // 不在范围内 关系
-                        return 
+                        flag = ((arr[0] > currentValue)  || (currentValue > arr[1]))
+                        break
                     case 'equal': // 等于关系
-                        return 
+                        flag = currentValue == conditionValue
+                        break 
                     case 'not-equal': // 不等于关系
-                        return 
+                        flag = currentValue != conditionValue
+                        break 
                     case 'bigger': // 大于关系
-                        return 
+                        flag = currentValue > conditionValue   
+                        break 
                     case 'smaller': // 小于关系
-                        return 
+                        flag = currentValue < conditionValue   
+                        break                         
                     case 'moreOrequal': // 大于等于关系
-                        return 
+                        flag = currentValue >= conditionValue   
+                        break                    
                     case 'lessOrequal': // 小于等于关系
+                        flag = currentValue <= conditionValue
+                        break
                 }
-            break
+                break
             case 'control2': // 场景2
                 switch(calculateRelation_sign){ // 计算规则
                     case 'contain':  // 包含关系
-                        return currentValue >= conditionValue
+                        // if(currentValue){
+                        //     //场景1 有值 就算达到了条件  
+                        // }else {
+                        //     // 场景1 没有值 才去和 conditionValue 比较
+                        // }
+                        flag =  (currentValue.indexOf(conditionValue) > 0)
+                        break
                     case 'not-contain':  // 不包含关系
-                        return currentValue === conditionValue
+                        flag =  (currentValue.indexOf(conditionValue) < 0)
+                        break
                     case 'is':  // 是关系
-                        return 
+                        flag =  (currentValue === conditionValue)
+                        break                    
                     case 'notis': // 不是关系
-                        return 
+                        flag =  (currentValue != conditionValue)
+                        break                           
                     case 'startWith': // 开头为 关系
-                        return 
+                        flag =  ((new RegExp(`^${conditionValue}.*$`)).test(conditionValue))
+                        break                            
                     case 'endWith':  // 结尾为 关系
-                        return 
+                        flag = ((new RegExp(`${conditionValue}$`)).test(conditionValue))
+                        break 
                     case 'betweenIn': // 在范围内 关系
-                        return 
+                        let arr = conditionValue.split(conditionValue)
+                        flag = ( (arr[0]<= currentValue)  && (currentValue <= arr[1]) )
+                        break 
                     case 'betweenOut': // 不在范围内 关系
-                        return 
+                        flag = ((arr[0] > currentValue)  || (currentValue > arr[1]))
+                        break
                     case 'equal': // 等于关系
-                        return 
+                        flag = currentValue == conditionValue
+                        break 
                     case 'not-equal': // 不等于关系
-                        return 
+                        flag = currentValue != conditionValue
+                        break 
                     case 'bigger': // 大于关系
-                        return 
+                        flag = currentValue > conditionValue   
+                        break 
                     case 'smaller': // 小于关系
-                        return 
+                        flag = currentValue < conditionValue   
+                        break                         
                     case 'moreOrequal': // 大于等于关系
-                        return 
+                        flag = currentValue >= conditionValue   
+                        break                    
                     case 'lessOrequal': // 小于等于关系
+                        flag = currentValue <= conditionValue
+                        break
                 }
-            break  
+                break  
             case 'control3': // 场景3
                 switch(calculateRelation_sign){ // 计算规则
                     case 'contain':  // 包含关系
-                        return currentValue >= conditionValue
+                        // if(currentValue){
+                        //     //场景1 有值 就算达到了条件  
+                        // }else {
+                        //     // 场景1 没有值 才去和 conditionValue 比较
+                        // }
+                        flag =  (currentValue.indexOf(conditionValue) > 0)
+                        break
                     case 'not-contain':  // 不包含关系
-                        return currentValue === conditionValue
+                        flag =  (currentValue.indexOf(conditionValue) < 0)
+                        break
                     case 'is':  // 是关系
-                        return 
+                        flag =  (currentValue === conditionValue)
+                        break                    
                     case 'notis': // 不是关系
-                        return 
+                        flag =  (currentValue != conditionValue)
+                        break                           
                     case 'startWith': // 开头为 关系
-                        return 
+                        flag =  ((new RegExp(`^${conditionValue}.*$`)).test(conditionValue))
+                        break                            
                     case 'endWith':  // 结尾为 关系
-                        return 
+                        flag = ((new RegExp(`${conditionValue}$`)).test(conditionValue))
+                        break 
                     case 'betweenIn': // 在范围内 关系
-                        return 
+                        let arr = conditionValue.split(conditionValue)
+                        flag = ( (arr[0]<= currentValue)  && (currentValue <= arr[1]) )
+                        break 
                     case 'betweenOut': // 不在范围内 关系
-                        return 
+                        flag = ((arr[0] > currentValue)  || (currentValue > arr[1]))
+                        break
                     case 'equal': // 等于关系
-                        return 
+                        flag = currentValue == conditionValue
+                        break 
                     case 'not-equal': // 不等于关系
-                        return 
+                        flag = currentValue != conditionValue
+                        break 
                     case 'bigger': // 大于关系
-                        return 
+                        flag = currentValue > conditionValue   
+                        break 
                     case 'smaller': // 小于关系
-                        return 
+                        flag = currentValue < conditionValue   
+                        break                         
                     case 'moreOrequal': // 大于等于关系
-                        return 
+                        flag = currentValue >= conditionValue   
+                        break                    
                     case 'lessOrequal': // 小于等于关系
+                        flag = currentValue <= conditionValue
+                        break
                 }
-            break 
+                break 
             case 'control4': // 场景4
                 switch(calculateRelation_sign){ // 计算规则
                     case 'contain':  // 包含关系
-                        return currentValue >= conditionValue
+                        // if(currentValue){
+                        //     //场景1 有值 就算达到了条件  
+                        // }else {
+                        //     // 场景1 没有值 才去和 conditionValue 比较
+                        // }
+                        flag =  (currentValue.indexOf(conditionValue) > 0)
+                        break
                     case 'not-contain':  // 不包含关系
-                        return currentValue === conditionValue
+                        flag =  (currentValue.indexOf(conditionValue) < 0)
+                        break
                     case 'is':  // 是关系
-                        return 
+                        flag =  (currentValue === conditionValue)
+                        break                    
                     case 'notis': // 不是关系
-                        return 
+                        flag =  (currentValue != conditionValue)
+                        break                           
                     case 'startWith': // 开头为 关系
-                        return 
+                        flag =  ((new RegExp(`^${conditionValue}.*$`)).test(conditionValue))
+                        break                            
                     case 'endWith':  // 结尾为 关系
-                        return 
+                        flag = ((new RegExp(`${conditionValue}$`)).test(conditionValue))
+                        break 
                     case 'betweenIn': // 在范围内 关系
-                        return 
+                        let arr = conditionValue.split(conditionValue)
+                        flag = ( (arr[0]<= currentValue)  && (currentValue <= arr[1]) )
+                        break 
                     case 'betweenOut': // 不在范围内 关系
-                        return 
+                        flag = ((arr[0] > currentValue)  || (currentValue > arr[1]))
+                        break
                     case 'equal': // 等于关系
-                        return 
+                        flag = currentValue == conditionValue
+                        break 
                     case 'not-equal': // 不等于关系
-                        return 
+                        flag = currentValue != conditionValue
+                        break 
                     case 'bigger': // 大于关系
-                        return 
+                        flag = currentValue > conditionValue   
+                        break 
                     case 'smaller': // 小于关系
-                        return 
+                        flag = currentValue < conditionValue   
+                        break                         
                     case 'moreOrequal': // 大于等于关系
-                        return 
+                        flag = currentValue >= conditionValue   
+                        break                    
                     case 'lessOrequal': // 小于等于关系
+                        flag = currentValue <= conditionValue
+                        break
                 }
-            break                                 
-        }   
+                break                                 
+        } 
+        return flag  
     },
     // 判断是否达到触发改变
-    isGetConditions: function (vueObj, currentEventResult) {
+    isGetConditions: function (vueObj, currentEventResult, controlObj) {
         let _this = this
         let flag = false  // 是否达到逻辑值的flag
         let currentValue = vueObj.obj.convalue
@@ -565,11 +655,11 @@ export const fieldEventObj = {
         let calculateDoway = calculateInfoObj.doWay
         let calculateRelation_sign = calculateInfoObj["calculateRelation"]
         // 判断是否满足配置的逻辑值
-        flag = _this.isFitCondition(triggertype, calculateRelation_sign)        
+        flag = _this.isFitConditionFn(triggertype, calculateRelation_sign, currentValue, conditionValue, controlObj)        
         return flag
     },
     // 判断 是否执行过改变其他字段的事件
-    isChangedOherFieldEvent(vueObj, currentEventResultObj){
+    isChangedOherFieldEvent(vueObj, currentEventResultObj, controlObj){
         let _this = this
         let flag = false
         let currentValue = vueObj.obj.convalue
@@ -584,12 +674,17 @@ export const fieldEventObj = {
             resultcode
         } = currentEventResultObj
         let targetUnicode = resultcode || para
+        let calculateDoway = _this.eventTypeConfig[triggertype].doWay        
         // let calculateInfoObj = _this.eventTypeConfig[triggertype]["eventType"][resultcondition-1]
-        // let calculateDoway = calculateInfoObj.doWay        
         // let calculateRelation_sign = calculateInfoObj["calculateRelation"]
         if(vueObj.fieldEventEmitInfo.length){
             vueObj.fieldEventEmitInfo.forEach((item, key) => {
-                if(item.from === unicode && item.to === targetUnicode){
+                if( item.from === unicode 
+                    && item.to === targetUnicode
+                    && item.calculateDoway === calculateDoway
+                    && item.conditions === conditions
+                    && item.resultcondition === resultcondition
+                ){
                     // 找到了证明之前有触发过其他字段改变的事件 此时需要进行还原操作
                     flag = true
                 }else {
@@ -598,12 +693,12 @@ export const fieldEventObj = {
                 }
             })
         }else {
-           flag = flase
+           flag = flag
         }
         return flag
     },
     // 触发变动事件
-    emitChangeEvent: function (vueObj, totalEventResult) {
+    emitChangeEvent: function (vueObj, totalEventResult, controlObj) {
         let _this = this
         if(totalEventResult && totalEventResult.length){
             totalEventResult.forEach((item, key) => {
@@ -619,22 +714,38 @@ export const fieldEventObj = {
                     resultcode
                 } = item
                 let targetUnicode = resultcode || para
-                if(_this.isGetConditions(vueObj, item)) {
+                let calculateDoway = _this.eventTypeConfig[triggertype].doWay                 
+                let calculateInfoObj = _this.eventTypeConfig[triggertype]["eventType"][conditions-1]       
+                let calculateRelation_sign = calculateInfoObj["calculateRelation"]                
+                if(_this.isGetConditions(vueObj, item, controlObj)) {
+                    console.log(`控件类型[${controlObj.controltype}]--${vueObj.obj.conname} 达到触发条件准备触发${targetUnicode}`)
                     // 达到触发条件 触发 触发事件
                     vueObj.$bus.$emit(`fieldEventChange_${targetUnicode}`, item)
                     // 将触发的事件信息 存入 vueObj 中的 fieldEventEmitInfo中 方便 进行事件的还原操作
-                    vueObj.push({
+                    vueObj.fieldEventEmitInfo.push({
                         from:unicode,
-                        to: targetUnicode
+                        to: targetUnicode,
+                        calculateDoway: calculateDoway,
+                        triggertype,  
+                        conditions,
+                        conditionValue,
+                        unicode,
+                        resultcondition,
+                        resultValue,
+                        para,  
+                        resultcode                      
                     })
                 }else {
+                    console.log(`控件类型[${controlObj.controltype}]--${vueObj.obj.conname} 未达到触发${targetUnicode}的条件，准备判断是否之前已经触发过${targetUnicode}`)
                     // 未达到 触发条件 判断该目标字段之前有没有触发过其他字段的改变事件此时需要进行相应的还原操作
-                    let resflag = _this.isChangedOherFieldEvent(vueObj, item)
+                    let resflag = _this.isChangedOherFieldEvent(vueObj, item, controlObj)
                     if(resflag){
+                        console.log(`控件类型[${controlObj.controltype}]--${vueObj.obj.conname} 未达到触发${targetUnicode}的条件，经判断之前已经触发过${targetUnicode}的变动,此时需要还原之前的改变`)
                         // 之前影响过其他
-                        _this.emitBackEvent(vueObj, item)
+                        _this.emitBackEvent(vueObj, item, controlObj)
                     }else {
                         // 之前没有影响过其他
+                        console.log(`控件类型[${controlObj.controltype}]--${vueObj.obj.conname} 未达到触发${targetUnicode}的条件，经判断之前没有触发过${targetUnicode}的变动,不需要进行还原操作`)                        
                     }
 
                 }
@@ -643,8 +754,11 @@ export const fieldEventObj = {
             console.log("********事件规则接口没有返回数据")
         }
     },
-    // 响应触发变动
-    excuteChangeEvent(vueObj, currentEventResultObj){
+    // 响应触发改变变动
+    excuteChangeEvent(vueObj, currentEventResultObj, controlObj){
+        let _this = this
+        debugger
+        console.log(`--控件类型[${controlObj.controltype}]--${vueObj.obj.conname}--开始进行响应操作`)
         let currentValue = vueObj.obj.convalue
         let {
             triggertype,  
@@ -657,8 +771,8 @@ export const fieldEventObj = {
             resultcode
         } = currentEventResultObj
         let targetUnicode = resultcode || para
+        let calculateDoway = _this.eventTypeConfig[triggertype].doWay 
         let calculateInfoObj = _this.eventTypeConfig[triggertype]["eventType"][resultcondition-1]
-        let calculateDoway = calculateInfoObj.doWay        
         let calculateRelation_sign = calculateInfoObj["calculateRelation"]
 
         switch(calculateDoway){
@@ -678,15 +792,15 @@ export const fieldEventObj = {
                     calculateRelation_sign,   
                     beforeConvalue: vueObj.beforeConvalue,     
                     afterConvalue: vueObj.beforeConvalue,     
-                    beforeHasHide: vueObj.beforeHasHide,
+                    beforeHasShow: vueObj.beforeHasShow,
                     afterHasHide: true,
-                    beforeDataSource: vueObj.beforeDataSource,
-                    afterDataSource: vaueObj.beforeDataSource
+                    beforeDataSource: vueObj.obj.dataSource,
+                    afterDataSource: vaueObj.obj.dataSource
                 })
-                vueObj.beforeDataSource =  vueObj.beforeDataSource
+                vueObj.beforeDataSource =  vueObj.obj.dataSource
                 vueObj.beforeConvalue = vueObj.beforeConvalue
-                vueObj.beforeHasHide = true
-                console.log("-------执行了隐藏操作--------")
+                vueObj.beforeHasShow = true
+                console.log(`----控件类型[${controlObj.controltype}]--${vueObj.obj.conname}---执行了隐藏操作--------`)
                 break
             case 2: // 数据源修改 
                 vueObj.fieldEventOnInfo.push({
@@ -702,17 +816,18 @@ export const fieldEventObj = {
                     calculateInfoObj,
                     calculateDoway,
                     calculateRelation_sign,   
-                    beforeConvalue: vueObj.beforeConvalue,     
-                    afterConvalue: vueObj.beforeConvalue,     
-                    beforeHasHide: vueObj.beforeHasHide,
-                    afterHasHide: vueObj.beforeHasHide,
-                    beforeDataSource: vueObj.beforeDataSource,
-                    afterDataSource: resultValue
+                    beforeConvalue: vueObj.obj.convalue,     
+                    afterConvalue: vueObj.obj.convalue,     
+                    beforeHasShow: vueObj.beforeHasShow,
+                    afterHasHide: vueObj.beforeHasShow,
+                    beforeDataSource: vueObj.dataSource || [],
+                    afterDataSource: resultValue || []
                 })            
-                vueObj.beforeHasHide = vueObj.beforeHasHide
+                vueObj.beforeHasShow = vueObj.beforeHasShow
                 vueObj.beforeConvalue = vueObj.beforeConvalue
-                vueObj.beforeDataSource = resultValue   
-                console.log("-------执行了修改数据源操作--------")
+                vueObj.beforeDataSource = resultValue  || []
+                vueObj.dataSource = resultValue || []
+                console.log(`----控件类型[${controlObj.controltype}]--${vueObj.obj.conname}---执行了修改数据源操作--------`)
                 break
             case 3:  // 值修改 convalue
                 vueObj.fieldEventOnInfo.push({
@@ -728,46 +843,46 @@ export const fieldEventObj = {
                     calculateInfoObj,
                     calculateDoway,
                     calculateRelation_sign,   
-                    beforeConvalue: vueObj.beforeConvalue,     
-                    afterConvalue: vueObj.beforeConvalue,     
-                    beforeHasHide: vueObj.beforeHasHide,
-                    afterHasHide: vueObj.beforeHasHide,
-                    beforeDataSource: vueObj.beforeDataSource,
-                    afterDataSource: resultValue
+                    beforeConvalue: vueObj.obj.convalue,     
+                    afterConvalue: resultValue,     
+                    beforeHasShow: vueObj.beforeHasShow,
+                    afterHasHide: vueObj.beforeHasShow,
+                    beforeDataSource: vueObj.dataSource || [],
+                    afterDataSource: vueObj.dataSource || []
                 })            
-                vueObj.beforeHasHide = vueObj.beforeHasHide
-                vueObj.beforeConvalue = resultValue
-                vueObj.beforeDataSource = vueObj.beforeDataSource              
-                console.log("-------执行了修改值convalue操作--------")
+                vueObj.beforeHasShow = vueObj.beforeHasShow
+                vueObj.beforeConvalue = resultValue || ''
+                vueObj.beforeDataSource = vueObj.beforeDataSource || []
+                vueObj.obj.convalue = resultValue  || ''          
+                console.log(`--控件类型[${controlObj.controltype}]--${vueObj.obj.conname}-----执行了修改值convalue操作--------`)
                 break
         }
         return         
     },
     // 触发 变动还原事件
-    emitBackEvent: function (vueObj, totalEventResult) {
+    emitBackEvent: function (vueObj, currentEventResultObj, controlObj) {
+        debugger
         let _this = this
-        if(totalEventResult && totalEventResult.length){
-            totalEventResult.forEach((item, key) => {
-                let currentValue = vueObj.obj.convalue
-                let {
-                    triggertype,  
-                    conditions,
-                    conditionValue,
-                    unicode,
-                    resultcondition,
-                    resultValue,
-                    para,  
-                    resultcode
-                } = item
-                let targetUnicode = resultcode || para
-                // 触发 变动还原事件
-                vueObj.$bus.$emit(`fieldEventBack_${targetUnicode}`, item)
-            })
-        }
-        
+        let currentValue = vueObj.obj.convalue
+        let {
+            triggertype,  
+            conditions,
+            conditionValue,
+            unicode,
+            resultcondition,
+            resultValue,
+            para,  
+            resultcode
+        } = currentEventResultObj
+        let targetUnicode = resultcode || para
+        let calculateDoway = _this.eventTypeConfig[triggertype].doWay       
+        // 触发 变动还原事件
+        vueObj.$bus.$emit(`fieldEventBack_${targetUnicode}`, currentEventResultObj, calculateDoway)  
     },
     // 执行 变动还原
-    excuteBackEvent(vueObj, currentEventResultObj){
+    excuteBackEvent(vueObj, currentEventResultObj, calculateDoway, controlObj){
+        debugger
+        console.log(`控件类型[${controlObj.controltype}]--${vueObj.obj.conname}被触发进行还原上次的操作,上次操作的类型是[${calculateDoway}]`)
         let currentValue = vueObj.obj.convalue
         let {
             triggertype,  
@@ -780,22 +895,51 @@ export const fieldEventObj = {
             resultcode
         } = currentEventResultObj
         let sourceUnicode = unicode
-        let targetUnicode = resultcode || para
-        let calculateInfoObj = _this.eventTypeConfig[triggertype]["eventType"][resultcondition-1]
-        let calculateDoway = calculateInfoObj.doWay        
-        let calculateRelation_sign = calculateInfoObj["calculateRelation"]
+        let targetUnicode = resultcode || para      
 
-        
-        if(vueObj.beforeEventChangeType === 1){
-            // 值发生变化
-            if(vueObj.hasChanged){
-                vueObj.convalue = vueObj.beforeConvalue
-            }
-        }else if(vueObj.beforeEventChangeType === 2){
-            // 状态发生变化
-            if(vueObj.hasHide){
-                vueObj.hasHide = false
+        if(vueObj.fieldEventOnInfo.length){
+            for(let i =0,length=vueObj.fieldEventOnInfo.length;i<length;i++){
+                let item = vueObj.fieldEventOnInfo[i]
+                if(
+                    unicode === item.unicode
+                    && targetUnicode === item.targetUnicode
+                    && calculateDoway === item.calculateDoway
+                    && conditionValue === item.conditionValue
+                    && resultValue === item.resultValue
+                ){
+                    // 将之前改变的对应还原
+                    switch(calculateDoway){
+                        case 1: // 之前是隐藏操作则需要还原显示
+                            // vueObj.beforeDataSource =  vueObj.beforeDataSource
+                            // vueObj.beforeConvalue = vueObj.beforeConvalue
+                            vueObj.obj.beforeHasShow = item.beforeHasShow
+                            // vueObj.fieldEventOnInfo 中 删除此变动对象
+                            vueObj.fieldEventOnInfo.splice(i,1)
+                            console.log(`---控件类型[${controlObj.controltype}]--${vueObj.obj.conname}----执行了还原隐藏操作（即beforeHasShow变为显示）--------`)
+                            break
+                        case 2: // 之前数据源修改          
+                            // vueObj.beforeHasShow = vueObj.beforeHasShow
+                            // vueObj.beforeConvalue = vueObj.beforeConvalue
+                            vueObj.beforeDataSource = item.beforeDataSource   
+                            vueObj.dataSource = item.beforeDataSource
+                            vueObj.fieldEventOnInfo.splice(i,1)
+                            console.log(`---控件类型[${controlObj.controltype}]--${vueObj.obj.conname}----执行了还原 数据源的修改操作--------`)
+                            break
+                        case 3:  // 之前是修改了值 convalue          
+                            // vueObj.beforeHasShow = vueObj.beforeHasShow
+                            vueObj.beforeConvalue = item.beforeConvalue
+                            vueObj.obj.convalue = item.beforeConvalue
+                            // vueObj.beforeDataSource = vueObj.beforeDataSource 
+                            vueObj.fieldEventOnInfo.splice(i,1)             
+                            console.log(`---控件类型[${controlObj.controltype}]--${vueObj.obj.conname}----执行了还原 之前修改值convalue操作(还原为了${item.beforeConvalue})--------`)
+                            break
+                    }  
+                    break
+                }else {
+
+                }
             }
         }
+
     }
 }

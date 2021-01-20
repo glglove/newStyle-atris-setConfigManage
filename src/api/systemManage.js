@@ -3236,7 +3236,7 @@ export function getControlInfo (obj) {
         data: {
             Method: 'getControlInfo',
             params: {
-                
+                relateb
             }
         }
     })
@@ -3324,6 +3324,32 @@ export function getEventResult (obj) {
         method: 'post',
         data: {
             Method: 'getEventResult',
+            params: {
+                ...obj
+            }
+        }
+    })
+}
+
+
+/-----------显示分组---------------/
+/**
+ * 获取 显示分组列表数据
+ * @params {} 
+ */
+export function getShowGroupList (obj) { 
+    let {
+        current = 1,
+        size = 10,
+    } = obj
+    return fetch({
+        module: 'SystemManage',
+        url: '/team-control/findPage',
+        method: 'post',
+        data: {
+            Method: 'getShowGroupList',
+            size: size,
+            current: current,  
             params: {
                 ...obj
             }

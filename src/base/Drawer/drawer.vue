@@ -77,7 +77,7 @@
             },
             width: {
                 type: [String, Number],
-                default: '30%'
+                default: '25%'
             },
             modal: {
                 type: Boolean,

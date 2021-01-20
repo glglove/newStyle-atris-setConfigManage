@@ -13,9 +13,11 @@
   <el-form-item
     :prop="prop"
     :rules="rules"
-    v-if="isShowField">
+    v-show="(beforeHasShow==1) && isShowField"
+  >
     <!-- obj：{{obj}} -->
     <!-- localDicDataSourceList: {{localDicDataSourceList}} -->
+    <!-- eventTypeResult: {{eventTypeResult}} -->
     <div 
       class="filedContentWrap u-f-ac u-f-jst"
     >
@@ -27,19 +29,19 @@
         {{isTitle ? obj.conname : ''}}
           <icon-svg 
             class="fieldRequiredIcon"
-            v-show="!isShowing && obj.Require"
+            v-show="!isShowing && obj.require"
             :icon-class="RequiredSvg"
           ></icon-svg>   
           <el-tooltip 
-            v-if="obj.Description"
-            :content="obj.Description">
+            v-if="obj.description"
+            :content="obj.description">
             <i class="el-icon-info"></i>
           </el-tooltip>                
         </span>
       </div>
 
-      <!-- dataSource: {{dataSource}}--- -->
-      <!-- obj.convalue: {{obj.convalue}} -->
+      dataSource: {{dataSource}}---
+      obj.convalue: {{obj.convalue}}
       <div 
         v-if="!isShowing" 
         class="fieldValueWrap u-f-g0"
@@ -51,12 +53,12 @@
         >
           <el-checkbox
             v-for="source in dataSource"
-            :key="source.Code"
+            :key="source.dicId"
             :disabled="isDisabledField"
-            :label="source.Code"
+            :label="source.itemName"
             @change="changeCheck"
           >
-            {{source.Name}}
+            {{source.itemName}}
           </el-checkbox>
         </el-checkbox-group>
       </div>
@@ -71,7 +73,7 @@
           :key="key"
           class="ellipsis2"
           style="margin-right: 8px;"
-        >{{item.Name}}</span>
+        >{{item.itemName}}</span>
       </div>          
     </div>
   </el-form-item>
@@ -139,7 +141,7 @@
           return 
         }
 
-      if (this.obj.Require && (!this.obj.convalue || !this.obj.convalue.length)) {
+      if (this.obj.require && (!this.obj.convalue || !this.obj.convalue.length)) {
           callback(new Error(`请选择${this.obj.conname}`))
         } else if (this.obj.Max > 0 && this.obj.convalue.length > this.obj.Max) {
           callback(new Error(`${this.obj.conname}最多选择${this.obj.Max}个`))
@@ -149,7 +151,7 @@
       }
       return {      
         rules: {
-          required: this.obj.Require,
+          required: this.obj.require,
           type: 'array',
           validator: validatePass,
           trigger: 'change'

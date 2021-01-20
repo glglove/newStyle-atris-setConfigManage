@@ -10,8 +10,10 @@
   <el-form-item
     :prop="prop"
     :rules="rules"
-    v-if="isShowField">
+    v-show="(beforeHasShow==1) && isShowField"
+  >
     <!-- obj：{{obj}} -->
+    eventTypeResult: {{eventTypeResult}}
     <div 
       class="filedContentWrap u-f-ac u-f-jst"
     >
@@ -23,12 +25,12 @@
           {{isTitle ? obj.conname : ''}}
           <icon-svg 
             class="fieldRequiredIcon"
-            v-show="!isShowing && obj.Require"
+            v-show="!isShowing && obj.require"
             :icon-class="RequiredSvg"
           ></icon-svg> 
           <el-tooltip 
-            v-if="obj.Description"
-            :content="obj.Description">
+            v-if="obj.description"
+            :content="obj.description">
             <i class="el-icon-info"></i>
           </el-tooltip>                  
         </span>
@@ -46,7 +48,7 @@
           v-model="obj.convalue" 
           size="mini" 
           :type="isPassWordField? 'password':'number'"
-          :placeholder="obj.ActRemind ||　'请输入'"
+          :placeholder="obj.actremind ||　'请输入'"
           @input="moneyChange">
         </el-input>
         <div 
@@ -131,9 +133,9 @@
           return
         }
 
-        if (this.obj.Require && (this.obj.convalue === '' || !this.obj.convalue)) {
+        if (this.obj.require && (this.obj.convalue === '' || !this.obj.convalue)) {
           callback(new Error(this.obj.conname + '不能为空'))
-        } else if (this.obj.Require && !validatMoney(this.obj.convalue, this.obj.Digit)) {
+        } else if (this.obj.require && !validatMoney(this.obj.convalue, this.obj.Digit)) {
           callback(new Error(`金额格式输入不正确，且小数点后最多${this.obj.Digit}位`))
         } else {
           callback()
@@ -143,7 +145,7 @@
       
       return {      
         rules: {
-          required: this.obj.Require,
+          required: this.obj.require,
           validator: validatePass,
           trigger: ['blur', 'change']
         },

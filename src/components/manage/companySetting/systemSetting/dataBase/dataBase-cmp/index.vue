@@ -110,34 +110,22 @@
                 <left-cmp 
                     ref="leftCmpRef"
                     :objP="objP"
-                    @leftChangeEmit="leftChangeEmit"
                 ></left-cmp>
             </el-col>
 
             <el-col :span="16" class="middleSectionWrap u-f-g1 u-f-s1">
                 <!-- currentMiddleSelectArr: {{currentMiddleSelectArr}} -->
                 <middle-cmp
-                    v-loading="middleLoading"
+                    v-loading="loading"
                     ref="middleCmpRef"
-                    :cmpsList="currentMiddleSelectArr"
                     :objP="objP"
-                    @middleClickEmit="middleClickEmit"
-                    @middleDeleteEmit="middleDeleteEmit"
-                    @middleCopyEmit="middleCopyEmit"
-                    @DraggedFromLeft="DraggedFromLeftEmit"
-                    @middleDraggedEmit="middleDraggedEmit"
-                    @middleDraggedEmitVueDraged="middleDraggedEmitVueDraged"
                 ></middle-cmp>
             </el-col>
 
             <el-col :span="4" class="rightSectionWrap u-f-g1 u-f-s1">
                 <right-cmp 
                     ref="rightCmpRef"
-                    :cmpsList="currentMiddleSelectArr"
                     :objP="objP"
-                    :currentRightIndex="currentRightIndex"
-                    :currentMiddleSelectObj="currentMiddleSelectObj"
-                    :currentMiddleSelectObjIndex="currentMiddleSelectObjIndex"
                     :showAllSetItem="false"
                 ></right-cmp>
             </el-col>
@@ -155,10 +143,6 @@
         REQ_OK
     } from '@/api/config'
     import {
-        // setLocalStorage,
-        // getLocalStorage
-    } from '@/utils/auth.js'
-    import {
         getControlAttributes,
         getMiddleSetData
     } from '@/api/systemManage'
@@ -168,7 +152,7 @@
             objP: {
                 type: Object,
                 default: () => {
-
+                    return {}
                 }
             },
             showTopNav: {
@@ -183,136 +167,17 @@
         },
         data(){
             return {
-                currentMiddleSelectArr: [],  
-                currentRightSetArr: [],
-                currentMiddleSelectObj: null,
-                currentMiddleSelectObjIndex: '',
+                loading: false,
                 activeHeaderText: '页面设置',
-                currentRightIndex: 0,
             }
         },
         created(){
             that = this
-            this.$nextTick(() => {
-                console.log("--------打印中间的---------",this.$refs['middleCmpRef'].$el.innerHTML)
-            })
-            this.initData()
-
         },
-        methods: {  
-            initData(){
-                this.middleLoading = true
-                let obj = {
-                    relateb: this.objP.relateb
-                }
-                // 获取中间部分的回显数据
-                getMiddleSetData(obj).then(res => {
-                    this.middleLoading = false
-                    this.currentMiddleSelectArr = res.data.Data
-                    if(this.currentMiddleSelectArr.length){
-                        this.currentMiddleSelectObj = this.currentMiddleSelectArr[0]                
-                        this.currentMiddleSelectArr.forEach((item, key) => {
-                            this.addObjRightAttribute(item)
-                        })
-                        // // 获取 第一个控件的 控件属性
-                        // this.getControlAttributes(this.currentMiddleSelectObj) 
-                        // 循环获取 所有控件的控件属性
-                        this.currentMiddleSelectArr.forEach((item, key) => {
-                            this.getControlAttributes(item)
-                        })
-                    }
-                })
-            },        
+        methods: {        
             clickHeaderText(tit){
                 this.activeHeaderText = tit
-            },
-            // 添加 属性
-            addObjRightAttribute(obj){
-                debugger
-                this.$set(obj, 'rightAttributes', {})
-            },
-            // 点击了左侧
-            leftChangeEmit(obj){
-                debugger
-                this.currentMiddleSelectObj = obj   
-                this.currentRightIndex = 0
-                this.addObjRightAttribute(this.currentMiddleSelectObj)
-                // 获取 右侧 控件属性
-                this.getControlAttributes(obj)   
-                this.currentMiddleSelectArr.unshift(this.currentMiddleSelectObj)
-                            
-            },
-            getControlAttributes (obj) {
-                debugger
-                let parmasObj = {
-                    controlType: obj.controlType,
-                    relateb: this.objP.relateb
-                }
-                if(obj.rightAttributes){
-                    if(Object.keys(obj.rightAttributes).length){
-                        
-                    }else {
-                        // 触发 右边 loading
-                        this.$bus.$emit("rightLoading",true)                    
-                        getControlAttributes(parmasObj).then(res => {
-                            debugger
-                            obj.rightAttributes = {
-                                unicode: obj.unicode,
-                                controlName: obj.controlName,
-                                controlType: obj.controlType,
-                                pcode: obj.pcode,
-                                groupAttributeArr: res.data.Data                        
-                            } 
-                            this.$bus.$emit("rightLoading",false)
-                        }).catch(err => {
-                            this.$bus.$emit("rightLoading",false)
-                        })
-                    }
-                }else {
-
-                }
-
-            },
-            // 点击了中间
-            middleClickEmit(obj, index) {
-                debugger
-                // this.currentMiddleSelectObj = obj
-                this.currentMiddleSelectObjIndex = index
-                this.currentRightIndex = index
-                this.currentMiddleSelectObj = this.currentMiddleSelectArr[index]
-                this.getControlAttributes(this.currentMiddleSelectObj)
-            },
-            middleDraggedEmit(arr, obj) {
-                debugger
-                // 获取 右侧 控件属性
-                this.currentRightIndex = 0
-                this.currentMiddleSelectObj = obj
-                this.addObjRightAttribute(this.currentMiddleSelectObj)
-                this.getControlAttributes(this.currentMiddleSelectObj)                
-                this.currentMiddleSelectArr.unshift(this.currentMiddleSelectObj)
-            },
-            middleDraggedEmitVueDraged (oldIndex, newIndex) {
-                // 拖拽排序后 触发的
-                debugger
-                this.currentRightIndex = 0
-                let beforeObj = this.currentMiddleSelectArr[oldIndex]
-                let afterObj = this.currentMiddleSelectArr[newIndex]
-                this.currentMiddleSelectArr.splice(oldIndex,1, afterObj)
-                this.currentMiddleSelectArr.splice(newIndex,1, beforeObj)
-                console.log("vueDraggable移动后",this.currentMiddleSelectArr)
-            },            
-            middleDeleteEmit(obj, index){
-                debugger
-                this.currentMiddleSelectArr = this.currentMiddleSelectArr.filter((item, key) => {
-                    return key !=index
-                })
-            },
-            middleCopyEmit(obj, index){
-                this.currentMiddleSelectArr.splice(index, 0, obj)
-            },
-            DraggedFromLeftEmit(arr){
-                this.currentRightSetArr = arr
-            },
+            }
         }
     }
 </script>
