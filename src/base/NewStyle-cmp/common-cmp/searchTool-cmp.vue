@@ -58,6 +58,7 @@
                     class="moreSearchWrap"
                 >
                     <div 
+                        :id="propSearchContentId"
                         :class="['searchContent', 'u-f-ajc', 'u-f-column',showMoreSearchWrap? 'show':'']" 
                         :style="{searchContentStyle}"
                     >
@@ -72,7 +73,12 @@
 <script type="text/ecmascript-6">
   export default {
     props:{
-
+        propSearchContentId: {
+            type: [String,Number],
+            default: () => {
+                return 'searchContentId'
+            }
+        }
     },
     components: {
 
@@ -100,17 +106,21 @@
             this.$emit("emitRefreshTable", this.queryObj)
             this.showMoreSearchWrap = !this.showMoreSearchWrap
             // debugger
-            let newObj = document.getElementsByClassName("searchContent")[0]
+            let newObj = document.getElementById(`${this.propSearchContentId}`)
+            // console.log("-------newObj-------------", newObj)
             if(this.showMoreSearchWrap){
-                document.getElementsByClassName("searchContent")[0].style.display = 'block'
-                this.searchContentHeight = (document.getElementsByClassName("searchContent")[0].scrollHeight) || 0
-                console.log("--------", document.getElementsByClassName("searchContent")[0].scrollHeight + 5)
-                document.getElementsByClassName("searchContent")[0].style.height = this.searchContentHeight +'px'
-                console.log("-------------",document.getElementsByClassName("searchContent")[0].style.height)
+                newObj.style.display = 'block'
+                // this.searchContentHeight = (document.getElementsByClassName("searchContent")[0].scrollHeight) || 0
+                this.searchContentHeight = (newObj.scrollHeight) || 0
+                
+                // console.log("--------", document.getElementsByClassName("searchContent")[0].scrollHeight + 5)
+                // document.getElementsByClassName("searchContent")[0].style.height = this.searchContentHeight +'px'
+                newObj.style.height = this.searchContentHeight +'px'
+                // console.log("-----searchContentHeight--------",document.getElementsByClassName("searchContent")[0].style.height)
+                console.log("-----searchContentHeight--------",newObj.style.height)
             }else {
                 this.searchContentHeight = 0
-                document.getElementsByClassName("searchContent")[0].style.height = '1px'
-                // document.getElementsByClassName("searchContent")[0].style.display = 'none'
+                newObj.style.height = '1px'
             }
         }
     }

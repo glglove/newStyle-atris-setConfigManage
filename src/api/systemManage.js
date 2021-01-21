@@ -3339,6 +3339,7 @@ export function getEventResult (obj) {
  */
 export function getShowGroupList (obj) { 
     let {
+        state,
         current = 1,
         size = 10,
     } = obj

@@ -461,7 +461,7 @@
                 let statusText = row.state == 1? '停用': '启用'
                 let name = row.permissionpackagename || ''
                 let ids = row.id ? [row.id] : []
-                let baseKey = 'sys_permissionpackageinfo'
+                let baseKey = 'plat_sysmg_sys_permissionpackageinfo'
                 this.commonSetStatusMixin({
                     statusText,
                     name,
@@ -473,7 +473,7 @@
             handlerBatchDelete(){
                 debugger
                 let statusText = '批量删除'
-                let baseKey = 'sys_user'            
+                let baseKey = 'plat_sysmg_sys_user'            
                 let name = ''
                 let ids = []
                 let length = this.multipleSelection.length
@@ -502,7 +502,7 @@
                     let statusText = '删除'
                     let name = row.permissionpackagename || ''
                     let ids = row.id ? [row.id] : []
-                    let baseKey = 'sys_permissionpackageinfo'
+                    let baseKey = 'plat_sysmg_sys_permissionpackageinfo'
                     this.commonDeleteListMixin({
                         statusText,
                         name,

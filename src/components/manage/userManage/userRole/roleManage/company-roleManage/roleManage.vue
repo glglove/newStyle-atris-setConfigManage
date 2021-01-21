@@ -565,7 +565,7 @@
           let statusText = row.state == 1? '停用': '启用'
           let name = row.dicName || ''
           let ids = row.id ? [row.id] : []
-          let baseKey = 'sys_rolegroup'
+          let baseKey = 'plat_sysmg_sys_rolegroup'
           this.commonSetStatusMixin({
               statusText,
               name,
@@ -652,7 +652,7 @@
         let statusText = row.state == 1? '停用': '启用'
         let name = row.rolename || ''
         let ids = row.id ? [row.id] : []
-        let baseKey = 'sys_role'
+        let baseKey = 'plat_sysmg_sys_role'
         this.commonSetStatusMixin({
           statusText,
           name,

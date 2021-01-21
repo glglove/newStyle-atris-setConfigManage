@@ -578,7 +578,7 @@ export default {
                 let statusText = '删除'
                 let name = data.rolegroupname || ''
                 let ids = data.id ? [data.id] : []
-                let baseKey = 'sys_rolegroup'
+                let baseKey = 'plat_sysmg_sys_rolegroup'
                 this.commonDeleteListMixin({
                     statusText,
                     name,
@@ -593,7 +593,7 @@ export default {
             let statusText = data.state == 1? '停用': '启用'
             let name = data.rolegroupname || ''
             let ids = data.id ? [data.id] : []
-            let baseKey = 'sys_rolegroup'
+            let baseKey = 'plat_sysmg_sys_rolegroup'
             this.commonSetStatusMixin({
                 statusText,
                 name,

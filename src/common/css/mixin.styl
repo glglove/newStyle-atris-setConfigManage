@@ -134,15 +134,20 @@ leave-active()
 
 /* 垂直居中 */
 .u-f-ac,.u-f-ajc{
-	align-items: center
+	align-items: center;  // 属性定义项目在一根交叉轴上如何对齐。
 }
+
+.u-f-acc {
+  align-content: center  //属性定义了多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用。
+}
+
 /* 水平居中 */
 .u-f-jc,.u-f-ajc{
 	justify-content: center
 }
 
 .u-f-jst {
-  justify-content: flex-start
+  justify-content: flex-start;
 }
 
 .u-f-jfd {
@@ -163,7 +168,7 @@ leave-active()
 }
 /* 垂直居中 */
 .u-fi-ac,.u-fi-ajc{
-	align-items: center
+	align-items: center;  // 属性定义项目在一根交叉轴上如何对齐。
 }
 /* 水平居中 */
 .u-fi-jc,.u-fi-ajc{
@@ -225,6 +230,18 @@ leave-active()
 .u-f-wrap {
   flex-wrap: wrap !important
 }
+
+.moreSearch {
+  .searchItem {
+    .searchTit {
+      font-size: 14px;
+      .searchCmp {
+        width: 200px;
+      }
+    }
+  }
+}
+
 
 .topTitleNav {
   height: 30px;

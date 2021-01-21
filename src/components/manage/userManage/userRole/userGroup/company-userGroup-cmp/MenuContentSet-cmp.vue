@@ -467,7 +467,7 @@
             let statusText = row.state == 1? '停用': '启用'
             let name = row.accountname || ''
             let ids = row.id ? [row.id] : []
-            let baseKey = 'sys_usergroup'
+            let baseKey = 'plat_sysmg_sys_usergroup'
             this.commonSetStatusMixin({
                 statusText,
                 name,
@@ -555,7 +555,7 @@
         handlerBatchDelete(){
             debugger
             let statusText = '批量删除'
-            let baseKey = 'sys_usergroup'            
+            let baseKey = 'plat_sysmg_sys_usergroup'            
             let name = ''
             let ids = []
             let length = this.multipleSelection.length
@@ -584,7 +584,7 @@
                 let statusText = '删除'
                 let name = row.accountname || ''
                 let ids = row.id ? [row.id] : []
-                let baseKey = 'sys_usergroup'
+                let baseKey = 'plat_sysmg_sys_usergroup'
                 this.commonDeleteListMixin({
                     statusText,
                     name,

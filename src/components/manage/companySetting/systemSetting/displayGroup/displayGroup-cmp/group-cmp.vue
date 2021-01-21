@@ -1,37 +1,37 @@
 <!--
     User:
-    Date: newStyle 分组组件
+    Date:
     功能:
 -->
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 
 </style>
 <template>
-    <div class="fieldGroup-cmp">
-        <!-- groupObj.groupAttributeArr: {{groupObj.groupAttributeArr}} -->
+    <div class="addNewGroupCmp" v-loading="loading">
         <el-form
-            v-for="(formObj, index) in groupObj.groupAttributeArr"
+            ref="parentGroup"
+            v-for="(parentItem, index) in parentGroups"
             :key="index"
-            :ref="`team_${formObj.mainCode}`"
-            :model="formObj"
         >
             <h3 class="header">
                 <i class="header-icon el-icon-info"></i>                
-                {{formObj.desc}}
+                <!-- {{parentItem.controlName}} -->
             </h3>
-
-            <div class="setCmpContentBox">
+            <div class="fieldContentBox">
                 <component 
-                    v-for="(field, key) in formObj.teamControlList"
+                    v-for="(field, key) in parentItem.allTeamControl"
                     :key="key"                
                     :is="currentFieldComponentMixin(field.controltype)"
                     :obj.sync="field"
-                    :prop="'field.' + key + '.convalue'"
                     :isNeedGetDataSource="true"
                     :disableFlag="false"
-                    :isNeedCheck="true"
                 ></component>
-            </div>             
+            </div> 
+
+            <add-group-cmp
+                v-if="parentItem.childrenList && parentItem.childrenList.length"
+            ></add-group-cmp>
+
         </el-form>
     </div>
 </template>
@@ -42,25 +42,18 @@ import {
 import { 
     CommonInterfaceMixin
 } from '@/utils/CommonInterfaceMixin'
-import {
-    fieldControlTypeMixin
-} from '@/utils/newStyleMixins-fields'
 import SearchToolsCmp from '@/base/NewStyle-cmp/common-cmp/searchTool-cmp'
+import { fieldControlTypeMixin } from '@/utils/newStyleMixins-fields.js'
 export default {
-    mixins: [fieldControlTypeMixin, CommonInterfaceMixin],
-    props: {
-        groupObj: {
-            type: Object,
-            default: () => {
-                return {}
-            }
-        }
-    },
+    name: 'AddGroupCmp',
+    mixins: [CommonInterfaceMixin, fieldControlTypeMixin],
     components: {
         SearchToolsCmp,
     },
     data() {
         return {
+            loading: false, 
+            parentGroups: []
         }
     },
     created(){
@@ -71,18 +64,16 @@ export default {
     },
     methods:{
         //重新刷新获取数据
-        _refreshData () {
-
+        _refreshData(){
         },
         _getComTables(){
-
         },
         //启用/停用
         handlerStopOrUsing(){
             let statusText = row.state == 1? '停用': '启用'
             let name = row.rolename || ''
             let ids = row.id ? [row.id] : []
-            let baseKey = 'plat_sysmg_sys_rolegroup'
+            let baseKey = 'sys_rolegroup'
             this.commonSetStatusMixin({
                 statusText,
                 name,
@@ -93,7 +84,7 @@ export default {
         //批量删除
         handlerBatchDelete(){
             let statusText = '批量删除'
-            let baseKey = 'plat_sysmg_sys_rolegroup'
+            let baseKey = 'sys_rolegroup'
             let name = ''
             let ids = []
             let length = this.multipleSelection.length
@@ -120,7 +111,7 @@ export default {
                 let statusText = '删除'
                 let name = row.rolename || ''
                 let ids = row.id ? [row.id] : []
-                let baseKey = 'plat_sysmg_sys_rolegroup'
+                let baseKey = 'sys_rolegroup'
                 this.commonDeleteListMixin({
                     statusText,
                     name,
@@ -128,6 +119,16 @@ export default {
                     baseKey
                 })
             }
+        },
+        // 分页---每页多少条
+        handleSizeChange (val) {
+            this.queryObj.pageSize = val
+            this._getComTables()
+        },
+        // 分页 -- 当前页
+        handleCurrentChange (val) {
+            this.queryObj.pageIndex = val
+            this._getComTables()
         }
     }
 }

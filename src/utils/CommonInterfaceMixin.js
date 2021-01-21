@@ -66,7 +66,7 @@ export const CommonInterfaceMixin = {
         }) 
       }     
     },
-    // 删除
+    // 删除/ 批量删除
     commonDeleteListMixin(obj){
       debugger
       let { statusText, name, ids, baseKey } = obj

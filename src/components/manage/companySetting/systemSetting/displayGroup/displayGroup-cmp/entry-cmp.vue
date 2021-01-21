@@ -1,7 +1,7 @@
 <!--
   User: gaol
   Date: 2019/8/7
-  功能：显示分组——字段设置 组件
+  功能：条目
 -->
 <style lang="stylus" ref="stylesheet/stylus" scoped>
 .fieldForm
@@ -10,7 +10,7 @@
     .topBox
         padding 0px 20px 20px 20px !important
         box-sizing border-box
-.fieldSet
+.entry
   padding 0 20px
   box-sizing border-box
 .cust-addcard
@@ -18,7 +18,7 @@
         min-height 200px
 </style>
 <template>
-    <div class="fieldSet" v-loading = "fullLoading">
+    <div class="entry" v-loading = "fullLoading">
         <!-- obj: {{obj}} -->
         <!-- <div class="tabBox">
             <el-tabs v-model="activeTabs" type="card" @tab-click="handleClick">
@@ -26,38 +26,180 @@
                 <el-tab-pane label="配置管理" name="second">配置管理</el-tab-pane>
             </el-tabs>            
         </div> -->
-        <div class="topBox marginB10 clearfix" style="text-align:right">
-            <el-checkbox
-                style="float: left"
-                v-model="isStop"
-            >
-                停用
-            </el-checkbox>
-            <el-button 
-                type="primary" 
-                size="mini"
-                @click.native="handlerAddField"
-            >添加字段</el-button>
-            <el-button 
-                :disabled="!multipleSelection.length"
-                v-if="isStop"
-                type="primary" 
-                size="mini"
-                @click.native="handlerBatch(1)"
-            >批量启用</el-button>
-            <el-button 
-                :disabled="!multipleSelection.length"
-                v-if="!isStop"
-                type="primary" 
-                size="mini"
-                @click.native="handlerBatch(0)"
-            >批量停用</el-button>
-            <el-button 
-                type="primary" 
-                size="mini"
-                @click.native="handlerSort"
-            >字段排序</el-button>
-        </div>
+
+        <!--搜索部分--start-->
+        <search-tools-cmp
+            propSearchContentId="entrySearchId"
+        >
+            <div slot="handlerBtnWrap">              
+                <el-checkbox
+                    style="float: left"
+                    v-model="isStop"
+                >
+                    停用
+                </el-checkbox>
+                <el-button 
+                    type="primary" 
+                    size="mini"
+                    @click.native="handlerAddField"
+                >添加字段</el-button>
+                <el-button 
+                    :disabled="!multipleSelection.length"
+                    v-if="isStop"
+                    type="primary" 
+                    size="mini"
+                    @click.native="handlerBatch(1)"
+                >批量启用</el-button>
+                <el-button 
+                    :disabled="!multipleSelection.length"
+                    v-if="!isStop"
+                    type="primary" 
+                    size="mini"
+                    @click.native="handlerBatch(0)"
+                >批量停用</el-button>
+                <el-button 
+                    type="primary" 
+                    size="mini"
+                    @click.native="handlerSort"
+                >字段排序</el-button>
+            </div>
+
+            <div slot="moreSearch" class="moreSearch u-f-jst u-f-wrap">
+                <div class="searchItem u-f-jst u-f-ac margin5">
+                    <span class="searchTit">关键词:</span>
+                    <el-input 
+                        clearable
+                        size="small"
+                        class="searchCmp"              
+                        style="width: 200px"
+                    >
+                    </el-input>              
+                </div>    
+
+                <div class="searchItem u-f-jst u-f-ac margin5">
+                    <span class="searchTit">控件类型:</span>            
+                    <el-select 
+                        clearable
+                        size="small"
+                        class="searchCmp"
+                        style="width: 200px"
+                    >
+                        <!-- <el-option
+                            v-for="(item, key) in moduleSource"
+                            :key="key"
+                            :label="item.ModuleName"
+                            :value="item.ModuleCode"
+                        >
+                        </el-option> -->
+                    </el-select>
+                </div>
+                <div class="searchItem u-f-jst u-f-ac margin5">
+                    <span class="searchTit">数据类型:</span>     
+                    <el-select 
+                        clearable
+                        size="small"
+                        style="width: 200px"
+                        class="searchCmp"              
+                    >
+                        <!-- <el-option
+                            v-for="(item, key) in moduleSource"
+                            :key="key"
+                            :label="item.ModuleName"
+                            :value="item.ModuleCode"
+                        >
+                        </el-option> -->
+                    </el-select>  
+                </div>     
+
+                <div class="searchItem u-f-jst u-f-ac margin5">
+                    <span class="searchTit">数据源类型:</span>  
+                    <el-select 
+                        clearable
+                        size="small"
+                        style="width: 200px"
+                        class="searchCmp"              
+                    >
+                        <!-- <el-option
+                            v-for="(item, key) in moduleSource"
+                            :key="key"
+                            :label="item.ModuleName"
+                            :value="item.ModuleCode"
+                        >
+                        </el-option> -->
+                    </el-select>   
+                </div>   
+                <div class="searchItem u-f-jst u-f-ac margin5">
+                    <span class="searchTit">索引:</span>  
+                    <el-select 
+                        clearable
+                        size="small"
+                        style="width: 200px"
+                        class="searchCmp"              
+                    >
+                        <!-- <el-option
+                            v-for="(item, key) in moduleSource"
+                            :key="key"
+                            :label="item.ModuleName"
+                            :value="item.ModuleCode"
+                        >
+                        </el-option> -->
+                    </el-select> 
+                </div>                         
+                    
+                <div class="searchItem u-f-jst u-f-ac margin5">
+                    <span class="searchTit">唯一性:</span>  
+                    <el-select 
+                        clearable
+                        size="small"
+                        style="width: 200px"
+                        class="searchCmp"              
+                    >
+                        <!-- <el-option
+                            v-for="(item, key) in moduleSource"
+                            :key="key"
+                            :label="item.ModuleName"
+                            :value="item.ModuleCode"
+                        >
+                        </el-option> -->
+                    </el-select>   
+                </div>               
+                
+                <div class="searchItem u-f-jst u-f-ac margin5">
+                    <span class="searchTit">必填:</span>  
+                    <el-select 
+                        clearable
+                        size="small"
+                        style="width: 200px"
+                        class="searchCmp"              
+                    >
+                        <!-- <el-option
+                            v-for="(item, key) in moduleSource"
+                            :key="key"
+                            :label="item.ModuleName"
+                            :value="item.ModuleCode"
+                        >
+                        </el-option> -->
+                    </el-select>    
+                </div>          
+                
+                <div class="searchBtnWrap u-f-ajc">
+                    <el-button 
+                        type="primary" 
+                        size="small"
+                        class="u-f-g0 u-f-s0"
+                        @click.native="handlerSearch"
+                    >搜索</el-button>
+                    <el-button 
+                        type="primary" 
+                        size="small"
+                        class="u-f-g0 u-f-s0"
+                        @click.native="handlerReset"
+                    >重置</el-button>
+                </div>                                   
+            </div>
+        </search-tools-cmp> 
+        <!---搜索部分---end-->
+
         <div 
             :class="['tableBox', tableData.length<=0? 'not_found':'']"
             v-loading="loading"
@@ -321,6 +463,7 @@
    import FieldsetEditCmp from './fieldsetEdit-cmp'
    import FieldsetAddCmp from './fieldsetAdd-cmp'
    import FieldSortCmp from './fieldSort-cmp'
+   import SearchToolsCmp from '@/base/NewStyle-cmp/common-cmp/searchTool-cmp'
    import SaveFooter from '@/base/Save-footer/Save-footer'
    import {
        CompFieldList,
@@ -338,6 +481,7 @@
         }
     },
     components: {
+        SearchToolsCmp,        
         FieldsetEditCmp,
         FieldsetAddCmp,
         FieldSortCmp,
