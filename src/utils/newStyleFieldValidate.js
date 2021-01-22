@@ -20,6 +20,29 @@ export function checkFormArray ( obj, formName, lineObj, key ) {
 }
 
 /**
+ * 分组中的 字段校验
+ */
+export function newStyleCheckFormArray ( obj, formName, formObj, key=0 ) {
+    return new Promise((resolve, reject) => {
+        obj.$refs[formName][0].validate((valid) => {
+            debugger
+            console.log(`${formName}表单验证的结果valid：`, valid)
+            if (valid) {
+                resolve({
+                    msg: `${formName}表单验证pass`,
+                    metacode: `${formObj.metacode}`,
+                    name: `${formObj.name}`,
+                    index: key
+                })
+            } else {
+                reject(new Error(`${formObj.name}` + '验证错误'))
+            }
+        })
+    })
+}
+
+
+/**
  *  tree 组件的 校验
  */
 export function checkTreeFormArray ( obj, formName, key ) {

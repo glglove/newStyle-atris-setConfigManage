@@ -40,7 +40,7 @@
           {{isTitle ? obj.conname : ''}}
           <icon-svg 
             class="fieldRequiredIcon"
-            v-show="!isShowing && obj.require"
+            v-show="!isShowing && (obj.require ==1)"
             :icon-class="RequiredSvg"
           ></icon-svg>   
           <el-tooltip 
@@ -130,7 +130,7 @@
           return
         }
 
-        if (this.obj.require && (this.obj.convalue === '' || !this.obj.convalue)) {
+        if (this.obj.require ==1 && (this.obj.convalue === '' || !this.obj.convalue)) {
           callback(new Error('请选择' + this.obj.conname))
         } else {
           callback()
@@ -139,7 +139,7 @@
 
       return {        
         rules: {
-          required: this.obj.require,
+          required: this.obj.require ==1,
           validator: validatePass,
           trigger: ['change', 'blur']
         }

@@ -466,7 +466,6 @@
    import SearchToolsCmp from '@/base/NewStyle-cmp/common-cmp/searchTool-cmp'
    import SaveFooter from '@/base/Save-footer/Save-footer'
    import {
-       CompFieldList,
        SetComFieldConfigState,
        SaveFieldList,
        DeleteComField
@@ -527,21 +526,9 @@
     },
     methods: {
         _getCommTables(){
-            this._CompFieldList()
+            
         },
-        // 列表获取数据
-        _CompFieldList(){
-            this.loading = true
-            CompFieldList(this.obj.TeamCode, '', this.queryObj.state, this.queryObj.pageSize, this.queryObj.pageNum).then(res => {
-               this.loading = false
-               if(res && res.data.State === REQ_OK){
-                   this.tableData = res.data.Data
-                   this.queryObj.total = res.data.Total
-               }else {
-                   this.$message.error(`获取列表数据失败,${res.data.Error}`)
-               }
-            }) 
-        },
+
         handleSelectionChange(val){
             this.multipleSelection = val
         },

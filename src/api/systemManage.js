@@ -3357,3 +3357,45 @@ export function getShowGroupList (obj) {
         }
     })
 }
+
+
+/**
+ * 新增 获取分组数据
+ * @params {} 
+ */
+export function getGroupTreeList (obj) { 
+    let {
+        metacode= 'teaminfo',
+        pageSize = 10,
+        pageNum = 1,
+    } = obj
+    return fetch({
+        module: 'SystemManage',
+        url: '/team-control/tree',
+        method: 'post',
+        data: {
+            Method: 'getGroupTreeList',
+            size: pageSize,
+            current: pageNum,  
+            params: {
+                metacode,
+            }
+        }
+    })
+}
+
+/**
+ * 新增 获取分组数据的 保存
+ * @params {} arr  [{unicode, concode}]
+ */
+export function saveGroupTreeList (arr = []) { 
+    return fetch({
+        module: 'SystemManage',
+        url: '/sys-metadata/addOne',
+        method: 'post',
+        data: {
+            Method: 'saveGroupTreeList',
+            params: arr
+        }
+    })
+}

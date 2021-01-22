@@ -37,7 +37,7 @@
           {{isTitle ? obj.conname : ''}}
           <icon-svg 
             class="fieldRequiredIcon"
-            v-show="!isShowing && obj.require"
+            v-show="!isShowing && (obj.require ==1)"
             :icon-class="RequiredSvg"
           ></icon-svg>   
           <el-tooltip 
@@ -139,7 +139,7 @@
         }
         
 
-        if (this.obj.require && !this.obj.convalue.length) {
+        if (this.obj.require ==1 && !this.obj.convalue.length) {
           callback(new Error('请选择' + this.obj.conname))
         } else if (this.obj.Max > 0 && this.obj.convalue.length > this.obj.Max) {
           callback(new Error(`${this.obj.conname}最多选择${this.obj.Max}个`))
@@ -149,7 +149,7 @@
       }
       return {
         rules: {
-          required: this.obj.require,
+          required: this.obj.require ==1,
           type: 'array',
           validator: validatePass,
           trigger: 'change'

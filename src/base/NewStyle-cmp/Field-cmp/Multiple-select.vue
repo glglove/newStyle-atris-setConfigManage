@@ -35,7 +35,7 @@
           {{isTitle ? obj.conname : ''}}
           <icon-svg 
             class="fieldRequiredIcon"
-            v-show="!isShowing && obj.Required"
+            v-show="!isShowing && (obj.require ==1)"
             :icon-class="RequiredSvg"
           ></icon-svg>     
           <el-tooltip 
@@ -128,7 +128,7 @@
       //是否需要校验
       isNeedCheck: {
         type: Boolean,
-        default: false
+        default: true
       },      
       prop: {
         type: String,
@@ -178,6 +178,7 @@
       let validatePass = (rule, value, callback) => {
         debugger
         if( !this.isNeedCheck ){
+          this.$set(this.obj, 'copyConvalue', JSON.stringify(this.obj.convalue))          
           callback()
           return
         }
@@ -188,10 +189,11 @@
               // 业务领域存在 但是 dataSource 为空（获取业务领域接口时，返回的业务领域为空，需要重新配置表单）
             // callback(new Error(this.obj.conname + '所关联的字段范围无数据，请重新配置表单'))
             callback()
-          } else if (this.obj.require && (this.obj.convalue === '' || !this.obj.convalue)) {
+          } else if (this.obj.require ==1 && (this.obj.convalue === '' || !this.obj.convalue)) {
             // 需要校验，并且 this.obj.convalue 为空
             callback(new Error(this.obj.conname + '不能为空'))
           } else {
+            this.$set(this.obj, 'copyConvalue', JSON.stringify(this.obj.convalue))          
             callback()
           }
         }
@@ -199,8 +201,7 @@
 
       return {
         rules: {
-          required: this.obj.require,
-          required: true,
+          required: this.obj.require ==1,
           validator: validatePass,
           trigger: ['change', 'blur']
         },
@@ -211,7 +212,7 @@
    
     },    
     created () {
-
+      this.changeConvalue()
     },
     mounted () {
     },
@@ -227,7 +228,13 @@
       }
     },
     methods: {  
-   
+      changeConvalue(){
+        try {
+          this.obj.convalue = JSON.parse(this.obj.convalue)
+        } catch (error) {
+          
+        }
+      }   
     }
   }
 </script>

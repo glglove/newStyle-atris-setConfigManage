@@ -85,11 +85,11 @@
         -------- -->
         <!-- tableDataRight: {{tableDataRight}}
         ------ -->
-
         <!-- propLeftTableData: {{propLeftTableData}} -->
         <div class="titBox">
             <p class="tit">{{title}}</p>
         </div>
+        tableDataLeft: {{tableDataLeft}}
 
         <el-row :gutter="12">
             <!--left部分---start--->

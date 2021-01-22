@@ -64,7 +64,7 @@
         {{isTitle ? obj.conname : ''}}
         <icon-svg 
           class="fieldRequiredIcon"
-          v-show="!isShowing && obj.require"
+          v-show="!isShowing && (obj.require ==1)"
           :icon-class="RequiredSvg"
         ></icon-svg>   
         <el-tooltip 

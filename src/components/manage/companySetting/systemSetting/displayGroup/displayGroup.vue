@@ -68,13 +68,13 @@
               class="searchCmp"
               style="width: 200px"
               v-model="queryObj.moduleCode">
-              <!-- <el-option
-                v-for="(item, key) in moduleSource"
+              <el-option
+                v-for="(item, key) in commonDataSourceConfig.ModulesetEnum"
                 :key="key"
-                :label="item.ModuleName"
-                :value="item.ModuleCode"
+                :label="item.moduleName"
+                :value="item.moduleCode"
               >
-              </el-option> -->
+              </el-option>
             </el-select>
           </div>
           <div class="searchItem u-f-jst u-f-ac margin5">
@@ -460,9 +460,6 @@
           <!---引入设置自定义显示列组件--start-->
           <show-column-cmp 
             ref="showColumnCmp"
-            :obj="tableData"
-            :propLeftTableData="finalTableHeadData"
-            :propCheckboxGroup="customerTaleData"
           >
           </show-column-cmp>  
           <!--引入设置自定义显示列组件--end-->              
@@ -472,9 +469,10 @@
 
       <!--新增/编辑的弹框--start--->
       <transition name="el-zoom-in-center">
-        <div class="addGroupBox" v-show="showAddGroup">
+        <div class="addGroupBox" v-if="showAddGroup">
           <el-dialog
             :title="dialogTit"
+            v-if="showAddGroup"
             fullscreen
             :visible.sync="showAddGroup"
             append-to-body
@@ -491,11 +489,14 @@
                   ></save-footer>
                 </div>
               </div>
-            </div>  
-            <div>
-              <add-group-cmp>
+            </div> 
 
-              </add-group-cmp>
+            <div>
+              <add-group-cmp
+                ref="groupCmp"
+                :parentGroups="parentGroups"
+                @emitGetData="emitGetData"
+              ></add-group-cmp>
               <!-- <save-footer @save="saveAddGroup" @cancel="cancelAddGroup"></save-footer> -->
             </div>
           </el-dialog>
@@ -503,7 +504,7 @@
       </transition>
       <!---新增/编辑的弹框----end-->  
 
-      <!----字段设置弹框-start-->
+      <!----条目弹框-start-->
       <div class="fieldSetWrap" v-if="showEntryDialog">
         <el-dialog
           title="条目"
@@ -517,7 +518,7 @@
           ></entry-cmp>
         </el-dialog>
       </div>
-      <!----字段设置弹框---end-->
+      <!----条目弹框---end-->
     </div>
 </template>
 
@@ -531,6 +532,7 @@
   import { REQ_OK } from '@/api/config'
   import { 
     getShowGroupList,
+    getGroupTreeList
   } from '@/api/systemManage.js'
   export default {
     mixins: [CommonInterfaceMixin],
@@ -556,11 +558,18 @@
           pageSize: 10,
           pageNum: 1,
           total: 0,
-          state: 1
+          state: 1,
+          moduleCode: ''
         },    
         tableData: [],
         currentEditRow: {},
-        dialogTit: ''        
+        dialogTit: '',   
+        parentGroups: [],
+        queryParentGroupObj: {
+          pageSize: 10,
+          pageNum: 1,
+          total: 0
+        }
       }
     },
     watch: {
@@ -594,6 +603,27 @@
         })
         this._getCommTables()
       },
+      emitGetData(){
+        this._getGroupTreeList()
+      },
+      // 新增时获取 分组tree数据
+      _getGroupTreeList(){
+          debugger
+          this.$nextTick(() => {
+            debugger
+            this.$refs.groupCmp.loading = true
+            getGroupTreeList(this.$refs.groupCmp.queryObj).then(res => {
+              debugger
+              this.$refs.groupCmp.loading = false        
+              if(res && res.data.State === REQ_OK){
+                this.parentGroups = res.data.Data.records
+                this.$refs.groupCmp.queryObj.total = res.data.total
+              }else {
+
+              }
+            })            
+          }) 
+      },        
       // 停用/启用
       handlerStopOrUsing(row){
         debugger           
@@ -673,7 +703,21 @@
             baseKey
           })
         }            
-      },            
+      }, 
+      _getShowGroupList(){
+        debugger
+        this.loading = true
+        getShowGroupList(this.queryObj).then(res => {
+        debugger
+        this.loading = false
+        if(res && res.data.State === REQ_OK){
+            this.tableData = res.data.Data.records
+            this.queryObj.total = res.data.Data.total
+        }else {
+
+        }
+        })
+      },                  
       _changeData(data){
         if(data && data.length){
           data.forEach((item, key) => {
@@ -729,20 +773,6 @@
             this._getCommTables()
           }else {
             this.$message.error(`保存失败,${res.data.Error}`)
-          }
-        })
-      },
-      _getShowGroupList(){
-        debugger
-        this.loading = true
-        getShowGroupList(this.queryObj).then(res => {
-          debugger
-          this.loading = false
-          if(res && res.data.State === REQ_OK){
-            this.tableData = res.data.Data.records
-            this.queryObj.total = res.data.total
-          }else {
-
           }
         })
       },
@@ -816,6 +846,7 @@
         this.dialogTit = '新增分组'
         this.isAddOrEdit = 2 
         this.showAddGroup = true
+        this._getGroupTreeList()
       },
       // 编辑
       handleEdit(row){
@@ -839,7 +870,7 @@
       },
       // 保存分组
       saveGroup(){
-
+        this.$refs.groupCmp.saveGroupForm()
       },
     },
   }

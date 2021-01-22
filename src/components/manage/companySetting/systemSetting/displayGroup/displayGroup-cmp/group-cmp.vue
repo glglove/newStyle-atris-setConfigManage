@@ -4,34 +4,59 @@
     功能:
 -->
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-
+.addNewGroupCmp {
+    .parentGroupForm {
+        border-bottom: 1px solid silver
+        padding: 20px 
+        box-sizing border-box
+        .fieldContentBox {
+            min-height 100px
+        }
+        &:nth-last-of-type {
+            border-bottom: none
+        }
+    }
+    .childrenListWrap {
+        margin-top: 20px
+        border: 1px dotted silver
+        padding-left: 20px
+    }
+}
 </style>
 <template>
     <div class="addNewGroupCmp" v-loading="loading">
+        <!-- parentGroups: {{parentGroups}} -->
         <el-form
-            ref="parentGroup"
             v-for="(parentItem, index) in parentGroups"
-            :key="index"
+            :key="index"        
+            :ref="`parentGroup_${parentItem.metacode}`"
+            class="parentGroupForm"
+            :model="parentItem"
         >
             <h3 class="header">
                 <i class="header-icon el-icon-info"></i>                
-                <!-- {{parentItem.controlName}} -->
+                {{parentItem.name}}
             </h3>
-            <div class="fieldContentBox">
+            <div :class="['fieldContentBox', 'u-f-jst', 'u-f-wrap', parentItem.teamControlList.length<=0? 'not_found':'']">
                 <component 
-                    v-for="(field, key) in parentItem.allTeamControl"
+                    :class="`${parentItem.metacode}_field_${field.concode}`"
+                    v-for="(field, key) in parentItem.teamControlList"
                     :key="key"                
                     :is="currentFieldComponentMixin(field.controltype)"
                     :obj.sync="field"
+                    :style="fieldStyle(field)"
+                    :prop="'teamControlList.' + key + '.convalue'"
                     :isNeedGetDataSource="true"
                     :disableFlag="false"
-                ></component>
+                    :fieldEventFlag="false"
+                ></component>                
             </div> 
 
-            <add-group-cmp
-                v-if="parentItem.childrenList && parentItem.childrenList.length"
-            ></add-group-cmp>
-
+            <div class="childrenListWrap" v-if="parentItem.childrenList && parentItem.childrenList.length">
+                <add-group-cmp
+                    :parentGroups="parentItem.childrenList"
+                ></add-group-cmp>
+            </div>
         </el-form>
     </div>
 </template>
@@ -39,35 +64,64 @@
 import { 
     REQ_OK
 } from '@/api/config'
+import {
+    getGroupTreeList,
+    saveGroupTreeList
+} from '@/api/systemManage.js'
 import { 
     CommonInterfaceMixin
 } from '@/utils/CommonInterfaceMixin'
 import SearchToolsCmp from '@/base/NewStyle-cmp/common-cmp/searchTool-cmp'
 import { fieldControlTypeMixin } from '@/utils/newStyleMixins-fields.js'
+import { newStyleCheckFormArray } from '@/utils/newStyleFieldValidate.js'
+let that = null
 export default {
     name: 'AddGroupCmp',
     mixins: [CommonInterfaceMixin, fieldControlTypeMixin],
+    props: {
+        parentGroups: {
+            type: Array,
+            default: () => {
+                return []
+            }
+        }
+    },
     components: {
         SearchToolsCmp,
     },
     data() {
         return {
             loading: false, 
-            parentGroups: []
+            queryObj: {
+                metacode: 'teaminfo',
+                pageSize: 10,
+                pageNum: 1,
+                total: 0
+            },
+            saveFinalData: []
         }
     },
     created(){
+        that = this
+        this._getComTables()
     },
     computed:{
+
     },
     watch:{
     },
     methods:{
         //重新刷新获取数据
         _refreshData(){
+           this.$emit("emitGetData") 
         },
         _getComTables(){
-        },
+
+        },  
+        fieldStyle(field){
+            // return `width: ${field.showStyle.width}`
+            return "width: 20%"
+        },   
         //启用/停用
         handlerStopOrUsing(){
             let statusText = row.state == 1? '停用': '启用'
@@ -129,6 +183,53 @@ export default {
         handleCurrentChange (val) {
             this.queryObj.pageIndex = val
             this._getComTables()
+        },
+        saveGroup(arr){
+            this.loading = true
+            saveGroupTreeList(arr).then(res => {
+                this.loading = false
+                if(res && res.data.State === REQ_OK){
+                    this.$message({
+                        type: 'success',
+                        message: '保存成功'
+                    })
+                }
+            }).catch(err => {
+                this.loading = false
+            })
+        },
+        changeData(arr){
+            let newArr = []
+            if(arr && arr.length){
+                newArr = arr.map((item, key) => {
+                    let convalue = ''
+                    if(item.controltype == 5 || item.controltype == 6) {
+                        convalue = item.copyConvalue
+                    }else {
+                        convalue = item.convalue
+                    }
+                    return {
+                        unicode: item.unicode,
+                        convalue: convalue
+                    }
+                })
+            }
+            console.log("------------", newArr)
+            return newArr
+        },
+        // 保存
+        saveGroupForm(){
+            let resArr = []
+            this.saveFinalData = []
+            this.parentGroups.forEach((groupItem, key) => {
+                resArr.push(newStyleCheckFormArray(that, `parentGroup_${groupItem.metacode}`, groupItem, key))
+                this.saveFinalData.push(...this.changeData(groupItem.teamControlList))
+            })
+            Promise.all(resArr).then(res => {
+                this.saveGroup(this.saveFinalData)
+            }).catch(err => {
+                console.log(err)
+            })
         }
     }
 }

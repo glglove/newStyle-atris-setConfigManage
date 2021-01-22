@@ -30,10 +30,14 @@ export const CommonInterfaceMixin = {
   },
   methods:{
     _initDataMixin(){
-      // 获取 字典表相关的 按钮
+      this.commonBtnConfigMixin()
+      this.commonDataSourceListMixin()
+    },
+    commonBtnConfigMixin(){
+      // 从缓存中获取 字典表相关的 按钮配置 (配置信息在登录后 user store中 就获取了存入了缓存) 
       try {
         if(Object.keys(this.commonConfig).length){
-
+          
         }else {
           let res = JSON.parse(getLocalStorage('commonConfig'))
           this.commonConfig = res
@@ -49,21 +53,25 @@ export const CommonInterfaceMixin = {
       if(Object.keys(this.commonDataSourceConfig).length){
 
       }else {
-        // 
+        // 先去获取缓存 
         let res = JSON.parse(getLocalStorage('commonDataSourceConfig'))
-        this.commonDataSourceConfig = res
-        commonDataSourceList().then(res => {
-          if(res && res.data.State === REQ_OK){
-            console.log("----------",res.data.Data)
-            this.commonDataSourceConfig = res.data.Data
-            // 将通用的数据源缓存
-            try {
-              setLocalStorage('commonDataSourceConfig', JSON.stringify(res.data.Data))
-            } catch (error) {
-              console.log("设置通用的下拉数据源commonDataSourceConfig出错")
+        if(res){
+          this.commonDataSourceConfig = res
+        }else {
+          // 去调取接口获取并存入缓存中
+          commonDataSourceList().then(res => {
+            if(res && res.data.State === REQ_OK){
+              console.log("----------",res.data.Data)
+              this.commonDataSourceConfig = res.data.Data
+              // 将通用的数据源缓存
+              try {
+                setLocalStorage('commonDataSourceConfig', JSON.stringify(res.data.Data))
+              } catch (error) {
+                console.log("设置通用的下拉数据源commonDataSourceConfig出错")
+              }
             }
-          }
-        }) 
+          }) 
+        }
       }     
     },
     // 删除/ 批量删除

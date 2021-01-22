@@ -12,7 +12,12 @@ export const commonFiledsViewFns = {
       disableFlag: {
         type: Boolean,
         default: false  // 默认不disable
-      } 
+      },
+      // 是否需要 触发其他字段的事件
+      fieldEventFlag: {
+        type: Boolean,
+        default: true  // 默认触发       
+      }
     },
     data(){
       return {
@@ -28,7 +33,7 @@ export const commonFiledsViewFns = {
           "addorEditViewEdit": 1,  // 新增/编辑视图是否可编辑   1 和 0 区分                          
           "scanViewEncry": 0,  // 查看视图是否加密   1 和 0 区分
         },         
-        RequiredSvg: 'Required',
+        RequiredSvg: 'require',
         eventTypeResult: [], // 字段配置的事件规则数据信息(一个字段配置的可以影响多个字段)
         beforeConvalue: this.obj.convalue,  
         // beforeDataSource: JSON.parse(JSON.stringify(this.dataSource)),  
@@ -168,26 +173,32 @@ export const commonFiledsViewFns = {
         handler(newValue, oldValue){
           debugger
           // 值变化就去 进行触发变动事件  值变化的时候 触发分为两种 一种是触发变动 一种是还原变动
-          if(this.eventTypeResult && this.eventTypeResult.length){
-            // 先看是否达标
-            this.commonFieldEventEmit(this, this.eventTypeResult, this.obj)
+          if(this.fieldEventFlag){
+            if(this.eventTypeResult && this.eventTypeResult.length){
+              // 先看是否达标
+              this.commonFieldEventEmit(this, this.eventTypeResult, this.obj)
+            }
           }
         },
         // immediate: true
       }
     },
     created(){
-      // 获取该控件是否配置有事件
-      this.commonFieldfnInit()      
-      this.$nextTick(() => {
-        this.beforeHasShow = this.isShowField        
-        this.beforeDataSource = this.dataSource || []   
-        // 注册接收 字段的eventbus事件(改变 和 还原的 事件)
-        this.commonFieldEventOn()      
-      })
+      if(this.fieldEventFlag){
+        // 获取该控件是否配置有事件
+        this.commonFieldfnInit()      
+        this.$nextTick(() => {
+          this.beforeHasShow = this.isShowField        
+          this.beforeDataSource = this.dataSource || []   
+          // 注册接收 字段的eventbus事件(改变 和 还原的 事件)
+          this.commonFieldEventOn()      
+        })   
+      }
     },
     beforeDestroy(){
-      this.commonFieldOff()
+      if(this.fieldEventFlag) {
+        this.commonFieldOff()
+      }
     },
     methods: {
       commonFieldfnInit(){

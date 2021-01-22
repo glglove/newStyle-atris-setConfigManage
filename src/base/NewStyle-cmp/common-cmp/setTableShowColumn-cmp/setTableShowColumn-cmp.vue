@@ -15,13 +15,13 @@
 </style>
 
 <template>
-    <div :class="['showColumn-cmp', !obj.Fields.length ? 'not_found':'']" v-loading = 'loading'>
+    <div :class="['showColumn-cmp', !tableHeaderData.length ? 'not_found':'']" v-loading = 'loading'>
         <!-- checkboxGroup: {{checkboxGroup}}
         ---------->
         <!-- obj: {{obj}}  -->
         <!-- propLeftTableData： {{propLeftTableData}} -->
         <!--普通版--start--->
-        <div v-if="version==0 && obj.Fields.length" class="container">
+        <div v-if="version==0 " class="container">
             <el-card>
                 <el-checkbox 
                     :indeterminate="isIndeterminate" 
@@ -46,11 +46,7 @@
         <div v-if="version==1">
             <set-customershowcolumn-cmp 
                 ref="customerShowColumnHighCmp" 
-                :allboxGroup="obj.Fields"
-                :propLeftTableData="propLeftTableData"
-                :alreadyChecked="checkboxGroup"
-                :pageCode="currentPageCode"
-                :tableCode="obj.TableCode"
+                :allboxGroup="tableHeaderData"
                 @emitSave="emitSave"
             ></set-customershowcolumn-cmp>
         </div>
@@ -81,10 +77,19 @@
                 default: 1  // 0 是普通版本 1 是高级版本
             },
             // 所有的数据
-            obj: {
-                type: Object,
+            tableHeaderData: {
+                type: Array,
                 default: () => {
-                    return {}
+                    return [
+                        {
+                            label: '模块',
+                            property: 'FieldName'
+                        },
+                        {
+                            label: '类型',
+                            property: 'FieldName'                            
+                        }
+                    ]
                 }
             },
             // 左边的数据
@@ -125,12 +130,6 @@
         },
         computed:{
             ...mapGetters(['currentPageCode']),
-            allboxGroup(){
-                return this.obj.Fields
-            },
-            // checkboxGroup(){
-            //     return this.propCheckboxGroup
-            // }
         },
         watch: {
 

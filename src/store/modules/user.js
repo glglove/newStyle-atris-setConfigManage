@@ -171,7 +171,7 @@ const user = {
         })
       })
     },  
-    // 获取配置信息
+    // 获取配置信息(删除按钮  启用/停用按钮的配置)并存入缓存
     GetCommonConfigInfo ({commit, state}) {
       // debugger
       return new Promise((resolve, reject) => {

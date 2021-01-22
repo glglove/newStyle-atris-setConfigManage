@@ -28,7 +28,7 @@
           {{isTitle ? obj.conname : ''}}
           <icon-svg 
             class="fieldRequiredIcon"
-            v-show="!isShowing && obj.require"
+            v-show="!isShowing && (obj.require ==1)"
             :icon-class="RequiredSvg"
           ></icon-svg>   
           <el-tooltip 
@@ -133,7 +133,7 @@
           return
         }
         
-        if (this.obj.require && (!this.obj.convalue.length || this.obj.convalue.length<2)) {
+        if (this.obj.require ==1 && (!this.obj.convalue.length || this.obj.convalue.length<2)) {
           callback(new Error(this.obj.conname + '需输入完整'))
         } else {
             if(this.obj.convalue[0]< this.obj.Min || this.obj.convalue[1] > this.obj.Max){
@@ -145,7 +145,7 @@
       }
       return {         
         rules: {
-          required: this.obj.require,         
+          required: this.obj.require ==1,         
           validator: validatePass,
           trigger: 'blur'
         }

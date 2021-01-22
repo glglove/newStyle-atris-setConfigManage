@@ -25,7 +25,7 @@
           {{isTitle ? obj.conname : ''}}
           <icon-svg 
             class="fieldRequiredIcon"
-            v-show="!isShowing && obj.require"
+            v-show="!isShowing && (obj.require ==1)"
             :icon-class="RequiredSvg"
           ></icon-svg> 
           <el-tooltip 
@@ -121,16 +121,16 @@
         console.log("this.obj.require----", this.obj.require)
         console.log("this.obj.convalue-----",this.obj.convalue)
 
-        if (this.obj.require && (this.obj.convalue === '' || !this.obj.convalue)) {
+        if (this.obj.require ==1 && (this.obj.convalue === '' || !this.obj.convalue)) {
           callback(new Error(this.obj.conname + '不能为空'))
         } 
-        else if (this.obj.require && this.obj.convalue && this.obj.convalue.length > 20) {
+        else if (this.obj.require ==1 && this.obj.convalue && this.obj.convalue.length > 20) {
           callback(new Error('长度不能大于20字符'))
-        } else if (this.obj.require && this.obj.ValidData === '邮箱' && !validatEmail(this.obj.convalue)) {
-          callback(this.obj.require && new Error('邮箱格式不正确'))
-        } else if (this.obj.require && this.obj.ValidData === '手机' && !validatMobilePhone(this.obj.convalue)) {
+        } else if (this.obj.require ==1 && this.obj.ValidData === '邮箱' && !validatEmail(this.obj.convalue)) {
+          callback(this.obj.require ==1 && new Error('邮箱格式不正确'))
+        } else if (this.obj.require ==1 && this.obj.ValidData === '手机' && !validatMobilePhone(this.obj.convalue)) {
           callback(new Error('手机格式不正确'))
-        } else if (this.obj.require && this.obj.ValidData === '电话' && !validatTel(this.obj.convalue)) {
+        } else if (this.obj.require ==1 && this.obj.ValidData === '电话' && !validatTel(this.obj.convalue)) {
           callback(new Error('电话格式不正确'))
         } 
         else {
@@ -139,7 +139,7 @@
       }
       return {
         rules: {
-          required: this.obj.require,
+          required: this.obj.require ==1,
           validator: validatePass,
           trigger: 'blur'
         }
