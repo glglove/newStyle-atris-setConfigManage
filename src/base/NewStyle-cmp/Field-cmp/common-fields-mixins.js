@@ -21,6 +21,7 @@ export const commonFiledsViewFns = {
     },
     data(){
       return {
+        copyObj: null,
         dataSource: [],
         // control1: 字段1完成或者符合逻辑条件值,跳转到字段6,中间字段隐藏
         // control2: 字段1符合逻辑条件值，字段6只能选择A1,A2
@@ -176,7 +177,19 @@ export const commonFiledsViewFns = {
           if(this.fieldEventFlag){
             if(this.eventTypeResult && this.eventTypeResult.length){
               // 先看是否达标
-              this.commonFieldEventEmit(this, this.eventTypeResult, this.obj)
+              let controlType = this.obj.controlType
+              let newObj = null
+              switch(controlType){
+                case '5':
+                case 5:
+                case '6':
+                case 6:
+                  newObj = this.copyObj
+                  break
+                default: 
+                  newObj = this.obj
+              }
+              this.commonFieldEventEmit(this, this.eventTypeResult, newObj)
             }
           }
         },
@@ -184,16 +197,20 @@ export const commonFiledsViewFns = {
       }
     },
     created(){
-      if(this.fieldEventFlag){
-        // 获取该控件是否配置有事件
-        this.commonFieldfnInit()      
-        this.$nextTick(() => {
+      this.$nextTick(() => {
+        if(this.copyPropObjFlag){
+          // 下拉框控件等  保存时需要将convalue 进行字符串转化 所以此类控件需要进行 obj的复制 给控件绑定 然后值变化后 将原始的obj的值进行修改
+          this.initCopyPropObjData()
+        }   
+        if(this.fieldEventFlag){
+          // 获取该控件是否配置有事件
+          this.commonFieldfnInit()      
           this.beforeHasShow = this.isShowField        
           this.beforeDataSource = this.dataSource || []   
           // 注册接收 字段的eventbus事件(改变 和 还原的 事件)
           this.commonFieldEventOn()      
-        })   
-      }
+        }
+      })   
     },
     beforeDestroy(){
       if(this.fieldEventFlag) {
@@ -201,6 +218,16 @@ export const commonFiledsViewFns = {
       }
     },
     methods: {
+      changeContent(){
+
+      },
+      initCopyPropObjData(){
+        // 下拉框控件等  保存时需要将convalue 进行字符串转化 所以此类控件需要进行 obj的复制 给控件绑定 然后值变化后 将原始的obj的值进行修改
+        this.copyObj = JSON.parse(JSON.stringify(this.obj))
+      },
+      copyObjConvalueChange(){
+        this.obj.convalue = JSON.stringify(this.copyObj.convalue)
+      },
       commonFieldfnInit(){
         // 判断是否有配置事件
         this.isHasEvent().then(res => {

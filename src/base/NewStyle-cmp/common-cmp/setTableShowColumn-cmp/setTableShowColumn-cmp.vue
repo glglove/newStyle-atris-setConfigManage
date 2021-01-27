@@ -41,7 +41,7 @@
             </el-card>
         </div>
         <!---普通版--end--->
-
+        tableHeaderData: {{tableHeaderData}}
         <!--高级版本---start-->
         <div v-if="version==1">
             <set-customershowcolumn-cmp 
@@ -62,7 +62,7 @@
 
 <script>
     import SaveFooter from '@/base/Save-footer/Save-footer'
-    import SetCustomershowcolumnCmp from '@/base/PA-common-cmp/customerShowColumn-cmp/Setcustomershowcolumn-cmp'
+    import SetCustomershowcolumnCmp from '@/base/NewStyle-cmp/common-cmp/setTableShowColumn-cmp/setcustomershowcolumn-cmp'
     import Vuedraggable from 'vuedraggable'
     import { mapGetters } from 'vuex'
     import { REQ_OK } from '@/api/config'
@@ -82,12 +82,10 @@
                 default: () => {
                     return [
                         {
-                            label: '模块',
-                            property: 'FieldName'
+                            FieldName: '模块'
                         },
                         {
-                            label: '类型',
-                            property: 'FieldName'                            
+                            FieldName: '类型',
                         }
                     ]
                 }

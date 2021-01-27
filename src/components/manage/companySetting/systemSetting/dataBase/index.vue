@@ -35,13 +35,13 @@
           >新增</el-button>
           <el-button type="primary" 
             v-if="isStopFlag"
-            :disabled="!mutipleSelection.length"
+            :disabled="!multipleSelection.length"
             size="mini"
             @click.native="batchUsing(1)"
           >批量启用</el-button>
           <el-button 
             v-if="!isStopFlag"
-            :disabled="!mutipleSelection.length"
+            :disabled="!multipleSelection.length"
             type="primary" 
             size="mini"
             @click.native="batchUsing(0)"
@@ -208,6 +208,20 @@
         </div>
         <!---分页部分--end--->           
       </div>
+
+      <!-- <common-table-cmp
+        ref="display_commonTableCmp"
+        :tableHeadData="tableHeadData"
+        :tableHandlerData="tableHandlerData"
+        :tableData = "tableData"
+        :baseKey="baseKey"
+        :stopOrUsingTitKey="stopOrUsingTitKey"
+        :queryObj.sync = "queryObj"
+        :multipleSelection.sync="multipleSelection"
+        @refreshTableData = "refreshTableData"        
+        @commonTableEmitHandler="commonTableEmitHandler"
+      >
+      </common-table-cmp> -->
 
       <!--编辑的弹框--start--->
       <div class="editGroupBox" v-if="showEditGroup">
@@ -413,6 +427,7 @@
   import SaveFooter from '@/base/Save-footer/Save-footer'
   import SearchToolsCmp from '@/base/NewStyle-cmp/common-cmp/searchTool-cmp'
   import TableSetCmp from './dataBase-cmp/table-set'
+  import CommonTableCmp from '@/base/NewStyle-cmp/common-cmp/tableCommon-cmp/tableCommon-cmp'
   import { REQ_OK } from '@/api/config'
   import { 
     getDataBaseList,
@@ -421,6 +436,7 @@
   export default {
     components: {
       TableSetCmp,
+      CommonTableCmp,
       SearchToolsCmp,
       SaveFooter
     },
@@ -446,7 +462,7 @@
         showAddGroup: false, // 控制 新增组的 弹框显示/隐藏
         showFieldSetDialog: false, // 控制 字段设置的弹框显示/隐藏
         showTableSetDialog: false, // 控制 表设置的弹框显示/隐藏
-        mutipleSelection: [], 
+        multipleSelection: [], 
         isAddOrEdit: 1, // 1 是编辑 2 是新增
         isStopFlag: false, 
         currentFieldSetRow: {},
@@ -600,9 +616,9 @@
         debugger
         let text = type == 0? '停用':'启用'
         let str = ''
-        let length = this.mutipleSelection.length
+        let length = this.multipleSelection.length
         if(length){
-          this.mutipleSelection.forEach((item, key) => {
+          this.multipleSelection.forEach((item, key) => {
             if(key != (length-1)){
               str += item.TeamName + ','
             }else {
@@ -642,7 +658,7 @@
         this.showFieldSetDialog  = true
       },
       handleSelectionChange(val){
-        this.mutipleSelection = val
+        this.multipleSelection = val
       },
       // 新增物理表
       handlerAddDataBase(){

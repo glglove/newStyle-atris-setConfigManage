@@ -16,6 +16,11 @@
 .cust-addcard
     .el-dialog__body
         min-height 200px
+.entrySetWrap
+  >>>.el-dialog__body
+    height calc(100vh - 80px)
+    .tableSet
+      height 100%
 </style>
 <template>
     <div class="entry" v-loading = "fullLoading">
@@ -33,8 +38,9 @@
         >
             <div slot="handlerBtnWrap">              
                 <el-checkbox
-                    style="float: left"
-                    v-model="isStop"
+                    v-model="queryObj.state"
+                    :true-label="0"
+                    :false-label="1"                    
                 >
                     停用
                 </el-checkbox>
@@ -45,17 +51,17 @@
                 >添加字段</el-button>
                 <el-button 
                     :disabled="!multipleSelection.length"
-                    v-if="isStop"
+                    v-if="queryObj.state == 0"
                     type="primary" 
                     size="mini"
-                    @click.native="handlerBatch(1)"
+                    @click.native="handlerBatchStopOrUsing"
                 >批量启用</el-button>
                 <el-button 
                     :disabled="!multipleSelection.length"
-                    v-if="!isStop"
+                    v-if="queryObj.state ==1"
                     type="primary" 
                     size="mini"
-                    @click.native="handlerBatch(0)"
+                    @click.native="handlerBatchStopOrUsing"
                 >批量停用</el-button>
                 <el-button 
                     type="primary" 
@@ -200,149 +206,22 @@
         </search-tools-cmp> 
         <!---搜索部分---end-->
 
-        <div 
-            :class="['tableBox', tableData.length<=0? 'not_found':'']"
-            v-loading="loading"
+        <!-- tableData: {{tableData}} -->
+
+        <common-table-cmp
+            ref="entry_commonTableCmp"
+            :tableHeadData="tableHeadData"
+            :tableHandlerData="tableHandlerData"
+            :tableData = "tableData"
+            :queryObj.sync = "queryObj"
+            :baseKey="baseKey"
+            :stopOrUsingTitKey="stopOrUsingTitKey"            
+            :multipleSelection.sync="multipleSelection"
+            @refreshTableData = "refreshTableData"        
+            @commonTableEmitHandler="commonTableEmitHandler"
         >
-            <!-- tableData: {{tableData}} -->
-            <el-table
-                border
-                max-height="600px"
-                :data="tableData"
-                empty-text=" "
-                @selection-change="handleSelectionChange"
-            >
-                <el-table-column
-                    type="selection"
-                    width="50"
-                >
-                </el-table-column>
+        </common-table-cmp>   
 
-                <el-table-column
-                    label="项码"
-                    sortable
-                    show-overflow-tooltip
-                    prop="FieldCode"
-                >
-                    <template slot-scope="scope">
-                    <span>{{scope.row.FieldCode}}</span>
-                    </template>
-                </el-table-column>
-
-                <el-table-column
-                    label="项名"
-                    show-overflow-tooltip
-                    sortable
-                    prop="FieldName"
-                >
-                    <template slot-scope="scope">
-                    <span>{{scope.row.FieldName}}</span>
-                    </template>
-                </el-table-column>
-    
-
-                <el-table-column
-                    label="自定义字段名"
-                    prop="FieldName"
-                    show-overflow-tooltip
-                    sortable
-                >
-
-                </el-table-column>   
-
-                <el-table-column
-                    label="系统字段名"
-                    prop="SysName"
-                    show-overflow-tooltip
-                    sortable
-                >
-
-                </el-table-column>   
-
-                <el-table-column
-                    label="系统配置"
-                    prop="IsSys"
-                    width="120"
-                    sortable
-                    show-overflow-tooltip
-                >
-                    <template slot-scope="scope">
-                        <span style="color: #67C23A" v-if="scope.row.IsSys == 0">
-                            否
-                        </span>
-                        <span style="color: #409EFF" v-if="scope.row.IsSys == 1">
-                            是
-                        </span>                        
-                    </template>
-                </el-table-column>  
-
-                <el-table-column
-                    label="描述"
-                    prop="Tips"
-                    show-overflow-tooltip
-                >
-
-                </el-table-column>        
-
-                <el-table-column
-                    label="状态"
-                    prop="State"
-                    sortable
-                    show-overflow-tooltip
-                >
-                    <template slot-scope="scope">
-                        <span v-if="scope.row.State == 0">
-                            停用
-                        </span>
-                        <span v-if="scope.row.State == 1">
-                            启用
-                        </span>                        
-                    </template>
-                </el-table-column>                                  
-
-                <el-table-column
-                    label="操作"
-                >
-                    <template slot-scope="scope">
-                        <el-button 
-                            v-if="scope.row.State == 0"
-                            type="text"
-                            size="mini"
-                            @click.native="handlerUseing(scope.row, 1)"
-                        >启用</el-button>
-                        <el-button 
-                            v-if="scope.row.State == 1"
-                            type="text"
-                            size="mini"
-                            @click.native="handlerUseing(scope.row, 0)"
-                        >停用</el-button>
-                        <el-button 
-                            @click.native="handlerEditField(scope.row)"
-                            type="text"
-                            size="mini"
-                        >编辑</el-button>
-                        <el-button 
-                            @click.native="handlerDeleteField(scope.row)"
-                            type="text"
-                            size="mini"
-                        >删除</el-button>                            
-                    </template>
-                </el-table-column>   
-            </el-table>
-            <!--分页部分--start--->
-            <div class="pagination-container">
-                <el-pagination
-                    @size-change="handleSizeChange"
-                    @current-change="handleCurrentChange"
-                    :current-page.sync="queryObj.pageIndex"
-                    :page-sizes="[10, 20, 30, 50]"
-                    :page-size="queryObj.pageSize"
-                    layout="total, sizes, prev, pager, next, jumper"
-                    :total="queryObj.total">
-                </el-pagination>
-            </div>
-            <!---分页部分--end--->   
-        </div>
      
         <!--新增字段start--->
         <div class="addFieldBox" v-if="showAddField">
@@ -452,7 +331,48 @@
             <!-- </el-dialog> -->
             </atris-drawer-cmp>
         </div>
-        <!--字段排序end-->               
+        <!--字段排序end-->       
+
+        <!---分组条目设置弹框start---->
+        <el-dialog
+            title="分组条目设置"
+            append-to-body
+            fullscreen
+            :close-on-click-modal="false"
+            v-if="showEntrySet"
+            :visible.sync="showEntrySet"
+            class="entrySetWrap"
+            :destroy-on-close="true"
+        >
+            <div slot="title" class="header-title">
+                <div class="u-f-jsb u-f-ajc topTitleNav">
+                    <span class="title-age">分组条目设置</span>
+                    <div class="u-f-ajc">
+                        <el-button 
+                            type="info" 
+                            size="mini"
+                            @click.native="batchAddSysFields"
+                        >
+                            批量添加系统字段
+                        </el-button>
+                        <save-footer 
+                            saveBtnSize="mini"
+                            :isCancel="false"
+                            @save="saveEntrySet"
+                            @cancel="cancelEntrySet"
+                        ></save-footer>
+                    </div>
+                </div>
+            </div>
+
+            <entry-set-cmp
+                ref="entrySetCmp"
+                :objP.sync="obj"
+                class="tableSet"
+                :showTopNav="false"
+            ></entry-set-cmp>
+        </el-dialog>            
+        <!---分组条目设置弹框end---->        
     </div>
 </template>
 
@@ -463,14 +383,16 @@
    import FieldsetEditCmp from './fieldsetEdit-cmp'
    import FieldsetAddCmp from './fieldsetAdd-cmp'
    import FieldSortCmp from './fieldSort-cmp'
+   import EntrySetCmp from './entrySet/entry-set-cmp'
    import SearchToolsCmp from '@/base/NewStyle-cmp/common-cmp/searchTool-cmp'
    import SaveFooter from '@/base/Save-footer/Save-footer'
+   import CommonTableCmp from '@/base/NewStyle-cmp/common-cmp/tableCommon-cmp/tableCommon-cmp'
+   import { CommonInterfaceMixin } from '@/utils/CommonInterfaceMixin'
    import {
-       SetComFieldConfigState,
-       SaveFieldList,
-       DeleteComField
+       getEntryList,
    } from '@/api/systemManage'
   export default {
+    mixins: [CommonInterfaceMixin],
     props: {
         obj: {
             type: Object,
@@ -480,7 +402,9 @@
         }
     },
     components: {
-        SearchToolsCmp,        
+        SearchToolsCmp, 
+        CommonTableCmp,
+        EntrySetCmp,       
         FieldsetEditCmp,
         FieldsetAddCmp,
         FieldSortCmp,
@@ -490,8 +414,11 @@
       return {
         fullLoading: false, 
         loading: false, // loading 状态
+        baseKey: 'plat_configsys_hr_team_control',
+        stopOrUsingTitKey: 'conname', 
         isStop: false, 
         showAddField: false, // 添加字段
+        showEntrySet: false, // 分组条目设置
         showEidtField: false, // 编辑字段
         isAddOrEidtField: 0, // 0 编辑 1 新增
         showSortField: false, // 字段排序
@@ -504,44 +431,182 @@
             total: 0,
             state: 1  //状态，0停用 默认1启用
         },
+        tableHeadData: [
+          {
+            label: '物理表',
+            property: 'relateb',
+            showOverFlowTooltip: true,
+            sortable: true,
+            width: '',
+            lock: false
+          },
+          {
+            label: '编号',
+            property: 'concode',
+            showOverFlowTooltip: true,
+            sortable: true,
+            width: '',
+            lock: false
+          },    
+          {
+            label: '名称',
+            property: 'conname',
+            showOverFlowTooltip: true,
+            sortable: true,
+            width: '',
+            lock: false
+          }, 
+          {
+            label: '控件类型',
+            property: 'controltype',
+            showOverFlowTooltip: true,
+            sortable: true,
+            width: '',
+            lock: false
+          },    
+          {
+            label: '数据类型',
+            property: 'datatype',
+            showOverFlowTooltip: true,
+            sortable: true,
+            width: '',
+            lock: false
+          },   
+          {
+            label: '显示宽度',
+            property: 'length',
+            showOverFlowTooltip: true,
+            sortable: true,
+            width: '',
+            lock: false
+          },  
+          {
+            label: '显示千分位',
+            property: 'digit',
+            showOverFlowTooltip: true,
+            sortable: true,
+            width: '',
+            lock: false
+          },     
+          {
+            label: '显示大写',
+            property: 'digit',
+            showOverFlowTooltip: true,
+            sortable: true,
+            width: '',
+            lock: false
+          }, 
+          {
+            label: '显示颜色',
+            property: 'digit',
+            showOverFlowTooltip: true,
+            sortable: true,
+            width: '',
+            lock: false
+          },   
+          {
+            label: '选择器显示',
+            property: 'digit',
+            showOverFlowTooltip: true,
+            sortable: true,
+            width: '',
+            lock: false
+          },   
+          {
+            label: '自定义的值',
+            property: 'convalue',
+            showOverFlowTooltip: true,
+            sortable: true,
+            width: '',
+            lock: false
+          },   
+          {
+            label: '时间刻度',
+            property: 'convalue',
+            showOverFlowTooltip: true,
+            sortable: true,
+            width: '',
+            lock: false
+          },                                                                                                   
+        ],
+        tableHandlerData: [
+          {
+            no: 1,
+            code: 'entrySet',
+            tit: '设置',
+            baseKey:'plat_configsys_hr_team_control',
+            stopOrUsingTitKey: 'conname'
+          },
+          {
+            no: 2,
+            code: 'stop',
+            tit: '停用',
+            baseKey:'plat_configsys_hr_team_control',
+            stopOrUsingTitKey: 'conname'
+          },
+          {
+            no: 3,
+            code: 'using',
+            tit: '启用',
+            baseKey:'plat_configsys_hr_team_control',
+            stopOrUsingTitKey: 'conname'
+          },                   
+        ],
         tableData: []
       }
     },
     watch: {
-        isStop:{
-            handler(newValue, oldValue){
-                if(newValue){
-                    this.queryObj.state = 0
-                    this.queryObj.pageNum = 1
-                }else {
-                    this.queryObj.state = 1
-                    this.queryObj.pageNum = 1
-                }
-                this._getCommTables()
-            }
-        }
+
     },
     created(){
         this._getCommTables()
     },
     methods: {
         _getCommTables(){
-            
+            let params = {
+                state: this.queryObj.state,
+                metacode: this.obj.metacode
+            }
+            this.$nextTick(() => {
+                this.$refs["entry_commonTableCmp"].showLoading()
+                getEntryList(params).then(res => {
+                    this.$refs["entry_commonTableCmp"].hideLoading()
+                    if(res && res.data.State === REQ_OK){
+                        this.tableData = res.data.Data.records
+                        this.queryObj.total = res.data.Data.total
+                    }
+                }) 
+            })
         },
+        refreshTableData(){
+            this._getCommTables()
+        },
+        commonTableEmitHandler(btn, row){
+            let code = btn.code || ''
+            switch(code){
+                case 'entrySet':
+                    this.showEntrySet = true              
+                break
+                case 'stop':
+                case 'using':
+                break
+            } 
+        }, 
+        // 批量添加系统字段
+        batchAddSysFields(){
+            this.$debounce(this.$refs.entrySetCmp.$refs.middleCmpRef.batchAddSysFields())
+        },
+        saveEntrySet(){
+            debugger
+            // let resHtml = document.getElementById('middleCmpRef').innerHTML
+            // test(document.getElementById('middleCmpRef').innerHTML)
+            // this.loading = true
+            // 触发 right 组件中的保存方法
+            this.$debounce(this.$refs.entrySetCmp.$refs.rightCmpRef.saveControlAttributes())
+        },
+        cancelEntrySet(){
 
-        handleSelectionChange(val){
-            this.multipleSelection = val
-        },
-        // 分页--一页展示多少条
-        handleSizeChange (val) {
-            this.queryObj.pageSize = val
-            this._getCommTables()
-        },
-        // 分页--上一页，下一页
-        handleCurrentChange (val) {
-            this.queryObj.pageNum = val
-            this._getCommTables()
-        },            
+        },                  
         // 添加字段
         handlerAddField(){
             this.isAddOrEidtField = 1
@@ -594,70 +659,8 @@
                }
            }) 
         },
-        // 删除字段
-        handlerDeleteField(row){
-            debugger
-            this.currentRowObj = {...row}
-            this.$confirm(`确认要删除"${row.FieldName}"吗？`,'提示',{
-                confirmButtonText: '确定',
-                cancelButtonText: '取消'
-            }).then(() => {
-                this._DeleteComField(this.currentRowObj.FieldCode, this.currentRowObj.TeamCode)
-            }).catch(() => {
-                this.$message.info(`删除已取消`)
-            })
-        },
         handlerSort(){
             this.showSortField = true
-        },
-        //设置状态
-        _SetComFieldConfigState(data, state){
-            let text = state == 0? '停用':'启用'
-            SetComFieldConfigState(JSON.stringify(data), state).then(res => {
-               this.loading = false
-               if(res && res.data.State === REQ_OK){
-                   this.$message.success(`${text}成功`)
-                   this._getCommTables()
-               }else {
-                   this.$message.error(`获取列表数据失败,${res.data.Error}`)
-               }
-            })             
-        },
-        // 启用/停用
-        handlerUseing(row, type){
-            debugger
-            this.currentRowObj = row
-            let text = type == 0 ? '停用':'启用'
-            this.$confirm(`确认要${text}"${row.FieldName}"吗？`,'提示',{
-                confirmButtonText: '确定',
-                cancelButtonText: '取消'
-            }).then(() => {
-                this._SetComFieldConfigState([this.currentRowObj], type)
-            }).catch(() => {
-                this.$message.info(`${text}已取消`)
-            })
-        },
-        // 批量启用/停用
-        handlerBatch(type){
-            let text = type == 0 ? '批量停用':'批量启用'
-            let str = ''
-            if(this.multipleSelection.length){
-                this.multipleSelection.forEach((item, key) => {
-                    if(key != (this.multipleSelection.length-1)){
-                        str += item.FieldName + ','
-                    }else {
-                        str += item.FieldName
-                    }
-                })
-            }
-            this.$confirm(`确认要${text}"${str}"吗？`,'提示',{
-                confirmButtonText: '确定',
-                cancelButtonText: '取消'
-            }).then(() => {
-                this._SetComFieldConfigState(this.multipleSelection, type)
-            }).catch(() => {
-                this.$message.info(`${text}已取消`)
-            })
         },
         // 保存
         saveForm(){

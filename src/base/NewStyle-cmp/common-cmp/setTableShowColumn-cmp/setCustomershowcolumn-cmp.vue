@@ -89,7 +89,7 @@
         <div class="titBox">
             <p class="tit">{{title}}</p>
         </div>
-        tableDataLeft: {{tableDataLeft}}
+
 
         <el-row :gutter="12">
             <!--left部分---start--->
@@ -100,7 +100,8 @@
                     <div slot="header" class="clearfix">
                         <span style="font-weight:bold;font-size:14px">所有表头字段</span>
                         <el-button style="float: right; padding: 3px 0" type="text">共{{tableDataLeft.length}}项</el-button>
-                    </div>                    
+                    </div>    
+                    tableDataLeft: {{tableDataLeft}}
                     <div class="list">
                         <el-table
                             ref="leftTable"
@@ -120,15 +121,11 @@
                                 :label="item.label" 
                                 :property="item.property"                                
                                 :fixed="key === 0"
-                                >
+                            >
                                 <template slot-scope="scope">
                                     <!-- scope: {{scope}} -->
-                                    <span>{{scope.row[scope.column.property]}}</span>
-                                    <!-- <span>scope:{{scope.row}}</span>
-                                    <span>scope:{{scope.column}}</span> -->
-                                </template>                                
-                            >
-
+                                    <span>{{scope.row[scope.column.property]}}</span> 
+                                </template>  
                             </el-table-column>
 
                         </el-table>

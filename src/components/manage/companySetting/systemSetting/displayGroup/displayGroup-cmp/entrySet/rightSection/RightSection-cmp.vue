@@ -248,7 +248,7 @@
                 let params = {
                     relateb: this.objP.relateb,
                     list: [],
-                    type: 1,
+                    type: 2,
                     metacode: this.objP.metacode
                 }
                 let finalArr =  await that.changeData(that.contentCmpsList)

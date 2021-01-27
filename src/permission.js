@@ -29,12 +29,12 @@ router.beforeEach(async(to, from, next) => {
       next()
       NProgress.done() // router在hash模式下 手动改变hash 重定向回来 不会触发afterEach 暂时hack方案
     } else {        
-      debugger
+      // debugger
       if (!store.getters.name) { // 判断当前用户是否已拉取完user_info信息
         // 用户信息没有拉取完 重新获取用户信息
         store.dispatch('GetUserInfo').then(async (res) => { // 拉取user_info
           console.log("---store.getters.addRouters----", store.getters.addRouters)
-          debugger
+          // debugger
           // const roles = res.data.Data.TokenId
           // await store.dispatch('GenerateRoutes')
           // .then(async () => {
@@ -45,7 +45,7 @@ router.beforeEach(async(to, from, next) => {
           // next({...to})
           next({...to, replace: true}) // hack方法 确保addRoutes已完成
         }).catch(() => {
-          debugger
+          // debugger
           store.dispatch('LogOut').then(() => {
             Message.error('验证过期,请重新登录！')
             next({ path: '/login' })

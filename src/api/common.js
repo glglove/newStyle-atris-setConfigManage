@@ -17,8 +17,8 @@ export function commonSetStatus (baseKey,ids) {
         url: '/base/statusOn',   
         method: 'post',
         data: {
+            Method: 'commonSetStatus',   
             params: {
-                Method: 'commonSetStatus',   
                 baseKey,
                 ids
             }
@@ -36,8 +36,8 @@ export function commonDeleteList (baseKey,ids) {
         url: '/base/deleteList',   
         method: 'post',
         data: {
+            Method: 'commonDeleteList',   
             params: {
-                Method: 'commonDeleteList',   
                 baseKey,
                 ids
             }
@@ -55,8 +55,59 @@ export function commonDataSourceList () {
         url: '/common-business-code/getAllEnum',   
         method: 'post',
         data: {
+            Method: 'commonDataSourceList',   
             params: {
-                Method: 'commonDataSourceList',   
+            }
+        }
+    })
+}
+
+
+/**
+ *  通用的选择器 组件 获取 模块的下拉源数据
+ * @param {*}    metacode
+ */
+export function commonSelectorModuleDataSource (obj) {
+    let {
+        metacode,
+    } = obj
+    return fetch({
+        url: '/sys-control/findGroupList',   
+        method: 'post',
+        data: {
+            Method: 'commonSelectorModuleDataSource',
+            params: {
+                metacode
+            }
+        }
+    })
+}
+
+/**
+ *  通用的选择器 组件获取数据
+ * @param {*}    metacode
+ * @param {}    content  搜索关键词
+ * @param {}    groupName  模块
+ */
+export function commonSelectorList (obj) {
+    let {
+        content,
+        groupName,
+        metacode,
+        pageSize=10,
+        pageNum=1,
+    } = obj
+    return fetch({
+        url: '/sys-control/findList',   
+        method: 'post',
+        data: {
+            Method: 'commonSelectorList',
+            current:  pageNum,
+            size: pageSize,
+            params: {
+                content,
+                groupName,
+                metacode
             }
         }
     })

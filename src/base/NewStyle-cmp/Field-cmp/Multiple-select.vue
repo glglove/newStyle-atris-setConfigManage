@@ -59,7 +59,8 @@
           v-if="!isShowing"
           :placeholder="obj.actremind ||　'请选择'"
           :options="dataSource"
-          v-model="obj.convalue"
+          v-model="copyObj.convalue"
+          @change="copyObjConvalueChange"
           :props="{
             'children': 'childrenList',
             'label':'itemName',
@@ -188,6 +189,7 @@
           if (!this.dataSource.length) {
               // 业务领域存在 但是 dataSource 为空（获取业务领域接口时，返回的业务领域为空，需要重新配置表单）
             // callback(new Error(this.obj.conname + '所关联的字段范围无数据，请重新配置表单'))
+            this.$set(this.obj, 'copyConvalue', null)
             callback()
           } else if (this.obj.require ==1 && (this.obj.convalue === '' || !this.obj.convalue)) {
             // 需要校验，并且 this.obj.convalue 为空

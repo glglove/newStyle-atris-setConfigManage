@@ -5,6 +5,9 @@
 -->
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 .addNewGroupCmp {
+    min-height 300px
+    max-height 80vh
+    overflow: auto;
     .parentGroupForm {
         border-bottom: 1px solid silver
         padding: 20px 
@@ -24,7 +27,7 @@
 }
 </style>
 <template>
-    <div class="addNewGroupCmp" v-loading="loading">
+    <div :class="['addNewGroupCmp', parentGroups.length<=0? 'not_found':'']" v-loading="loading">
         <!-- parentGroups: {{parentGroups}} -->
         <el-form
             v-for="(parentItem, index) in parentGroups"
@@ -46,6 +49,7 @@
                     :obj.sync="field"
                     :style="fieldStyle(field)"
                     :prop="'teamControlList.' + key + '.convalue'"
+                    :isShowing="isShowing"
                     :isNeedGetDataSource="true"
                     :disableFlag="false"
                     :fieldEventFlag="false"
@@ -84,6 +88,12 @@ export default {
             default: () => {
                 return []
             }
+        },
+        isShowing: {
+            type: Boolean,
+            default: () => {
+                return false
+            }
         }
     },
     components: {
@@ -120,7 +130,7 @@ export default {
         },  
         fieldStyle(field){
             // return `width: ${field.showStyle.width}`
-            return "width: 20%"
+            return "width: 100%"
         },   
         //启用/停用
         handlerStopOrUsing(){
@@ -193,6 +203,7 @@ export default {
                         type: 'success',
                         message: '保存成功'
                     })
+                    this.$emit("emitGetData")
                 }
             }).catch(err => {
                 this.loading = false
@@ -226,10 +237,13 @@ export default {
                 this.saveFinalData.push(...this.changeData(groupItem.teamControlList))
             })
             Promise.all(resArr).then(res => {
+                alert(3)
                 this.saveGroup(this.saveFinalData)
             }).catch(err => {
                 console.log(err)
             })
+
+            alert(2)
         }
     }
 }

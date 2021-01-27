@@ -29,6 +29,7 @@
                     :prop="'field.' + key + '.convalue'"
                     :isNeedGetDataSource="true"
                     :disableFlag="false"
+                    :isShowing="formObj.readOnly"
                     :isNeedCheck="true"
                 ></component>
             </div>             

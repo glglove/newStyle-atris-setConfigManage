@@ -3268,11 +3268,13 @@ export function getMiddleSetData (obj) {
 /**
  * 获取 某个控件的属性
  * @params {} controlType  控件类型
+ * @params {} relateb  
  */
 export function getControlAttributes (obj) {
     let {
         controlType,
-        relateb
+        relateb,
+        sysControlUnicode
     } = obj    
     return fetch({
         module: 'SystemManage',
@@ -3290,14 +3292,19 @@ export function getControlAttributes (obj) {
 
 /**
  * 保存 物理表的设置属性
- * @params {} relateb  
+ * @params {} relateb  物理表设置的保存 需要relateb
+ * @parmas {*} list  [{controlType, sysControlUnicode, sortId, controlValueList}]
  * @params {} controlType  
- * @params {[]} controlValueList: [{unicode, convalue, sortId}] 
+ * @params {} type  1 为物理表设置的保存  2 为分组条目设置的保存  
+ * @params {} metacode  分组条目设置中的保存 需要metacode  
+ * @params {[]} controlValueList: [{unicode, convalue}] 
  */
 export function saveControlAttributes (obj) {
     let {
-        relateb,
-        list
+        relateb='',
+        metacode='',
+        list = [],
+        type,
     } = obj    
     return fetch({
         module: 'SystemManage',
@@ -3340,17 +3347,17 @@ export function getEventResult (obj) {
 export function getShowGroupList (obj) { 
     let {
         state,
-        current = 1,
-        size = 10,
+        pageSize = 10,
+        pageNum = 1,
     } = obj
     return fetch({
         module: 'SystemManage',
-        url: '/team-control/findPage',
+        url: '/sys-metadata/findPage',
         method: 'post',
         data: {
             Method: 'getShowGroupList',
-            size: size,
-            current: current,  
+            size: pageSize,
+            current: pageNum,  
             params: {
                 ...obj
             }
@@ -3396,6 +3403,34 @@ export function saveGroupTreeList (arr = []) {
         data: {
             Method: 'saveGroupTreeList',
             params: arr
+        }
+    })
+}
+
+
+/**
+ * 获取 条目 列表数据
+ * @params {} 
+ */
+export function getEntryList (obj) { 
+    let {
+        pageSize=10,
+        pageNum = 1,
+        state = 1,
+        metacode
+    } = obj
+    return fetch({
+        module: 'SystemManage',
+        url: '/team-control/findPage',
+        method: 'post',
+        data: {
+            Method: 'getEntryList',
+            size: pageSize,
+            current: pageNum,
+            params: {
+                state,
+                metacode
+            }
         }
     })
 }

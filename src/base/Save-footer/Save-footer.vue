@@ -4,8 +4,8 @@
   功能：保存、取消 按钮组件
 -->
 <template>
-  <div class="el-dialog__footer" style="propStyle">
-    <span class="dialog-footer">
+  <div class="saveFooterCmp" :style="propStyle">
+    <span class="saveFooterWrap">
       <span v-show="cancelBtnIsShow">
         <el-button 
           @click.native="cancel" 
@@ -44,7 +44,9 @@
       propStyle: {
         type: String,
         default: () => {
-          return 'text-align: center;margin-top: 30px'
+          return `text-align: center;
+                  padding: 20px; 
+                  box-sizing: border-box`
         }
       },
       saveBtnSize: {

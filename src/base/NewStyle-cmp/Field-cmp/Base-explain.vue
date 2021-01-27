@@ -69,6 +69,7 @@
 <script type="text/ecmascript-6">
   import { validatEmail, validatMobilePhone, validatTel, validateViewAuth } from '@/utils/validate'
   import iconSvg from '@/base/Icon-svg/index'
+  import AitrsEditor from '@/base/editor/aitrs-editor'
   import { commonFiledsViewFns } from './common-fields-mixins.js'
   export default {
     mixins: [ commonFiledsViewFns ],
@@ -107,11 +108,30 @@
       },        
     },
     components: {
-      iconSvg
+      iconSvg,
+      AitrsEditor
     },
     data () {
+      let validatePass = (rule, value, callback) => {
+        if( !this.isNeedCheck ){
+          // 不需要校验的话
+          callback()
+          return 
+        }
+
+      if (this.obj.require ==1 && (!this.obj.convalue || !this.obj.convalue.length)) {
+          callback(new Error(`请选择${this.obj.conname}`))
+        } else {
+          callback()
+        }
+      }      
       return {
-        isShow: false
+        isShowImg: false,
+        rules: {
+          required: this.obj.require ==1,
+          validator: validatePass,
+          trigger: ['change', 'blur']
+        }        
       }
     },
     computed: {

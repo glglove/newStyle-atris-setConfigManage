@@ -74,7 +74,7 @@ export const CommonInterfaceMixin = {
         }
       }     
     },
-    // 删除/ 批量删除
+    // 删除
     commonDeleteListMixin(obj){
       debugger
       let { statusText, name, ids, baseKey } = obj
@@ -105,6 +105,31 @@ export const CommonInterfaceMixin = {
 
       })        
     },
+    //批量删除
+    handlerBatchDelete(){
+      debugger
+      let statusText = '批量删除'
+      let baseKey = this.baseKey
+      let name = ''
+      let ids = []
+      let length = this.multipleSelection.length
+      if(length){
+        this.multipleSelection.forEach((item, key) => {
+          item.id && ids.push(item.id)
+          if(key != length-1){
+            name += item[this.stopOrUsingTitKey] + ','
+          }else {
+            name += item[this.stopOrUsingTitKey]
+          }
+        })
+        this.commonDeleteListMixin({
+          statusText,
+          name,
+          ids,
+          baseKey
+        })
+      }
+    },    
     // 启用/停用
     commonSetStatusMixin(obj){
       debugger
@@ -135,17 +160,33 @@ export const CommonInterfaceMixin = {
       }).catch(() => {
 
       })            
-    },
-    // // 分页--每页多少条
-    // handleSizeChange (val) {
-    //   this.queryObj.pageSize = val
-    //   this._getComTables()
-    // },
-    // // 分页--当前页
-    // handleCurrentChange (val) {
-    //   this.queryObj.pageIndex = val
-    //   this._getComTables()
-    // }        
+    },  
+    // 批量启用/ 停用
+    handlerBatchStopOrUsing () {
+      debugger
+      let statusText = (this.queryObj.state == 1)? "批量停用": "批量启用"
+      let baseKey =  this.baseKey   
+      let stopOrUsingTitKey = this.stopOrUsingTitKey        
+      let name = ''
+      let ids = []
+      let length = this.multipleSelection.length
+      if(length){
+      this.multipleSelection.forEach((item, key) => {
+          item.id && ids.push(item.id)
+          if(key != length-1){
+          name += item[stopOrUsingTitKey] + ','
+          }else {
+          name += item[stopOrUsingTitKey]
+          }
+      })
+      this.commonSetStatusMixin({
+        statusText,
+        name,
+        ids,
+        baseKey
+      })              
+      }          
+    },                   
   }
 }
 

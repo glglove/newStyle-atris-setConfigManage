@@ -35,7 +35,7 @@
           {{isTitle ? obj.conname : ''}}
           <icon-svg 
             class="fieldRequiredIcon"
-            v-show="!isShowing && (obj.require ==1)"
+            v-show="!isShowing && (this.obj.require ==1 || true)"
             :icon-class="RequiredSvg"
           ></icon-svg>    
           <el-tooltip 
@@ -47,7 +47,8 @@
       </div>  
 
       <!-- dataSource: {{dataSource}} -->
-      obj.convalue: {{obj.convalue}}
+      isShowing: {{isShowing}}
+      copyObj.convalue: {{copyObj.convalue}}
       <div 
         v-if="!isShowing" 
         class="fieldValueWrap u-f-g0"
@@ -55,9 +56,10 @@
       >
         <el-cascader
           class="fieldValue"
-          :placeholder="obj.actremind ||　'请选择'"
+          :placeholder="copyObj.actremind ||　'请选择'"
           :options="dataSource"
-          v-model="obj.convalue"
+          v-model="copyObj.convalue"
+          @change="copyObjConvalueChange"
           clearable
           :props="{
             'children': 'childrenList',
@@ -136,7 +138,7 @@
         type: String,
         default: ''
       },
-      // 是否直接显示控件的值, 默认false
+      // 是否直接显示控件的值, 默认false  
       isShowing: {
         type: Boolean,
         default: false
@@ -180,15 +182,16 @@
           callback()
           return
         }
-        
         // 下拉选项的校验
         if (this.dataSource) {
           if (!this.dataSource.length) {
               // 业务领域存在 但是 dataSource 为空（获取业务领域接口时，返回的业务领域为空，需要重新配置表单）
             // callback(new Error(this.obj.conname + '所关联的字段范围无数据，请重新配置表单'))
+            this.$set(this.obj, 'copyConvalue', null)
             callback()
           } else if (this.obj.require ==1 && (this.obj.convalue === '' || !this.obj.convalue)) {
             // 需要校验，并且 this.obj.convalue 为空
+            this.$set(this.obj, 'copyConvalue', null)
             callback(new Error(this.obj.conname + '不能为空'))
           } else {
             this.$set(this.obj, 'copyConvalue', JSON.stringify(this.obj.convalue))
@@ -198,8 +201,9 @@
       }
 
       return {
+        copyPropObjFlag: true,
         rules: {
-          required: this.obj.require ==1,
+          required: this.obj.require ==1 || true,
           validator: validatePass,
           trigger: ['change', 'blur']
         },
@@ -207,20 +211,19 @@
       }
     },
     computed: {
-      
     },    
     created () {
+
       this.changeConvalue()
     },
     mounted () {
-
     },
     beforeDestroy() {
     },
     watch: {
-
     },
-    methods: {      
+    methods: { 
+
       changeConvalue(){
         try {
           this.obj.convalue = JSON.parse(this.obj.convalue)

@@ -117,7 +117,8 @@
                 border
                 empty-text=' '
                 style="width: 100%"
-                @selection-change="handleSelectionChange">
+                @selection-change="handleSelectionChange"
+            >
 
                 <el-table-column
                     v-if="finalTableHeadData.length>0"
