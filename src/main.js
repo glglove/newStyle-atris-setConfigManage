@@ -14,7 +14,7 @@ import * as filters from './filters/index' // 全局 filter
 import router from './router' // vue-router 路由
 import store from './store' // vuex 状态管理
 import './icons' // 字体图标
-import './permission' // 权限
+// import './permission' // 权限
 import './directives' // 全局自定义指令
 import './authority-directives.js' // 全局自定义指令
 import './authority-directives1.js' // 全局自定义指令

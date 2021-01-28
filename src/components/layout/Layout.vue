@@ -50,7 +50,7 @@
 <script>
 import { Navbar, Sidebar, AppMain, horizontalSidebar } from '@/components/layout'
 import { mapGetters } from 'vuex'
-let w = null
+import { socketObj } from '@/utils/websocket'
 
 export default {
   name: 'layout',
@@ -67,10 +67,15 @@ export default {
     ])
   },
   created(){
-   
+    this.initWebSocket()
+  },
+  destroyed(){
+    socketObj.socket = null
   },
   methods: {
-
+    initWebSocket(){
+      socketObj.init()
+    }
   }
 }
 </script>

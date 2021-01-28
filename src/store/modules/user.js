@@ -1,6 +1,6 @@
 /* eslint-disable prefer-promise-reject-errors */
 import { loginByUsername, getUserInfo } from '@/api/login'
-import { getMenu } from '@/api/permission'
+import { getRoutesInfo } from '@/api/permission'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import * as types from '../mutation-types'
 import {
@@ -27,7 +27,7 @@ const user = {
     userCode: '', // 员工id
     empNo: '',  // 员工号
     companyCode: '', // 企业id
-    token: getToken(),
+    token: '',
     name: '',
     avatar: '',
     userAccessRouters: [], // 用户有权限访问的路由集合
@@ -56,8 +56,8 @@ const user = {
       state.empNo = code
     },    
     [types.SET_COMPANY_CODE] (state, code) {
-      // state.companyCode = code
-      state.companyCode = '39f89e3f-ecf9-8adf-1a7c-aa9b878931a9'
+      state.companyCode = code
+      // state.companyCode = '39f89e3f-ecf9-8adf-1a7c-aa9b878931a9'
     },
     [types.SET_TOKEN] (state, token) {
       state.token = token
@@ -137,14 +137,15 @@ const user = {
         }else {
           t = t
         }
-        // getMenu().then(res => {
-          // debugger
-          // 登陆后获取了用户可访问的路由，存入 res_userAccessRouters 中
-          // commit(types.SET_USER_ACCESSROUTERS, res.data.Data)
+        // getRoutesInfo().then(res => {
+        //   debugger
+        //   // 登陆后获取了用户可访问的路由，存入 res_userAccessRouters 中
+        //   console.log(res.data.Data)
+        //   // commit(types.SET_USER_ACCESSROUTERS, res.data.Data)
         // })
 
         getUserInfo(t).then(async response => {
-          // debugger
+          debugger
           if (!response.data) {
             reject('error')
           }
@@ -163,6 +164,7 @@ const user = {
           commit(types.SET_EMP_NO, data.companycode)
           commit(types.SET_COMPANY_CODE, data.companycode)
           commit(types.SET_AVATAR, data.companycode)          
+
           // 将动态路由添加进入路由表中  user 模块中调用permission模块的action
           await dispatch("GenerateRoutes", {}, { root: true })          
           resolve(response)
@@ -194,6 +196,7 @@ const user = {
         reject(err)
       })
     },
+    // 获取
     // 设置是 企业用户还是 系统用户 0 是企业用户  1 是系统用户
     setIsCompanyOrSystemUser ({commit, state}, type) {
       commit(types.SET_COMPANY_OR_SYSTEM, type)

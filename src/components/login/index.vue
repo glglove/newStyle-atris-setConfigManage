@@ -293,7 +293,10 @@
               if (res == 1) {
                 // 1 是表示登陆成功
                 debugger
-                this.$router.push({path: '/'})
+                // 获取用户信息
+                this.$store.dispatch('GetUserInfo').then(res => {
+                  this.$router.push({path: '/'})
+                })
                 // 获取配置信息
                 this.$store.dispatch('GetCommonConfigInfo').then(res => {
                   if(res) {

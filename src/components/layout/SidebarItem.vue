@@ -8,35 +8,35 @@
     <!-- routes: {{routes[5]}} -->
     <template v-for="(item,key) in routes">
       <!-- horizontalFlag: {{horizontalFlag}} -->
-      <!-- {{routes[5].hidden}} && {{routes[5].noDropdown}} && {{routes[5].children.length}} && {{horizontalFlag}}------ -->
+      <!-- {{routes[5].routeHidden}} && {{routes[5].noDropdown}} && {{routes[5].childrenList.length}} && {{horizontalFlag}}------ -->
       <!--菜单只有主菜单一级的情况-->
       <!-- <template > -->
-        <router-link v-if="!item.hidden&&item.noDropdown"
+        <router-link v-if="!item.routeHidden&&item.childrenList.length"
             :to="item.path">
-          <el-menu-item :index="item.path + item.children[0].path" 
+          <el-menu-item :index="item.path + item.childrenList[0].path" 
                         style="display:inline-block" 
                         :class="['submenu-title-noDropdown',!horizontalFlag? 'leftSidebar-submenu-title-noDropdown': '']">
-            <icon-svg v-if='!horizontalFlag && item.icon' :icon-class="item.icon"></icon-svg>
-            <span>{{item.name}}</span>
+            <icon-svg v-if='!horizontalFlag && item.routeIcon' :icon-class="item.routeIcon"></icon-svg>
+            <span>{{item.routeName}}</span>
           </el-menu-item>
         </router-link>
       <!-- </template> -->
 
 
       <!--菜单名下有子菜单的情况-->
-      <el-submenu :index="item.name" v-if="!item.noDropdown&&!item.hidden">
+      <el-submenu :index="item.routeName" v-if="!item.childrenList.length&&!item.routeHidden">
 
         <template slot="title">
-          <icon-svg v-if='!horizontalFlag && item.icon' :icon-class="item.icon"></icon-svg>
-          <span class="parentName">{{item.name}}</span>
+          <icon-svg v-if='!horizontalFlag && item.routeIcon' :icon-class="item.routeIcon"></icon-svg>
+          <span class="parentName">{{item.routeName}}</span>
         </template>
 
-        <template v-for="child in item.children" v-if='!child.hidden'>         
+        <template v-for="child in item.childrenList" v-if='!child.routeHidden'>         
 
           <!--子菜单下又有子菜单的时候，递归调用此 sider-item 的组件-->
           <sidebar-item 
             :class="['nest-menu', 'recursionNenu']" 
-            v-if='!child.noDropdown && child.children && child.children.length>0' 
+            v-if='child.childrenList && child.childrenList.length>0' 
             :routes='[child]'>
           </sidebar-item>                                                                                                                                                                               
 

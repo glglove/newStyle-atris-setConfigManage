@@ -132,3 +132,19 @@ export function getDicCollection (ModuleCode, DicType) {
     }
   })
 }
+
+//*******************newStyle************************* */
+/**
+*获取 路由信息
+ */
+
+export function getRoutesInfo () {
+  return fetch({
+    url: '/plat-sysmg-sys-route/findList',
+    method: 'post',
+    data: {
+      Method: 'getRoutesInfo',
+      params: {}
+    }
+  })
+}

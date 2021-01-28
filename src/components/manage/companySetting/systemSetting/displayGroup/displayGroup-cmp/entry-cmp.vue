@@ -63,11 +63,11 @@
                     size="mini"
                     @click.native="handlerBatchStopOrUsing"
                 >批量停用</el-button>
-                <el-button 
+                <!-- <el-button 
                     type="primary" 
                     size="mini"
                     @click.native="handlerSort"
-                >字段排序</el-button>
+                >字段排序</el-button> -->
             </div>
 
             <div slot="moreSearch" class="moreSearch u-f-jst u-f-wrap">

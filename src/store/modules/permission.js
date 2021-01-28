@@ -1,5 +1,6 @@
 import * as types from '../mutation-types'
-import { asyncRouterMap, constantRouterMap } from '@/router/index'
+import { asyncRouterMap, constantRouterMap, consRouterMap } from '@/router/index'
+import { getRoutesInfo } from '@/api/permission'
 import router from '@/router'
 /**
  * 通过meta.role判断是否与当前用户权限匹配
@@ -55,11 +56,29 @@ import router from '@/router'
 //   }
 //   return arrMap
 // }
+let resArr = []
+function changeRoutesData (routesArr) {
+  alert(21)
+  routesArr.forEach((item,key) => {
+    resArr.push (
+      {
+        path: item.routePath,
+        component: () => import(`${item.routeComponent}`),
+        routeName: item.routeName,
+        routeHidden: item.routeHidden,
+        routeMeta: item.routeMeta,
+        childrenList: item.childrenList && item.childrenList.length ? changeRoutesData(item.childrenList) : []
+      }      
+    )    
+  })
+  console.log("3333333333", resArr)
+  return resArr
+}
 
 const permission = {
   state: {
-    routers: [],
-    addRouters: []
+    routers: [],   // 基础路由
+    addRouters: [] // 增加的路由
   },
   mutations: {
     [types.SET_ROUTERS] (state, routers) {
@@ -74,11 +93,14 @@ const permission = {
       return new Promise(async (resolve, reject) => {
         // const { roles } = data
         // console.log('datta', data)
-        // debugger
+        debugger
+
         // 获取的用户可访问路由与 配置的 asyncRouterMap 路由做递归匹配 得到用户真实的可访问的路由地址
         // let accessedRouters = filterAsyncRouter(asyncRouterMap, rootState.user.userAccessRouters)
 
-        let accessedRouters = constantRouterMap.concat(asyncRouterMap)
+        // let accessedRouters = constantRouterMap.concat(asyncRouterMap)
+        // let accessedRouters = constantRouterMap.concat(rootState.user.userAccessRouters)
+        let accessedRouters = consRouterMap
 
         // debugger
         // let accessedRouters = constantRouterMap.concat(asyncRouterMap)
@@ -90,11 +112,19 @@ const permission = {
         // }
         // debugger
         commit(types.SET_ROUTERS, accessedRouters)
-        commit(types.SET_ADD_ROUTERS, accessedRouters)
+        // commit(types.SET_ADD_ROUTERS, rootState.user.userAccessRouters)
         // 将添加的路由 写入到路由表
-        await router.addRoutes(accessedRouters) // 动态添加可访问路由表
+        router.addRoutes(accessedRouters) // 动态添加可访问路由表
         // 路由 options 并不会随着 addRoutes 动态响应，所以要在这里进行设置
-        router.options.routes = constantRouterMap.concat(asyncRouterMap);        
+        // router.options.routes = constantRouterMap.concat(asyncRouterMap);        
+        router.options.routes = accessedRouters    
+        
+        // getRoutesInfo().then(res => {
+        //   debugger
+        //   // 登陆后获取了用户可访问的路由，存入 res_userAccessRouters 中
+        //   // console.log(res.data.Data)
+        //   // commit(types.SET_USER_ACCESSROUTERS, res.data.Data)
+        // }) 
         resolve()
       })
     }

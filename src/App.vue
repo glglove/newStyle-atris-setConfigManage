@@ -24,7 +24,11 @@ export default {
     //         alert(str+"\n请使用Del键进行字符的删除操作！");
     //         window.event.returnValue=false;
     //     }
-    // }    
+    // }  
+
+  },
+  beforeDestroy(){
+
   },
   components: {
     
