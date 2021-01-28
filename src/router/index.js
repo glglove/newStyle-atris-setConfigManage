@@ -21,6 +21,24 @@ export const consRouterMap = [
     }
   }, 
   {
+    path: '/forgetWord',
+    component: () => import('@/components/login/forgetWord/forgetWord'),
+    routeName: '忘记',
+    routeHidden: true,
+    routeMeta: {
+      title: '忘记密码-找回密码'
+    }
+  },    
+  {
+    path: '/register',
+    component: () => import('@/components/login/register/register'),
+    routeName: '注册',
+    routeHidden: true,
+    routeMeta: {
+      title: '注册'
+    }
+  },    
+  {
     path: '/',
     component: Layout,
     redirect: '/index',
@@ -29,7 +47,7 @@ export const consRouterMap = [
     routeHidden: false,
     childrenList: [
       {
-        path: 'index',
+        path: '/index',
         component: () => import('@/base/index/index'),
         routeName: '简述',
         routeIcon: 'people',
@@ -39,7 +57,7 @@ export const consRouterMap = [
         },
       },
       {
-        path: 'test',
+        path: '/test',
         component: () => import('@/components/test/test'),
         routeName: 'test',
         routeIcon: 'people',
@@ -263,7 +281,7 @@ export const constantRouterMap = [
 export default new Router({
   // mode: 'history', //后端支持可开
   scrollBehavior: () => ({ y: 0 }),
-  routes: constantRouterMap
+  routes: consRouterMap
 })
 
 export const asyncRouterMap = [

@@ -56,23 +56,22 @@ import router from '@/router'
 //   }
 //   return arrMap
 // }
-let resArr = []
-function changeRoutesData (routesArr) {
-  alert(21)
-  routesArr.forEach((item,key) => {
-    resArr.push (
-      {
-        path: item.routePath,
-        component: () => import(`${item.routeComponent}`),
-        routeName: item.routeName,
-        routeHidden: item.routeHidden,
-        routeMeta: item.routeMeta,
-        childrenList: item.childrenList && item.childrenList.length ? changeRoutesData(item.childrenList) : []
-      }      
-    )    
+let newArr = []
+function changeRoutesData (routesArr, newRoutesArr) {
+  routesArr.map((item,key) => {
+    let itemRoute =  {
+      path: item.path,
+      component: item.routeComponent,
+      routeName: item.routeName,
+      routeIcon: item.routeIcon,
+      routeHidden: item.routeHidden,
+    }
+    if(item.childrenList && item.childrenList.length){
+      itemRoute.childrenList = []
+      changeRoutesData(item.childrenList, itemRoute.childrenList)
+    }
+    newRoutesArr.push(itemRoute)
   })
-  console.log("3333333333", resArr)
-  return resArr
 }
 
 const permission = {
@@ -100,7 +99,7 @@ const permission = {
 
         // let accessedRouters = constantRouterMap.concat(asyncRouterMap)
         // let accessedRouters = constantRouterMap.concat(rootState.user.userAccessRouters)
-        let accessedRouters = consRouterMap
+        let accessedRouters = consRouterMap.concat([])
 
         // debugger
         // let accessedRouters = constantRouterMap.concat(asyncRouterMap)
@@ -114,10 +113,10 @@ const permission = {
         commit(types.SET_ROUTERS, accessedRouters)
         // commit(types.SET_ADD_ROUTERS, rootState.user.userAccessRouters)
         // 将添加的路由 写入到路由表
-        router.addRoutes(accessedRouters) // 动态添加可访问路由表
+        await router.addRoutes(accessedRouters) // 动态添加可访问路由表
         // 路由 options 并不会随着 addRoutes 动态响应，所以要在这里进行设置
         // router.options.routes = constantRouterMap.concat(asyncRouterMap);        
-        router.options.routes = accessedRouters    
+        router.options.routes = consRouterMap.concat([])    
         
         // getRoutesInfo().then(res => {
         //   debugger

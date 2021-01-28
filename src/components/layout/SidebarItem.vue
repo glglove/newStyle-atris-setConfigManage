@@ -43,8 +43,8 @@
           <!--子菜单下没有下级子菜单-->
           <router-link v-else :to="item.path+'/'+child.path">
             <el-menu-item :index="item.path+'/'+ child.path">
-              <icon-svg v-if='!horizontalFlag && child.icon' :icon-class="child.icon"></icon-svg>
-              <span class="name">{{child.name}}</span>
+              <icon-svg v-if='!horizontalFlag && child.routeIcon' :icon-class="child.routeIcon"></icon-svg>
+              <span class="name">{{child.routeName}}</span>
             </el-menu-item>
           </router-link>         
         </template>

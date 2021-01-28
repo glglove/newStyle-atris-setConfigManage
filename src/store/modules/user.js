@@ -3,6 +3,8 @@ import { loginByUsername, getUserInfo } from '@/api/login'
 import { getRoutesInfo } from '@/api/permission'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import * as types from '../mutation-types'
+import router from '@/router'
+
 import {
   setLocalStorage,
   getLocalStorage
@@ -115,10 +117,12 @@ const user = {
           }else {
             
           }
-          
           resolve(response.data.State)   
         }).catch(error => {
-          // debugger
+          debugger
+          dispatch("GenerateRoutes", {}, { root: true }).then(res => {
+            router.push({path: '/'})
+          })
           reject(error)
         })
       })
@@ -169,6 +173,7 @@ const user = {
           await dispatch("GenerateRoutes", {}, { root: true })          
           resolve(response)
         }).catch(error => {
+          debugger
           reject(error)
         })
       })
