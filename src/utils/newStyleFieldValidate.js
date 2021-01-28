@@ -2,6 +2,7 @@
  * 分组中的 字段校验
  */
 export function checkFormArray ( obj, formName, lineObj, key ) {
+    debugger
     return new Promise((resolve, reject) => {
         obj.$refs[formName][0].validate((valid) => {
             debugger
@@ -30,8 +31,8 @@ export function newStyleCheckFormArray ( obj, formName, formObj, key=0 ) {
             if (valid) {
                 resolve({
                     msg: `${formName}表单验证pass`,
-                    metacode: `${formObj.metacode}`,
-                    name: `${formObj.name}`,
+                    metacode: formObj? `${formObj.metacode}` : '',
+                    name: formObj? `${formObj.name}`: '',
                     index: key
                 })
             } else {

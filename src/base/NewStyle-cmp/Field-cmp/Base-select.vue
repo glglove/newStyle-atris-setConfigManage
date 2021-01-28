@@ -49,6 +49,8 @@
       <!-- dataSource: {{dataSource}} -->
       isShowing: {{isShowing}}
       copyObj.convalue: {{copyObj.convalue}}
+      -----
+      obj.convalue: {{obj.convalue}}
       <div 
         v-if="!isShowing" 
         class="fieldValueWrap u-f-g0"
@@ -213,8 +215,9 @@
     computed: {
     },    
     created () {
-
-      this.changeConvalue()
+      this.$nextTick(() => {
+        this.changeConvalue()
+      })
     },
     mounted () {
     },
@@ -223,10 +226,9 @@
     watch: {
     },
     methods: { 
-
       changeConvalue(){
         try {
-          this.obj.convalue = JSON.parse(this.obj.convalue)
+          this.copyObj.convalue = JSON.parse(this.obj.convalue)
         } catch (error) {
           
         }

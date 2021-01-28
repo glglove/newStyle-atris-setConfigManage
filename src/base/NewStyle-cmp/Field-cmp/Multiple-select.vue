@@ -214,25 +214,20 @@
    
     },    
     created () {
-      this.changeConvalue()
+      this.$nextTick(() => {
+        this.changeConvalue()
+      })
     },
     mounted () {
     },
     beforeDestroy() {
     },
     watch: {
-      obj: {
-        handler (newValue, oldValue) {
-          // 每当obj的值改变则发送事件update:obj , 并且把值传过去，利用的是数据的双向绑定，父组件通过 .sync 向子组件传值，此方法会实现数据的双向绑定
-          this.$emit('update:obj', newValue)
-        },
-        deep: true
-      }
     },
     methods: {  
       changeConvalue(){
         try {
-          this.obj.convalue = JSON.parse(this.obj.convalue)
+          this.copyObj.convalue = JSON.parse(this.obj.convalue)
         } catch (error) {
           
         }

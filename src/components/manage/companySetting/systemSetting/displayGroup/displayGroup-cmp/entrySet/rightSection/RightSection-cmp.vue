@@ -179,7 +179,8 @@
                 debugger
                 let parmasObj = {
                     controlType: obj.controlType,
-                    relateb: this.objP.relateb,
+                    commonCode: this.objP.metacode,
+                    type: 2,                    
                     sysControlUnicode: this.currentControlIsSystem ? obj.unicode: ''   // 添加的系统控件 需要传这个，左侧直接添加的控件此字段不需要传为空就好
                 }                 
                 return await getControlAttributes(parmasObj).then(res => {
@@ -242,14 +243,14 @@
                 console.log("-------*******---------", list)
                 return list               
             },
+
             async saveControlAttributes () {
                 debugger
                 that.loading = true
                 let params = {
-                    relateb: this.objP.relateb,
                     list: [],
                     type: 2,
-                    metacode: this.objP.metacode
+                    commonCode: this.objP.metacode
                 }
                 let finalArr =  await that.changeData(that.contentCmpsList)
                 // console.log("----finalArr----",finalArr)

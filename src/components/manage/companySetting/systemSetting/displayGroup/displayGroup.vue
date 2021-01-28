@@ -200,7 +200,6 @@
       >
       </common-table-cmp>
 
-
       <!--自定义表头列弹框----start-->
       <div class="setShowColumnBox" v-if="showSetColumnDailog">
         <el-dialog
@@ -221,13 +220,13 @@
       </div>
       <!--自定义表头列弹框----end-->
 
-      <!--新增/编辑的弹框--start--->
+      <!--新增的弹框--start--->
       <transition name="el-zoom-in-center">
         <div class="addGroupBox" v-if="showAddGroup">
           <atris-drawer-cmp
               :tit="dialogTit"    
               :dialog.sync="showAddGroup"        
-              @emitClickSureBtn="saveGroup"
+              @emitClickSureBtn="addSaveGroup"
           >           
           <!-- <el-dialog
             :title="dialogTit"
@@ -244,7 +243,7 @@
                   <save-footer 
                     saveBtnSize="mini"
                     :isCancel="false"
-                    @save="saveGroup"
+                    @save="addSaveGroup"
                   ></save-footer>
                 </div>
               </div>
@@ -266,7 +265,53 @@
           </atris-drawer-cmp>
       </div>
       </transition>
-      <!---新增/编辑的弹框----end-->  
+      <!---新增的弹框----end-->  
+
+      <!--编辑的弹框--start--->
+      <transition name="el-zoom-in-center">
+        <div class="addGroupBox" v-if="showEditGroup">
+          <atris-drawer-cmp
+            :tit="dialogTit"    
+            :dialog.sync="showEditGroup"        
+            @emitClickSureBtn="editSaveGroup"
+          >           
+          <!-- <el-dialog
+            :title="dialogTit"
+            v-if="showEditGroup"
+            fullscreen
+            :visible.sync="showEditGroup"
+            append-to-body
+            :close-on-click-modal="false"
+          > -->
+            <!-- <div slot="title" class="header-title">
+              <div class="u-f-jsb u-f-ac topTitleNav">
+                <span class="tit">{{dialogTit}}</span>
+                <div>
+                  <save-footer 
+                    saveBtnSize="mini"
+                    :isCancel="false"
+                    @save="saveGroup"
+                  ></save-footer>
+                </div>
+              </div>
+            </div>  -->
+
+            <div 
+              slot="container-slot"
+            >
+              <edit-group-cmp
+                ref="editGroupCmpRef"
+                :isShowing="false"
+                :obj="currentEditRow"
+                @emitEditSuccess="emitEditSuccess"
+              ></edit-group-cmp>
+              <!-- <save-footer @save="saveAddGroup" @cancel="cancelAddGroup"></save-footer> -->
+            </div>
+          <!-- </el-dialog> -->
+          </atris-drawer-cmp>
+      </div>
+      </transition>
+      <!---编辑的弹框----end-->        
 
       <!----条目弹框-start-->
       <div class="fieldSetWrap" v-if="showEntryDialog">
@@ -292,12 +337,13 @@
   import SearchToolsCmp from '@/base/NewStyle-cmp/common-cmp/searchTool-cmp'
   import ShowColumnCmp from '@/base/NewStyle-cmp/common-cmp/setTableShowColumn-cmp/setTableShowColumn-cmp'
   import AddGroupCmp from './displayGroup-cmp/addGroup-cmp'
+  import EditGroupCmp from './displayGroup-cmp/editGroup-cmp'
   import CommonTableCmp from '@/base/NewStyle-cmp/common-cmp/tableCommon-cmp/tableCommon-cmp'
   import { CommonInterfaceMixin } from '@/utils/CommonInterfaceMixin'
   import { REQ_OK } from '@/api/config'
   import { 
     getShowGroupList,
-    getGroupTreeList
+    getGroupTreeList,
   } from '@/api/systemManage.js'
   export default {
     mixins: [CommonInterfaceMixin],
@@ -307,6 +353,7 @@
       ShowColumnCmp,
       EntryCmp,
       AddGroupCmp,
+      EditGroupCmp,
       SaveFooter
     },
     data(){     
@@ -314,7 +361,8 @@
         loading: false, // loading 状态
         baseKey: 'plat_configsys_hr_team_control',
         stopOrUsingTitKey: 'name',
-        showAddGroup: false, // 控制 新增组/ 编辑的 弹框显示/隐藏
+        showAddGroup: false, // 控制 新增分组/ 弹框显示/隐藏
+        showEditGroup: false, // 控制 编辑分组 弹框显示/隐藏
         showSetColumnDailog: false,
         showEntryDialog: false, 
         finalTableHeadData: [], // 最终的 表头数据                             
@@ -327,7 +375,7 @@
           pageNum: 1,
           total: 0,
           state: 1,
-          moduleCode: ''
+          moduleCode: '',
         },    
         tableHeadData: [
           {
@@ -606,6 +654,10 @@
         this.showAddGroup = false
         this._getCommTables()
       },
+      emitEditSuccess(){
+        this.showEditGroup = false
+        this._getCommTables()        
+      },
       commonTableEmitHandler(btn, row){
         debugger
         this.currentRowObj = row
@@ -621,7 +673,7 @@
             
           break
           case 'edit':
-            
+            this.handleEdit(row)
           break
         }        
       },      
@@ -631,7 +683,10 @@
         this.$nextTick(() => {
           debugger
           this.$refs.groupCmpRef.loading = true
-          getGroupTreeList(this.$refs.groupCmpRef.queryObj).then(res => {
+          let parmas = {
+            metacode: 'teaminfo'
+          }
+          getGroupTreeList(parmas).then(res => {
             debugger
             this.$refs.groupCmpRef.loading = false        
             if(res && res.data.State === REQ_OK){
@@ -642,7 +697,7 @@
             }
           })            
         }) 
-      },          
+      },         
       _getShowGroupList(){
         debugger
         this.$nextTick(() => {
@@ -718,25 +773,18 @@
         this.dialogTit = '编辑分组'
         this.isAddOrEdit = 1
         this.currentEditRow = row
-        // Object.assign(this.formData, JSON.parse(JSON.stringify(row)))
-        this.formData = JSON.parse(JSON.stringify(row))
-        // this.formData.belongToQun = ''
-        // this.formData.belongToGroup = ''
-        this.formData.state += ''
-        console.log("-------",this.formData)
-        // if(!this.belongToGroupOptions.length){
-        //   this._ComTeamTree(this.currentEditRow.ModuleCode,'')
-        // }        
-        // if(!this.belongToQunOptions.length){
-        //   this._ComGroups(this.currentEditRow.ModuleCode)          
-        // }
         this.showEditGroup = true
       },
-      // 保存分组
-      saveGroup(){
+      // 新增的保存分组
+      addSaveGroup(){
         debugger
         this.$refs.groupCmpRef.saveGroupForm()
       },
+      // 编辑的保存分组
+      editSaveGroup(){
+        debugger
+        this.$refs.editGroupCmpRef.saveGroupForm()
+      },      
     },
   }
 </script>

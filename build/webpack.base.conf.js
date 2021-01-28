@@ -7,16 +7,19 @@ const vueLoaderConfig = require('./vue-loader.conf')
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
-
+const isProd = process.env.NODE_ENV === 'production'
 module.exports = {
+  devtool: isProd
+  ? false
+  : '#cheap-module-source-map',  
   entry: {
     app: ["babel-polyfill", "./src/main.js"]
   },
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',
-    publicPath: process.env.NODE_ENV === 'production'
-      ? config.build.assetsPublicPath
+    publicPath: process.env.NODE_ENV === 'production' ? 
+      config.build.assetsPublicPath
       : config.dev.assetsPublicPath
   },
   resolve: {
@@ -70,7 +73,23 @@ module.exports = {
         }
       },
       {
-        test: /\.(png|jpe?g|gif)(\?.*)?$/,
+        test: /\.styl(us)?$/,
+        use: isProd
+         ? ExtractTextPlugin.extract({
+           use: [
+            {
+             loader: 'css-loader',
+             options: { minimize: true }
+            },
+            'stylus-loader'
+           ],
+           fallback: 'vue-style-loader'
+          })
+         : ['vue-style-loader', 'css-loader', 'stylus-loader']
+       },      
+      {
+        test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+        exclude: [resolve('src/icons')],
         loader: 'url-loader',
         options: {
           limit: 10000,
@@ -94,5 +113,9 @@ module.exports = {
         }
       }
     ]
-  }
+  },
+  performance: {
+    maxEntrypointSize: 300000,
+    hints: isProd ? 'warning' : false
+  }, 
 }

@@ -3223,11 +3223,13 @@ export function addDataBase (obj) {
 
 /**
  * 获取所有控件信息
- * @params {}
+ *  @params {} type    1物理表用   2显示数据分组的 条目用 
+ * @params {} commonCode  type为1 取relateB   type 为2 取 metacode
  */
 export function getControlInfo (obj) {
     let {
-        relateb
+        commonCode,
+        type
     } = obj
     return fetch({
         module: 'SystemManage',
@@ -3236,20 +3238,24 @@ export function getControlInfo (obj) {
         data: {
             Method: 'getControlInfo',
             params: {
-                relateb
+                commonCode,
+                type
             }
         }
     })
 }
 
 
+
 /**
  *  物理表设置 中间部分的回显数据
- * @params {} relateb  
+ * @params {} type    1物理表用   2显示数据分组用 
+ * @params {} commonCode  type为1 取relateB   type 为2 取 metacode
  */
 export function getMiddleSetData (obj) {
     let {
-        relateb
+        commonCode,
+        type
     } = obj    
     return fetch({
         module: 'SystemManage',
@@ -3268,12 +3274,14 @@ export function getMiddleSetData (obj) {
 /**
  * 获取 某个控件的属性
  * @params {} controlType  控件类型
- * @params {} relateb  
+  * @params {} type    1物理表用   2显示数据分组用 
+ * @params {} commonCode  type为1 取relateB   type 为2 取 metacode* 
  */
 export function getControlAttributes (obj) {
     let {
         controlType,
-        relateb,
+        commonCode,
+        type,        
         sysControlUnicode
     } = obj    
     return fetch({
@@ -3291,18 +3299,16 @@ export function getControlAttributes (obj) {
 
 
 /**
- * 保存 物理表的设置属性
- * @params {} relateb  物理表设置的保存 需要relateb
+ * 保存 物理表/分组条目设置时的设置属性
  * @parmas {*} list  [{controlType, sysControlUnicode, sortId, controlValueList}]
  * @params {} controlType  
  * @params {} type  1 为物理表设置的保存  2 为分组条目设置的保存  
- * @params {} metacode  分组条目设置中的保存 需要metacode  
+ * @params {} commonCode  type为1 时 取值 relateb  type为2时取 metacode
  * @params {[]} controlValueList: [{unicode, convalue}] 
  */
 export function saveControlAttributes (obj) {
     let {
-        relateb='',
-        metacode='',
+        commonCode,
         list = [],
         type,
     } = obj    
@@ -3392,6 +3398,27 @@ export function getGroupTreeList (obj) {
 }
 
 /**
+ * 编辑 获取分组数据
+ * @params {} 
+ */
+export function getEditGroupData (obj) { 
+    let {
+        metacode,
+    } = obj
+    return fetch({
+        module: 'SystemManage',
+        url: '/team-control/getMateDataOne',
+        method: 'post',
+        data: {
+            Method: 'getEditGroupData',
+            params: {
+                metacode,
+            }
+        }
+    })
+}
+
+/**
  * 新增 获取分组数据的 保存
  * @params {} arr  [{unicode, concode}]
  */
@@ -3403,6 +3430,30 @@ export function saveGroupTreeList (arr = []) {
         data: {
             Method: 'saveGroupTreeList',
             params: arr
+        }
+    })
+}
+
+/**
+ * 编辑 获取分组数据的 保存
+ * @params {} list  [{unicode, concode}]
+ * @params {} metacode  
+ */
+export function saveEditGroup (obj) { 
+    let {
+        list,
+        metacode
+    } = obj
+    return fetch({
+        module: 'SystemManage',
+        url: '/sys-metadata/updateOne',
+        method: 'post',
+        data: {
+            Method: 'saveGroupTreeList',
+            params: {
+                metacode,
+                list
+            }
         }
     })
 }

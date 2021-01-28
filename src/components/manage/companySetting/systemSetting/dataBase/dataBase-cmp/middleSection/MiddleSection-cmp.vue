@@ -195,7 +195,8 @@
             getMiddleSetData(){
                 this.loading = true
                 let obj = {
-                    relateb: this.objP.relateb
+                    commonCode: this.objP.relateb,
+                    type: 1                    
                 }
                 // 获取中间部分的回显数据
                 getMiddleSetData(obj).then(res => {

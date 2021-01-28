@@ -8,11 +8,25 @@
         <!-- <input type="file" id="file" @input="upload">
         <el-button type="button" size="mini" @click.native="joinToPage('test1')">跳转到test1 页面</el-button> -->
         pageCode: {{pageCode}}
-        <base-page-cmp
+        <!-- <base-page-cmp
             :pageCode="pageCode"
             :authrityObj="authrityObj"
-        ></base-page-cmp>
+        ></base-page-cmp> -->
 
+        <!--字段解释：
+          subfield：双栏or单栏
+          defaultOpen：preview  展示区域，预览区域
+          toolbarsFlag：false，工具栏展示
+        -->
+        <mavon-editor 
+            class="markdown"
+            :value="get_mark_data()"
+            :subfield = "false"    
+            :defaultOpen = "prop.defaultOpen"
+            :toolbarsFlag = "prop.toolbarsFlag"
+            :editable="prop.editable"
+            :scrollStyle="prop.scrollStyle"
+        ></mavon-editor>
         <!-- <common-table-cmp></common-table-cmp> -->
         <!-- <series-line-cmp></series-line-cmp> -->
         <!-- <test-line-cmp></test-line-cmp> -->
@@ -52,6 +66,18 @@ export default {
             pageCode: PA_PAGECODE_JOINEDEMPLOYEE
         }
     },
+    computed: {
+      prop () {
+        let data = {
+          subfield: true,// 单双栏模式
+          defaultOpen: 'edit',//edit： 默认展示编辑区域 ， preview： 默认展示预览区域 
+          editable: true,
+          toolbarsFlag: true,
+          scrollStyle: true
+        }
+        return data
+      }        
+    },
     created(){
         let authrityObj = getLocalStorage("pageAuthrity")
         if(authrityObj) {
@@ -63,6 +89,9 @@ export default {
         }
     },
     methods: {
+        get_mark_data(){
+            return '<div style="color:red">测试makdown</div>'
+        },
         // 获取当前页面的权限数据
         _getAuthrityObj(pageCode){
             //...

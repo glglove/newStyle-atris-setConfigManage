@@ -21,7 +21,7 @@ export const commonFiledsViewFns = {
     },
     data(){
       return {
-        copyObj: null,
+        copyObj: {},
         dataSource: [],
         // control1: 字段1完成或者符合逻辑条件值,跳转到字段6,中间字段隐藏
         // control2: 字段1符合逻辑条件值，字段6只能选择A1,A2
@@ -177,7 +177,7 @@ export const commonFiledsViewFns = {
           if(this.fieldEventFlag){
             if(this.eventTypeResult && this.eventTypeResult.length){
               // 先看是否达标
-              let controlType = this.obj.controlType
+              let controlType = this.obj.controltype
               let newObj = null
               switch(controlType){
                 case '5':
@@ -226,7 +226,12 @@ export const commonFiledsViewFns = {
         this.copyObj = JSON.parse(JSON.stringify(this.obj))
       },
       copyObjConvalueChange(){
-        this.obj.convalue = JSON.stringify(this.copyObj.convalue)
+        debugger
+        try {
+          this.obj.convalue = JSON.stringify(this.copyObj.convalue)
+        } catch (error) {
+          
+        }
       },
       commonFieldfnInit(){
         // 判断是否有配置事件

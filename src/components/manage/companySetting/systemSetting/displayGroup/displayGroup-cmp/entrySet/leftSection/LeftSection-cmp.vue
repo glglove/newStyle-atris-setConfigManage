@@ -216,7 +216,7 @@
                 default: () => {
                     return {}
                 }
-            }     
+            },              
         },
         components: {
             Vuedraggable
@@ -315,7 +315,8 @@
             getControlInfo(){
                 this.loading = true
                 let params = {
-                    relateb: this.objP.relateb
+                    commonCode: this.objP.metacode,
+                    type: 2 
                 }
                 getControlInfo(params).then(res => {
                     this.loading = false

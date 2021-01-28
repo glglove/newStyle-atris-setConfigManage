@@ -241,7 +241,8 @@
             getMiddleSetData(){
                 this.loading = true
                 let obj = {
-                    relateb: this.objP.relateb
+                    commonCode: this.objP.metacode,
+                    type: 2
                 }
                 // 获取中间部分的回显数据
                 getMiddleSetData(obj).then(res => {
@@ -396,7 +397,9 @@
                 if(selectSystemControlArr && selectSystemControlArr.length){
                     selectSystemControlArr.forEach(item => {
                         this.contentCmpsList.push(item)
+                        this.$bus.$emit("changeBadageNum", item, true)
                     })
+                    this.currentClickItemObjIndex = (this.contentCmpsList.length)-1                    
                 }
             }        
         }

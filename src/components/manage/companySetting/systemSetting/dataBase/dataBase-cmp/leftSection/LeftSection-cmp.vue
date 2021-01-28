@@ -203,10 +203,7 @@
     import {
         // setLocalStorage,
         // getLocalStorage
-    } from '@/utils/auth.js'
-    import {
-        getControlAttributes
-    } from '@/api/systemManage'    
+    } from '@/utils/auth.js'  
     import Vuedraggable from 'vuedraggable'    
     let that = null
     export default {
@@ -315,7 +312,8 @@
             getControlInfo(){
                 this.loading = true
                 let params = {
-                    relateb: this.objP.relateb
+                    commonCode: this.objP.relateb,
+                    type: 1
                 }
                 getControlInfo(params).then(res => {
                     this.loading = false

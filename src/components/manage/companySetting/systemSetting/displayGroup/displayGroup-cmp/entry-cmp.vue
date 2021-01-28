@@ -349,6 +349,7 @@
                     <span class="title-age">分组条目设置</span>
                     <div class="u-f-ajc">
                         <el-button 
+                            v-if="showLeftSectionCmp"
                             type="info" 
                             size="mini"
                             @click.native="batchAddSysFields"
@@ -369,6 +370,7 @@
                 ref="entrySetCmp"
                 :objP.sync="obj"
                 class="tableSet"
+                :showLeftSectionCmp="showLeftSectionCmp"
                 :showTopNav="false"
             ></entry-set-cmp>
         </el-dialog>            
@@ -416,7 +418,8 @@
         loading: false, // loading 状态
         baseKey: 'plat_configsys_hr_team_control',
         stopOrUsingTitKey: 'conname', 
-        isStop: false, 
+        // isStop: false, 
+        showLeftSectionCmp: true,
         showAddField: false, // 添加字段
         showEntrySet: false, // 分组条目设置
         showEidtField: false, // 编辑字段
@@ -584,7 +587,8 @@
         commonTableEmitHandler(btn, row){
             let code = btn.code || ''
             switch(code){
-                case 'entrySet':
+                case 'entrySet':  // 条目设置按钮
+                    this.showLeftSectionCmp = false
                     this.showEntrySet = true              
                 break
                 case 'stop':
@@ -610,8 +614,10 @@
         // 添加字段
         handlerAddField(){
             this.isAddOrEidtField = 1
-            // this.currentEditRowObj = {...row}            
-            this.showAddField = true
+            // this.currentEditRowObj = {...row}  
+            this.showLeftSectionCmp = true          
+            // this.showAddField = true
+            this.showEntrySet = true
         },
         // 编辑字段
         handlerEditField(row){

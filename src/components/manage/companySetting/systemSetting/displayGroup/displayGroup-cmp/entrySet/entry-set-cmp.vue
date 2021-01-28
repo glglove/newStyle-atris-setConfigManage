@@ -105,7 +105,7 @@
         </el-col>
 
         <el-col :span="24" class="containerWrap u-f">
-            <el-col :span="4" class="leftSectionWrap u-f-g1 u-f-s1">
+            <el-col :span="4" class="leftSectionWrap u-f-g1 u-f-s1" v-if="showLeftSectionCmp">
                 <!-- leftCmps: {{leftCmps}} -->
                 <left-cmp 
                     ref="leftCmpRef"
@@ -122,7 +122,7 @@
                 ></middle-cmp>
             </el-col>
 
-            <el-col :span="4" class="rightSectionWrap u-f-g1 u-f-s1">
+            <el-col :span="showLeftSectionCmp? 4: 8" class="rightSectionWrap u-f-g1 u-f-s1">
                 <right-cmp 
                     ref="rightCmpRef"
                     :objP="objP"
@@ -158,6 +158,12 @@
             showTopNav: {
                 type: Boolean,
                 default: false
+            },
+            showLeftSectionCmp: {
+                type: Boolean,
+                default: () => {
+                    return true
+                }
             }
         },
         components: {

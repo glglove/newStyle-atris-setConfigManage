@@ -27,23 +27,19 @@
 }
 </style>
 <template>
-    <div :class="['addNewGroupCmp', parentGroups.length<=0? 'not_found':'']" v-loading="loading">
+    <div :class="['addNewGroupCmp']" v-loading="loading">
         <!-- parentGroups: {{parentGroups}} -->
-        <el-form
-            v-for="(parentItem, index) in parentGroups"
-            :key="index"        
-            :ref="`parentGroup_${parentItem.metacode}`"
-            class="parentGroupForm"
-            :model="parentItem"
+        <el-form    
+            v-for="(groupItem, index) in groupForm"
+            :key="index"              
+            :ref="`group_${groupItem.metacode}`"
+            class="groupForm"
+            :model="groupItem"
         >
-            <h3 class="header">
-                <i class="header-icon el-icon-info"></i>                
-                {{parentItem.name}}
-            </h3>
-            <div :class="['fieldContentBox', 'u-f-jst', 'u-f-wrap', parentItem.teamControlList.length<=0? 'not_found':'']">
+            <div :class="['fieldContentBox', 'u-f-jst', 'u-f-wrap', groupItem.teamControlList.length<=0? 'not_found':'']">
                 <component 
-                    :class="`${parentItem.metacode}_field_${field.concode}`"
-                    v-for="(field, key) in parentItem.teamControlList"
+                    :class="`${groupItem.metacode}_field_${field.concode}`"
+                    v-for="(field, key) in groupItem.teamControlList"
                     :key="key"                
                     :is="currentFieldComponentMixin(field.controltype)"
                     :obj.sync="field"
@@ -55,12 +51,6 @@
                     :fieldEventFlag="false"
                 ></component>                
             </div> 
-
-            <div class="childrenListWrap" v-if="parentItem.childrenList && parentItem.childrenList.length">
-                <add-group-cmp
-                    :parentGroups="parentItem.childrenList"
-                ></add-group-cmp>
-            </div>
         </el-form>
     </div>
 </template>
@@ -69,8 +59,8 @@ import {
     REQ_OK
 } from '@/api/config'
 import {
-    getGroupTreeList,
-    saveGroupTreeList
+    getEditGroupData,
+    saveEditGroup
 } from '@/api/systemManage.js'
 import { 
     CommonInterfaceMixin
@@ -80,13 +70,13 @@ import { fieldControlTypeMixin } from '@/utils/newStyleMixins-fields.js'
 import { newStyleCheckFormArray } from '@/utils/newStyleFieldValidate.js'
 let that = null
 export default {
-    name: 'AddGroupCmp',
+    name: 'EidtGroupCmp',
     mixins: [CommonInterfaceMixin, fieldControlTypeMixin],
     props: {
-        parentGroups: {
-            type: Array,
+        obj: {
+            type: Object,
             default: () => {
-                return []
+                return {}
             }
         },
         isShowing: {
@@ -102,8 +92,13 @@ export default {
     data() {
         return {
             loading: false, 
+            groupForm: [{
+                metacode: this.obj.metacode,
+                name: '编辑分组',
+                teamControlList: []
+            }],
+            groupFormData: [],
             queryObj: {
-                metacode: 'teaminfo',
                 pageSize: 10,
                 pageNum: 1,
                 total: 0
@@ -113,7 +108,7 @@ export default {
     },
     created(){
         that = this
-        this._getComTables()
+        this.getEditGroupData()
     },
     computed:{
 
@@ -123,59 +118,70 @@ export default {
     methods:{
         //重新刷新获取数据
         _refreshData(){
-           this.$emit("emitGetData") 
         },
         _getComTables(){
-
+            
         },  
+        // 编辑时 获取数据
+        getEditGroupData(){
+            this.$nextTick(() => {
+            debugger
+            that.loading = true
+            let params = {
+                metacode: that.obj.metacode
+            }
+            getEditGroupData(params).then(res => {
+                debugger
+                that.loading = false        
+                if(res && res.data.State === REQ_OK){
+                    that.groupFormData = res.data.Data
+                    that.groupForm[0].teamControlList = res.data.Data
+                }else {
+
+                }
+            })            
+            })         
+        },         
         fieldStyle(field){
             // return `width: ${field.showStyle.width}`
             return "width: 100%"
         },   
-        saveGroup(arr){
+        saveEditGroup(arr){
             this.loading = true
-            saveGroupTreeList(arr).then(res => {
+            saveEditGroup(arr).then(res => {
                 this.loading = false
                 if(res && res.data.State === REQ_OK){
                     this.$message({
                         type: 'success',
                         message: '保存成功'
                     })
-                    this.$emit("emitGetData")
+                    this.$emit("emitEditSuccess")
                 }
             }).catch(err => {
                 this.loading = false
             })
         },
-        changeData(arr){
-            let newArr = []
-            if(arr && arr.length){
-                newArr = arr.map((item, key) => {
-                    return {
-                        unicode: item.unicode,
-                        convalue: item.convalue
-                    }
-                })
-            }
-            console.log("------------", newArr)
-            return newArr
-        },
         // 保存
         saveGroupForm(){
+            debugger
             let resArr = []
-            this.saveFinalData = []
-            this.parentGroups.forEach((groupItem, key) => {
-                resArr.push(newStyleCheckFormArray(that, `parentGroup_${groupItem.metacode}`, groupItem, key))
-                this.saveFinalData.push(...this.changeData(groupItem.teamControlList))
+            that.saveFinalData = []
+            that.groupForm[0].teamControlList.forEach((groupItem, key) => {
+                resArr.push(newStyleCheckFormArray(that, `group_${that.groupForm[0].metacode}`, that.groupForm[0], key))
+                that.saveFinalData.push({
+                    unicode: groupItem.unicode,
+                    convalue: groupItem.convalue
+                })
             })
             Promise.all(resArr).then(res => {
-                alert(3)
-                this.saveGroup(this.saveFinalData)
+                let params = {
+                    metacode: that.obj.metacode,
+                    list: that.saveFinalData
+                }
+                that.saveEditGroup(params)
             }).catch(err => {
                 console.log(err)
             })
-
-            alert(2)
         }
     }
 }

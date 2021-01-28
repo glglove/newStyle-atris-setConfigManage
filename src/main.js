@@ -8,7 +8,7 @@ import '../theme/index.css'  // 引入 自定义主题样式
 import { Message, Notify } from 'element-ui'
 import vueQuillEditor from 'vue-quill-editor' // vue 富文本组件
 import mavonEditor from 'mavon-editor'
-// import 'mavon-editor/dist/css/index.css'
+import 'mavon-editor/dist/css/index.css'
 import App from './App'
 import * as filters from './filters/index' // 全局 filter
 import router from './router' // vue-router 路由
@@ -39,7 +39,8 @@ Vue.config.productionTip = false
 Vue.use(ElementUI)
 // 使用 富文本编辑器
 Vue.use(vueQuillEditor)
-// Vue.use(mavonEditor)
+// 使用 mavon-editor 编辑器
+Vue.use(mavonEditor)
 Vue.use(require('vue-wechat-title'))
 // 使用 引用的 拖拽 组件
 Vue.use(VueDND)
