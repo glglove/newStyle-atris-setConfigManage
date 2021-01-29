@@ -29,7 +29,12 @@ const vuexLocal = new VuexPersistense({
       },
       // 引入user模板，对象里面可配置需要持久化的status
       user: {
-        cryptoInfo: val.user.cryptoInfo
+        cryptoInfo: val.user.cryptoInfo,
+        name: val.user.name
+      },
+      permission: {
+        routers: val.permission.routers,
+        addRouters: val.permission.addRouters
       }
     }
   }

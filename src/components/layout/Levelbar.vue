@@ -29,11 +29,11 @@ export default {
   methods: {
     getBreadcrumb () {
       // debugger
-      // console.log(this.$route)
+      console.log(this.$route)
       let matched = this.$route.matched.filter(item => item.name)
       // console.log("----matched----", matched)
       const first = matched[0]
-      if (first && (first.name !== '首页' || first.path !== '')) {
+      if (first && (first.name !== '首页' || first.path !== '') && (first.path !='/login')) {
         matched = [{ name: '首页', path: '/' }].concat(matched)
       }
       this.levelList = matched

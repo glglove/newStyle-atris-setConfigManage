@@ -6,29 +6,33 @@
 <template>
   <div :class="['menu-wrapper', horizontalFlag? 'topSidebar-meuWrap': '']">
     <!-- routes: {{routes[5]}} -->
-    <template v-for="(item,key) in routes">
+    <!-- horizontalFlag: {{horizontalFlag}} -->
+    <!-- permissionRouters: {{permissionRouters}} -->
+    <template v-for="(item, key) in routes">
       <!-- horizontalFlag: {{horizontalFlag}} -->
       <!-- {{routes[5].routeHidden}} && {{routes[5].noDropdown}} && {{routes[5].childrenList.length}} && {{horizontalFlag}}------ -->
       <!--菜单只有主菜单一级的情况-->
       <!-- <template > -->
-        <router-link v-if="!item.routeHidden&&item.childrenList.length"
-            :to="item.path">
-          <el-menu-item :index="item.path + item.childrenList[0].path" 
+        <router-link 
+          v-if="!item.routeHidden&&!item.childrenList.length"
+          :to="item.path"
+        >
+          <el-menu-item :index="item.path" 
                         style="display:inline-block" 
                         :class="['submenu-title-noDropdown',!horizontalFlag? 'leftSidebar-submenu-title-noDropdown': '']">
             <icon-svg v-if='!horizontalFlag && item.routeIcon' :icon-class="item.routeIcon"></icon-svg>
-            <span>{{item.routeName}}</span>
+            <span>{{item.name}}</span>
           </el-menu-item>
         </router-link>
       <!-- </template> -->
 
 
       <!--菜单名下有子菜单的情况-->
-      <el-submenu :index="item.routeName" v-if="!item.childrenList.length&&!item.routeHidden">
+      <el-submenu :index="item.name" v-if="item.childrenList.length&&!item.routeHidden">
 
         <template slot="title">
           <icon-svg v-if='!horizontalFlag && item.routeIcon' :icon-class="item.routeIcon"></icon-svg>
-          <span class="parentName">{{item.routeName}}</span>
+          <span class="parentName">{{item.name}}</span>
         </template>
 
         <template v-for="child in item.childrenList" v-if='!child.routeHidden'>         
@@ -41,10 +45,10 @@
           </sidebar-item>                                                                                                                                                                               
 
           <!--子菜单下没有下级子菜单-->
-          <router-link v-else :to="item.path+'/'+child.path">
-            <el-menu-item :index="item.path+'/'+ child.path">
+          <router-link v-else :to="item.path + child.path">
+            <el-menu-item :index="item.path + child.path">
               <icon-svg v-if='!horizontalFlag && child.routeIcon' :icon-class="child.routeIcon"></icon-svg>
-              <span class="name">{{child.routeName}}</span>
+              <span class="name">{{child.name}}</span>
             </el-menu-item>
           </router-link>         
         </template>
@@ -57,6 +61,7 @@
 
 <script>
   import iconSvg from '@/base/Icon-svg/index'
+  import { mapGetters } from 'vuex'
   export default {
     name: 'SidebarItem',
     props: {
@@ -68,9 +73,15 @@
         default: false
       }
     },
+    computed: {
+      ...mapGetters([
+        'permissionRouters',
+      ]),  
+
+    },
     created () {
       // debugger
-      // console.log(this.routes)
+      console.log("顶部导航打印路由",this.permissionRouters)
     },
     components: {
       iconSvg

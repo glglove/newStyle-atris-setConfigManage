@@ -91,7 +91,10 @@
     methods: {
       logout () {
         this.$store.dispatch('LogOut').then(() => {
-          location.reload()
+          this.$router.replace({
+            path: 'login'
+          })
+          // location.reload()
         })
       }
     }

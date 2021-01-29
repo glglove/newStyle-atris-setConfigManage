@@ -1,5 +1,5 @@
 import * as types from '../mutation-types'
-import { asyncRouterMap, constantRouterMap, consRouterMap } from '@/router/index'
+import { asyncRouterMap, constantRouterMap, consRouterMap, asyncRouter } from '@/router/index'
 import { getRoutesInfo } from '@/api/permission'
 import router from '@/router'
 /**
@@ -56,22 +56,24 @@ import router from '@/router'
 //   }
 //   return arrMap
 // }
-let newArr = []
-function changeRoutesData (routesArr, newRoutesArr) {
+function changeRoutesData (routesArr, newRoutesArr = []) {
   routesArr.map((item,key) => {
     let itemRoute =  {
-      path: item.path,
-      component: item.routeComponent,
-      routeName: item.routeName,
+      path: item.routePath,
+      component: () => import(`${item.routeComponent}`),
+      name: item.routeName || item.name,
       routeIcon: item.routeIcon,
       routeHidden: item.routeHidden,
+      meta: item.routeMeta ? JSON.parse(item.routeMeta): {}
     }
+    item.routeRedirect ? (itemRoute.redirect = item.routeRedirect) : null
+    itemRoute.childrenList = []
     if(item.childrenList && item.childrenList.length){
-      itemRoute.childrenList = []
-      changeRoutesData(item.childrenList, itemRoute.childrenList)
+      changeRoutesData(item.childrenList, itemRoute.childrenList) 
     }
     newRoutesArr.push(itemRoute)
   })
+  return newRoutesArr
 }
 
 const permission = {
@@ -99,7 +101,8 @@ const permission = {
 
         // let accessedRouters = constantRouterMap.concat(asyncRouterMap)
         // let accessedRouters = constantRouterMap.concat(rootState.user.userAccessRouters)
-        let accessedRouters = consRouterMap.concat([])
+        // let accessedRouters = changeRoutesData(consRouterMap, resArr)
+        let accessedRouters = consRouterMap.concat(changeRoutesData(asyncRouter, []))
 
         // debugger
         // let accessedRouters = constantRouterMap.concat(asyncRouterMap)
@@ -111,12 +114,12 @@ const permission = {
         // }
         // debugger
         commit(types.SET_ROUTERS, accessedRouters)
-        // commit(types.SET_ADD_ROUTERS, rootState.user.userAccessRouters)
+        commit(types.SET_ADD_ROUTERS, changeRoutesData(asyncRouter, []))
         // 将添加的路由 写入到路由表
-        await router.addRoutes(accessedRouters) // 动态添加可访问路由表
+        router.addRoutes(accessedRouters) // 动态添加可访问路由表
+        // router.addRoutes(accessedRouters) // 动态添加可访问路由表
         // 路由 options 并不会随着 addRoutes 动态响应，所以要在这里进行设置
-        // router.options.routes = constantRouterMap.concat(asyncRouterMap);        
-        router.options.routes = consRouterMap.concat([])    
+        router.options.routes = consRouterMap.concat(changeRoutesData(asyncRouter, []))        
         
         // getRoutesInfo().then(res => {
         //   debugger

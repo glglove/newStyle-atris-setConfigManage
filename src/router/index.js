@@ -14,281 +14,346 @@ export const consRouterMap = [
   {
     path: '/login',
     component: () => import('@/components/login/index'),
-    routeName: '登录',
+    name: '登录',
     routeHidden: true,
-    routeMeta: {
+    meta: {
       title: '登录'
-    }
+    },
+    childrenList: []
   }, 
   {
     path: '/forgetWord',
     component: () => import('@/components/login/forgetWord/forgetWord'),
-    routeName: '忘记',
+    name: '忘记',
     routeHidden: true,
-    routeMeta: {
+    meta: {
       title: '忘记密码-找回密码'
-    }
+    },
+    childrenList: []
   },    
   {
     path: '/register',
     component: () => import('@/components/login/register/register'),
-    routeName: '注册',
+    name: '注册',
     routeHidden: true,
-    routeMeta: {
+    meta: {
       title: '注册'
-    }
+    },
+    childrenList: []
   },    
   {
     path: '/',
-    component: Layout,
-    redirect: '/index',
-    routeName: '首页',
-    routeIcon: 'people',
-    routeHidden: false,
-    childrenList: [
-      {
-        path: '/index',
-        component: () => import('@/base/index/index'),
-        routeName: '简述',
-        routeIcon: 'people',
-        routeHidden: true,
-        routeMeta: {
-          title: '首页-简述'
-        },
-      },
-      {
-        path: '/test',
-        component: () => import('@/components/test/test'),
-        routeName: 'test',
-        routeIcon: 'people',
-        routeHidden: true,
-        routeMeta: {
-          title: '动态显示测试'
-        }
-      }           
-    ]
-  },  
-]
-export const constantRouterMap = [
-  {
-    path: '/login',
-    component: () => import('@/components/login/index'),
-    routeName: '登录',
-    routeHidden: true,
-    routeMeta: {
-      title: '登录'
-    }
-  },
-  {
-    path: '/forgetWord',
-    component: () => import('@/components/login/forgetWord/forgetWord'),
-    routeName: '忘记',
-    routeHidden: true,
-    routeMeta: {
-      title: '忘记密码-找回密码'
-    }
-  },    
-  {
-    path: '/register',
-    component: () => import('@/components/login/register/register'),
-    routeName: '注册',
-    routeHidden: true,
-    routeMeta: {
-      title: '注册'
-    }
-  },    
-  {
-    path: '/authredirect',
-    component: () => import('@/components/login/authredirect'),
-    routeName: '权限',
-    routeHidden: true    
-  },
-  {
-    path: '/setModule',
-    component: () => import('@/components/setModule/index'),
-    routeName: '配置',
-    routeHidden: true,
-    routeMeta: {
-      title: '配置系统'
-    },    
-  },  
-  {
-    path: '/page_fieldSet',
-    component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page_fieldSet'),
-    routeName: '字段设置',
-    routeHidden: true,
-    routeMeta: {
-      title: '字段设置'
-    },      
-  },
-  {
-    path: '/',
-    routeComponent: Layout,
-    routeRedirect: '/index',
-    routeName: '首页',
+    component: () => import('@/components/layout/Layout'),
+    name: '首页',
     routeIcon: 'people',
     routeHidden: false,
     childrenList: [
       {
         path: 'index',
-        routeName: '简述',
+        component: () => import('@/base/index/index'),
+        name: '简述',
+        routeIcon: 'people',
+        routeHidden: false,
+        meta: {
+          title: '首页-简述'
+        },
+        childrenList: []
+      },
+      {
+        path: 'test',
+        component: () => import('@/components/test/test'),
+        name: 'test',
+        routeIcon: 'people',
+        routeHidden: true,
+        meta: {
+          title: '动态显示测试'
+        },
+        childrenList: []
+      }           
+    ]
+  },  
+]
+
+export const asyncRouter = [
+  {
+    routePath: '/employee',
+    routeComponent: '@/compnoents/layout/Layout',
+    // routeRedirect: '/employee/employeeManage/joinedEmployee',
+    name: '员工',
+    routeIcon: 'employee',
+    routeHidden: false,
+    routeMeta: JSON.stringify({
+      title: '员工',
+      routeHidden: false
+    }),
+    childrenList: [
+      {
+        routePath: '/employee/employeeManage',
+        routeComponent: '@/components/employee/employeeManage/employeeManage',
+        name: '员工管理',
+        routeHidden: false,
+        routeMeta: JSON.stringify({
+          title: '员工-员工管理',
+          routeHidden: false
+        }),
+        childrenList: [
+          {
+            routePath: '/joinedEmployee',
+            routeComponent: '@/components/employee/employeeManage/joinedEmployee/joinedEmployee',
+            name: '在职员工',
+            routeHidden: false,
+            routeMeta: JSON.stringify({
+              title: '员工管理-在职员工',
+              routeHidden: false
+            }),
+            childrenList: []
+          },
+        ]        
+      }
+    ]
+  }
+]
+export const constantRouterMap = [
+  {
+    path: '/login',
+    component: () => import('@/components/login/index'),
+    name: '登录',
+    routeHidden: true,
+    routeMeta: {
+      title: '登录'
+    },
+    childrenList:[]
+  },
+  {
+    path: '/forgetWord',
+    component: () => import('@/components/login/forgetWord/forgetWord'),
+    name: '忘记',
+    routeHidden: true,
+    routeMeta: {
+      title: '忘记密码-找回密码'
+    },
+    childrenList:[]
+  },    
+  {
+    path: '/register',
+    component: () => import('@/components/login/register/register'),
+    name: '注册',
+    routeHidden: true,
+    routeMeta: {
+      title: '注册'
+    },
+    childrenList:[]
+  },    
+  {
+    path: '/authredirect',
+    component: () => import('@/components/login/authredirect'),
+    name: '权限',
+    routeHidden: true,
+    routeMeta: {
+      title: '权限'
+    },
+    childrenList:[] 
+  },
+  {
+    path: '/setModule',
+    component: () => import('@/components/setModule/index'),
+    name: '配置',
+    routeHidden: true,
+    routeMeta: {
+      title: '配置系统'
+    },  
+    childrenList:[]
+  },  
+  {
+    path: '/page_fieldSet',
+    component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page_fieldSet'),
+    name: '字段设置',
+    routeHidden: true,
+    routeMeta: {
+      title: '字段设置'
+    },  
+    childrenList:[]    
+  },
+  {
+    path: '/',
+    component: () => import('@/components/layout/Layout'),
+    name: '首页',
+    routeIcon: 'people',
+    routeHidden: false,
+    childrenList: [
+      {
+        path: 'index',
+        name: '简述',
         routeHidden: true,
         routeMeta: {
           title: '首页-简述'
         },
-        routeComponent: () => import('@/base/index/index')
+        component: () => import('@/base/index/index'),
+        childrenList:[]
       },
       {
         path: 'test',
-        routeComponent: () => import('@/components/test/test'),
-        routeName: 'test',
+        component: () => import('@/components/test/test'),
+        name: 'test',
         routeHidden: true,
         routeMeta: {
           title: '动态显示测试'
-        }
+        },
+        childrenList:[]
       },   
       {
         path: 'testDic',
-        routeComponent: () => import('@/components/test/testDicTree'),
-        routeName: 'testDic',
+        component: () => import('@/components/test/testDicTree'),
+        name: 'testDic',
         routeHidden: true,
         routeMeta: {
           title: 'testDicTree'
-        }
+        },
+        childrenList:[]
       },       
       {
         path: 'dispose',
-        routeComponent: () => import('@/components/dispose/dispose'),
-        // routeComponent: Layout,
-        routeName: 'dispose',
-        routeHidden: true,
+        component: () => import('@/components/dispose/dispose'),
+        name: 'dispose',
+        routeHidden: false,
         routeMeta: {
           title: '配置系统'
-        }
+        },
+        childrenList:[]
       },   
       {
-        path: '/P1',
-        routeComponent: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P1'),
-        routeName: 'P1页面',
+        path: 'P1',
+        component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P1'),
+        name: 'P1页面',
         routeHidden: true, 
         routeMeta: {
           routeHidden: true,
           MetaCode: 'PreHire',
           title: 'P1页面'
-        }   
+        },
+        childrenList:[]   
       },            
       {
-        path: '/P2',
-        // routeComponent: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P5'),
-        routeComponent: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P2'),
-        routeName: '待入职',
+        path: 'P2',
+        // component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P5'),
+        component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P2'),
+        name: '待入职',
         routeHidden: true, 
         routeMeta: {
           routeHidden: true,
           MetaCode: 'PreHire',
           title: '待入职'
-        }   
+        },
+        childrenList:[] 
       },  
       {
-        path: '/P5',
-        routeComponent: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P5'),
-        routeName: '待入职',
+        path: 'P5',
+        component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P5'),
+        name: '待入职',
         routeHidden: true , 
         routeMeta: {
           routeHidden: true,
           MetaCode: 'PreHire',
           title: '待入职'
-        }   
+        },
+        childrenList:[]   
       },
       {
-        path: '/P6',
-        routeComponent: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P6'),
-        routeName: '重新入职',
+        path: 'P6',
+        component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P6'),
+        name: '重新入职',
         routeHidden: true,
         routeMeta: {
           routeHidden: true,
           MetaCode: 'Rehire',
           title: '重新入职'   
-        }       
+        },
+        childrenList:[]      
       },
       {
-        path: '/P7',
-        routeComponent: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P7'),
-        routeName: '直接入职',
+        path: 'P7',
+        component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P7'),
+        name: '直接入职',
         routeHidden: true,
         routeMeta: {
           routeHidden: true,
           MetaCode: 'Directlyonboard',
           title: '直接入职'
-        }        
+        },
+        childrenList:[]       
       },
       {
-        path: '/P8',
-        routeComponent: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P8'),
-        routeName: '新增人事档案机构',
+        path: 'P8',
+        component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P8'),
+        name: '新增人事档案机构',
         routeHidden: true,
         routeMeta: {
           routeHidden: true,
           MetaCode: 'AddPFileLocat2',
           title: '新增人事档案机构'
-        }       
+        },
+        childrenList:[]     
       },
       {
-        path: '/P9',
-        routeComponent: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P9'),
-        routeName: '编辑人事档案机构',
+        path: 'P9',
+        component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P9'),
+        name: '编辑人事档案机构',
         routeHidden: true,
         routeMeta: {
           routeHidden: true,
           MetaCode: 'EditPFileLocat2',
           title: '编辑人事档案机构'
-        }        
+        },
+        childrenList:[]       
       },    
       {
-        path: '/P10',
-        routeComponent: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P10'),
-        routeName: '调入',
+        path: 'P10',
+        component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P10'),
+        name: '调入',
         routeHidden: true,
         routeMeta: {
           routeHidden: true,
           MetaCode: 'transferin',
           title: '调入'       
-        }
+        },
+        childrenList:[]
       },             
     ]
   },
   // {
-  //   path: '/test',
+  //   path: 'test',
   //   routeComponent: () => import('@/components/employee/eventHandler/event/test'),
-  //   routeName: 'test',
+  //   name: 'test',
   //   routeHidden: false,
   //   routeMeta: {
   //     title: '事件处理器-事件',
   //     routeHidden: false
-  //   }
+  //   },
+  // childrenList:[]
   // },    
   {
     path: '/flow/print',
-    routeComponent: () => import('@/components/platform/approval-flow/right-fixed/print'),
-    routeName: '流程',
+    component: () => import('@/components/platform/approval-flow/right-fixed/print'),
+    name: '流程',
     routeHidden: true,
     routeMeta: {
       title: '流程打印'
-    }
+    },
+    childrenList:[]
   }
 ]
 
 export default new Router({
   // mode: 'history', //后端支持可开
   scrollBehavior: () => ({ y: 0 }),
-  routes: consRouterMap
+  routes: [...consRouterMap]
 })
 
 export const asyncRouterMap = [
   {
     path: '/employee',
-    routeComponent: Layout,
-    routeRedirect: '/employee/employeeManage/joinedEmployee',
+    routeComponent: '@/components/layout/Layout',
+    routeRedirect: '@/employee/employeeManage/joinedEmployee',
     routeName: '员工',
     routeIcon: 'employee',
     routeHidden: false,
@@ -299,13 +364,13 @@ export const asyncRouterMap = [
     childrenList: [
       {
         path: '/employee/employeeManage',
-        routeComponent: () => import('@/components/employee/employeeManage/employeeManage'),
+        routeComponent: '@/components/employee/employeeManage/employeeManage',
         routeName: '员工管理',
         routeHidden: false,
-        routeMeta: {
+        routeMeta: JSON.stringify({
           title: '员工-员工管理',
           routeHidden: false
-        },
+        }),
         childrenList: [
           {
             path: 'joinedEmployee',
@@ -318,7 +383,7 @@ export const asyncRouterMap = [
             }
           },
           {
-            path: 'waitEmployee',
+            path: '/waitEmployee',
             routeComponent: () => import('@/components/employee/employeeManage/waitEmployee/waitEmployee'),
             routeName: '待入职员工',
             routeHidden: false,
@@ -328,7 +393,7 @@ export const asyncRouterMap = [
             }        
           },
           {
-            path: 'leavedEmployee',
+            path: '/leavedEmployee',
             routeComponent: () => import('@/components/employee/employeeManage/leavedEmployee/leavedEmployee'),
             routeName: '离职员工',
             routeHidden: false,
@@ -338,7 +403,7 @@ export const asyncRouterMap = [
             }        
           },
           {
-            path: 'empDetailInfo',
+            path: '/empDetailInfo',
             routeComponent: () => import('@/components/employee/employeeManage/empDetailInfo'),
             routeName: '员工详情',
             routeHidden: true,

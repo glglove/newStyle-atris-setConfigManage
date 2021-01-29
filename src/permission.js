@@ -34,7 +34,7 @@ router.beforeEach(async(to, from, next) => {
         // 用户信息没有拉取完 重新获取用户信息
         store.dispatch('GetUserInfo').then(async (res) => { // 拉取user_info
           // console.log("---store.getters.addRouters----", store.getters.addRouters)
-          debugger
+          // debugger
           // const roles = res.data.Data.TokenId
           // await store.dispatch('GenerateRoutes')
           // .then(async () => {
