@@ -43,14 +43,14 @@ export const consRouterMap = [
   },    
   {
     path: '/',
-    component: () => import('@/components/layout/Layout'),
+    component: Layout,
     name: '首页',
     routeIcon: 'people',
     routeHidden: false,
     childrenList: [
       {
         path: 'index',
-        component: () => import('@/base/index/index'),
+        component: (resolve) => (require(['@/base/index/index'], resolve)),
         name: '简述',
         routeIcon: 'people',
         routeHidden: false,
@@ -61,7 +61,7 @@ export const consRouterMap = [
       },
       {
         path: 'test',
-        component: () => import('@/components/test/test'),
+        component: (resolve) => (require(['@/components/test/test'], resolve)),
         name: 'test',
         routeIcon: 'people',
         routeHidden: true,
@@ -77,7 +77,7 @@ export const consRouterMap = [
 export const asyncRouter = [
   {
     routePath: '/employee',
-    routeComponent: '@/compnoents/layout/Layout',
+    // routeComponent: 'components/layout/Layout',
     // routeRedirect: '/employee/employeeManage/joinedEmployee',
     name: '员工',
     routeIcon: 'employee',
@@ -89,7 +89,7 @@ export const asyncRouter = [
     childrenList: [
       {
         routePath: '/employee/employeeManage',
-        routeComponent: '@/components/employee/employeeManage/employeeManage',
+        routeComponent: 'components/employee/employeeManage/employeeManage',
         name: '员工管理',
         routeHidden: false,
         routeMeta: JSON.stringify({
@@ -98,8 +98,8 @@ export const asyncRouter = [
         }),
         childrenList: [
           {
-            routePath: '/joinedEmployee',
-            routeComponent: '@/components/employee/employeeManage/joinedEmployee/joinedEmployee',
+            routePath: 'joinedEmployee',
+            routeComponent: 'components/employee/employeeManage/joinedEmployee/joinedEmployee',
             name: '在职员工',
             routeHidden: false,
             routeMeta: JSON.stringify({
@@ -111,7 +111,18 @@ export const asyncRouter = [
         ]        
       }
     ]
-  }
+  },
+  {
+    routePath: '*',
+    // routeRedirect: '/404',
+    routeComponent: 'base/errorPage/404',
+    routeName: '404',
+    routeHidden: true,
+    routeMeta: JSON.stringify({
+      routeHidden: true,
+      title: '出错啦'
+    })
+  }  
 ]
 export const constantRouterMap = [
   {
@@ -346,7 +357,7 @@ export const constantRouterMap = [
 export default new Router({
   // mode: 'history', //后端支持可开
   scrollBehavior: () => ({ y: 0 }),
-  routes: [...consRouterMap]
+  routes: consRouterMap
 })
 
 export const asyncRouterMap = [

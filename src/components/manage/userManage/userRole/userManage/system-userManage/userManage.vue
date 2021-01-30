@@ -273,7 +273,7 @@
               <el-input  style="width:300px"></el-input>
             </el-form-item>
             <el-form-item label="QQ号" prop="QQ">
-              <el-input v-model="currentRowObj.QQ"style="width:300px"></el-input>
+              <el-input v-model="currentRowObj.QQ" style="width:300px"></el-input>
             </el-form-item>
             <el-form-item label="手机" prop="">
               <el-input style="width:300px"></el-input>
@@ -294,7 +294,6 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import { ManageAccountMixin } from '@/utils/Manage-mixins'
   import SaveFooter from '@/base/Save-footer/Save-footer'
   import { REQ_OK  } from '@/api/config'
   import {
@@ -307,7 +306,6 @@
     resetSysAccountPwd
   } from '@/api/systemManage'
   export default {
-    mixins: [ManageAccountMixin],
     components: {
       SaveFooter
     },

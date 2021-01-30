@@ -7,16 +7,17 @@
 <template>
   <div class='tabs-view-container'>
     <router-link class="tabs-view"
+                v-if="!tag.isHide"
                  v-for="tag in Array.from(visitedViews)"
                  :to="tag.path"
-                 :key="tag.path"
-                 v-if="!tag.isHide">
+                 :key="tag.path">
       <el-tag :closable="true" :type="isActive(tag.path) ? '' : 'info'" @close='closeViewTabs(tag,$event)'>
         {{tag.name}}
       </el-tag>
     </router-link>
   </div>
 </template>
+
 
 <script>
 export default {
@@ -43,7 +44,7 @@ export default {
       $event.preventDefault()
     },
     generateRoute () {
-      // debugger
+      debugger
       if (this.$route.name) {
         return this.$route
       }

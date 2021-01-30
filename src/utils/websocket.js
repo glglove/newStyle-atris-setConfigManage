@@ -11,10 +11,8 @@ export const socketObj = {
         }else{
             debugger
             // 实例化socket
-            // alert(store.getters.token)
-            // alert(this.configs.path)
             if(!this.socket){
-                this.socket = new WebSocket(this.configs.path + `${store.getters.token}`)
+                this.socket = new WebSocket(this.configs.path + getToken())
                 // 监听socket连接
                 this.socket.onopen = this.open
                 // 监听socket错误信息
