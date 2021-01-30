@@ -109,7 +109,6 @@ const user = {
               publicKey: data.publicKey,
               privateKey: data.privateKey,
             })
-  
             // 将用户的 身份(企业用户还是 系统用户)存入到 vuex 中
             let type = 1  
             commit(types.SET_COMPANYORSYSTEM, type)
@@ -120,9 +119,9 @@ const user = {
           resolve(response.data.State)   
         }).catch(error => {
           debugger
-          dispatch("GenerateRoutes", {}, { root: true }).then(res => {
-            router.push({path: '/'})
-          })
+          // dispatch("GenerateRoutes", {}, { root: true }).then(res => {
+          //   router.push({path: '/'})
+          // })
           reject(error)
         })
       })

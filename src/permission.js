@@ -33,16 +33,6 @@ router.beforeEach(async(to, from, next) => {
       if (!store.getters.name) { // 判断当前用户是否已拉取完user_info信息
         // 用户信息没有拉取完 重新获取用户信息
         store.dispatch('GetUserInfo').then(async (res) => { // 拉取user_info
-          // console.log("---store.getters.addRouters----", store.getters.addRouters)
-          // debugger
-          // const roles = res.data.Data.TokenId
-          // await store.dispatch('GenerateRoutes')
-          // .then(async () => {
-          //   // 生成可访问的路由表
-          //   await router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
-          //   next({...to, replace: true}) // hack方法 确保addRoutes已完成
-          // })
-          // next({...to})
             // 生成可访问的路由表
             await router.addRoutes(store.getters.permissionRouters) // 动态添加可访问路由表          
             next({...to, replace: true}) // hack方法 确保addRoutes已完成

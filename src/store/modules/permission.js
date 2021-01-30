@@ -62,7 +62,6 @@ function changeRoutesData (routesArr, newRoutesArr = []) {
     let itemRoute =  {
       path: item.routePath || item.path,
       // component: (resolve) => require(`[@/${item.routeComponent}.vue]`, resolve),  // 后端返回的路径字符串时 import动态加载 不出来
-      // component: 
       // component: loadView(item.routeComponent),  // 后端返回的路径字符串时 import动态加载 不出来
       name: item.routeName || item.name,
       routeIcon: item.routeIcon,
@@ -149,12 +148,11 @@ const permission = {
         // }
         // debugger
         commit(types.SET_ROUTERS, accessedRouters)
-        commit(types.SET_ADD_ROUTERS, changeRoutesData(asyncRouter, []))
+        commit(types.SET_ADD_ROUTERS, filterAsyncRouter(asyncRouter))
         // 将添加的路由 写入到路由表
         // router.addRoutes(accessedRouters) // 动态添加可访问路由表
         // 路由 options 并不会随着 addRoutes 动态响应，所以要在这里进行设置
         // router.options.routes = consRouterMap.concat(changeRoutesData(asyncRouter, []))        
-        
         resolve(accessedRouters)
       })
     }
