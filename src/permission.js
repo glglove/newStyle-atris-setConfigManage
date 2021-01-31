@@ -40,7 +40,7 @@ router.beforeEach(async(to, from, next) => {
           // .then(async () => {
           store.dispatch('GenerateRoutes')
           //   // 生成可访问的路由表
-            await router.addRoutes(store.getters.addRoutes) // 动态添加可访问路由表
+          await router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
           next({...to, replace: true}) // hack方法 确保addRoutes已完成
         }).catch(() => {
           debugger

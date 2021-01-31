@@ -56,11 +56,15 @@ import router from '@/router'
 //   }
 //   return arrMap
 // }
+
 function changeRoutesData (routesArr, newRoutesArr = []) {
   routesArr.map((item,key) => {
     let itemRoute =  {
-      path: item.routePath,
-      component: (resolve) => require(['@/'+ item.routeComponent + '.vue'], resolve),
+      path: item.routePath || item.path,
+      component: (resolve) => require([`@/${item.routeComponent}.vue`], resolve),  // 后端返回的路径字符串时 import动态加载 不出来
+      // 此处用reqiure比较好，import引入变量会有各种莫名的错误
+      // component = (() => import(`@/${item.routeComponent}.vue`));
+      // component: loadView(item.routeComponent),  // 后端返回的路径字符串时 import动态加载 不出来
       name: item.routeName || item.name,
       routeIcon: item.routeIcon,
       routeHidden: item.routeHidden,
@@ -75,6 +79,39 @@ function changeRoutesData (routesArr, newRoutesArr = []) {
   })
   return newRoutesArr
 }
+
+function loadView(view) {
+  // return (resolve) => require([`@/${view}.vue`], resolve)
+  // 此处用reqiure比较好，import引入变量会有各种莫名的错误
+  return () => import(`@/${item.routeComponent}.vue`);  
+}
+
+function filterAsyncRouter (routesArr) {
+  let res = routesArr.filter((item, key) => {
+    const path = item.routePath || item.path
+    path && (item.path = path)
+    const name = item.routeName || item.name
+    name && (item.name = name)
+    const meta = item.routeMeta
+    meta && (item.meta = JSON.parse(meta))
+    item.routeRedirect && (item.redirect = item.routeRedirect) 
+
+    if(item.routeComponent){
+        if (item.routeComponent === 'Layout') { // Layout组件特殊处理
+          item.component = Layout
+        } else {
+          const component = item.routeComponent
+          item.component = loadView(component)
+        }
+      }
+      if (item.childrenList && item.childrenList.length) {
+        item.childrenList = filterAsyncRouter(item.childrenList)
+      } 
+      return true     
+    })
+  return res
+}
+
 
 const permission = {
   state: {
@@ -92,34 +129,19 @@ const permission = {
   actions: {
     GenerateRoutes ({ commit, state, rootState }) {
       return new Promise(async (resolve, reject) => {
-        // const { roles } = data
-        // console.log('datta', data)
         debugger
         // 获取的用户可访问路由与 配置的 asyncRouterMap 路由做递归匹配 得到用户真实的可访问的路由地址
         // let accessedRouters = filterAsyncRouter(asyncRouterMap, rootState.user.userAccessRouters)
 
-        // let accessedRouters = constantRouterMap.concat(asyncRouterMap)
-        // let accessedRouters = constantRouterMap.concat(rootState.user.userAccessRouters)
-        // let accessedRouters = changeRoutesData(consRouterMap, resArr)
-        // let accessedRouters = consRouterMap.concat(changeRoutesData(asyncRouter, []))
-        let accessedRouters = constantRouterMap.concat([])
+        let accessedRouters = consRouterMap.concat([])
 
-        // debugger
-        // let accessedRouters = constantRouterMap.concat(asyncRouterMap)
-
-        // if (data) {
-        //   accessedRouters = asyncRouterMap
-        // } else {
-        //   accessedRouters = filterAsyncRouter(asyncRouterMap, roles)
-        // }
-        // debugger
         commit(types.SET_ROUTERS, accessedRouters)
-        commit(types.SET_ADD_ROUTERS, changeRoutesData(asyncRouter, []))
+        commit(types.SET_ADD_ROUTERS, filterAsyncRouter(asyncRouter))
 
         // 路由 options 并不会随着 addRoutes 动态响应，所以要在这里进行设置
-        // router.options.routes = consRouterMap.concat(changeRoutesData(asyncRouter, []))        
+        router.options.routes = consRouterMap.concat(filterAsyncRouter(asyncRouter))        
         // 将添加的路由 写入到路由表
-        await router.addRoutes(changeRoutesData(asyncRouter, [])) // 动态添加可访问路由表
+        await router.addRoutes(filterAsyncRouter(asyncRouter)) // 动态添加可访问路由表
         resolve()
       })
     }

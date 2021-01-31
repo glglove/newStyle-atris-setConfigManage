@@ -273,7 +273,7 @@
               <el-input  style="width:300px"></el-input>
             </el-form-item>
             <el-form-item label="QQ号" prop="QQ">
-              <el-input v-model="currentRowObj.QQ"style="width:300px"></el-input>
+              <el-input v-model="currentRowObj.QQ" style="width:300px"></el-input>
             </el-form-item>
             <el-form-item label="手机" prop="">
               <el-input style="width:300px"></el-input>

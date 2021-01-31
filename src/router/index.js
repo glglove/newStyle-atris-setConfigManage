@@ -50,7 +50,7 @@ export const consRouterMap = [
     childrenList: [
       {
         path: 'index',
-        component: () => import('@/base/index/index'),
+        component: (resolve) => (require(['@/base/index/index.vue'], resolve)),
         name: '简述',
         routeIcon: 'people',
         routeHidden: false,
@@ -61,7 +61,7 @@ export const consRouterMap = [
       },
       {
         path: 'test',
-        component: () => import('@/components/test/test'),
+        component: (resolve) => (require(['@/components/test/test.vue'], resolve)),
         name: 'test',
         routeIcon: 'people',
         routeHidden: true,
@@ -77,7 +77,7 @@ export const consRouterMap = [
 export const asyncRouter = [
   {
     routePath: '/employee',
-    routeComponent: Layout,
+    routeComponent: 'components/layout/Layout',
     // routeRedirect: '/employee/employeeManage/joinedEmployee',
     name: '员工',
     routeIcon: 'employee',
@@ -111,7 +111,18 @@ export const asyncRouter = [
         ]        
       }
     ]
-  }
+  },
+  // {
+  //   routePath: '*',
+  //   // routeRedirect: '/404',
+  //   routeComponent: 'base/errorPage/404',
+  //   routeName: '404',
+  //   routeHidden: true,
+  //   routeMeta: JSON.stringify({
+  //     routeHidden: true,
+  //     title: '出错啦'
+  //   })
+  // }  
 ]
 export const constantRouterMap = [
   {
@@ -346,7 +357,7 @@ export const constantRouterMap = [
 export default new Router({
   // mode: 'history', //后端支持可开
   scrollBehavior: () => ({ y: 0 }),
-  routes: constantRouterMap
+  routes: consRouterMap
 })
 
 export const asyncRouterMap = [

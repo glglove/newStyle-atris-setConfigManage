@@ -109,7 +109,6 @@ const user = {
               publicKey: data.publicKey,
               privateKey: data.privateKey,
             })
-  
             // 将用户的 身份(企业用户还是 系统用户)存入到 vuex 中
             let type = 1  
             commit(types.SET_COMPANYORSYSTEM, type)
@@ -120,9 +119,9 @@ const user = {
           resolve(response.data.State)   
         }).catch(error => {
           debugger
-          dispatch("GenerateRoutes", {}, { root: true }).then(res => {
-            router.push({path: '/'})
-          })
+          // dispatch("GenerateRoutes", {}, { root: true }).then(res => {
+          //   router.push({path: '/'})
+          // })
           reject(error)
         })
       })
@@ -170,8 +169,12 @@ const user = {
           commit(types.SET_AVATAR, data.companycode)          
 
           // 将动态路由添加进入路由表中  user 模块中调用permission模块的action
-          await dispatch("GenerateRoutes", {}, { root: true })          
-          resolve(response)
+          await dispatch("GenerateRoutes", {}, { root: true }).then(accessedRouters => {
+            router.addRoutes(accessedRouters) // 动态添加可访问路由表
+            return true
+          }).then(res => {
+            resolve(response)
+          })         
         }).catch(error => {
           debugger
           reject(error)
