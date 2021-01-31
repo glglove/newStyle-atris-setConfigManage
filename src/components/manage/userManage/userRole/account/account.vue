@@ -225,7 +225,6 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import { ManageAccountMixin } from '@/utils/Manage-mixins'
   // import SaveFooter from '@/base/Save-footer/Save-footer'
   import UserInfoCmp from './UserInfo-cmp'
   import {  REQ_OK } from '@/api/config'
@@ -236,7 +235,6 @@
     resetSysAccountPwd
   } from '@/api/systemManage'
   export default {
-    mixins: [ManageAccountMixin],
     components: {
       // SaveFooter,
       UserInfoCmp

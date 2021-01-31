@@ -43,7 +43,7 @@ export const consRouterMap = [
   },    
   {
     path: '/',
-    component: () => import('@/components/layout/Layout'),
+    component: Layout,
     name: '首页',
     routeIcon: 'people',
     routeHidden: false,
@@ -77,7 +77,7 @@ export const consRouterMap = [
 export const asyncRouter = [
   {
     routePath: '/employee',
-    routeComponent: '@/compnoents/layout/Layout',
+    routeComponent: Layout,
     // routeRedirect: '/employee/employeeManage/joinedEmployee',
     name: '员工',
     routeIcon: 'employee',
@@ -89,7 +89,7 @@ export const asyncRouter = [
     childrenList: [
       {
         routePath: '/employee/employeeManage',
-        routeComponent: '@/components/employee/employeeManage/employeeManage',
+        routeComponent: 'components/employee/employeeManage/employeeManage',
         name: '员工管理',
         routeHidden: false,
         routeMeta: JSON.stringify({
@@ -98,8 +98,8 @@ export const asyncRouter = [
         }),
         childrenList: [
           {
-            routePath: '/joinedEmployee',
-            routeComponent: '@/components/employee/employeeManage/joinedEmployee/joinedEmployee',
+            routePath: 'joinedEmployee',
+            routeComponent: 'components/employee/employeeManage/joinedEmployee/joinedEmployee',
             name: '在职员工',
             routeHidden: false,
             routeMeta: JSON.stringify({
@@ -346,7 +346,7 @@ export const constantRouterMap = [
 export default new Router({
   // mode: 'history', //后端支持可开
   scrollBehavior: () => ({ y: 0 }),
-  routes: [...consRouterMap]
+  routes: constantRouterMap
 })
 
 export const asyncRouterMap = [
