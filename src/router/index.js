@@ -10,7 +10,7 @@ Vue.use(Router)
 * routeRedirect : 重定向
 * noDropdown : 如果 `noDropdown:true` 将没有子菜单
 **/
-export const consRouterMap = [
+export let consRouterMap = [
   {
     path: '/login',
     component: () => import('@/components/login/index'),
@@ -43,14 +43,15 @@ export const consRouterMap = [
   },    
   {
     path: '/',
-    component: Layout,
+    component: () => import('@/components/layout/Layout'),
     name: '首页',
     routeIcon: 'people',
     routeHidden: false,
     childrenList: [
       {
         path: 'index',
-        component: (resolve) => (require(['@/base/index/index.vue'], resolve)),
+        // component: (resolve) => (require(['@/base/index/index.vue'], resolve)),
+        component: () => import('@/base/index/index.vue'),
         name: '简述',
         routeIcon: 'people',
         routeHidden: false,
@@ -61,7 +62,8 @@ export const consRouterMap = [
       },
       {
         path: 'test',
-        component: (resolve) => (require(['@/components/test/test.vue'], resolve)),
+        // component: (resolve) => (require(['@/components/test/test.vue'], resolve)),
+        component: () => import('@/components/test/test.vue'),
         name: 'test',
         routeIcon: 'people',
         routeHidden: true,
@@ -74,10 +76,10 @@ export const consRouterMap = [
   },  
 ]
 
-export const asyncRouter = [
+export let asyncRouter = [
   {
     routePath: '/employee',
-    routeComponent: 'components/layout/Layout',
+    routeComponent: 'Layout',
     // routeRedirect: '/employee/employeeManage/joinedEmployee',
     name: '员工',
     routeIcon: 'employee',
@@ -124,7 +126,7 @@ export const asyncRouter = [
   //   })
   // }  
 ]
-export const constantRouterMap = [
+export let constantRouterMap = [
   {
     path: '/login',
     component: () => import('@/components/login/index'),
@@ -360,7 +362,7 @@ export default new Router({
   routes: consRouterMap
 })
 
-export const asyncRouterMap = [
+export let asyncRouterMap = [
   {
     path: '/employee',
     routeComponent: '@/components/layout/Layout',

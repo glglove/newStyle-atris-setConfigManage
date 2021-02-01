@@ -2,6 +2,7 @@ import * as types from '../mutation-types'
 import { asyncRouterMap, constantRouterMap, consRouterMap, asyncRouter } from '@/router/index'
 import { getRoutesInfo } from '@/api/permission'
 import router from '@/router'
+import Layout from '@/components/layout/Layout'
 /**
  * 通过meta.role判断是否与当前用户权限匹配
  * @param roles
@@ -56,15 +57,21 @@ import router from '@/router'
 //   }
 //   return arrMap
 // }
+function loadView(view) {
+  console.log("---", view)
+  return (resolve) => require([`@/${view}.vue`], resolve)
+  // 此处用reqiure比较好，import引入变量会有各种莫名的错误
+  // return (view) => import(`@/${view}.vue`);  
+}
 
 function changeRoutesData (routesArr, newRoutesArr = []) {
   routesArr.map((item,key) => {
     let itemRoute =  {
       path: item.routePath || item.path,
-      component: (resolve) => require([`@/${item.routeComponent}.vue`], resolve),  // 后端返回的路径字符串时 import动态加载 不出来
+      // component: (resolve) => require([`@/${item.routeComponent}.vue`], resolve),  // 后端返回的路径字符串时 import动态加载 不出来
       // 此处用reqiure比较好，import引入变量会有各种莫名的错误
       // component = (() => import(`@/${item.routeComponent}.vue`));
-      // component: loadView(item.routeComponent),  // 后端返回的路径字符串时 import动态加载 不出来
+      component: item.routeComponent === 'Layout'? Layout : loadView(item.routeComponent),  // 后端返回的路径字符串时 import动态加载 不出来
       name: item.routeName || item.name,
       routeIcon: item.routeIcon,
       routeHidden: item.routeHidden,
@@ -80,11 +87,7 @@ function changeRoutesData (routesArr, newRoutesArr = []) {
   return newRoutesArr
 }
 
-function loadView(view) {
-  // return (resolve) => require([`@/${view}.vue`], resolve)
-  // 此处用reqiure比较好，import引入变量会有各种莫名的错误
-  return () => import(`@/${item.routeComponent}.vue`);  
-}
+
 
 function filterAsyncRouter (routesArr) {
   let res = routesArr.filter((item, key) => {
@@ -97,18 +100,18 @@ function filterAsyncRouter (routesArr) {
     item.routeRedirect && (item.redirect = item.routeRedirect) 
 
     if(item.routeComponent){
-        if (item.routeComponent === 'Layout') { // Layout组件特殊处理
-          item.component = Layout
-        } else {
-          const component = item.routeComponent
-          item.component = loadView(component)
-        }
+      if (item.routeComponent == 'Layout') { // Layout组件特殊处理
+        item.component = Layout
+      } else {
+        const component = item.routeComponent
+        item.component = loadView(component)
       }
-      if (item.childrenList && item.childrenList.length) {
-        item.childrenList = filterAsyncRouter(item.childrenList)
-      } 
-      return true     
-    })
+    }
+    if (item.childrenList && item.childrenList.length) {
+      item.childrenList = filterAsyncRouter(item.childrenList)
+    } 
+    return true
+  })
   return res
 }
 
@@ -133,16 +136,17 @@ const permission = {
         // 获取的用户可访问路由与 配置的 asyncRouterMap 路由做递归匹配 得到用户真实的可访问的路由地址
         // let accessedRouters = filterAsyncRouter(asyncRouterMap, rootState.user.userAccessRouters)
 
-        let accessedRouters = consRouterMap.concat([])
+        let accessedRouters = consRouterMap.concat(filterAsyncRouter(asyncRouter))
+        // let accessedRouters = consRouterMap.concat([])
 
         commit(types.SET_ROUTERS, accessedRouters)
-        commit(types.SET_ADD_ROUTERS, filterAsyncRouter(asyncRouter))
+        commit(types.SET_ADD_ROUTERS, accessedRouters)
 
         // 路由 options 并不会随着 addRoutes 动态响应，所以要在这里进行设置
-        router.options.routes = consRouterMap.concat(filterAsyncRouter(asyncRouter))        
+        // router.options.routes = consRouterMap.concat(changeRoutesData(asyncRouter))        
         // 将添加的路由 写入到路由表
-        await router.addRoutes(filterAsyncRouter(asyncRouter)) // 动态添加可访问路由表
-        resolve()
+        // await router.addRoutes(accessedRouters) // 动态添加可访问路由表
+        resolve(accessedRouters)
       })
     }
   }

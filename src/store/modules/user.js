@@ -168,13 +168,14 @@ const user = {
           commit(types.SET_COMPANY_CODE, data.companycode)
           commit(types.SET_AVATAR, data.companycode)          
 
-          // 将动态路由添加进入路由表中  user 模块中调用permission模块的action
-          await dispatch("GenerateRoutes", {}, { root: true }).then(accessedRouters => {
-            router.addRoutes(accessedRouters) // 动态添加可访问路由表
-            return true
-          }).then(res => {
-            resolve(response)
-          })         
+          // // 将动态路由添加进入路由表中  user 模块中调用permission模块的action
+          // await dispatch("GenerateRoutes", {}, { root: true }).then(accessedRouters => {
+          //   // router.addRoutes(accessedRouters) // 动态添加可访问路由表
+          //   return true
+          // }).then(res => {
+          //   resolve(response)
+          // })         
+          return true
         }).catch(error => {
           debugger
           reject(error)

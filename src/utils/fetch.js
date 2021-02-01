@@ -3,7 +3,7 @@ import Vue from 'vue'
 import axios from 'axios'
 import { getToken } from '@/utils/auth'
 import { Message } from 'element-ui'
-import qs from 'qs'
+// import qs from 'qs'
 import store from '../store'
 // import MD5 from 'js-md5'
 import { 
