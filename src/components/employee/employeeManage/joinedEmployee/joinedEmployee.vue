@@ -9,6 +9,7 @@
 
 <template>
   <div class="joinedEmployee animated fadeIn">
+    讽德诵功
     <employee-cmp v-atris-authrity-page1-com1-btn1></employee-cmp>
   </div>  
 </template>

@@ -14,101 +14,271 @@ export let consRouterMap = [
   {
     path: '/login',
     component: () => import('@/components/login/index'),
-    name: '登录',
-    routeHidden: true,
+    name: '登陆',
+    noDropdown: true,
+    hidden: true,
     meta: {
       title: '登录'
-    },
-    childrenList: []
-  }, 
+    }
+  },
   {
     path: '/forgetWord',
     component: () => import('@/components/login/forgetWord/forgetWord'),
-    name: '忘记',
-    routeHidden: true,
+    name: '忘记密码',
+    noDropdown: true,
+    hidden: true,
     meta: {
       title: '忘记密码-找回密码'
-    },
-    childrenList: []
-  },    
+    }
+  },  
   {
     path: '/register',
     component: () => import('@/components/login/register/register'),
     name: '注册',
-    routeHidden: true,
+    noDropdown: true,
+    hidden: true,
     meta: {
       title: '注册'
-    },
-    childrenList: []
+    }
   },    
+  {
+    path: '/authredirect',
+    component: () => import('@/components/login/authredirect'),
+    name: '权限跳转',
+    noDropdown: true,
+    hidden: true    
+  },
+  {
+    path: '/setModule',
+    component: () => import('@/components/setModule/index'),
+    name: '配置系统',
+    noDropdown: true,
+    hidden: true,
+    meta: {
+      title: '配置系统'
+    },    
+  },  
+  {
+    path: '/page_fieldSet',
+    component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page_fieldSet'),
+    name: '字段设置页面',
+    noDropdown: true,
+    hidden: true,
+    meta: {
+      title: '字段设置'
+    },      
+  },
   {
     path: '/',
     component: () => import('@/components/layout/Layout'),
+    redirect: '/index',
     name: '首页',
-    routeIcon: 'people',
-    routeHidden: false,
-    childrenList: [
+    icon: 'people',
+    noDropdown: true,
+    hidden: false,
+    children: [
       {
         path: 'index',
-        // component: (resolve) => (require(['@/base/index/index.vue'], resolve)),
-        component: () => import('@/base/index/index.vue'),
         name: '简述',
-        routeIcon: 'people',
-        routeHidden: false,
+        noDropdown: true,
+        hidden: false,
         meta: {
           title: '首页-简述'
         },
-        childrenList: []
+        component: () => import('@/base/index/index')
       },
       {
         path: 'test',
-        // component: (resolve) => (require(['@/components/test/test.vue'], resolve)),
-        component: () => import('@/components/test/test.vue'),
+        component: () => import('@/components/test/test'),
         name: 'test',
-        routeIcon: 'people',
-        routeHidden: true,
+        noDropdown: true,
+        hidden: false,
         meta: {
           title: '动态显示测试'
-        },
-        childrenList: []
-      }           
+        }
+      },   
+      {
+        path: 'testDic',
+        component: () => import('@/components/test/testDicTree'),
+        name: 'testDic',
+        noDropdown: true,
+        hidden: true,
+        meta: {
+          title: 'testDicTree'
+        }
+      },       
+      {
+        path: 'dispose',
+        component: () => import('@/components/dispose/dispose'),
+        // component: Layout,
+        name: 'dispose',
+        noDropdown: true,
+        hidden: true,
+        meta: {
+          title: '配置系统'
+        }
+      },   
+      {
+        path: '/P1',
+        component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P1'),
+        name: 'P1页面',
+        noDropdown: true,
+        hidden: true, 
+        meta: {
+          hidden: true,
+          MetaCode: 'PreHire',
+          title: 'P1页面'
+        }   
+      },            
+      {
+        path: '/P2',
+        // component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P5'),
+        component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P2'),
+        name: '待入职',
+        noDropdown: true,
+        hidden: true, 
+        meta: {
+          hidden: true,
+          MetaCode: 'PreHire',
+          title: '待入职'
+        }   
+      },  
+      {
+        path: '/P5',
+        component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P5'),
+        name: '待入职',
+        noDropdown: true,
+        hidden: true , 
+        meta: {
+          hidden: true,
+          MetaCode: 'PreHire',
+          title: '待入职'
+        }   
+      },
+      {
+        path: '/P6',
+        component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P6'),
+        name: '重新入职',
+        noDropdown: true,
+        hidden: true,
+        meta: {
+          hidden: true,
+          MetaCode: 'Rehire',
+          title: '重新入职'   
+        }       
+      },
+      {
+        path: '/P7',
+        component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P7'),
+        name: '直接入职',
+        noDropdown: true,
+        hidden: true,
+        meta: {
+          hidden: true,
+          MetaCode: 'Directlyonboard',
+          title: '直接入职'
+        }        
+      },
+      {
+        path: '/P8',
+        component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P8'),
+        name: '新增人事档案机构',
+        noDropdown: true,
+        hidden: true,
+        meta: {
+          hidden: true,
+          MetaCode: 'AddPFileLocat2',
+          title: '新增人事档案机构'
+        }       
+      },
+      {
+        path: '/P9',
+        component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P9'),
+        name: '编辑人事档案机构',
+        noDropdown: true,
+        hidden: true,
+        meta: {
+          hidden: true,
+          MetaCode: 'EditPFileLocat2',
+          title: '编辑人事档案机构'
+        }        
+      },    
+      {
+        path: '/P10',
+        component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P10'),
+        name: '调入',
+        noDropdown: true,
+        hidden: true,
+        meta: {
+          hidden: true,
+          MetaCode: 'transferin',
+          title: '调入'       
+        }
+      },             
     ]
-  },  
+  },
+  // {
+  //   path: '/test',
+  //   component: () => import('@/components/employee/eventHandler/event/test'),
+  //   name: 'test',
+  //   noDropdown: true,
+  //   hidden: false,
+  //   meta: {
+  //     title: '事件处理器-事件',
+  //     hidden: false
+  //   }
+  // },    
+  {
+    path: '/flow/print',
+    component: () => import('@/components/platform/approval-flow/right-fixed/print'),
+    name: '流程打印',
+    noDropdown: true,
+    hidden: true,
+    meta: {
+      title: '流程打印'
+    }
+  }
 ]
 
 export let asyncRouter = [
   {
     routePath: '/employee',
-    routeComponent: 'Layout',
+    routeComponent: 'components/layout/Layout',
     // routeRedirect: '/employee/employeeManage/joinedEmployee',
     name: '员工',
     routeIcon: 'employee',
     routeHidden: false,
+    noDropdown: false,
+    hidden: false,    
     routeMeta: JSON.stringify({
       title: '员工',
       routeHidden: false
     }),
-    childrenList: [
+    children: [
       {
         routePath: '/employee/employeeManage',
         routeComponent: 'components/employee/employeeManage/employeeManage',
         name: '员工管理',
         routeHidden: false,
+        noDropdown: false,
+        hidden: false,          
         routeMeta: JSON.stringify({
           title: '员工-员工管理',
           routeHidden: false
         }),
-        childrenList: [
+        children: [
           {
             routePath: 'joinedEmployee',
             routeComponent: 'components/employee/employeeManage/joinedEmployee/joinedEmployee',
             name: '在职员工',
             routeHidden: false,
+            noDropdown: true,
+            hidden: false,              
             routeMeta: JSON.stringify({
               title: '员工管理-在职员工',
               routeHidden: false
             }),
-            childrenList: []
+            children: []
           },
         ]        
       }
@@ -126,6 +296,7 @@ export let asyncRouter = [
   //   })
   // }  
 ]
+
 export let constantRouterMap = [
   {
     path: '/login',

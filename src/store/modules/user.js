@@ -119,9 +119,6 @@ const user = {
           resolve(response.data.State)   
         }).catch(error => {
           debugger
-          // dispatch("GenerateRoutes", {}, { root: true }).then(res => {
-          //   router.push({path: '/'})
-          // })
           reject(error)
         })
       })
@@ -175,7 +172,7 @@ const user = {
           // }).then(res => {
           //   resolve(response)
           // })         
-          return true
+          resolve(response)
         }).catch(error => {
           debugger
           reject(error)
