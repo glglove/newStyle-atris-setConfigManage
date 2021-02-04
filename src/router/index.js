@@ -315,7 +315,6 @@ export let constantRouterMap = [
   {
     path: '/login',
     component: () => import('@/components/login/index'),
-    redirect: '/index',
     name: '登录',
     routeHidden: true,
     routeHideChildrenList: true,    
@@ -382,6 +381,7 @@ export let constantRouterMap = [
   {
     path: '/',
     component: () => import('@/components/layout/Layout'),
+    redirect: '/index',
     name: '首页',
     routeIcon: 'people',
     routeHideChildrenList: true,
