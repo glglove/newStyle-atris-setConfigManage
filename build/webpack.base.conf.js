@@ -4,6 +4,9 @@ const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const HappyPack = require('happyPack')
+const os = require('os')
+const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
@@ -33,6 +36,23 @@ module.exports = {
       'api': resolve('src/api')
     }
   },
+  plugins: [
+    new HappyPack({
+      // id标识 需要处理的loader
+      id: 'babel',
+      // loader配置和原始配置一样
+      loaders: [
+        {
+          loader: 'babel-loader',
+          options: {
+            presets: ['es2015'],
+            cacheDirectory: true
+          }
+        }
+      ],
+      threadPool: happyThreadPool
+    })    
+  ],  
   module: {
     rules: [
       // {
@@ -52,7 +72,8 @@ module.exports = {
       {
         test: /\.js$/i,
         use: [{
-          loader: 'babel-loader',
+          // loader: 'babel-loader',
+          loader: 'happypack/loader?id=babel', // 原始loader替换成`happypack/loader`webpack执行预处理文件时单线程的，我们可以使用happypack来多线程处理文件
           // options: {
           //   presets: ['es2015']
           // }
@@ -60,8 +81,10 @@ module.exports = {
         include: [
           resolve('src'),
           resolve('test'),
-          resolve('node_modules/element-ui/packages'),
-          resolve('node_modules/element-ui/src')
+          resolve('/node_modules/element-ui/packages'),
+          resolve('/node_modules/element-ui/src'),
+          resolve('/node_modules/asn1.js/lib'),
+          resolve('/node_modules/node-rsa')
         ]
       },
       {
