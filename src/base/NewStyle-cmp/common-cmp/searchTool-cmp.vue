@@ -39,11 +39,24 @@
                     </div>
 
                     <div class="moreConditionsBtnBox">
+                        <el-input
+                            size="small"
+                            :placehoder="placehoder"
+                            v-model="queryObj.key"
+                        >
+                        </el-input>
+                        <el-button
+                            type="primary"
+                            size="small"
+                            @click.native="handlerClickSearchBtn"
+                            icon="el-icon-search"
+                        >
+                            搜索
+                        </el-button>
                         <el-button 
                             type="primary" 
                             size="mini" 
                             @click.native="clickMoreConditionBtn"
-                            icon="el-icon-search"
                         >
                             筛选
                             <i :class="[showMoreSearchWrap? 'el-icon-caret-top': 'el-icon-caret-bottom']"></i>
@@ -78,6 +91,12 @@
             default: () => {
                 return 'searchContentId'
             }
+        },
+        placehoder: {
+            type: String,
+            default: () => {
+                return "输入关键词搜索"
+            }
         }
     },
     components: {
@@ -95,6 +114,9 @@
       return {
         showMoreSearchWrap: false,
         searchContentHeight: 0,  // 搜索内容的宽度
+        queryObj: {
+            key: ''
+        }
       }
     },
     created(){
@@ -122,6 +144,10 @@
                 this.searchContentHeight = 0
                 newObj.style.height = '1px'
             }
+        },
+        handlerClickSearchBtn(){
+            this.$emit("commonSearchToolEmit")
+            console.log(this.$slots)
         }
     }
 }
