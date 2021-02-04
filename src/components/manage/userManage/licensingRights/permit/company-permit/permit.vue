@@ -320,7 +320,7 @@
 
 <script type="text/ecmascript-6">
     import { REQ_OK } from '@/api/config'
-    import SaveFooter from '@/base/Save-footer/Save-footer'
+    import SaveFooter from '@/base/Save-footer/index'
     import SearchToolsCmp from '@/base/NewStyle-cmp/common-cmp/searchTool-cmp'
     // import DataSafetyCmp from './permit-cmp/DataSafe-cmp'
     import DataSafetyCmp from '@/components/manage/userManage/userRole/roleManage/company-roleManage/roleManage-cmp/dataSafety-cmp'
@@ -331,7 +331,7 @@
     import { 
         getPermissionList,
         addPermissionSet,
-        batchDelSecurityTypeGroup
+        // batchDelSecurityTypeGroup
     } from '@/api/systemManage'
     import { CommonInterfaceMixin } from '@/utils/CommonInterfaceMixin'
     export default {

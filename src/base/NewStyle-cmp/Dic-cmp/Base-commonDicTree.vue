@@ -444,7 +444,7 @@ import {
     deleteDicItem
 } from '@/api/dic'
 import BaseImgUpload from '@/base/NewStyle-cmp/common-cmp/img-upload'
-import SaveFooter from '../../Save-footer/Save-footer.vue';
+import SaveFooter from '@/base/Save-footer/index.vue';
 import { CommonInterfaceMixin } from '@/utils/CommonInterfaceMixin'
 let that = null;
 let treeId = 0;  

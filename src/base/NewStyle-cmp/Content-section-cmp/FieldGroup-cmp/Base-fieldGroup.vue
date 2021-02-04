@@ -130,7 +130,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import SaveFooter from '@/base/Save-footer/Save-footer'
+    import SaveFooter from '@/base/Save-footer/index'
     import FieldGroupItem from './Base-fieldGroupItem'
     // 通用弹框组件
     import CommonDialogCmp from '@/base/NewStyle-cmp/Content-section-cmp/Base-comCmp-dialog-cmp'    

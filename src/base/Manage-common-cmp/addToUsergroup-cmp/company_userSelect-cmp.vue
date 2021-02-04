@@ -122,7 +122,7 @@
 </template>
 
 <script>
-import SaverFooter from '@/base/Save-footer/Save-footer'
+import SaverFooter from '@/base/Save-footer/index'
 import CompanyUserSelectTree from './company_userSelectTree-cmp'
 export default {
     props: {

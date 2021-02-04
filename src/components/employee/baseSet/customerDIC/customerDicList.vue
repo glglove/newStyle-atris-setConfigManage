@@ -134,7 +134,7 @@
 
 <script type="text/ecmascript-6">
 import { REQ_OK } from '@/api/config'
-import CustomerDicCmp from './customerDic'
+import CustomerDicCmp from '@/components/employee/baseSet/customerDIC/customerDIC'
 import {
     getCustomerDicTab
 } from '@/api/employee'

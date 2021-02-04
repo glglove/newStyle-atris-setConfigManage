@@ -123,7 +123,7 @@
 <script type="text/ecmascript-6">
   import { REQ_OK } from '@/api/config'
   import { getOrg } from '@/api/common-dic'
-  import SaveFooter from '@/base/Save-footer/Save-footer'
+  import SaveFooter from '@/base/Save-footer/index'
   export default {
     props: {
       // 组件的id,主要用于区分同一个页面中同时应用此组件的问题

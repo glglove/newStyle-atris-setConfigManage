@@ -296,7 +296,7 @@
 
 <script type="text/ecmascript-6">
     import { REQ_OK } from '@/api/config'
-    import SaveFooter from '@/base/Save-footer/Save-footer'
+    import SaveFooter from '@/base/Save-footer/index'
     import DataSafetyCmp from './dataSafety-cmp'
     import AddPermitCmp from './addPermit-cmp'
     import PermitScanCmp from './permitScan-cmp'
@@ -306,7 +306,7 @@
         SetComPermitPState,
         CopyComPermitP,
         BatchAddComUserPermit,
-        batchDelSecurityTypeGroup
+        // batchDelSecurityTypeGroup
     } from '@/api/systemManage'
     export default {
         props: {

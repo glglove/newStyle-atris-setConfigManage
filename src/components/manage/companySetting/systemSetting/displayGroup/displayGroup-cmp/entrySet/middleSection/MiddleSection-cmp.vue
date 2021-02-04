@@ -170,7 +170,7 @@
     import Vuedraggable from 'vuedraggable'
     import CommonSelectorCmp from '@/base/NewStyle-cmp/common-cmp/commonSelector-cmp/commonSelector-cmp'
     import { fieldControlTypeMixin } from '@/utils/newStyleMixins-fields.js'
-    import SaveFooter from '@/base/Save-footer/Save-footer'
+    import SaveFooter from '@/base/Save-footer/index'
     export default {
         mixins: [ fieldControlTypeMixin ],
         props:{

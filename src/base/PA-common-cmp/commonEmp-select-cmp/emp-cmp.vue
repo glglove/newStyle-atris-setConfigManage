@@ -293,7 +293,7 @@
 <script type="text/ecmascript-6">
   import { REQ_OK } from '@/api/config'
   import { getEmpList, getEmpType, getEmpStatus } from '@/api/common-dic'
-  import SaveFooter from '@/base/Save-footer/Save-footer'
+  import SaveFooter from '@/base/Save-footer/index'
   import OrgTree from './org-tree'
   import { companyStructureMixin } from '@/utils/companyStructureMixin'
 

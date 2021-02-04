@@ -369,7 +369,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import SaveFooter from '@/base/Save-footer/Save-footer'
+  import SaveFooter from '@/base/Save-footer/index'
   import CompanyRoleEditInfoCmp from './roleManage-cmp/common-roleEditInfo-cmp'
   import {  REQ_OK, BASE_URL } from '@/api/config'
   import { mapGetters } from 'vuex'

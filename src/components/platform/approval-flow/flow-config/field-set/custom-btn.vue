@@ -54,7 +54,7 @@
 <script type="text/ecmascript-6">
   import { REQ_OK } from '@/api/config'
   import { getNodeBtnAttr, saveNodeBtnAttr } from '@/api/approve'
-  import SaveFooter from '@/base/Save-footer/Save-footer'
+  import SaveFooter from '@/base/Save-footer/index'
   import { workFlowControlRuleMixin, flowNodeSet } from '@/utils/mixin'
   export default {
     mixins: [workFlowControlRuleMixin, flowNodeSet],

@@ -191,7 +191,7 @@
 </template>
 
 <script>
-import SaverFooter from '@/base/Save-footer/Save-footer'
+import SaverFooter from '@/base/Save-footer/index'
 import CompanyUserGroupSelectCmp from './company_userGroupSelect-cmp'
 import SystemUserGroupSelectCmp from './system_userGroupSelect-cmp'
 import CompanyUserSelectCmp from './company_userSelect-cmp'

@@ -593,7 +593,7 @@
   import FeedbackAndCommentCmp from './feedbackAndComment-cmp'
   import ReceiverCmp from './receiver-cmp'
   import ExportWordCmp from './exportWord-cmp'
-  import SaveFooter from '@/base/Save-footer/Save-footer'
+  import SaveFooter from '@/base/Save-footer/index'
 
   const btnMap = {
     'send': SendCmp,   // 提交

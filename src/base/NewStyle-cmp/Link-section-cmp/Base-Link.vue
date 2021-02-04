@@ -26,7 +26,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-import SaveFooter from '@/base/Save-footer/Save-footer'
+import SaveFooter from '@/base/Save-footer/index'
 import LinkBtnCmp from '@/base/NewStyle-cmp/Button-functionbtn-cmp/Base-linkbtn'
   // 底部保存组件
   export default {

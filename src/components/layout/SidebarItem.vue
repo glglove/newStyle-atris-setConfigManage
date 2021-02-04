@@ -5,25 +5,25 @@
 -->
 <template>
   <div class='menu-wrapper'>
-    <!-- routes: {{routes[5]}} -->
-    <template v-for="(item,key) in routes">
+    <!-- routes: {{routes}} -->
+    <template v-for="(item,key) in routes" v-if="!item.routeHidden">
       <!-- horizontalFlag: {{horizontalFlag}} -->
-      <!-- {{routes[5].hidden}} && {{routes[5].noDropdown}} && {{routes[5].children.length}} && {{horizontalFlag}}------ -->
+      <!-- {{routes[5].routeHidden}} && {{routes[5].routeHideChildrenList}} && {{routes[5].children.length}} && {{horizontalFlag}}------ -->
       <!--菜单只有主菜单一级的情况-->
-      <!-- <router-link v-if="!item.hidden&&item.noDropdown&&item.children.length>0&&!horizontalFlag"
+      <!-- <router-link v-if="!item.routeHidden&&item.routeHideChildrenList&&item.children.length>0&&!horizontalFlag"
                    :to="item.path + item.children[0].path">
-        <el-menu-item :index="item.path + item.children[0].path" class='submenu-title-noDropdown'>
+        <el-menu-item :index="item.path + item.children[0].path" class='submenu-title-routeHideChildrenList'>
           <icon-svg v-if='item.icon' :icon-class="item.icon"></icon-svg>
           <span>{{item.name}}</span>
         </el-menu-item>
       </router-link> -->
 
       <!-- <template > -->
-        <router-link v-if="!item.hidden&&item.noDropdown&&item.children.length>0"
-            :to="item.children[0].path">
-          <el-menu-item :index="item.path + item.children[0].path" 
+        <router-link v-if="!item.routeHidden&&item.routeHideChildrenList&&item.children.length>0"
+            :to="'/' + item.children[0].path">
+          <el-menu-item :index="item.path +'/'+ item.children[0].path" 
                         style="display:inline-block" 
-                        :class="['submenu-title-noDropdown',!horizontalFlag? 'leftSidebar-submenu-title-noDropdown': '']">
+                        :class="['submenu-title-routeHideChildrenList',!horizontalFlag? 'leftSidebar-submenu-title-routeHideChildrenList': '']">
             <icon-svg v-if='item.icon' :icon-class="item.icon"></icon-svg>
             <span>{{item.name}}</span>
           </el-menu-item>
@@ -32,26 +32,25 @@
 
 
       <!--菜单名下有子菜单的情况-->
-       <el-submenu :index="item.name" v-if="!item.noDropdown&&!item.hidden">
+       <el-submenu :index="item.path" v-if="!item.routeHideChildrenList&&!item.routeHidden">
 
         <template slot="title">
           <icon-svg v-if='item.icon' :icon-class="item.icon"></icon-svg>
           <span class="parentName">{{item.name}}</span>
         </template>
 
-        <template v-for="child in item.children" v-if='!child.hidden'>
+        <template v-for="itemChild in item.children" v-if='!itemChild.routeHidden'>
 
           <!--子菜单下又有子菜单的时候，递归调用此 sider-item 的组件-->
           <sidebar-item class='nest-menu' 
-            v-if='!child.noDropdown&&child.children && child.children.length>0' 
-            :routes='[child]'>
-
+            v-if='!itemChild.routeHideChildrenList&&itemChild.children && itemChild.children.length>0' 
+            :routes='[itemChild]'>
           </sidebar-item>
 
-          <router-link v-else :to="item.path+'/'+child.path">
-            <el-menu-item :index="item.path+'/'+child.path">
-              <icon-svg v-if='child.icon' :icon-class="child.icon"></icon-svg>
-              <span class="name">{{child.name}}</span>
+          <router-link v-else :to="item.path+'/'+itemChild.path">
+            <el-menu-item :index="item.path+'/'+itemChild.path">
+              <icon-svg v-if='itemChild.icon' :icon-class="itemChild.icon"></icon-svg>
+              <span class="name">{{itemChild.name}}</span>
             </el-menu-item>
           </router-link>
 
@@ -78,7 +77,7 @@
     },
     created () {
       // debugger
-      // console.log(this.routes)
+      console.log("导航菜单的routes：",this.routes)
     },
     components: {
       iconSvg
@@ -90,7 +89,7 @@
   .menu-wrapper
     .parentName
       margin-right 20px
-    .leftSidebar-submenu-title-noDropdown
+    .leftSidebar-submenu-title-routeHideChildrenList
       width 190px !important
 </style>
 

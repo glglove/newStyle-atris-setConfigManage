@@ -61,8 +61,8 @@
 </template>
 
 <script>
-    import SaveFooter from '@/base/Save-footer/Save-footer'
-    import SetCustomershowcolumnCmp from '@/base/NewStyle-cmp/common-cmp/setTableShowColumn-cmp/setcustomershowcolumn-cmp'
+    import SaveFooter from '@/base/Save-footer/index'
+    import SetCustomershowcolumnCmp from '@/base/NewStyle-cmp/common-cmp/setTableShowColumn-cmp/setCustomershowcolumn-cmp'
     import Vuedraggable from 'vuedraggable'
     import { mapGetters } from 'vuex'
     import { REQ_OK } from '@/api/config'

@@ -327,7 +327,7 @@
     getFieldDicLlist,
     getNodeList
   } from '@/api/approve'
-  import SaveFooter from '@/base/Save-footer/Save-footer'
+  import SaveFooter from '@/base/Save-footer/index'
   import CompanyStructureCmp from '@/base/Company-structure-cmp/select-cmp'
   import { flowNodeSet } from '@/utils/mixin'
   export default {

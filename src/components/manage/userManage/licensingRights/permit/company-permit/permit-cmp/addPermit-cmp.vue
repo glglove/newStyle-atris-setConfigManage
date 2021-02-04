@@ -95,7 +95,7 @@
 <script type="text/ecmascript-6">
     import { mapGetters } from 'vuex'
     import { REQ_OK } from '@/api/config'
-    import SaveFooter from '@/base/Save-footer/Save-footer'
+    import SaveFooter from '@/base/Save-footer/index'
     // import permitSetCmp from './permitSet-cmp'
     // 引入公共的
     import permitSetCmp from '@/components/manage/userManage/userRole/roleManage/company-roleManage/roleManage-cmp/permitSet-cmp'    

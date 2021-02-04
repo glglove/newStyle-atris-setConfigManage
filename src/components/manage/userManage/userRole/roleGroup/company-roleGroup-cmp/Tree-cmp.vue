@@ -247,7 +247,7 @@ import {
     saveRoleGroup
 } from '@/api/systemManage'
 import BaseImgUpload from '@/base/NewStyle-cmp/common-cmp/img-upload'
-import SaveFooter from '@/base/Save-footer/Save-footer'
+import SaveFooter from '@/base/Save-footer/index'
 import { CommonInterfaceMixin } from '@/utils/CommonInterfaceMixin'
 let that = null;
 let treeId = 0;  

@@ -247,7 +247,7 @@
 //   import MenuTreeCmp from '@/base/Manage-common-cmp/MenuTree-cmp'
   import SearchToolsCmp from '@/base/NewStyle-cmp/common-cmp/searchTool-cmp'
   import SearchCmp from './searchTools-cmp.vue'  
-  import SaveFooter from '@/base/Save-footer/Save-footer'
+  import SaveFooter from '@/base/Save-footer/index'
   import SortItemCmp from './SortItem-cmp'
   import  { REQ_OK } from '@/api/config'
   import { 

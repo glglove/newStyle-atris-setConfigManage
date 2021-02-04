@@ -111,7 +111,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import SaveFooter from '@/base/Save-footer/Save-footer'
+    import SaveFooter from '@/base/Save-footer/index'
     import { saveLeaveJobFieldList } from '@/api/employee'
     import { PaControlAndRuleMixin } from '@/utils/PA-mixins'
     export default {

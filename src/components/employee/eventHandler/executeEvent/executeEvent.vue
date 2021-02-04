@@ -21,8 +21,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import SearchToolCmp from './executeEvent-cmp/searchTool-cmp'
-  import EventExcuteListCmp from './executeEvent-cmp/eventExcuteList-cmp'
+  import SearchToolCmp from '@/components/employee/eventHandler/executeEvent/executeEvent-cmp/SearchTool-cmp'
+  import EventExcuteListCmp from '@/components/employee/eventHandler/executeEvent/executeEvent-cmp/eventExcuteList-cmp'
   import { 
     REQ_OK  
   } from '@/api/config'

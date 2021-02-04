@@ -105,7 +105,7 @@
 <script type="text/ecmascript-6">
   import { REQ_OK } from '@/api/config'
   import { getFlowRulelist, checkNewVersionTable, upgradeFlowVersion, deleteRule, setFlowState } from '@/api/approve'
-  import SaveFooter from '@/base/Save-footer/Save-footer'
+  import SaveFooter from '@/base/Save-footer/index'
   import CompanyStructureCmp from '@/base/Company-structure-cmp/dialog-common'
   export default {
     props: {

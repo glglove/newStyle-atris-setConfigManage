@@ -32,15 +32,16 @@ router.beforeEach((to, from, next) => {
         store.dispatch('GetUserInfo').then(res => { // 拉取user_info
           // debugger
           // const roles = res.data.Data.TokenId
-          store.dispatch('GenerateRoutes').then(() => {
+          store.dispatch('GenerateRoutes').then(async () => {
             // 生成可访问的路由表
-            router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
+            await router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
             next({...to, replace: true}) // hack方法 确保addRoutes已完成
           })
         }).catch(() => {
           // debugger
           store.dispatch('LogOut').then(() => {
-            Message.error('验证过期,请重新登录！')
+            // Message.error('验证过期,请重新登录！')
+            console.log("获取用户信息getUserInfo接口发生错误")
             next({ path: '/login' })
           })
         })

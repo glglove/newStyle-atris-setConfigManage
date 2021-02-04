@@ -57,7 +57,7 @@
   import { REQ_OK } from '@/api/config'
   import { getHistoryVersion, upgradeTableVersion } from '@/api/approve'
   import TableQuote from './table-quote'
-  import SaveFooter from '@/base/Save-footer/Save-footer'
+  import SaveFooter from '@/base/Save-footer/index'
   export default {
     props: {
       templateCode: {

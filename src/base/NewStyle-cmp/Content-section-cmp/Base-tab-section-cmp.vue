@@ -61,14 +61,14 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import SaveFooter from '@/base/Save-footer/Save-footer'
+    import SaveFooter from '@/base/Save-footer/index'
     import ErrorCmp from '@/base/errorPage/404'
     import TabZSectionCmp from '@/base/NewStyle-cmp/Content-section-cmp/Tab-cmp/Base-tabz-section'
     import StepZSectionCmp from '@/base/NewStyle-cmp/Content-section-cmp/Next-step-cmp/Base-stepz-section'
     import TitleCmp from '@/base/NewStyle-cmp/Title-section-cmp/Base-Title'
     import ShowFieldsCmp from '@/base/NewStyle-cmp/ShowFields-section-cmp/Base-ShowFields'
     import Search11 from '@/base/NewStyle-cmp/Search11-section-cmp/Base-Search11'
-    import UpTextCmp from '@/base/NewStyle-cmp/UpText-section-cmp/Base-UpText'
+    import UpTextCmp from '@/base/NewStyle-cmp/UpText-section-cmp/Base-Uptext'
     import UpBtnCmp from '@/base/NewStyle-cmp/UpBtn-section-cmp/Base-UpBtn'
     import ContentCmpComSection from '@/base/NewStyle-cmp/Content-section-cmp/Base-Content-cmp'
     import DownBtnCmp from '@/base/NewStyle-cmp/DownBtn-section-cmp/Base-DownBtn'

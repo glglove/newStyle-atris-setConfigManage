@@ -66,7 +66,7 @@
 <script type="text/ecmascript-6">
   import { REQ_OK } from '@/api/config'
   import { GetNodeTributaryAttr, SaveNodeTributaryAttr } from '@/api/approve'
-  import SaveFooter from '@/base/Save-footer/Save-footer'
+  import SaveFooter from '@/base/Save-footer/index'
   import { workFlowControlRuleMixin, flowNodeSet, flowAutoLogin } from '@/utils/mixin'
   export default {
     mixins: [workFlowControlRuleMixin, flowNodeSet, flowAutoLogin],

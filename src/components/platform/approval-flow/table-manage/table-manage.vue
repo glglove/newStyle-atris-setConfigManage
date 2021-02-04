@@ -248,7 +248,7 @@
     upgradeTableVersion
   } from '@/api/approve'
   import { flowAutoLogin } from '@/utils/mixin'
-  import SaveFooter from '@/base/Save-footer/Save-footer'
+  import SaveFooter from '@/base/Save-footer/index'
   import TableQuote from './table-quote'
   import TableHistory from './table-history'
 

@@ -299,7 +299,6 @@
     import { 
         compRolePermitList,
         getPermissionList,
-        batchDelSecurityTypeGroup,
         BatchDelComRolePermit,
         BatchDelComUserPermit
     } from '@/api/systemManage'

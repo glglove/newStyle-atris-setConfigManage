@@ -452,7 +452,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import SaverFooter from '@/base/Save-footer/Save-footer'
+  import SaverFooter from '@/base/Save-footer/index'
   import { 
       REQ_OK
    }from '@/api/config'

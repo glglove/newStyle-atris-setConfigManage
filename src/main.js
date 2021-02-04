@@ -7,7 +7,7 @@ import ElementUI from 'element-ui' // element组件
 import '../theme/index.css'  // 引入 自定义主题样式
 import { Message, Notify } from 'element-ui'
 import vueQuillEditor from 'vue-quill-editor' // vue 富文本组件
-// import mavonEditor from 'mavon-editor'
+// import mavonEditor from 'mavon-editor'  // mavon 富文本组件
 // import 'mavon-editor/dist/css/index.css'
 import App from './App'
 import * as filters from './filters/index' // 全局 filter
@@ -20,10 +20,9 @@ import './authority-directives.js' // 全局自定义指令
 import './authority-directives1.js' // 全局自定义指令
 import VueDND from 'awe-dnd'  // 拖拽
 import BaiduMap from 'vue-baidu-map'  // 百度地图
-import eGuideLayer from '@/utils/guide/e-guide-layer.umd'  // 引导组件
+import * as eGuideLayer from '@/utils/guide/e-guide-layer.umd'  // 引导组件
 import './utils/guide/e-guide-layer.css'  // 引导组件
 import { debounce } from '@/utils/debounce.js'
-
 // 全局的 抽屉组件
 import AtrisDrawer from '@/base/Drawer/drawer'
 Vue.component('AtrisDrawerCmp', AtrisDrawer)
@@ -78,20 +77,13 @@ new Vue({
       console.log("----网络状态---", type) 
       if( type === 'offline' ){
         // 离线
-        Notify({
+        Message.warning({
           title: '警告',
           message: '网络走神了,请检查网络',
-          type: 'warning'
         })
-        Message.warning("网络走神了,请检查网络")
       }else if( type === 'online' ){
         // 在线
-        // Message.success("网络恢复正常")
-        Notify({
-          title: '成功',
-          message: '网络恢复正常',
-          type: 'success'
-        })
+        Message.success("网络恢复正常")
       }
       // 将网络状态存在全局中
       store.dispatch("netWorkChangeStatus", type)

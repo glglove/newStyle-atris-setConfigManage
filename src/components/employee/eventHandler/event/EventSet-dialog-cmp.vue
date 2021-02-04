@@ -184,7 +184,7 @@
         getCheckedSetFieldList 
     } from '@/api/employee'
   import { REQ_OK } from '@/api/config'
-  import SaveFooter from '@/base/Save-footer/Save-footer'
+  import SaveFooter from '@/base/Save-footer/index'
   export default {
     props:{
         currentSetEvent: {

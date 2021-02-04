@@ -134,7 +134,7 @@
 </template>
 
 <script>
-import SaverFooter from '@/base/Save-footer/Save-footer'
+import SaverFooter from '@/base/Save-footer/index'
 import CompanyRoleSelectTree from './company_roleSelectTree-cmp'
 export default {
     props: {

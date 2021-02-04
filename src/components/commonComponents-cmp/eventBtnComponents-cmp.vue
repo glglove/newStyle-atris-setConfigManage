@@ -149,13 +149,13 @@
 
 <script type="text/ecmascript-6">
   import { REQ_OK } from '@/api/config'
-  import SaveFooter from '@/base/Save-footer/Save-footer'
-  import EmpEventHandlerCmp from './empEventHandler-cmp' 
-  import PosEventHandlerCmp from './positionEventHandler-cmp' 
-  import OrgEventHandlerCmp from './orgEventHandler-cmp' 
-  import JobEventHandlerCmp from './jobEventHandler-cmp'
-  import ContractManageDialog from './contractManageInfo-cmp'
-  import newEmployeeCmp from './complexEventBtn-cmp/newEmployeeBtn-cmp'
+  import SaveFooter from '@/base/Save-footer/index'
+  import EmpEventHandlerCmp from '@/components/commonComponents-cmp/empEventHandler-cmp' 
+  import PosEventHandlerCmp from '@/components/commonComponents-cmp/positionEventHandler-cmp' 
+  import OrgEventHandlerCmp from '@/components/commonComponents-cmp/orgEventHandler-cmp' 
+  import JobEventHandlerCmp from '@/components/commonComponents-cmp/jobEventHandler-cmp'
+  import ContractManageDialog from '@/components/commonComponents-cmp/ContractManageInfo-cmp'
+  import newEmployeeCmp from '@/components/commonComponents-cmp/complexEventBtn-cmp/newEmployeeBtn-cmp'
   import { mapGetters } from 'vuex'
   import {
     deleteEmp,

@@ -62,7 +62,7 @@
       SaveFieldList
   } from '@/api/systemManage'
   import Vuedraggable from 'vuedraggable'
-  import SaveFooter from '@/base/Save-footer/Save-footer'
+  import SaveFooter from '@/base/Save-footer/index'
   export default {
     props: {
         obj: {

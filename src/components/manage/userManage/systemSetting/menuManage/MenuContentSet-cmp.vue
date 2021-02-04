@@ -367,7 +367,7 @@
 
 <script type="text/ecmascript-6">
 //   import MenuTreeCmp from '@/base/Manage-common-cmp/MenuTree-cmp'
-  import SaveFooter from '@/base/Save-footer/Save-footer'
+  import SaveFooter from '@/base/Save-footer/index'
   import SearchToolsCmp from './searchTools-cmp'
   import SortItemCmp from './SortItem-cmp'
   import  { REQ_OK } from '@/api/config'

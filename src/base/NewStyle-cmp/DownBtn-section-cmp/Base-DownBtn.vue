@@ -24,7 +24,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-import SaveFooter from '@/base/Save-footer/Save-footer'
+import SaveFooter from '@/base/Save-footer/index'
 import NormalBtnCmp from '@/base/NewStyle-cmp/Button-functionbtn-cmp/Base-normalbtn'
 
   // 底部保存组件

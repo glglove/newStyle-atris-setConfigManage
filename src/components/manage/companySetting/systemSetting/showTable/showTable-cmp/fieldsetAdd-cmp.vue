@@ -108,7 +108,7 @@
 </template>
 
 <script>
-import SaverFooter from '@/base/Save-footer/Save-footer'
+import SaverFooter from '@/base/Save-footer/index'
 import fieldSelectTreeCmp from './fieldSelectTree-cmp'
 export default {
     props: {

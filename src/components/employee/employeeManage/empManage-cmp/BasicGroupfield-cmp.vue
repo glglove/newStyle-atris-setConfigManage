@@ -399,7 +399,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import SaveFooter from '@/base/Save-footer/Save-footer'
+    import SaveFooter from '@/base/Save-footer/index'
     import OperationLogCmp from './OperationLog-cmp'    
     import FieldEditCmp  from './FieldEdit-cmp'    
     import CommonDialog from './CommonDialog'    

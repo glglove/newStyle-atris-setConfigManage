@@ -43,7 +43,7 @@
   import { getFlowSet, saveFlowSet } from '@/api/approve'
   import { getRoleRange } from '@/api/permission'
   import { workFlowControlRuleMixin, flowBaseFn } from '@/utils/mixin'
-  import SaveFooter from '@/base/Save-footer/Save-footer'
+  import SaveFooter from '@/base/Save-footer/index'
 
   export default {
     mixins: [workFlowControlRuleMixin, flowBaseFn],

@@ -333,7 +333,7 @@
 
 <script type="text/ecmascript-6">
   import EntryCmp from './displayGroup-cmp/entry-cmp'
-  import SaveFooter from '@/base/Save-footer/Save-footer'
+  import SaveFooter from '@/base/Save-footer/index'
   import SearchToolsCmp from '@/base/NewStyle-cmp/common-cmp/searchTool-cmp'
   import ShowColumnCmp from '@/base/NewStyle-cmp/common-cmp/setTableShowColumn-cmp/setTableShowColumn-cmp'
   import AddGroupCmp from './displayGroup-cmp/addGroup-cmp'

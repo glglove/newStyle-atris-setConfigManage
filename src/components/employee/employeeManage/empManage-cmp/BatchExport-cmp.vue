@@ -79,8 +79,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import UploadFile from '@/base/PA-common-cmp/pa-Upload/uploadFile' 
-    import BatchSetEmpTemplateCmp from './BatchSetEmpTemplate-cmp'
+    import UploadFile from '@/base/PA-common-cmp/Pa-Upload/uploadFile' 
+    import BatchSetEmpTemplateCmp from '@/components/employee/employeeManage/empManage-cmp/BatchSetEmpTemplate-cmp'
     import EmpSelectListCmp from '@/base/Company-structure-cmp/select-cmp' 
     import { 
         REQ_OK, 

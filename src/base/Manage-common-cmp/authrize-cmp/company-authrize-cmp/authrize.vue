@@ -138,7 +138,7 @@
 </template>
 
 <script>
-import SaverFooter from '@/base/Save-footer/Save-footer'
+import SaverFooter from '@/base/Save-footer/index'
 import CompanyRoleCmp from '@/base/Manage-common-cmp/addToRolegroup-cmp/company_roleSelect-cmp'
 import CompanyScanRoleCmp from './scanRole-cmp'
 import { mapGetters } from 'vuex'

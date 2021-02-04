@@ -175,7 +175,7 @@
     addNode,
     deleteNode
   } from '@/api/approve'
-  import SaveFooter from '@/base/Save-footer/Save-footer'
+  import SaveFooter from '@/base/Save-footer/index'
   import DialogCtrl from './dialog'
   import NodeSort from './node-sort'
   import Vuedraggable from 'vuedraggable'

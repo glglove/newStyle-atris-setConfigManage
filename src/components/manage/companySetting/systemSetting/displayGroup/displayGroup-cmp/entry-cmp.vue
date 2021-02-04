@@ -387,7 +387,7 @@
    import FieldSortCmp from './fieldSort-cmp'
    import EntrySetCmp from './entrySet/entry-set-cmp'
    import SearchToolsCmp from '@/base/NewStyle-cmp/common-cmp/searchTool-cmp'
-   import SaveFooter from '@/base/Save-footer/Save-footer'
+   import SaveFooter from '@/base/Save-footer/index'
    import CommonTableCmp from '@/base/NewStyle-cmp/common-cmp/tableCommon-cmp/tableCommon-cmp'
    import { CommonInterfaceMixin } from '@/utils/CommonInterfaceMixin'
    import {

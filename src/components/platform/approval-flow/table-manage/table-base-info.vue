@@ -103,7 +103,7 @@
     getBusinessTypeList,
     getBusinessAreaList
   } from '@/api/approve'
-  import SaveFooter from '@/base/Save-footer/Save-footer'
+  import SaveFooter from '@/base/Save-footer/index'
 
   export default {
     // 导航钩子函数

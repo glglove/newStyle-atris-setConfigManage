@@ -248,7 +248,7 @@ import {
     saveUserGroup
 } from '@/api/systemManage'
 import BaseImgUpload from '@/base/NewStyle-cmp/common-cmp/img-upload'
-import SaveFooter from '@/base/Save-footer/Save-footer'
+import SaveFooter from '@/base/Save-footer/index'
 import { CommonInterfaceMixin } from '@/utils/CommonInterfaceMixin'
 import LeftMenuCmpVue from './LeftMenu-cmp.vue'
 import LeftTreeCmpVue from '../../authorityList/LeftTree-cmp.vue'

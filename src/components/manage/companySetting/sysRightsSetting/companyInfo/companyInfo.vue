@@ -18,7 +18,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import CompanyInfoCmp from './companyInfo-cmp/comInfo-cmp'
+  import CompanyInfoCmp from '@/components/manage/companySetting/sysRightsSetting/companyInfo/companyInfo-cmp/ComInfo-cmp'
   import { REQ_OK } from '@/api/config'
   import {
     SetSysCompanyState

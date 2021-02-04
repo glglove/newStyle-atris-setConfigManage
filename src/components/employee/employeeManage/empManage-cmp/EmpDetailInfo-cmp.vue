@@ -101,7 +101,7 @@
     import FieldEditCmp  from './FieldEdit-cmp'
     import OperationLogCmp from './OperationLog-cmp'
 
-    import SaveFooter from '@/base/Save-footer/Save-footer'
+    import SaveFooter from '@/base/Save-footer/index'
     import CommonDialog from './CommonDialog'
 
     import { REQ_OK } from '@/api/config'

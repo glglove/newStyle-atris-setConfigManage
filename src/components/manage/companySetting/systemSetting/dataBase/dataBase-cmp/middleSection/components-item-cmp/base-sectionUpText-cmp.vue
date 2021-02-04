@@ -41,9 +41,9 @@
         // setLocalStorage,
         // getLocalStorage
     } from '@/utils/auth.js'
-    import { fieldGroupControlTypeMixin } from '@/utils/newStyleMixins-fields.js'
+    import { fieldControlTypeMixin } from '@/utils/newStyleMixins-fields.js'
     export default {
-        mixin: [ fieldGroupControlTypeMixin ],
+        mixin: [ fieldControlTypeMixin ],
         props: {
             showfFields: {
                 type: Array,
