@@ -113,7 +113,7 @@ export let consRouterMap = [
       {
         path: 'dispose',
         component: () => import('@/components/dispose/dispose'),
-        // component: Layout,
+        // component: 'Layout',
         name: 'dispose',
         routeHideChildrenList: true,
         hidden: true,
@@ -893,7 +893,7 @@ export let asyncRouterMap = [
   },
   // {
   //   routePath: '/organization',
-  //   routeComponent: Layout,
+  //   routeComponent: 'Layout',
   //   routeName: '组织',
   //   routeIcon: 'socialSecurity',
   //   routeHidden: false,
@@ -968,7 +968,7 @@ export let asyncRouterMap = [
   {
     routePath: '/socialSecurity',
     routeRedirect: '/socialSecurity/index',
-    routeComponent: Layout,
+    routeComponent: 'Layout',
     routeName: '社保',
     routeIcon: 'socialSecuri',
     routeHidden: false,
@@ -1055,7 +1055,7 @@ export let asyncRouterMap = [
   {
     routePath: '/salary',
     routeRedirect: '/salary/salaryRule',
-    routeComponent: Layout,
+    routeComponent: 'Layout',
     routeName: '薪资',
     routeIcon: 'salary',
     routeHidden: false,
@@ -1289,7 +1289,7 @@ export let asyncRouterMap = [
   {
     routePath: '/attendance',
     routeRedirect: '/attendance/baseConfig',
-    routeComponent: Layout,
+    routeComponent: 'Layout',
     routeName: '考勤',
     routeIcon: 'salary',
     routeHidden: false,
@@ -1883,7 +1883,7 @@ export let asyncRouterMap = [
   {
     routePath: '/platform',
     routeRedirect: '/platform/index',
-    routeComponent: Layout,
+    routeComponent: 'Layout',
     routeName: '平台',
     routeIcon: 'platform',
     routeHidden: false,
@@ -2156,7 +2156,7 @@ export let asyncRouterMap = [
   {
     routePath: '/notice',    //  通知公告 一级菜单路由 页面
     routeRedirect: '/notice/index',
-    routeComponent: Layout,
+    routeComponent: 'Layout',
     routeName: '公告',
     routeIcon: 'notice',
     routeHidden: false,
