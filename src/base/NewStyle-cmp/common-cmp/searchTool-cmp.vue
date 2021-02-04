@@ -38,12 +38,21 @@
                         <slot name="handlerBtnWrap"></slot>
                     </div>
 
-                    <div class="moreConditionsBtnBox">
+                    <div class="moreConditionsBtnBox u-f-ajc">
+                        <div class="keyWrap u-f-ajc">
+                            <span class="searchTit">关键词:</span>
+                            <el-input
+                                size="small"
+                                :placeholder="searchPlaceholder"
+                                clearable
+                            >
+                            <i slot="suffix" class="el-input__icon el-icon-date"></i>
+                            </el-input>
+                        </div>
                         <el-button 
                             type="primary" 
                             size="mini" 
                             @click.native="clickMoreConditionBtn"
-                            icon="el-icon-search"
                         >
                             筛选
                             <i :class="[showMoreSearchWrap? 'el-icon-caret-top': 'el-icon-caret-bottom']"></i>
@@ -77,6 +86,12 @@
             type: [String,Number],
             default: () => {
                 return 'searchContentId'
+            }
+        },
+        searchPlaceholder: {
+            type: String,
+            default: () => {
+                return '关键词'
             }
         }
     },
