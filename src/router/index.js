@@ -256,10 +256,10 @@ export let consRouterMap = [
 
 export let asyncRouter = [
   {
-    path: '/employee',
+    routePath: '/employee',
     routeComponent: 'Layout',
     // routeRedirect: '/employee/employeeManage/joinedEmployee',
-    name: '员工',
+    routeName: '员工',
     routeIcon: 'employee',
     routeHidden: false,
     routeHideChildrenList: false,
@@ -268,11 +268,11 @@ export let asyncRouter = [
       title: '员工',
       routeHidden: false
     }),
-    children: [
+    childrenList: [
       {
-        path: '/employee/employeeManage',
+        routePath: '/employee/employeeManage',
         routeComponent: 'components/employee/employeeManage/index',
-        name: '员工管理',
+        routeName: '员工管理',
         routeHidden: false,
         routeHideChildrenList: false,
         hidden: false,          
@@ -280,11 +280,11 @@ export let asyncRouter = [
           title: '员工-员工管理',
           routeHidden: false
         }),
-        children: [
+        childrenList: [
           {
-            path: 'joinedEmployee',
+            routePath: 'joinedEmployee',
             routeComponent: 'components/employee/employeeManage/joinedEmployee/index',
-            name: '在职员工',
+            routeName: '在职员工',
             routeHidden: false,
             routeHideChildrenList: true,
             hidden: false,              
@@ -292,23 +292,12 @@ export let asyncRouter = [
               title: '员工管理-在职员工',
               routeHidden: false
             }),
-            children: []
+            childrenList: []
           },
         ]        
       }
     ]
-  },
-  // {
-  //   path: '*',
-  //   // routeRedirect: '/404',
-  //   routeComponent: 'base/errorPage/404',
-  //   routeName: '404',
-  //   routeHidden: true,
-  //   routeMeta: JSON.stringify({
-  //     routeHidden: true,
-  //     title: '出错啦'
-  //   })
-  // }  
+  }
 ]
 
 export let constantRouterMap = [
@@ -2618,6 +2607,17 @@ export let asyncRouterMap = [
             }),
             childrenList:[]               
           },
+          {
+            routePath: 'pageManage',
+            routeComponent: 'components/manage/companySetting/systemSetting/pageManage/index',
+            routeName: '页面管理',
+            routeHidden: false,
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '页面管理',
+              routeHidden: false
+            })             
+          },          
           {
             routePath: 'components',
             routeComponent: 'components/manage/companySetting/systemSetting/components/componentsManage',

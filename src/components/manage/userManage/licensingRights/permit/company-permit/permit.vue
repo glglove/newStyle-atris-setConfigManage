@@ -481,7 +481,7 @@
             handlerBatchDelete(){
                 debugger
                 let statusText = '批量删除'
-                let baseKey = 'plat_sysmg_sys_user'            
+                let baseKey = 'a87ff679'            
                 let name = ''
                 let ids = []
                 let length = this.multipleSelection.length
@@ -510,7 +510,7 @@
                     let statusText = '删除'
                     let name = row.permissionpackagename || ''
                     let ids = row.id ? [row.id] : []
-                    let baseKey = 'plat_sysmg_sys_permissionpackageinfo'
+                    let baseKey = '8f14e45f'
                     this.commonDeleteListMixin({
                         statusText,
                         name,
@@ -562,7 +562,7 @@
                 let statusText = row.state == 1? '停用': '启用'
                 let name = row.permissionpackagename || ''
                 let ids = row.id ? [row.id] : []
-                let baseKey = 'plat_sysmg_sys_permissionpackageinfo'
+                let baseKey = '8f14e45f'
                 this.commonSetStatusMixin({
                     statusText,
                     name,

@@ -27,7 +27,7 @@ router.beforeEach((to, from, next) => {
       next({ path: '/' })
       NProgress.done() // router在hash模式下 手动改变hash 重定向回来 不会触发afterEach 暂时hack方案
     } else {        
-      debugger
+      // debugger
       if (!store.getters.name) { // 判断当前用户是否已拉取完user_info信息
         store.dispatch('GetUserInfo').then(res => { // 拉取user_info
           // debugger
@@ -35,6 +35,7 @@ router.beforeEach((to, from, next) => {
           store.dispatch('GenerateRoutes').then(async () => {
             // 生成可访问的路由表
             await router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
+            console.log("加入到路由表中的路由", router)
             next({...to, replace: true}) // hack方法 确保addRoutes已完成
           })
         }).catch(() => {

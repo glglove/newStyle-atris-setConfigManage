@@ -749,7 +749,7 @@ export default {
                 let statusText = '删除'
                 let name = data.dicCode || ''
                 let ids = data.id ? [data.id] : []
-                let baseKey = 'plat_sysmg_sys_dic'
+                let baseKey = 'c4ca4238'
                 this.commonDeleteListMixin({
                     statusText,
                     name,

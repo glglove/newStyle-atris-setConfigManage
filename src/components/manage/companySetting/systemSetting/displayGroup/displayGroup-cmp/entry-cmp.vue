@@ -416,7 +416,7 @@
       return {
         fullLoading: false, 
         loading: false, // loading 状态
-        baseKey: 'plat_configsys_hr_team_control',
+        baseKey: 'c9f0f895',
         stopOrUsingTitKey: 'conname', 
         // isStop: false, 
         showLeftSectionCmp: true,
@@ -537,21 +537,21 @@
             no: 1,
             code: 'entrySet',
             tit: '设置',
-            baseKey:'plat_configsys_hr_team_control',
+            baseKey:'c9f0f895',
             stopOrUsingTitKey: 'conname'
           },
           {
             no: 2,
             code: 'stop',
             tit: '停用',
-            baseKey:'plat_configsys_hr_team_control',
+            baseKey:'c9f0f895',
             stopOrUsingTitKey: 'conname'
           },
           {
             no: 3,
             code: 'using',
             tit: '启用',
-            baseKey:'plat_configsys_hr_team_control',
+            baseKey:'c9f0f895',
             stopOrUsingTitKey: 'conname'
           },                   
         ],
