@@ -23,7 +23,7 @@ const service = axios.create({
     'Content-Type': 'application/json;charset=utf-8' // 默认  
   },
   baseURL: process.env.BASE_API, // api的base_url 开发环境引用的是@/config/dev.env.js中的 base_API；生成环境引用的是@/config/prod.env.js中的 base_API
-  timeout: 95000               // 请求超时时间 95s
+  timeout: 20000               // 请求超时时间 20s
 })
 
 // request拦截器
@@ -129,16 +129,22 @@ service.interceptors.response.use(
     }
   },
   error => {
-    Message({
-      message: '请求超时,服务器异常',
-      type: 'error',
-      duration: 2000
-    })
-    console.log(error)
-    // 生产环境中请求超时后 自动跳转至 https://www.caihuiyun.cn/ 页面进行重新登录
-    if (process.env.NODE_ENV === 'production') {
-      window.location.href = 'https://www.caihuiyun.cn/'
+    if(!store.getters.netWorkStatus){
+      Message.warning({
+        message: '网路走神了,请检查网络环境！'
+      })
+    }else {
+      Message({
+        message: '请求超时,服务器异常',
+        type: 'error',
+        duration: 2000
+      })
+      // // 生产环境中请求超时后 自动跳转至 https://www.caihuiyun.cn/ 页面进行重新登录
+      // if (process.env.NODE_ENV === 'production') {
+      //   window.location.href = 'https://www.caihuiyun.cn/'
+      // }      
     }
+    console.log(error)
     return Promise.reject(error)
   }
 )

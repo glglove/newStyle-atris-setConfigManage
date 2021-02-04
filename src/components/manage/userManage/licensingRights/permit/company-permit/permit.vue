@@ -320,7 +320,7 @@
 
 <script type="text/ecmascript-6">
     import { REQ_OK } from '@/api/config'
-    import SaveFooter from '@/base/Save-footer/Save-footer'
+    import SaveFooter from '@/base/Save-footer/index'
     import SearchToolsCmp from '@/base/NewStyle-cmp/common-cmp/searchTool-cmp'
     // import DataSafetyCmp from './permit-cmp/DataSafe-cmp'
     import DataSafetyCmp from '@/components/manage/userManage/userRole/roleManage/company-roleManage/roleManage-cmp/dataSafety-cmp'
@@ -331,7 +331,7 @@
     import { 
         getPermissionList,
         addPermissionSet,
-        batchDelSecurityTypeGroup
+        // batchDelSecurityTypeGroup
     } from '@/api/systemManage'
     import { CommonInterfaceMixin } from '@/utils/CommonInterfaceMixin'
     export default {
@@ -481,7 +481,7 @@
             handlerBatchDelete(){
                 debugger
                 let statusText = '批量删除'
-                let baseKey = 'plat_sysmg_sys_user'            
+                let baseKey = 'a87ff679'            
                 let name = ''
                 let ids = []
                 let length = this.multipleSelection.length
@@ -510,7 +510,7 @@
                     let statusText = '删除'
                     let name = row.permissionpackagename || ''
                     let ids = row.id ? [row.id] : []
-                    let baseKey = 'plat_sysmg_sys_permissionpackageinfo'
+                    let baseKey = '8f14e45f'
                     this.commonDeleteListMixin({
                         statusText,
                         name,
@@ -562,7 +562,7 @@
                 let statusText = row.state == 1? '停用': '启用'
                 let name = row.permissionpackagename || ''
                 let ids = row.id ? [row.id] : []
-                let baseKey = 'plat_sysmg_sys_permissionpackageinfo'
+                let baseKey = '8f14e45f'
                 this.commonSetStatusMixin({
                     statusText,
                     name,

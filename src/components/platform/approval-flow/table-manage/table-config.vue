@@ -444,7 +444,7 @@
   import { getDicByKey } from '@/api/permission'
   import { flowBaseFn, workFlowControlTypeMixin, workFlowSetControlMixin } from '@/utils/mixin'
   import BaseInfoRouter from '@/components/platform/approval-flow/flow-config-router/flow-config-router'
-  import SaveFooter from '@/base/Save-footer/Save-footer'
+  import SaveFooter from '@/base/Save-footer/index'
   import TableTemplate from './table-template'
   import { mapGetters } from 'vuex'
   import Vuedraggable from 'vuedraggable'

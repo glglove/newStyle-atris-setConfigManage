@@ -27,8 +27,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-import SaveFooter from '@/base/Save-footer/Save-footer'
-import PopupBtnCmp from '@/base/NewStyle-cmp/Button-functionbtn-cmp/Base-popUpbtn'
+import SaveFooter from '@/base/Save-footer/index'
+import PopupBtnCmp from '@/base/NewStyle-cmp/Button-functionbtn-cmp/Base-popUPbtn'
 
   // 底部保存组件
   export default {

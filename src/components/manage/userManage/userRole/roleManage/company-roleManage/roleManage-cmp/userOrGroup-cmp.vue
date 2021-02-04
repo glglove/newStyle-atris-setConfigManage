@@ -247,7 +247,7 @@
 
 <script type="text/ecmascript-6">
     import { REQ_OK } from '@/api/config'
-    import SaveFooter from '@/base/Save-footer/Save-footer'
+    import SaveFooter from '@/base/Save-footer/index'
     import AddUserorgroupCmp from '@/base/Manage-common-cmp/addToUsergroup-cmp/addToUsergroupWrap-cmp'
     import CompanyUserGroupSelectCmp from '@/base/Manage-common-cmp/addToUsergroup-cmp/company_userGroupSelect-cmp'
     import CompanyUserSelectCmp from '@/base/Manage-common-cmp/addToUsergroup-cmp/company_userSelect-cmp'

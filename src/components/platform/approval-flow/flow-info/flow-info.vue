@@ -341,7 +341,7 @@
   import AddApproval from './add-approval'
   import ShowApproval from './show-approval'
   import Vuedraggable from 'vuedraggable'
-  import SaveFooter from '@/base/Save-footer/Save-footer'
+  import SaveFooter from '@/base/Save-footer/index'
 
   export default {
     mixins: [flowAutoLogin],

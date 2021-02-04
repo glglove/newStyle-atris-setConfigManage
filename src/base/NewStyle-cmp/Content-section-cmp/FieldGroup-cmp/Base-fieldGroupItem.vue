@@ -139,8 +139,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import { fieldGroupControlTypeMixin } from '@/utils/newStyleMixins-fields.js'
-    import SaveFooter from '@/base/Save-footer/Save-footer'
+    import { fieldControlTypeMixin } from '@/utils/newStyleMixins-fields.js'
+    import SaveFooter from '@/base/Save-footer/index'
     import EditLineField from './Base-editLineField-cmp'
     import { checkFormArray } from '@/utils/newStyleFieldValidate'
     import { deepCopyArr } from '@/utils/clone'
@@ -154,7 +154,7 @@
     } from '@/api/newStyle.js' 
     let that 
     export default {
-        mixins: [ fieldGroupControlTypeMixin ],        
+        mixins: [ fieldControlTypeMixin ],        
         components: {
             SaveFooter,
             EditLineField

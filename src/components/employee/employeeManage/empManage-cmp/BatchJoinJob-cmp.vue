@@ -74,8 +74,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-import UploadFile from '@/base/PA-common-cmp/pa-Upload/uploadFile' 
-import BatchSetEmpTemplateCmp from './BatchSetEmpTemplate-cmp'
+import UploadFile from '@/base/PA-common-cmp/Pa-Upload/uploadFile' 
+import BatchSetEmpTemplateCmp from '@/components/employee/employeeManage/empManage-cmp/BatchSetEmpTemplate-cmp'
 // 这里用所有模块 通用的 人员选择器组件
 import EmpSelectListCmp from '@/base/Company-structure-cmp/select-cmp'
 import { mapGetters } from 'vuex'

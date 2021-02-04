@@ -52,7 +52,7 @@
 </template>
 
 <script>
-// import SaverFooter from '@/base/Save-footer/Save-footer'
+// import SaverFooter from '@/base/Save-footer/index'
 export default {
     props: {
         tootipTit: {

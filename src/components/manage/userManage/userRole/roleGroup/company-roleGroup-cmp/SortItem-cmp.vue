@@ -33,7 +33,7 @@
 
 <script type="text/ecmascript-6">
     import Vuedraggable from 'vuedraggable'
-    import SaveFooter from '@/base/Save-footer/Save-footer'
+    import SaveFooter from '@/base/Save-footer/index'
     export default {
     components: {
        Vuedraggable,

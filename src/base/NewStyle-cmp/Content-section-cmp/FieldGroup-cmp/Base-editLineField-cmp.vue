@@ -45,8 +45,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import SaveFooter from '@/base/Save-footer/Save-footer'
-    import { fieldGroupControlTypeMixin } from '@/utils/newStyleMixins-fields.js'
+    import SaveFooter from '@/base/Save-footer/index'
+    import { fieldControlTypeMixin } from '@/utils/newStyleMixins-fields.js'
     // import { deepCopyArr } from '@/utils/clone'
     import {
         REQ_OK
@@ -57,7 +57,7 @@
   // 底部保存组件
   export default {
     name: 'FieldEditLineCmp',
-    mixins: [ fieldGroupControlTypeMixin ],
+    mixins: [ fieldControlTypeMixin ],
     components: {
         SaveFooter
     },

@@ -70,7 +70,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import SaveFooter from '@/base/Save-footer/Save-footer'
+  import SaveFooter from '@/base/Save-footer/index'
   import EmpAvatarInfoCmp from '@/components/commonComponents-cmp/contractManageDetailAvatar-cmp'
   import TabInfoCmp from './ContractManageTabs-cmp'
   //   import TabInfoCmp from '../../contractManage/contractManage-cmp/Tabs-cmp'

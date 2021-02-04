@@ -3485,3 +3485,56 @@ export function getEntryList (obj) {
         }
     })
 }
+
+/*******************页面管理**************** */
+/**
+ * 获取 页面管理 树形数据
+ * @params {} 
+ */
+export function getPageManageTreeList (obj = {pageSize:10, pageNum:1}) { 
+    let {
+        pageSize=10,
+        pageNum = 1,
+    } = obj
+    return fetch({
+        module: 'SystemManage',
+        url: '/plat-sysmg-sys-route/tree',
+        method: 'post',
+        data: {
+            Method: 'getPageManageTreeList',
+            size: pageSize,
+            current: pageNum,
+            params: {
+
+            }
+        }
+    })
+}
+
+
+/**
+ * 获取 页面管理 table list 数据
+ * @params {} 
+ */
+export function getPageManageTableList (obj) { 
+    let {
+        pageSize=10,
+        pageNum = 1,
+        state,
+        metacode
+    } = obj
+    return fetch({
+        module: 'SystemManage',
+        url: '/plat-sysmg-sys-route/findPage',
+        method: 'post',
+        data: {
+            Method: 'getPageManageTableList',
+            size: pageSize,
+            current: pageNum,
+            params: {
+                state,
+                metacode
+            }
+        }
+    })
+}

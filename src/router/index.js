@@ -8,14 +8,14 @@ Vue.use(Router)
 * routeIcon : 对应的sidebar icon图标
 * routeHidden : 如果 `routeHidden:true` 将不显示在siderbar中
 * routeRedirect : 重定向
-* noDropdown : 如果 `noDropdown:true` 将没有子菜单
+* routeHideChildrenList : 如果 `routeHideChildrenList:true` 将没有子菜单
 **/
 export let consRouterMap = [
   {
     path: '/login',
     component: () => import('@/components/login/index'),
     name: '登陆',
-    noDropdown: true,
+    routeHideChildrenList: true,
     hidden: true,
     meta: {
       title: '登录'
@@ -25,7 +25,7 @@ export let consRouterMap = [
     path: '/forgetWord',
     component: () => import('@/components/login/forgetWord/forgetWord'),
     name: '忘记密码',
-    noDropdown: true,
+    routeHideChildrenList: true,
     hidden: true,
     meta: {
       title: '忘记密码-找回密码'
@@ -35,7 +35,7 @@ export let consRouterMap = [
     path: '/register',
     component: () => import('@/components/login/register/register'),
     name: '注册',
-    noDropdown: true,
+    routeHideChildrenList: true,
     hidden: true,
     meta: {
       title: '注册'
@@ -45,14 +45,14 @@ export let consRouterMap = [
     path: '/authredirect',
     component: () => import('@/components/login/authredirect'),
     name: '权限跳转',
-    noDropdown: true,
+    routeHideChildrenList: true,
     hidden: true    
   },
   {
     path: '/setModule',
     component: () => import('@/components/setModule/index'),
     name: '配置系统',
-    noDropdown: true,
+    routeHideChildrenList: true,
     hidden: true,
     meta: {
       title: '配置系统'
@@ -62,7 +62,7 @@ export let consRouterMap = [
     path: '/page_fieldSet',
     component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page_fieldSet'),
     name: '字段设置页面',
-    noDropdown: true,
+    routeHideChildrenList: true,
     hidden: true,
     meta: {
       title: '字段设置'
@@ -74,146 +74,158 @@ export let consRouterMap = [
     redirect: '/index',
     name: '首页',
     icon: 'people',
-    noDropdown: true,
+    routeHideChildrenList: true,
     hidden: false,
     children: [
       {
         path: 'index',
+        component: () => import('@/base/index/index'),
         name: '简述',
-        noDropdown: true,
-        hidden: false,
+        routeHideChildrenList: true,
+        hidden: true,
         meta: {
           title: '首页-简述'
         },
-        component: () => import('@/base/index/index')
+        children: []
       },
       {
         path: 'test',
         component: () => import('@/components/test/test'),
         name: 'test',
-        noDropdown: true,
+        routeHideChildrenList: true,
         hidden: false,
         meta: {
           title: '动态显示测试'
-        }
+        },
+        children: []
       },   
       {
         path: 'testDic',
         component: () => import('@/components/test/testDicTree'),
         name: 'testDic',
-        noDropdown: true,
+        routeHideChildrenList: true,
         hidden: true,
         meta: {
           title: 'testDicTree'
-        }
+        },
+        children: []
       },       
       {
         path: 'dispose',
         component: () => import('@/components/dispose/dispose'),
-        // component: Layout,
+        // component: 'Layout',
         name: 'dispose',
-        noDropdown: true,
+        routeHideChildrenList: true,
         hidden: true,
         meta: {
           title: '配置系统'
-        }
+        },
+        children: []
       },   
       {
         path: '/P1',
         component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P1'),
         name: 'P1页面',
-        noDropdown: true,
+        routeHideChildrenList: true,
         hidden: true, 
         meta: {
           hidden: true,
           MetaCode: 'PreHire',
           title: 'P1页面'
-        }   
+        },
+        children: []  
       },            
       {
         path: '/P2',
-        // component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P5'),
+        // component: 'base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P5',
         component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P2'),
         name: '待入职',
-        noDropdown: true,
+        routeHideChildrenList: true,
         hidden: true, 
         meta: {
           hidden: true,
           MetaCode: 'PreHire',
           title: '待入职'
-        }   
+        },
+        children: []  
       },  
       {
         path: '/P5',
         component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P5'),
         name: '待入职',
-        noDropdown: true,
+        routeHideChildrenList: true,
         hidden: true , 
         meta: {
           hidden: true,
           MetaCode: 'PreHire',
           title: '待入职'
-        }   
+        },
+        children: [] 
       },
       {
         path: '/P6',
         component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P6'),
         name: '重新入职',
-        noDropdown: true,
+        routeHideChildrenList: true,
         hidden: true,
         meta: {
           hidden: true,
           MetaCode: 'Rehire',
           title: '重新入职'   
-        }       
+        },
+        children: []     
       },
       {
         path: '/P7',
         component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P7'),
         name: '直接入职',
-        noDropdown: true,
+        routeHideChildrenList: true,
         hidden: true,
         meta: {
           hidden: true,
           MetaCode: 'Directlyonboard',
           title: '直接入职'
-        }        
+        },
+        children: []       
       },
       {
         path: '/P8',
         component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P8'),
         name: '新增人事档案机构',
-        noDropdown: true,
+        routeHideChildrenList: true,
         hidden: true,
         meta: {
           hidden: true,
           MetaCode: 'AddPFileLocat2',
           title: '新增人事档案机构'
-        }       
+        },
+        children: []     
       },
       {
         path: '/P9',
         component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P9'),
         name: '编辑人事档案机构',
-        noDropdown: true,
+        routeHideChildrenList: true,
         hidden: true,
         meta: {
           hidden: true,
           MetaCode: 'EditPFileLocat2',
           title: '编辑人事档案机构'
-        }        
+        },
+        children: []       
       },    
       {
         path: '/P10',
         component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P10'),
         name: '调入',
-        noDropdown: true,
+        routeHideChildrenList: true,
         hidden: true,
         meta: {
           hidden: true,
           MetaCode: 'transferin',
           title: '调入'       
-        }
+        },
+        children: []
       },             
     ]
   },
@@ -221,80 +233,71 @@ export let consRouterMap = [
   //   path: '/test',
   //   component: () => import('@/components/employee/eventHandler/event/test'),
   //   name: 'test',
-  //   noDropdown: true,
+  //   routeHideChildrenList: true,
   //   hidden: false,
   //   meta: {
   //     title: '事件处理器-事件',
   //     hidden: false
-  //   }
+  //   },
+  // children: []
   // },    
   {
     path: '/flow/print',
     component: () => import('@/components/platform/approval-flow/right-fixed/print'),
     name: '流程打印',
-    noDropdown: true,
+    routeHideChildrenList: true,
     hidden: true,
     meta: {
       title: '流程打印'
-    }
+    },
+    children: []
   }
 ]
 
 export let asyncRouter = [
   {
     routePath: '/employee',
-    routeComponent: 'components/layout/Layout',
+    routeComponent: 'Layout',
     // routeRedirect: '/employee/employeeManage/joinedEmployee',
-    name: '员工',
+    routeName: '员工',
     routeIcon: 'employee',
     routeHidden: false,
-    noDropdown: false,
+    routeHideChildrenList: false,
     hidden: false,    
     routeMeta: JSON.stringify({
       title: '员工',
       routeHidden: false
     }),
-    children: [
+    childrenList: [
       {
         routePath: '/employee/employeeManage',
-        routeComponent: 'components/employee/employeeManage/employeeManage',
-        name: '员工管理',
+        routeComponent: 'components/employee/employeeManage/index',
+        routeName: '员工管理',
         routeHidden: false,
-        noDropdown: false,
+        routeHideChildrenList: false,
         hidden: false,          
         routeMeta: JSON.stringify({
           title: '员工-员工管理',
           routeHidden: false
         }),
-        children: [
+        childrenList: [
           {
             routePath: 'joinedEmployee',
-            routeComponent: 'components/employee/employeeManage/joinedEmployee/joinedEmployee',
-            name: '在职员工',
+            routeComponent: 'components/employee/employeeManage/joinedEmployee/index',
+            routeName: '在职员工',
             routeHidden: false,
-            noDropdown: true,
+            routeHideChildrenList: true,
             hidden: false,              
             routeMeta: JSON.stringify({
               title: '员工管理-在职员工',
               routeHidden: false
             }),
-            children: []
+            childrenList: []
           },
         ]        
       }
     ]
-  },
-  // {
-  //   routePath: '*',
-  //   // routeRedirect: '/404',
-  //   routeComponent: 'base/errorPage/404',
-  //   routeName: '404',
-  //   routeHidden: true,
-  //   routeMeta: JSON.stringify({
-  //     routeHidden: true,
-  //     title: '出错啦'
-  //   })
-  // }  
+  }
 ]
 
 export let constantRouterMap = [
@@ -303,204 +306,224 @@ export let constantRouterMap = [
     component: () => import('@/components/login/index'),
     name: '登录',
     routeHidden: true,
+    routeHideChildrenList: true,    
     routeMeta: {
       title: '登录'
     },
-    childrenList:[]
+    children:[]
   },
   {
     path: '/forgetWord',
     component: () => import('@/components/login/forgetWord/forgetWord'),
     name: '忘记',
     routeHidden: true,
+    routeHideChildrenList: true,
     routeMeta: {
       title: '忘记密码-找回密码'
     },
-    childrenList:[]
+    children:[]
   },    
   {
     path: '/register',
     component: () => import('@/components/login/register/register'),
     name: '注册',
     routeHidden: true,
+    routeHideChildrenList: true,
     routeMeta: {
       title: '注册'
     },
-    childrenList:[]
+    children:[]
   },    
   {
     path: '/authredirect',
     component: () => import('@/components/login/authredirect'),
     name: '权限',
     routeHidden: true,
+    routeHideChildrenList: true,
     routeMeta: {
       title: '权限'
     },
-    childrenList:[] 
+    children:[] 
   },
   {
     path: '/setModule',
     component: () => import('@/components/setModule/index'),
     name: '配置',
     routeHidden: true,
+    routeHideChildrenList: true,
     routeMeta: {
       title: '配置系统'
     },  
-    childrenList:[]
+    children:[]
   },  
   {
     path: '/page_fieldSet',
     component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page_fieldSet'),
     name: '字段设置',
     routeHidden: true,
+    routeHideChildrenList: true,
     routeMeta: {
       title: '字段设置'
     },  
-    childrenList:[]    
+    children:[]    
   },
   {
     path: '/',
     component: () => import('@/components/layout/Layout'),
+    redirect: '/index',
     name: '首页',
     routeIcon: 'people',
+    routeHideChildrenList: true,
     routeHidden: false,
-    childrenList: [
+    children: [
       {
         path: 'index',
+        component: () => import('@/base/index/index'),
         name: '简述',
         routeHidden: true,
+        routeHideChildrenList: true,
         routeMeta: {
           title: '首页-简述'
         },
-        component: () => import('@/base/index/index'),
-        childrenList:[]
+        children:[]
       },
       {
         path: 'test',
         component: () => import('@/components/test/test'),
         name: 'test',
         routeHidden: true,
+        routeHideChildrenList: true,
         routeMeta: {
           title: '动态显示测试'
         },
-        childrenList:[]
+        children:[]
       },   
       {
         path: 'testDic',
         component: () => import('@/components/test/testDicTree'),
         name: 'testDic',
         routeHidden: true,
+        routeHideChildrenList: true,
         routeMeta: {
           title: 'testDicTree'
         },
-        childrenList:[]
+        children:[]
       },       
       {
         path: 'dispose',
         component: () => import('@/components/dispose/dispose'),
         name: 'dispose',
-        routeHidden: false,
+        routeHidden: true,
+        routeHideChildrenList: true,
         routeMeta: {
           title: '配置系统'
         },
-        childrenList:[]
+        children:[]
       },   
       {
         path: 'P1',
         component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P1'),
         name: 'P1页面',
         routeHidden: true, 
+        routeHideChildrenList: true,
         routeMeta: {
           routeHidden: true,
           MetaCode: 'PreHire',
           title: 'P1页面'
         },
-        childrenList:[]   
+        children:[]   
       },            
       {
         path: 'P2',
-        // component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P5'),
+        // component: 'base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P5',
         component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P2'),
         name: '待入职',
         routeHidden: true, 
+        routeHideChildrenList: true,
         routeMeta: {
           routeHidden: true,
           MetaCode: 'PreHire',
           title: '待入职'
         },
-        childrenList:[] 
+        children:[] 
       },  
       {
         path: 'P5',
         component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P5'),
         name: '待入职',
         routeHidden: true , 
+        routeHideChildrenList: true,
         routeMeta: {
           routeHidden: true,
           MetaCode: 'PreHire',
           title: '待入职'
         },
-        childrenList:[]   
+        children:[]   
       },
       {
         path: 'P6',
         component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P6'),
         name: '重新入职',
         routeHidden: true,
+        routeHideChildrenList: true,
         routeMeta: {
           routeHidden: true,
           MetaCode: 'Rehire',
           title: '重新入职'   
         },
-        childrenList:[]      
+        children:[]      
       },
       {
         path: 'P7',
         component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P7'),
         name: '直接入职',
+        routeHideChildrenList: true,
         routeHidden: true,
         routeMeta: {
           routeHidden: true,
           MetaCode: 'Directlyonboard',
           title: '直接入职'
         },
-        childrenList:[]       
+        children:[]       
       },
       {
         path: 'P8',
         component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P8'),
         name: '新增人事档案机构',
         routeHidden: true,
+        routeHideChildrenList: true,
         routeMeta: {
           routeHidden: true,
           MetaCode: 'AddPFileLocat2',
           title: '新增人事档案机构'
         },
-        childrenList:[]     
+        children:[]     
       },
       {
         path: 'P9',
         component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P9'),
         name: '编辑人事档案机构',
         routeHidden: true,
+        routeHideChildrenList: true,
         routeMeta: {
           routeHidden: true,
           MetaCode: 'EditPFileLocat2',
           title: '编辑人事档案机构'
         },
-        childrenList:[]       
+        children:[]       
       },    
       {
         path: 'P10',
         component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P10'),
         name: '调入',
         routeHidden: true,
+        routeHideChildrenList: true,
         routeMeta: {
           routeHidden: true,
           MetaCode: 'transferin',
           title: '调入'       
         },
-        childrenList:[]
+        children:[]
       },             
     ]
   },
@@ -509,958 +532,1111 @@ export let constantRouterMap = [
   //   routeComponent: () => import('@/components/employee/eventHandler/event/test'),
   //   name: 'test',
   //   routeHidden: false,
+  // routeHideChildrenList: true,
   //   routeMeta: {
   //     title: '事件处理器-事件',
   //     routeHidden: false
   //   },
-  // childrenList:[]
+  // children:[]
   // },    
   {
     path: '/flow/print',
     component: () => import('@/components/platform/approval-flow/right-fixed/print'),
     name: '流程',
     routeHidden: true,
+    routeHideChildrenList: true,
     routeMeta: {
       title: '流程打印'
     },
-    childrenList:[]
+    children:[]
   }
 ]
 
 export default new Router({
   // mode: 'history', //后端支持可开
   scrollBehavior: () => ({ y: 0 }),
-  routes: consRouterMap
+  routes: constantRouterMap
 })
 
 export let asyncRouterMap = [
   {
-    path: '/employee',
-    routeComponent: '@/components/layout/Layout',
-    routeRedirect: '@/employee/employeeManage/joinedEmployee',
+    routePath: '/employee',
+    routeComponent: 'components/layout/Layout',
+    routeRedirect: 'employee/employeeManage/joinedEmployee',
     routeName: '员工',
     routeIcon: 'employee',
     routeHidden: false,
-    routeMeta: {
+    routeHideChildrenList: false,
+    routeMeta: JSON.stringify({
       title: '员工',
       routeHidden: false
-    },
+    }),
     childrenList: [
       {
-        path: '/employee/employeeManage',
-        routeComponent: '@/components/employee/employeeManage/employeeManage',
+        routePath: '/employee/employeeManage',
+        routeComponent: 'components/employee/employeeManage/index',
         routeName: '员工管理',
         routeHidden: false,
+        routeHideChildrenList: false,
         routeMeta: JSON.stringify({
           title: '员工-员工管理',
           routeHidden: false
         }),
         childrenList: [
           {
-            path: 'joinedEmployee',
-            routeComponent: () => import('@/components/employee/employeeManage/joinedEmployee/joinedEmployee'),
+            routePath: 'joinedEmployee',
+            routeComponent: 'components/employee/employeeManage/joinedEmployee/index',
             routeName: '在职员工',
             routeHidden: false,
-            routeMeta: {
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
               title: '员工管理-在职员工',
               routeHidden: false
-            }
+            }),
+            childrenList: []
           },
           {
-            path: '/waitEmployee',
-            routeComponent: () => import('@/components/employee/employeeManage/waitEmployee/waitEmployee'),
+            routePath: 'waitEmployee',
+            routeComponent: 'components/employee/employeeManage/waitEmployee/waitEmployee',
             routeName: '待入职员工',
             routeHidden: false,
-            routeMeta: {
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
               title: '员工管理-待入职员工',
               routeHidden: false
-            }        
+            }),
+            childrenList: []     
           },
           {
-            path: '/leavedEmployee',
-            routeComponent: () => import('@/components/employee/employeeManage/leavedEmployee/leavedEmployee'),
+            routePath: 'leavedEmployee',
+            routeComponent: 'components/employee/employeeManage/leavedEmployee/index',
             routeName: '离职员工',
             routeHidden: false,
-            routeMeta: {
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
               title: '员工管理-离职员工',
               routeHidden: false
-            }        
+            }),
+            childrenList: []       
           },
           {
-            path: '/empDetailInfo',
-            routeComponent: () => import('@/components/employee/employeeManage/empDetailInfo'),
+            routePath: 'empDetailInfo',
+            routeComponent: 'components/employee/employeeManage/empDetailInfo',
             routeName: '员工详情',
             routeHidden: true,
-            routeMeta: {
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
               title: '员工管理-员工详情',
               routeHidden: false
-            }        
+            }),
+            childrenList: []
           }          
         ]      
       },    
       {
-        path: '/employee/pcApprove',
-        routeComponent: () => import('@/components/employee/pcApprove/pcApprove'),
+        routePath: '/employee/pcApprove',
+        routeComponent: 'components/employee/pcApprove/pcApprove',
         routeName: '电脑审批',
-  
         routeHidden: false,
-        routeMeta: {
+        routeHideChildrenList: false,
+        routeMeta: JSON.stringify({
           title: '员工-电脑审批',
           routeHidden: false
-        },
+        }),
         childrenList: [
           {
-            path: 'todoList',
-            routeComponent: () => import('@/components/employee/pcApprove/todoList/todoCatList'),        
+            routePath: 'todoList',
+            routeComponent: 'components/employee/pcApprove/todoList/todoCatList',        
             routeName: '待办事宜',
             routeHidden: false,
-            routeMeta: {
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
               title: '电脑审批-待办事宜',
               routeHidden: false
-            }
+            }),
+            childrenList: []
           },            
           {
-            path: 'approveInfo',
-            routeComponent: () => import('@/components/employee/pcApprove/approveInfo/approveInfo'),        
+            routePath: 'approveInfo',
+            routeComponent: 'components/employee/pcApprove/approveInfo/approveInfo',        
             routeName: '审批信息',
             routeHidden: false,
-            routeMeta: {
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
-            }
+            }),
+            childrenList: []
           },        
           {
-            path: 'empInfoChange',
-            routeComponent: () => import('@/components/employee/pcApprove/empInfoChange/empInfoChange'),          
+            routePath: 'empInfoChange',
+            routeComponent: 'components/employee/pcApprove/empInfoChange/empInfoChange',          
             routeName: '员工档案变更',
             routeHidden: false,
-            routeMeta: {
-              title: '电脑审批-员工档案变更',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            }
+            }),
+            childrenList: []
           },
           {
-            path: 'applyQuery',
-            routeComponent: () => import('@/components/employee/pcApprove/applyQuery/applyQuery'),         
+            routePath: 'applyQuery',
+            routeComponent: 'components/employee/pcApprove/applyQuery/applyQuery',         
             routeName: '员工申请查询',
             routeHidden: false,
-            routeMeta: {
-              title: '电脑审批-员工申请查询',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            }
+            }),
+            childrenList: []
           }                   
         ]
       },      
       {
-        path: '/employee/contractManage',
-        routeComponent: () => import('@/components/employee/contractManage/contractManage'),
+        routePath: '/employee/contractManage',
+        routeComponent: 'components/employee/contractManage/contractManage',
         routeName: '合同管理',
-  
         routeHidden: false,
-        routeMeta: {
-          title: '员工-合同管理',
+        routeHideChildrenList: false,
+        routeMeta: JSON.stringify({
+          title: '电脑审批-审批信息',
           routeHidden: false
-        }, 
+        }),
         childrenList: [
           {
-            path: 'contract',
-            routeComponent: () => import('@/components/employee/contractManage/contract/contract'),
+            routePath: 'contract',
+            routeComponent: 'components/employee/contractManage/contract/contract',
             routeName: '合同管理',
             routeHidden: false,
-            routeMeta: {
-              title: '合同管理-合同管理',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            }
+            }),
+            childrenList:[]
           },
           {
-            path: 'contractRemind',
-            routeComponent: () => import('@/components/employee/contractManage/contractRemind/contractRemind'),
+            routePath: 'contractRemind',
+            routeComponent: 'components/employee/contractManage/contractRemind/contractRemind',
             routeName: '合同提醒',
             routeHidden: false,
-            routeMeta: {
-              title: '合同管理-合同提醒',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            }
+            }),
+            childrenList:[]
           }          
         ]       
       },
       {
-        path: '/employee/eventHandler',
-        routeComponent: () => import('@/components/employee/eventHandler/eventHandler'),
+        routePath: '/employee/eventHandler',
+        routeComponent: 'components/employee/eventHandler/eventHandler',
         routeName: '事件处理器',
         routeHidden: false,
-        routeMeta: {
-          title: '员工-事件处理器',
+        routeHideChildrenList: false,
+        routeMeta: JSON.stringify({
+          title: '电脑审批-审批信息',
           routeHidden: false
-        }, 
+        }),
         childrenList: [
           {
-            path: 'event',
-            routeComponent: () => import('@/components/employee/eventHandler/event/event'),
+            routePath: 'event',
+            routeComponent: 'components/employee/eventHandler/event/event',
             routeName: '事件',
             routeHidden: false,
-            routeMeta: {
-              title: '事件处理器-事件',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            }
+            }),
+            childrenList:[]
           },          
           {
-            path: 'executeEvent',
-            routeComponent: () => import('@/components/employee/eventHandler/executeEvent/executeEvent'),
+            routePath: 'executeEvent',
+            routeComponent: 'components/employee/eventHandler/executeEvent/executeEvent',
             routeName: '执行事件',
             routeHidden: false,
-            routeMeta: {
-              title: '事件处理器-执行事件',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            }            
+            }),
+            childrenList:[]          
           },
           {
-            path: 'setEvent',
-            routeComponent: () => import('@/components/employee/eventHandler/setEvent/setEvent'),
+            routePath: 'setEvent',
+            routeComponent: 'components/employee/eventHandler/setEvent/setEvent',
             routeName: '事件管理',
             routeHidden: false,
-            routeMeta: {
-              title: '事件处理器-事件管理',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            }                
+            }),
+            childrenList:[]                
           },
           {
-            path: 'batchEventsImport',
-            routeComponent: () => import('@/components/employee/eventHandler/batchEventsImport/batchEventsImport'),
+            routePath: 'batchEventsImport',
+            routeComponent: 'components/employee/eventHandler/batchEventsImport/batchEventsImport',
             routeName: '批量事件导入',
             routeHidden: false,
-            routeMeta: {
-              title: '事件处理器-批量事件导入',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            }                
+            }),
+            childrenList:[]              
           }                   
         ]        
       },
       {
-        path: '/employee/baseSet',
-        routeComponent: () => import('@/components/employee/baseSet/baseSet'),
+        routePath: '/employee/baseSet',
+        routeComponent: 'components/employee/baseSet/baseSet',
         routeName: '基础设置',
-  
         routeRedirect: '/employee/baseSet/set',
         routeHidden: false,
-        routeMeta: {
-          title: '员工-基础设置',
+        routeHideChildrenList: false,
+        routeMeta: JSON.stringify({
+          title: '电脑审批-审批信息',
           routeHidden: false
-        },   
+        }),
         childrenList: [
           {
-            path:'set',
-            routeComponent: () => import('@/components/employee/baseSet/baseSet'),
+            routePath:'set',
+            routeComponent: 'components/employee/baseSet/baseSet',
             routeName:'设置',
             routeHidden: false,
-            routeMeta: {
-              title: '基础设置-设置',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            }
+            }),
+            childrenList:[]
           },        
           // {
-          //   path:'personnelFile',
-          //   routeComponent: () => import('@/components/employee/baseSet/personnelFile/personnelFile'),
+          //   routePath:'personnelFile',
+          //   routeComponent: 'components/employee/baseSet/personnelFile/personnelFile',
           //   routeName:'人事档案地点',
-      
           //   routeHidden: false,
-          //   routeMeta: {
-          //     title: '基础设置-人事档案地点',
-          //     routeHidden: false
-          //   }
+          // routeHideChildrenList: false,
+          // routeMeta: JSON.stringify({
+          //   title: '电脑审批-审批信息',
+          //   routeHidden: false
+          // }),
+          // childrenList:[]
           // },
           // {
-          //   path:'showGroupSet',
-          //   routeComponent: () => import('@/components/employee/baseSet/showGroupSet/showGroupSet'),
+          //   routePath:'showGroupSet',
+          //   routeComponent: 'components/employee/baseSet/showGroupSet/showGroupSet',
           //   routeName:'显示组表配置',
-      
           //   routeHidden: false,
-          //   routeMeta: {
-          //     title: '基础设置-显示组表配置',
-          //     routeHidden: false
-          //   }            
+          // routeHideChildrenList: false,
+          // routeMeta: JSON.stringify({
+          //   title: '电脑审批-审批信息',
+          //   routeHidden: false
+          // }),
+          // childrenList:[]           
           // },
           // {
-          //   path:'fieldAuthority',
-          //   routeComponent: () => import('@/components/employee/baseSet/fieldAuthority/fieldAuthority'),
+          //   routePath:'fieldAuthority',
+          //   routeComponent: 'components/employee/baseSet/fieldAuthority/fieldAuthority',
           //   routeName:'组件字段权限',
-      
           //   routeHidden: false,
-          //   routeMeta: {
-          //     title: '基础设置-组件字段权限',
-          //     routeHidden: false
-          //   }              
+          // routeHideChildrenList: false,
+          // routeMeta: JSON.stringify({
+          //   title: '电脑审批-审批信息',
+          //   routeHidden: false
+          // }),
+          // childrenList:[]             
           // },
           // {
-          //   path:'customerDIC',
-          //   routeComponent: () => import('@/components/employee/baseSet/customerDIC/customerDICList'),
+          //   routePath:'customerDIC',
+          //   routeComponent: 'components/employee/baseSet/customerDIC/customerDICList',
           //   routeName:'自定义字典表',
-      
           //   routeHidden: false,
-          //   routeMeta: {
-          //     title: '基础设置-自定义字典表',
-          //     routeHidden: false
-          //   }              
+          // routeHideChildrenList: false,
+          // routeMeta: JSON.stringify({
+          //   title: '电脑审批-审批信息',
+          //   routeHidden: false
+          // }),
+          // childrenList:[]           
           // },
           // {
-          //   path:'assignmentRules',
-          //   routeComponent: () => import('@/components/employee/baseSet/assignmentRules/assignmentRules'),
+          //   routePath:'assignmentRules',
+          //   routeComponent: 'components/employee/baseSet/assignmentRules/assignmentRules',
           //   routeName:'工号分配规则',
-      
           //   routeHidden: false,
-          //   routeMeta: {
-          //     title: '基础设置-员工号自动分配规则',
-          //     routeHidden: false
-          //   }                 
+          // routeHideChildrenList: false,
+          // routeMeta: JSON.stringify({
+          //   title: '电脑审批-审批信息',
+          //   routeHidden: false
+          // }),
+          // childrenList:[]                
           // }          
         ]      
       }  
     ]
   },
   // {
-  //   path: '/organization',
-  //   routeComponent: Layout,
+  //   routePath: '/organization',
+  //   routeComponent: 'Layout',
   //   routeName: '组织',
   //   routeIcon: 'socialSecurity',
-  //
   //   routeHidden: false,
+  // routeHideChildrenList: false,
+  // routeMeta: JSON.stringify({
+  //   title: '电脑审批-审批信息',
+  //   routeHidden: false
+  // }),
   //   childrenList: [
   //     {
-  //       path: 'set',
-  //       routeComponent: () => import('@/components/organization/set/index'),
+  //       routePath: 'set',
+  //       routeComponent: 'components/organization/set/index',
   //       routeName: '设置',
-  //
   //       routeHidden: false,
-  //       routeMeta: {
-  //         title: '组织-设置',
-  //         routeHidden: false
-  //       }        
+  // routeHideChildrenList: false,
+  // routeMeta: JSON.stringify({
+  //   title: '电脑审批-审批信息',
+  //   routeHidden: false
+  // }),
+  // childrenList:[]      
   //     },
   //     {
-  //       path: 'org',
-  //       routeComponent: () => import('@/components/organization/org/index'),
+  //       routePath: 'org',
+  //       routeComponent: 'components/organization/org/index',
   //       routeName: '组织',
-  //
   //       routeHidden: false,
-  //       routeMeta: {
-  //         title: '组织-组织',
-  //         routeHidden: false
-  //       }        
+  // routeHideChildrenList: false,
+  // routeMeta: JSON.stringify({
+  //   title: '电脑审批-审批信息',
+  //   routeHidden: false
+  // }),
+  // childrenList:[]       
   //     },
   //     {
-  //       path: 'rankSystem',
-  //       routeComponent: () => import('@/components/organization/rankSystem/index'),
+  //       routePath: 'rankSystem',
+  //       routeComponent: 'components/organization/rankSystem/index',
   //       routeName: '职级体系',
-  //
   //       routeHidden: false,
-  //       routeMeta: {
-  //         title: '组织-职级体系',
-  //         routeHidden: false
-  //       }        
+  // routeHideChildrenList: false,
+  // routeMeta: JSON.stringify({
+  //   title: '电脑审批-审批信息',
+  //   routeHidden: false
+  // }),
+  // childrenList:[]       
   //     },
   //     {
-  //       path: 'duty',
-  //       routeComponent: () => import('@/components/organization/duty/index'),
+  //       routePath: 'duty',
+  //       routeComponent: 'components/organization/duty/index',
   //       routeName: '职务',
-  //
   //       routeHidden: false,
-  //       routeMeta: {
-  //         title: '组织-职务',
-  //         routeHidden: false
-  //       }        
+  // routeHideChildrenList: false,
+  // routeMeta: JSON.stringify({
+  //   title: '电脑审批-审批信息',
+  //   routeHidden: false
+  // }),
+  // childrenList:[]        
   //     },
   //     {
-  //       path: 'position',
-  //       routeComponent: () => import('@/components/organization/position/index'),
+  //       routePath: 'position',
+  //       routeComponent: 'components/organization/position/index',
   //       routeName: '职位',
-  //
   //       routeHidden: false,
-  //       routeMeta: {
-  //         title: '组织-职位',
-  //         routeHidden: false
-  //       }        
+  // routeHideChildrenList: false,
+  // routeMeta: JSON.stringify({
+  //   title: '电脑审批-审批信息',
+  //   routeHidden: false
+  // }),
+  // childrenList:[]      
   //     }                       
   //   ]
   // },
   {
-    path: '/socialSecurity',
+    routePath: '/socialSecurity',
     routeRedirect: '/socialSecurity/index',
-    routeComponent: Layout,
+    routeComponent: 'Layout',
     routeName: '社保',
     routeIcon: 'socialSecuri',
     routeHidden: false,
+    routeHideChildrenList: false,
+    routeMeta: JSON.stringify({
+      title: '电脑审批-审批信息',
+      routeHidden: false
+    }), 
     childrenList: [
       {
-        path: '/socialSecurity/index',
-        routeComponent: () => import('@/components/socialSecurity/homeIndex/index'),
+        routePath: 'socialSecurity/index',
+        routeComponent: 'components/socialSecurity/homeIndex/index',
         routeName: '社保-首页',
         routeHidden: false,
-        routeMeta: {
-          title: '社保-首页',
+        routeHideChildrenList: false,
+        routeMeta: JSON.stringify({
+          title: '电脑审批-审批信息',
           routeHidden: false
-        }
+        }),
+        childrenList:[]
       },
       {
-        path: 'socialThisMonth',
-        routeComponent: () => import('@/components/socialSecurity/index/thisMonth/thisMonth'),
+        routePath: 'socialThisMonth',
+        routeComponent: 'components/socialSecurity/index/thisMonth/thisMonth',
         routeName: '本月变动',
         routeHidden: false,
-        routeMeta: {
-          title: '社保-本月变动',
+        routeHideChildrenList: false,
+        routeMeta: JSON.stringify({
+          title: '电脑审批-审批信息',
           routeHidden: false
-        }
+        }),
+        childrenList:[]
       },
       {
-        path: 'monthlyReport',
-        routeComponent: () => import('@/components/socialSecurity/index/monthlyReport/monthlyReport'),
+        routePath: 'monthlyReport',
+        routeComponent: 'components/socialSecurity/index/monthlyReport/monthlyReport',
         routeName: '月报',
         routeHidden: false,
-        routeMeta: {
-          title: '社保-月报',
+        routeHideChildrenList: false,
+        routeMeta: JSON.stringify({
+          title: '电脑审批-审批信息',
           routeHidden: false
-        }
+        }),
+        childrenList:[]
       },
       {
-        path: 'payBack',
-        routeComponent: () => import('@/components/socialSecurity/index/payBack/payBack'),
+        routePath: 'payBack',
+        routeComponent: 'components/socialSecurity/index/payBack/payBack',
         routeName: '补缴',
         routeHidden: false,
-        routeMeta: {
-          title: '社保-补缴',
+        routeHideChildrenList: false,
+        routeMeta: JSON.stringify({
+          title: '电脑审批-审批信息',
           routeHidden: false
-        }
+        }),
+        childrenList:[]
       },
       {
-        path: 'insuranceTable',
-        routeComponent: () => import('@/components/socialSecurity/index/insuranceTable/insuranceTable'),
+        routePath: 'insuranceTable',
+        routeComponent: 'components/socialSecurity/index/insuranceTable/insuranceTable',
         routeName: '参保报表',
         routeHidden: false,
-        routeMeta: {
-          title: '社保-参保报表',
+        routeHideChildrenList: false,
+        routeMeta: JSON.stringify({
+          title: '电脑审批-审批信息',
           routeHidden: false
-        }
+        }),
+        childrenList:[]
       },
       {
-        path: 'insuranceConfig',
-        routeComponent: () => import('@/components/socialSecurity/index/insuranceConfig/insuranceConfig'),
+        routePath: 'insuranceConfig',
+        routeComponent: 'components/socialSecurity/index/insuranceConfig/insuranceConfig',
         routeName: '参保配置',
         routeHidden: false,
-        routeMeta: {
-          title: '社保-参保配置',
+        routeHideChildrenList: false,
+        routeMeta: JSON.stringify({
+          title: '电脑审批-审批信息',
           routeHidden: false
-        }
+        }),
+        childrenList:[]
       }
     ]
   },
   {
-    path: '/salary',
+    routePath: '/salary',
     routeRedirect: '/salary/salaryRule',
-    routeComponent: Layout,
+    routeComponent: 'Layout',
     routeName: '薪资',
     routeIcon: 'salary',
     routeHidden: false,
+    routeHideChildrenList: false,
+    routeMeta: JSON.stringify({
+      title: '电脑审批-审批信息',
+      routeHidden: false
+    }),   
     childrenList: [
       {
-        path: 'salaryRule',
-        routeComponent: () => import('@/components/salary/salaryRule/index'),
+        routePath: '/salaryRule',
+        routeComponent: 'components/salary/salaryRule/index',
         routeName: '薪资规则',
         routeHidden: false,
-        routeMeta: {
-          title: '薪资-薪资规则',
+        routeHideChildrenList: false,
+        routeMeta: JSON.stringify({
+          title: '电脑审批-审批信息',
           routeHidden: false
-        },
+        }),
         childrenList: [
           {
-            path: 'addProject',
-            routeComponent: () => import('@/components/salary/salaryRule/addProject'),
+            routePath: 'addProject',
+            routeComponent: 'components/salary/salaryRule/addProject',
             routeName: '新增方案',
             routeHidden: false,
-            routeMeta: {
-              title: '薪资-新增方案',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            }
+            }),
+            childrenList:[]
           },
           {
-            path: 'editorProject',
-            routeComponent: () => import('@/components/salary/salaryRule/addProject'),
+            routePath: 'editorProject',
+            routeComponent: 'components/salary/salaryRule/addProject',
             routeName: '编辑方案',
             routeHidden: false,
-            routeMeta: {
-              title: '薪资-编辑方案',
-              routeHidden: true
-            }
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
+              routeHidden: false
+            }),
+            childrenList:[]
           }
         ]
       },
       {
-        path: 'salaryProject',
-        routeComponent: () => import('@/components/salary/salaryProject/index'),
+        routePath: '/salaryProject',
+        routeComponent: 'components/salary/salaryProject/index',
         routeName: '薪资项目',
         routeHidden: false,
-        routeMeta: {
-          title: '薪资-薪资项目',
+        routeHideChildrenList: false,
+        routeMeta: JSON.stringify({
+          title: '电脑审批-审批信息',
           routeHidden: false
-        },
+        }),
         childrenList: [
           {
-            path: 'salaryArchiveInfo',
-            routeComponent: () => import('@/components/salary/salaryProject/salaryArchiveInfo'),
+            routePath: 'salaryArchiveInfo',
+            routeComponent: 'components/salary/salaryProject/salaryArchiveInfo',
             routeName: '薪资项目-个人信息',
             routeHidden: true,
-            routeMeta: {
-              title: '薪资-薪资项目-个人信息',
-              routeHidden: true
-            }
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
+              routeHidden: false
+            }),
+            childrenList:[]
           }
         ]
       },
       {
-        path: 'salaryScheme',
-        routeComponent: () => import('@/components/salary/salaryScheme/index'),
+        routePath: 'salaryScheme',
+        routeComponent: 'components/salary/salaryScheme/index',
         routeName: '薪资档案',
         routeHidden: false,
-        routeMeta: {
-          title: '薪资-薪资档案',
+        routeHideChildrenList: false,
+        routeMeta: JSON.stringify({
+          title: '电脑审批-审批信息',
           routeHidden: false
-        }
+        }),
+        childrenList:[]
       },
       {
-        path: 'salaryUpdate',
-        routeComponent: () => import('@/components/salary/salaryUpdate/index'),
+        routePath: 'salaryUpdate',
+        routeComponent: 'components/salary/salaryUpdate/index',
         routeName: '定薪调薪',
         routeHidden: false,
-        routeMeta: {
-          title: '薪资-定薪调薪',
+        routeHideChildrenList: false,
+        routeMeta: JSON.stringify({
+          title: '电脑审批-审批信息',
           routeHidden: false
-        }
+        }),
+        childrenList:[]
       },
       {
-        path: 'salaryMonthReport',
-        routeComponent: () => import('@/components/salary/salaryMonthReport/index'),
+        routePath: 'salaryMonthReport',
+        routeComponent: 'components/salary/salaryMonthReport/index',
         routeName: '薪资月报',
         routeHidden: false,
-        routeMeta: {
-          title: '薪资-薪资月报',
+        routeHideChildrenList: false,
+        routeMeta: JSON.stringify({
+          title: '电脑审批-审批信息',
           routeHidden: false
-        }
+        }),
+        childrenList:[]
       },
       {
-        path: 'salaryCommonMonth',
-        routeComponent: () => import('@/components/salary/salaryCommonMonth/index'),
+        routePath: '/salaryCommonMonth',
+        routeComponent: 'components/salary/salaryCommonMonth/index',
         routeName: '普通月发薪',
         routeHidden: false,
-        routeMeta: {
-          title: '薪资-普通月发薪',
+        routeHideChildrenList: false,
+        routeMeta: JSON.stringify({
+          title: '电脑审批-审批信息',
           routeHidden: false
-        },
+        }),
         childrenList: [
           {
-            path: 'salaryCMPInfo',
-            routeComponent: () => import('@/components/salary/salaryCommonMonth/salaryCMPInfo.vue'),
+            routePath: 'salaryCMPInfo',
+            routeComponent: 'components/salary/salaryCommonMonth/salaryCMPInfo.vue',
             routeName: '普通月发薪-个人信息',
             routeHidden: true,
-            routeMeta: {
-              title: '薪资-普通月发薪-个人信息',
-              routeHidden: true
-            }
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
+              routeHidden: false
+            }),
+            childrenList:[]
           }
         ]
       },
       {
-        path: 'salarySpecial',
-        routeComponent: () => import('@/components/salary/salarySpecial/index'),
+        routePath: 'salarySpecial',
+        routeComponent: 'components/salary/salarySpecial/index',
         routeName: '特殊发薪',
         routeHidden: false,
-        routeMeta: {
-          title: '薪资-特殊发薪',
+        routeHideChildrenList: false,
+        routeMeta: JSON.stringify({
+          title: '电脑审批-审批信息',
           routeHidden: false
-        }
+        }),
+        childrenList:[]
       },
       {
-        path: 'salaryContrastTable',
-        routeComponent: () => import('@/components/salary/salaryContrastTable/index'),
+        routePath: 'salaryContrastTable',
+        routeComponent: 'components/salary/salaryContrastTable/index',
         routeName: '薪酬对比分析表',
         routeHidden: false,
-        routeMeta: {
-          title: '薪资-薪酬对比分析表',
+        routeHideChildrenList: false,
+        routeMeta: JSON.stringify({
+          title: '电脑审批-审批信息',
           routeHidden: false
-        }
+        }),
+        childrenList:[]
       },
       {
-        path: 'salaryApproval',
-        routeComponent: () => import('@/components/salary/salaryApproval/index'),
+        routePath: 'salaryApproval',
+        routeComponent: 'components/salary/salaryApproval/index',
         routeName: '薪资审批',
         routeHidden: false,
-        routeMeta: {
-          title: '薪资-薪资审批',
+        routeHideChildrenList: false,
+        routeMeta: JSON.stringify({
+          title: '电脑审批-审批信息',
           routeHidden: false
-        }
+        }),
+        childrenList:[]
       },
       {
-        path: 'salaryProvision',
-        routeComponent: () => import('@/components/salary/salaryProvision/index'),
+        routePath: 'salaryProvision',
+        routeComponent: 'components/salary/salaryProvision/index',
         routeName: '薪资计提',
         routeHidden: false,
-        routeMeta: {
-          title: '薪资-薪资计提',
+        routeHideChildrenList: false,
+        routeMeta: JSON.stringify({
+          title: '电脑审批-审批信息',
           routeHidden: false
-        }
+        }),
+        childrenList:[]
       },
       {
-        path: 'salaryBillSet',
-        routeComponent: () => import('@/components/salary/salaryBillSet/index'),
+        routePath: 'salaryBillSet',
+        routeComponent: 'components/salary/salaryBillSet/index',
         routeName: '工资条设定',
         routeHidden: false,
-        routeMeta: {
-          title: '薪资-工资条设定',
+        routeHideChildrenList: false,
+        routeMeta: JSON.stringify({
+          title: '电脑审批-审批信息',
           routeHidden: false
-        }
+        }),
+        childrenList:[]
       },
       {
-        path: 'salaryAmerceSet',
-        routeComponent: () => import('@/components/salary/salaryAmerceSet/index'),
+        routePath: 'salaryAmerceSet',
+        routeComponent: 'components/salary/salaryAmerceSet/index',
         routeName: '惩奖设定',
         routeHidden: false,
-        routeMeta: {
-          title: '薪资-惩奖设定',
+        routeHideChildrenList: false,
+        routeMeta: JSON.stringify({
+          title: '电脑审批-审批信息',
           routeHidden: false
-        }
+        }),
+        childrenList:[]
       },
       {
-        path: 'leaveSet',
-        routeComponent: () => import('@/components/salary/leaveSet/index'),
+        routePath: 'leaveSet',
+        routeComponent: 'components/salary/leaveSet/index',
         routeName: '请假款项',
         routeHidden: false,
-        routeMeta: {
-          title: '薪资-请假款项',
+        routeHideChildrenList: false,
+        routeMeta: JSON.stringify({
+          title: '电脑审批-审批信息',
           routeHidden: false
-        }
+        }),
+        childrenList:[]
       },
       {
-        path: 'overtimeSet',
-        routeComponent: () => import('@/components/salary/overtimeSet/index'),
+        routePath: 'overtimeSet',
+        routeComponent: 'components/salary/overtimeSet/index',
         routeName: '加班款项',
         routeHidden: false,
-        routeMeta: {
-          title: '薪资-加班款项',
+        routeHideChildrenList: false,
+        routeMeta: JSON.stringify({
+          title: '电脑审批-审批信息',
           routeHidden: false
-        }
+        }),
+        childrenList:[]
       }
     ]
   },
   {
-    path: '/attendance',
+    routePath: '/attendance',
     routeRedirect: '/attendance/baseConfig',
-    routeComponent: Layout,
+    routeComponent: 'Layout',
     routeName: '考勤',
     routeIcon: 'salary',
     routeHidden: false,
+    routeHideChildrenList: false,
+    routeMeta: JSON.stringify({
+      title: '电脑审批-审批信息',
+      routeHidden: false
+    }),   
     childrenList: [
       {
-        path: '/attendance/baseConfig',
-        routeComponent: () => import('@/components/attendance/base-config/index'),
+        routePath: '/attendance/baseConfig',
+        routeComponent: 'components/attendance/base-config/index',
         routeName: '基础配置',
         routeHidden: false,
+        routeHideChildrenList: false,
+        routeMeta: JSON.stringify({
+          title: '电脑审批-审批信息',
+          routeHidden: false
+        }),       
         childrenList: [
           {
-            path: 'daySet',
-            routeComponent: () => import('@/components/attendance/base-config/day-set/index'),
+            routePath: '/daySet',
+            routeComponent: 'components/attendance/base-config/day-set/index',
             routeName: '班次设置',
             routeHidden: false,
-            routeMeta: {
-              title: '考勤-班次设置',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            },
+            }),
             childrenList: [
               {
-                path: 'addDay',
-                routeComponent: () => import('@/components/attendance/base-config/day-set/detail'),
+                routePath: 'addDay',
+                routeComponent: 'components/attendance/base-config/day-set/detail',
                 routeName: '新增班次',
                 routeHidden: false,
-                routeMeta: {
-                  title: '考勤-新增班次',
+                routeHideChildrenList: false,
+                routeMeta: JSON.stringify({
+                  title: '电脑审批-审批信息',
                   routeHidden: false
-                }
+                }),
+                childrenList:[]
               },
               {
-                path: 'editDay',
-                routeComponent: () => import('@/components/attendance/base-config/day-set/detail'),
+                routePath: 'editDay',
+                routeComponent: 'components/attendance/base-config/day-set/detail',
                 routeName: '编辑班次',
                 routeHidden: false,
-                routeMeta: {
-                  title: '考勤-编辑班次',
-                  routeHidden: true
-                }
+                routeHideChildrenList: false,
+                routeMeta: JSON.stringify({
+                  title: '电脑审批-审批信息',
+                  routeHidden: false
+                }),
+                childrenList:[]
               }
             ]
           },
           {
-            path: 'attendanceTeam',
-            routeComponent: () => import('@/components/attendance/base-config/attendance-team/index'),
+            routePath: '/attendanceTeam',
+            routeComponent: 'components/attendance/base-config/attendance-team/index',
             routeName: '考勤组',
             routeHidden: false,
-            routeMeta: {
-              title: '考勤-考勤组',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            },
+            }),
             childrenList: [
               {
-                path: 'addAttendanceTeam',
-                routeComponent: () => import('@/components/attendance/base-config/attendance-team/detail'),
+                routePath: 'addAttendanceTeam',
+                routeComponent: 'components/attendance/base-config/attendance-team/detail',
                 routeName: '新增考勤组',
                 routeHidden: false,
-                routeMeta: {
-                  title: '考勤-新增考勤组',
+                routeHideChildrenList: false,
+                routeMeta: JSON.stringify({
+                  title: '电脑审批-审批信息',
                   routeHidden: false
-                }
+                }),
+                childrenList:[]
               },
               {
-                path: 'editAttendanceTeam',
-                routeComponent: () => import('@/components/attendance/base-config/attendance-team/detail'),
+                routePath: 'editAttendanceTeam',
+                routeComponent: 'components/attendance/base-config/attendance-team/detail',
                 routeName: '新增考勤组',
                 routeHidden: false,
-                routeMeta: {
-                  title: '考勤-编辑考勤组',
-                  routeHidden: true
-                }
+                routeHideChildrenList: false,
+                routeMeta: JSON.stringify({
+                  title: '电脑审批-审批信息',
+                  routeHidden: false
+                }),
+                childrenList:[]
               }
             ]
           },
           {
-            path: 'attendanceRule',
-            routeComponent: () => import('@/components/attendance/base-config/attendance-rule/index'),
+            routePath: '/attendanceRule',
+            routeComponent: 'components/attendance/base-config/attendance-rule/index',
             routeName: '出勤规则',
             routeHidden: false,
-            routeMeta: {
-              title: '考勤-出勤规则',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            },
+            }),
             childrenList: [
               {
-                path: 'overtimeRule',
-                routeComponent: () => import('@/components/attendance/base-config/attendance-rule/overtime-rule-list'),
+                routePath: '/overtimeRule',
+                routeComponent: 'components/attendance/base-config/attendance-rule/overtime-rule-list',
                 routeName: '加班规则',
                 routeHidden: false,
-                routeMeta: {
-                  title: '加班规则',
+                routeHideChildrenList: false,
+                routeMeta: JSON.stringify({
+                  title: '电脑审批-审批信息',
                   routeHidden: false
-                },
+                }),
                 childrenList: [
                   {
-                    path: 'addOvertimeRule',
-                    routeComponent: () => import('@/components/attendance/base-config/attendance-rule/overtime-rule-detail'),
+                    routePath: 'addOvertimeRule',
+                    routeComponent: 'components/attendance/base-config/attendance-rule/overtime-rule-detail',
                     routeName: '新增加班规则',
                     routeHidden: false,
-                    routeMeta: {
-                      title: '新增加班规则',
+                    routeHideChildrenList: false,
+                    routeMeta: JSON.stringify({
+                      title: '电脑审批-审批信息',
                       routeHidden: false
-                    }
+                    }),
                   },
                   {
-                    path: 'editOvertimeRule',
-                    routeComponent: () => import('@/components/attendance/base-config/attendance-rule/overtime-rule-detail'),
+                    routePath: 'editOvertimeRule',
+                    routeComponent: 'components/attendance/base-config/attendance-rule/overtime-rule-detail',
                     routeName: '编辑加班规则',
                     routeHidden: false,
-                    routeMeta: {
-                      title: '编辑加班规则',
+                    routeHideChildrenList: false,
+                    routeMeta: JSON.stringify({
+                      title: '电脑审批-审批信息',
                       routeHidden: false
-                    }
+                    }),
                   }
                 ]
               },
               {
-                path: 'offdayRule',
-                routeComponent: () => import('@/components/attendance/base-config/attendance-rule/offday-rule-list'),
+                routePath: '/offdayRule',
+                routeComponent: 'components/attendance/base-config/attendance-rule/offday-rule-list',
                 routeName: '调休规则',
+                routeHideChildrenList: false,
                 routeHidden: true,
-                routeMeta: {
-                  title: '调休规则',
-                  routeHidden: true
-                },
+                routeMeta: JSON.stringify({
+                  title: '电脑审批-审批信息',
+                  routeHidden: false
+                }),
                 childrenList: [
                   {
-                    path: 'addOffdayRule',
-                    routeComponent: () => import('@/components/attendance/base-config/attendance-rule/offday-rule-detail'),
+                    routePath: 'addOffdayRule',
+                    routeComponent: 'components/attendance/base-config/attendance-rule/offday-rule-detail',
                     routeName: '新增调休规则',
                     routeHidden: true,
-                    routeMeta: {
-                      title: '新增调休规则',
-                      routeHidden: true
-                    }
+                    routeHideChildrenList: false,
+                    routeMeta: JSON.stringify({
+                      title: '电脑审批-审批信息',
+                      routeHidden: false
+                    }),
+                    childrenList:[]
                   },
                   {
-                    path: 'editOffdayRule',
-                    routeComponent: () => import('@/components/attendance/base-config/attendance-rule/offday-rule-detail'),
+                    routePath: 'editOffdayRule',
+                    routeComponent: 'components/attendance/base-config/attendance-rule/offday-rule-detail',
                     routeName: '编辑调休规则',
+                    routeHideChildrenList: false,
                     routeHidden: true,
-                    routeMeta: {
-                      title: '编辑调休规则',
-                      routeHidden: true
-                    }
+                    routeMeta: JSON.stringify({
+                      title: '电脑审批-审批信息',
+                      routeHidden: false
+                    }),
+                    childrenList:[]
                   }
                 ]
               },
               {
-                path: 'businessRule',
-                routeComponent: () => import('@/components/attendance/base-config/attendance-rule/business-rule-list'),
+                routePath: '/businessRule',
+                routeComponent: 'components/attendance/base-config/attendance-rule/business-rule-list',
                 routeName: '出差规则',
                 routeHidden: true,
-                routeMeta: {
-                  title: '出差规则',
-                  routeHidden: true
-                },
+                routeHideChildrenList: false,
+                routeMeta: JSON.stringify({
+                  title: '电脑审批-审批信息',
+                  routeHidden: false
+                }),
                 childrenList: [
                   {
-                    path: 'addBusinessRule',
-                    routeComponent: () => import('@/components/attendance/base-config/attendance-rule/business-rule-detail'),
+                    routePath: 'addBusinessRule',
+                    routeComponent: 'components/attendance/base-config/attendance-rule/business-rule-detail',
                     routeName: '新增出差规则',
                     routeHidden: true,
-                    routeMeta: {
-                      title: '新增出差规则',
-                      routeHidden: true
-                    }
+                    routeHideChildrenList: false,
+                    routeMeta: JSON.stringify({
+                      title: '电脑审批-审批信息',
+                      routeHidden: false
+                    }),
                   },
                   {
-                    path: 'editBusinessRule',
-                    routeComponent: () => import('@/components/attendance/base-config/attendance-rule/business-rule-detail'),
+                    routePath: 'editBusinessRule',
+                    routeComponent: 'components/attendance/base-config/attendance-rule/business-rule-detail',
                     routeName: '编辑出差规则',
                     routeHidden: true,
-                    routeMeta: {
-                      title: '编辑出差规则',
-                      routeHidden: true
-                    }
+                    routeHideChildrenList: false,
+                    routeMeta: JSON.stringify({
+                      title: '电脑审批-审批信息',
+                      routeHidden: false
+                    }),
+                    childrenList:[]
                   }
                 ]
               },
               {
-                path: 'publicRule',
-                routeComponent: () => import('@/components/attendance/base-config/attendance-rule/public-rule-list'),
+                routePath: '/publicRule',
+                routeComponent: 'components/attendance/base-config/attendance-rule/public-rule-list',
                 routeName: '公出规则',
                 routeHidden: true,
-                routeMeta: {
-                  title: '公出规则',
-                  routeHidden: true
-                },
+                routeHideChildrenList: false,
+                routeMeta: JSON.stringify({
+                  title: '电脑审批-审批信息',
+                  routeHidden: false
+                }),
                 childrenList: [
                   {
-                    path: 'addPublicRule',
-                    routeComponent: () => import('@/components/attendance/base-config/attendance-rule/public-rule-detail'),
+                    routePath: 'addPublicRule',
+                    routeComponent: 'components/attendance/base-config/attendance-rule/public-rule-detail',
                     routeName: '新增公出规则',
                     routeHidden: true,
-                    routeMeta: {
-                      title: '新增公出规则',
-                      routeHidden: true
-                    }
+                    routeHideChildrenList: false,
+                    routeMeta: JSON.stringify({
+                      title: '电脑审批-审批信息',
+                      routeHidden: false
+                    }),
+                    childrenList:[]
                   },
                   {
-                    path: 'editPublicRule',
-                    routeComponent: () => import('@/components/attendance/base-config/attendance-rule/public-rule-detail'),
+                    routePath: 'editPublicRule',
+                    routeComponent: 'components/attendance/base-config/attendance-rule/public-rule-detail',
                     routeName: '编辑公出规则',
                     routeHidden: true,
-                    routeMeta: {
-                      title: '编辑公出规则',
-                      routeHidden: true
-                    }
+                    routeHideChildrenList: false,
+                    routeMeta: JSON.stringify({
+                      title: '电脑审批-审批信息',
+                      routeHidden: false
+                    }),
+                    childrenList:[]
                   }
                 ]
               },
               {
-                path: 'supplementRule',
-                routeComponent: () => import('@/components/attendance/base-config/attendance-rule/supplement-rule-list'),
+                routePath: '/supplementRule',
+                routeComponent: 'components/attendance/base-config/attendance-rule/supplement-rule-list',
                 routeName: '补签规则',
                 routeHidden: true,
-                routeMeta: {
-                  title: '补签规则',
-                  routeHidden: true
-                },
+                routeHideChildrenList: false,
+                routeMeta: JSON.stringify({
+                  title: '电脑审批-审批信息',
+                  routeHidden: false
+                }),
                 childrenList: [
                   {
-                    path: 'addSupplementRule',
-                    routeComponent: () => import('@/components/attendance/base-config/attendance-rule/supplement-rule-detail'),
+                    routePath: 'addSupplementRule',
+                    routeComponent: 'components/attendance/base-config/attendance-rule/supplement-rule-detail',
                     routeName: '新增补签规则',
                     routeHidden: true,
-                    routeMeta: {
-                      title: '新增补签规则',
-                      routeHidden: true
-                    }
+                    routeHideChildrenList: false,
+                    routeMeta: JSON.stringify({
+                      title: '电脑审批-审批信息',
+                      routeHidden: false
+                    }),
+                    childrenList:[]
                   },
                   {
-                    path: 'editSupplementRule',
-                    routeComponent: () => import('@/components/attendance/base-config/attendance-rule/supplement-rule-detail'),
+                    routePath: 'editSupplementRule',
+                    routeComponent: 'components/attendance/base-config/attendance-rule/supplement-rule-detail',
                     routeName: '编辑补签规则',
                     routeHidden: true,
-                    routeMeta: {
-                      title: '编辑补签规则',
-                      routeHidden: true
-                    }
+                    routeHideChildrenList: false,
+                    routeMeta: JSON.stringify({
+                      title: '电脑审批-审批信息',
+                      routeHidden: false
+                    }),
+                    childrenList:[]
                   }
                 ]
               },
               {
-                path: 'appealRule',
-                routeComponent: () => import('@/components/attendance/base-config/attendance-rule/appeal-rule-list'),
+                routePath: '/appealRule',
+                routeComponent: 'components/attendance/base-config/attendance-rule/appeal-rule-list',
                 routeName: '申述规则',
-  
                 routeHidden: true,
-                routeMeta: {
-                  title: '申述规则',
-                  routeHidden: true
-                },
+                routeHideChildrenList: false,
+                routeMeta: JSON.stringify({
+                  title: '电脑审批-审批信息',
+                  routeHidden: false
+                }),
                 childrenList: [
                   {
-                    path: 'addAppealRule',
-                    routeComponent: () => import('@/components/attendance/base-config/attendance-rule/appeal-rule-detail'),
+                    routePath: 'addAppealRule',
+                    routeComponent: 'components/attendance/base-config/attendance-rule/appeal-rule-detail',
                     routeName: '新增申述规则',
                     routeHidden: true,
-                    routeMeta: {
-                      title: '新增申述规则',
-                      routeHidden: true
-                    }
+                    routeHideChildrenList: false,
+                    routeMeta: JSON.stringify({
+                      title: '电脑审批-审批信息',
+                      routeHidden: false
+                    }),
+                    childrenList:[]
                   },
                   {
-                    path: 'editAppealRule',
-                    routeComponent: () => import('@/components/attendance/base-config/attendance-rule/appeal-rule-detail'),
+                    routePath: 'editAppealRule',
+                    routeComponent: 'components/attendance/base-config/attendance-rule/appeal-rule-detail',
                     routeName: '编辑申述规则',
-      
                     routeHidden: true,
-                    routeMeta: {
-                      title: '编辑申述规则',
-                      routeHidden: true
-                    }
+                    routeHideChildrenList: false,
+                    routeMeta: JSON.stringify({
+                      title: '电脑审批-审批信息',
+                      routeHidden: false
+                    }),
+                    childrenList:[]
                   }
                 ]
               },
               {
-                path: 'leaveRule',
-                routeComponent: () => import('@/components/attendance/base-config/attendance-rule/leave-rule-list'),
+                routePath: '/leaveRule',
+                routeComponent: 'components/attendance/base-config/attendance-rule/leave-rule-list',
                 routeName: '请假规则',
                 routeHidden: true,
-                routeMeta: {
-                  title: '请假规则',
-                  routeHidden: true
-                },
+                routeHideChildrenList: false,
+                routeMeta: JSON.stringify({
+                  title: '电脑审批-审批信息',
+                  routeHidden: false
+                }),
                 childrenList: [
                   {
-                    path: 'addLeaveRule',
-                    routeComponent: () => import('@/components/attendance/base-config/attendance-rule/leave-rule-detail'),
+                    routePath: 'addLeaveRule',
+                    routeComponent: 'components/attendance/base-config/attendance-rule/leave-rule-detail',
                     routeName: '新增请假规则',
-      
                     routeHidden: true,
-                    routeMeta: {
-                      title: '新增请假规则',
-                      routeHidden: true
-                    }
+                    routeHideChildrenList: false,
+                    routeMeta: JSON.stringify({
+                      title: '电脑审批-审批信息',
+                      routeHidden: false
+                    }),
+                    childrenList:[]
                   },
                   {
-                    path: 'editLeaveRule',
-                    routeComponent: () => import('@/components/attendance/base-config/attendance-rule/leave-rule-detail'),
+                    routePath: 'editLeaveRule',
+                    routeComponent: 'components/attendance/base-config/attendance-rule/leave-rule-detail',
                     routeName: '编辑请假规则',
-      
                     routeHidden: true,
-                    routeMeta: {
-                      title: '编辑请假规则',
-                      routeHidden: true
-                    }
+                    routeHideChildrenList: false,
+                    routeMeta: JSON.stringify({
+                      title: '电脑审批-审批信息',
+                      routeHidden: false
+                    }),
+                    childrenList:[]
                   }
                 ]
               }
@@ -1469,586 +1645,704 @@ export let asyncRouterMap = [
         ]
       },
       {
-        path: '/attendance/handleService',
+        routePath: '/attendance/handleService',
         routeRedirect: '/attendance/baseConfig/daySet',
-        routeComponent: () => import('@/components/attendance/handle-service/index'),
+        routeComponent: 'components/attendance/handle-service/index',
         routeName: '业务处理',
-  
         routeHidden: false,
+        routeHideChildrenList: false,
+        routeMeta: JSON.stringify({
+          title: '电脑审批-审批信息',
+          routeHidden: false
+        }),     
         childrenList: [
           {
-            path: 'attendanceArchives',
-            routeComponent: () => import('@/components/attendance/handle-service/attendance-archives/index'),
+            routePath: 'attendanceArchives',
+            routeComponent: 'components/attendance/handle-service/attendance-archives/index',
             routeName: '考勤档案',
             routeHidden: false,
-            routeMeta: {
-              title: '考勤-考勤档案',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            }
+            }),
+            childrenList:[]
           },
           {
-            path: 'attendanceTeam',
-            routeComponent: () => import('@/components/attendance/handle-service/scheduling/index'),
+            routePath: '/attendanceTeam',
+            routeComponent: 'components/attendance/handle-service/scheduling/index',
             routeName: '排班表',
             routeHidden: false,
-            routeMeta: {
-              title: '考勤-排班表',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            },
+            }),
             childrenList: [
               {
-                path: 'schedulingCount',
-                routeComponent: () => import('@/components/attendance/handle-service/scheduling/scheduling-count'),
+                routePath: 'schedulingCount',
+                routeComponent: 'components/attendance/handle-service/scheduling/scheduling-count',
                 routeName: '排班统计',
-  
                 routeHidden: false,
-                routeMeta: {
-                  title: '考勤-排班统计',
+                routeHideChildrenList: false,
+                routeMeta: JSON.stringify({
+                  title: '电脑审批-审批信息',
                   routeHidden: false
-                }
+                }),
+                childrenList:[]
               },
               {
-                path: 'schedulingBatch',
-                routeComponent: () => import('@/components/attendance/handle-service/scheduling/scheduling-batch'),
+                routePath: 'schedulingBatch',
+                routeComponent: 'components/attendance/handle-service/scheduling/scheduling-batch',
                 routeName: '批量排班',
-  
                 routeHidden: false,
-                routeMeta: {
-                  title: '考勤-批量排班',
-                  routeHidden: true
-                }
+                routeHideChildrenList: false,
+                routeMeta: JSON.stringify({
+                  title: '电脑审批-审批信息',
+                  routeHidden: false
+                }),
+                childrenList:[]
               },
               {
-                path: 'schedulingHighBatch',
-                routeComponent: () => import('@/components/attendance/handle-service/scheduling/scheduling-high-batch'),
+                routePath: 'schedulingHighBatch',
+                routeComponent: 'components/attendance/handle-service/scheduling/scheduling-high-batch',
                 routeName: '高级批量排班',
-  
                 routeHidden: false,
-                routeMeta: {
-                  title: '考勤-高级批量排班',
-                  routeHidden: true
-                }
+                routeHideChildrenList: false,
+                routeMeta: JSON.stringify({
+                  title: '电脑审批-审批信息',
+                  routeHidden: false
+                }),
+                childrenList:[]
               },
               {
-                path: 'schedulingImport',
-                routeComponent: () => import('@/components/attendance/handle-service/scheduling/scheduling-import'),
+                routePath: 'schedulingImport',
+                routeComponent: 'components/attendance/handle-service/scheduling/scheduling-import',
                 routeName: '导入排班',
-  
                 routeHidden: false,
-                routeMeta: {
-                  title: '考勤-导入排班',
-                  routeHidden: true
-                }
+                routeHideChildrenList: false,
+                routeMeta: JSON.stringify({
+                  title: '电脑审批-审批信息',
+                  routeHidden: false
+                }),
+                childrenList:[]
               }
             ]
           }
         ]
       },
       {
-        path: '/attendance/handleData',
+        routePath: '/attendance/handleData',
         routeRedirect: '/attendance/handleData/clockRecord',
-        routeComponent: () => import('@/components/attendance/handle-data/index'),
+        routeComponent: 'components/attendance/handle-data/index',
         routeName: '数据处理',
-  
         routeHidden: false,
+        routeHideChildrenList: false,
+        routeMeta: JSON.stringify({
+          title: '电脑审批-审批信息',
+          routeHidden: false
+        }),       
         childrenList: [
           {
-            path: 'clockRecord',
-            routeComponent: () => import('@/components/attendance/handle-data/clock-record/index'),
+            routePath: 'clockRecord',
+            routeComponent: 'components/attendance/handle-data/clock-record/index',
             routeName: '打卡记录',
             routeHidden: false,
-            routeMeta: {
-              title: '考勤-打卡记录',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            }
+            }),
+            childrenList:[]
           },
           {
-            path: 'supplementRecord',
-            routeComponent: () => import('@/components/attendance/handle-data/supplement-record/index'),
+            routePath: 'supplementRecord',
+            routeComponent: 'components/attendance/handle-data/supplement-record/index',
             routeName: '补签单据',
             routeHidden: false,
-            routeMeta: {
-              title: '考勤-补签单据',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            }
+            }),
+            childrenList:[]
           },
           {
-            path: 'attendanceAppeal',
-            routeComponent: () => import('@/components/attendance/handle-data/attendance-appeal/index'),
+            routePath: 'attendanceAppeal',
+            routeComponent: 'components/attendance/handle-data/attendance-appeal/index',
             routeName: '考勤申诉',
             routeHidden: false,
-            routeMeta: {
-              title: '考勤-考勤申诉',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            }
+            }),
+            childrenList:[]
           },
           {
-            path: 'timeReceipt',
-            routeComponent: () => import('@/components/attendance/handle-data/time-receipt/index'),
+            routePath: 'timeReceipt',
+            routeComponent: 'components/attendance/handle-data/time-receipt/index',
             routeName: '时间单据',
             routeHidden: false,
-            routeMeta: {
-              title: '考勤-时间单据',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            }
+            }),
+            childrenList:[]
           },
           {
-            path: 'overtimeReceipt',
-            routeComponent: () => import('@/components/attendance/handle-data/overtime-receipt/index'),
+            routePath: 'overtimeReceipt',
+            routeComponent: 'components/attendance/handle-data/overtime-receipt/index',
             routeName: '加班单据',
             routeHidden: false,
-            routeMeta: {
-              title: '考勤-加班单据',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            }
+            }),
+            childrenList:[]
           }
         ]
       },
       {
-        path: '/attendance/attendanceReport',
+        routePath: '/attendance/attendanceReport',
         routeRedirect: '/attendance/attendanceReport/attendanceDayReport',
-        routeComponent: () => import('@/components/attendance/attendance-report/index'),
+        routeComponent: 'components/attendance/attendance-report/index',
         routeName: '考勤报告',
         routeHidden: false,
+        routeHideChildrenList: false,
+        routeMeta: JSON.stringify({
+          title: '电脑审批-审批信息',
+          routeHidden: false
+        }),      
         childrenList: [
           {
-            path: 'attendanceDayReport',
-            routeComponent: () => import('@/components/attendance/attendance-report/attendance-day-report/index'),
+            routePath: 'attendanceDayReport',
+            routeComponent: 'components/attendance/attendance-report/attendance-day-report/index',
             routeName: '考勤日报',
             routeHidden: false,
-            routeMeta: {
-              title: '考勤-考勤日报',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            }
+            }),
+            childrenList:[]
           },
           {
-            path: 'attendanceMonthReport',
-            routeComponent: () => import('@/components/attendance/attendance-report/attendance-month-report/index'),
+            routePath: 'attendanceMonthReport',
+            routeComponent: 'components/attendance/attendance-report/attendance-month-report/index',
             routeName: '考勤月报',
             routeHidden: false,
-            routeMeta: {
-              title: '考勤-考勤月报',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            }
+            }),
+            childrenList:[]
           },
           {
-            path: 'overtimeCount',
-            routeComponent: () => import('@/components/attendance/attendance-report/overtime-count/index'),
+            routePath: 'overtimeCount',
+            routeComponent: 'components/attendance/attendance-report/overtime-count/index',
             routeName: '加班统计',
             routeHidden: false,
-            routeMeta: {
-              title: '考勤-加班统计',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            }
+            }),
+            childrenList:[]
           },
           {
-            path: 'workingHoursMonthReport',
-            routeComponent: () => import('@/components/attendance/attendance-report/working-hours-month-report/index'),
+            routePath: 'workingHoursMonthReport',
+            routeComponent: 'components/attendance/attendance-report/working-hours-month-report/index',
             routeName: '工时月报',
             routeHidden: false,
-            routeMeta: {
-              title: '考勤-工时月报',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            }
+            }),
+            childrenList:[]
           }
         ]
       }
     ]
   },
   {
-    path: '/platform',
+    routePath: '/platform',
     routeRedirect: '/platform/index',
-    routeComponent: Layout,
+    routeComponent: 'Layout',
     routeName: '平台',
     routeIcon: 'platform',
     routeHidden: false,
+    routeHideChildrenList: false,
+    routeMeta: JSON.stringify({
+      title: '电脑审批-审批信息',
+      routeHidden: false
+    }),   
     childrenList: [
       {
-        path: 'index',
-        routeComponent: () => import('@/components/platform/socialManage/joinType/joinType'),
+        routePath: 'index',
+        routeComponent: 'components/platform/socialManage/joinType/joinType',
         routeName: '参保类型',
         routeHidden: false,
-        routeMeta: {
-          title: '平台-参保类型',
+        routeHideChildrenList: false,
+        routeMeta: JSON.stringify({
+          title: '电脑审批-审批信息',
           routeHidden: false
-        }
+        }),
+        childrenList:[]
       },
       {
-        path: 'platformThisMonth',
-        routeComponent: () => import('@/components/platform/socialManage/thisMonth/thisMonth'),
+        routePath: 'platformThisMonth',
+        routeComponent: 'components/platform/socialManage/thisMonth/thisMonth',
         routeName: '本月变动',
         routeHidden: false,
-        routeMeta: {
-          title: '平台-本月变动',
+        routeHideChildrenList: false,
+        routeMeta: JSON.stringify({
+          title: '电脑审批-审批信息',
           routeHidden: false
-        }
+        }),
+        childrenList:[]
       },
       {
-        path: '/platform/approvalFlow',       // 审批流 一级菜单
+        routePath: '/platform/approvalFlow',       // 审批流 一级菜单
         routeRedirect: '/platform/approvalFlow/flowInfo', // 重定向到 二级菜单审批流路由
-        routeComponent: () => import('@/components/platform/approval-flow/index'),
+        routeComponent: 'components/platform/approval-flow/index',
         routeName: '审批流',
         routeHidden: false,
+        routeHideChildrenList: false,
+        routeMeta: JSON.stringify({
+          title: '电脑审批-审批信息',
+          routeHidden: false
+        }),       
         childrenList: [
           {
-            path: 'tableManage',
-            routeComponent: () => import('@/components/platform/approval-flow/table-manage/table-manage'),
+            routePath: '/tableManage',
+            routeComponent: 'components/platform/approval-flow/table-manage/table-manage',
             routeName: '表单管理',
             routeHidden: false,
-            routeMeta: {
-              title: '表单管理',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            },
+            }),
             childrenList: [
               {
-                path: 'showTable',   // 点击 查看按钮  查看表单信息
-                routeComponent: () => import('@/components/platform/approval-flow/table-manage/table-show'),
+                routePath: 'showTable',   // 点击 查看按钮  查看表单信息
+                routeComponent: 'components/platform/approval-flow/table-manage/table-show',
                 routeName: '表单信息',
                 routeHidden: true,
-                routeMeta: {
-                  title: '表单信息',
+                routeHideChildrenList: false,
+                routeMeta: JSON.stringify({
+                  title: '电脑审批-审批信息',
                   routeHidden: false
-                }
+                }),
+                childrenList:[]
               },
               {
-                path: 'tableEdit', // 点击 编辑 按钮，进入表单的编辑界面
-                routeComponent: () => import('@/components/platform/approval-flow/table-manage/table-edit'),
+                routePath: 'tableEdit', // 点击 编辑 按钮，进入表单的编辑界面
+                routeComponent: 'components/platform/approval-flow/table-manage/table-edit',
                 routeName: '表单编辑',
                 routeHidden: true,
-                routeMeta: {
-                  title: '表单编辑',
-                  routeHidden: true
-                }
+                routeHideChildrenList: false,
+                routeMeta: JSON.stringify({
+                  title: '电脑审批-审批信息',
+                  routeHidden: false
+                }),
+                childrenList:[]
               }
             ]
           },
           {
-            path: 'flowInfo',   // 审批流—— 审批流信息 菜单
-            routeComponent: () => import('@/components/platform/approval-flow/flow-info/flow-info'),
+            routePath: 'flowInfo',   // 审批流—— 审批流信息 菜单
+            routeComponent: 'components/platform/approval-flow/flow-info/flow-info',
             routeName: '审批流信息',
             routeHidden: false,
-            routeMeta: {
-              title: '审批流信息',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            }
+            }),
+            childrenList:[]
           },
           {
-            path: 'flowRule',  // 审批流——审批规则二级菜单路由
-            routeComponent: () => import('@/components/platform/approval-flow/flow-rule/flow-rule'),
+            routePath: '/flowRule',  // 审批流——审批规则二级菜单路由
+            routeComponent: 'components/platform/approval-flow/flow-rule/flow-rule',
             routeName: '审批规则',
             routeHidden: false,
-            routeMeta: {
-              title: '审批规则',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            },
+            }),
             childrenList: [
               {
-                path: 'flowConfig',  //  查看/新增/编辑 流程时 的流程配置页面  
-                routeComponent: () => import('@/components/platform/approval-flow/flow-config/index'),
+                routePath: '/flowConfig',  //  查看/新增/编辑 流程时 的流程配置页面  
+                routeComponent: 'components/platform/approval-flow/flow-config/index',
                 routeRedirect: '/platform/approvalFlow/flowRule/flowConfig/processSet',  // 查看、新增和编辑时，重定向到了 processSet子路由页面
                 routeName: '审批流配置',
                 routeHidden: true,
-                routeMeta: {
-                  title: '审批流配置',
-                  routeHidden: true
-                },
+                routeHideChildrenList: false,
+                routeMeta: JSON.stringify({
+                  title: '电脑审批-审批信息',
+                  routeHidden: false
+                }),
                 childrenList: [
                   {
-                    path: 'processSet',   // 流程设置路由页面
-                    routeComponent: () => import('@/components/platform/approval-flow/flow-config/process-set/process-set'),
+                    routePath: 'processSet',   // 流程设置路由页面
+                    routeComponent: 'components/platform/approval-flow/flow-config/process-set/process-set',
                     routeName: '流程设置',
                     routeHidden: true,
-                    routeMeta: {
-                      title: '流程设置',
-                      routeHidden: true
-                    }
+                    routeHideChildrenList: false,
+                    routeMeta: JSON.stringify({
+                      title: '电脑审批-审批信息',
+                      routeHidden: false
+                    }),
+                    childrenList:[]
                   },
                   {
-                    path: 'relationTable',  // 流程表单页面
-                    routeComponent: () => import('@/components/platform/approval-flow/flow-config/relation-table/relation-table'),
+                    routePath: 'relationTable',  // 流程表单页面
+                    routeComponent: 'components/platform/approval-flow/flow-config/relation-table/relation-table',
                     routeName: '流程表单',
                     routeHidden: true,
-                    routeMeta: {
-                      title: '流程表单',
-                      routeHidden: true
-                    }
+                    routeHideChildrenList: false,
+                    routeMeta: JSON.stringify({
+                      title: '电脑审批-审批信息',
+                      routeHidden: false
+                    }),
+                    childrenList:[]
                   },
                   {
-                    path: 'processDesign',  // 流程设计页面
-                    routeComponent: () => import('@/components/platform/approval-flow/flow-config/process-design/process-design'),
+                    routePath: 'processDesign',  // 流程设计页面
+                    routeComponent: 'components/platform/approval-flow/flow-config/process-design/process-design',
                     routeName: '流程设计',
                     routeHidden: true,
-                    routeMeta: {
-                      title: '流程设计',
-                      routeHidden: true
-                    }
+                    routeHideChildrenList: false,
+                    routeMeta: JSON.stringify({
+                      title: '电脑审批-审批信息',
+                      routeHidden: false
+                    }),
+                    childrenList:[]
                   },
                   {
-                    path: 'fieldSet',   // 节点设置页面
-                    routeComponent: () => import('@/components/platform/approval-flow/flow-config/field-set/field-set'),
+                    routePath: 'fieldSet',   // 节点设置页面
+                    routeComponent: 'components/platform/approval-flow/flow-config/field-set/field-set',
                     routeName: '节点设置',
                     routeHidden: true,
-                    routeMeta: {
-                      title: '节点设置',
-                      routeHidden: true
-                    }
+                    routeHideChildrenList: false,
+                    routeMeta: JSON.stringify({
+                      title: '电脑审批-审批信息',
+                      routeHidden: false
+                    }),
+                    childrenList:[]
                   }
                 ]
               }
             ]
           },
           {
-            path: 'launch',  // 审批流——发起 二级菜单路由
-            routeComponent: () => import('@/components/platform/approval-flow/launch/launch'),
+            routePath: 'launch',  // 审批流——发起 二级菜单路由
+            routeComponent: 'components/platform/approval-flow/launch/launch',
             routeName: '发起',
             routeHidden: false,
-            routeMeta: {
-              title: '平台-发起',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            }
+            }),
+            childrenList:[]
           },
           {
-            path: 'todo',   // 审批流—— 待办  二级菜单路由
-            routeComponent: () => import('@/components/platform/approval-flow/todo/todo'),
+            routePath: 'todo',   // 审批流—— 待办  二级菜单路由
+            routeComponent: 'components/platform/approval-flow/todo/todo',
             routeName: '待办',
             routeHidden: false,
-            routeMeta: {
-              title: '平台-待办',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            }
+            }),
+            childrenList:[]
           },
           {
-            path: 'onTheWay',  // 审批流——在途 二级菜单路由
-            routeComponent: () => import('@/components/platform/approval-flow/on-the-way/on-the-way'),
+            routePath: 'onTheWay',  // 审批流——在途 二级菜单路由
+            routeComponent: 'components/platform/approval-flow/on-the-way/on-the-way',
             routeName: '在途',
             routeHidden: false,
-            routeMeta: {
-              title: '平台-在途',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            }
+            }),
+            childrenList:[]
           },
           {
-            path: 'myStart',   // 审批流——我发起的 二级路由页面
-            routeComponent: () => import('@/components/platform/approval-flow/my-start/my-start'),
+            routePath: 'myStart',   // 审批流——我发起的 二级路由页面
+            routeComponent: 'components/platform/approval-flow/my-start/my-start',
             routeName: '我发起的',
             routeHidden: false,
-            routeMeta: {
-              title: '平台-我发起的',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            }
+            }),
+            childrenList:[]
           },
           {
-            path: 'myApproval',   // 审批流 —— 我审批的  二级路由页面
-            routeComponent: () => import('@/components/platform/approval-flow/my-approval/my-approval'),
+            routePath: 'myApproval',   // 审批流 —— 我审批的  二级路由页面
+            routeComponent: 'components/platform/approval-flow/my-approval/my-approval',
             routeName: '我处理的',
             routeHidden: false,
-            routeMeta: {
-              title: '平台-我处理的',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            }
+            }),
+            childrenList:[]
           },
           {
-            path: 'copyWithMe',   // 审批流—— 抄送我的 二级路由页面
-            routeComponent: () => import('@/components/platform/approval-flow/copy-with-me/copy-with-me'),
+            routePath: 'copyWithMe',   // 审批流—— 抄送我的 二级路由页面
+            routeComponent: 'components/platform/approval-flow/copy-with-me/copy-with-me',
             routeName: '抄送我的',
             routeHidden: false,
-            routeMeta: {
-              title: '平台-抄送我的',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            }
+            }),
+            childrenList:[]
           },
           {
-            path: 'myFollow',    // 审批流——我关注的  二级路由页面
-            routeComponent: () => import('@/components/platform/approval-flow/my-follow/my-follow'),
+            routePath: 'myFollow',    // 审批流——我关注的  二级路由页面
+            routeComponent: 'components/platform/approval-flow/my-follow/my-follow',
             routeName: '我关注的',
             routeHidden: false,
-            routeMeta: {
-              title: '平台-我关注的',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            }
+            }),
+            childrenList:[]
           },
           {
-            path: 'set',  // 审批流——设置   二级路由页面
-            routeComponent: () => import('@/components/platform/approval-flow/set/set'),
+            routePath: 'set',  // 审批流——设置   二级路由页面
+            routeComponent: 'components/platform/approval-flow/set/set',
             routeName: "设置",
             routeHidden: false,
-            routeMeta: {
-              title: "设置",
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            }
+            }),
+            childrenList:[]
           }
         ]
       }
     ]
   },
   {
-    path: '/notice',    //  通知公告 一级菜单路由 页面
+    routePath: '/notice',    //  通知公告 一级菜单路由 页面
     routeRedirect: '/notice/index',
-    routeComponent: Layout,
+    routeComponent: 'Layout',
     routeName: '公告',
     routeIcon: 'notice',
     routeHidden: false,
+    routeHideChildrenList: false,
+    routeMeta: JSON.stringify({
+      title: '电脑审批-审批信息',
+      routeHidden: false
+    }),   
     childrenList: [
       {
-        path: 'index',
-        routeComponent: () => import('@/components/notice/front/index'),
+        routePath: '/index',
+        routeComponent: 'components/notice/front/index',
         routeName: '公告首页',
         routeHidden: false,
-        routeMeta: {
-          title: '公告管理',
+        routeHideChildrenList: false,
+        routeMeta: JSON.stringify({
+          title: '电脑审批-审批信息',
           routeHidden: false
-        },
+        }),
         childrenList: [
           {
-            path: 'noticeDetailFront',
-            routeComponent: () => import('@/components/notice/front/noticeDetailFront'),
+            routePath: 'noticeDetailFront',
+            routeComponent: 'components/notice/front/noticeDetailFront',
             routeName: '员工公告详情',
             routeHidden: false,
-            routeMeta: {
-              title: '公告管理-员工公告详情',
-              routeHidden: true
-            }
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
+              routeHidden: false
+            }),
+            childrenList:[]
           }
         ]
       },
       {
-        path: 'noticeManage',
-        routeComponent: () => import('@/components/notice/end/index'),
+        routePath: '/noticeManage',
+        routeComponent: 'components/notice/end/index',
         routeName: '公告管理',
         routeHidden: false,
-        routeMeta: {
-          title: '公告管理'
-        },
+        routeHideChildrenList: false,
+        routeMeta: JSON.stringify({
+          title: '电脑审批-审批信息',
+          routeHidden: false
+        }),
         childrenList: [
           {
-            path: 'createNotice',
-            routeComponent: () => import('@/components/notice/end/createNotice'),
+            routePath: 'createNotice',
+            routeComponent: 'components/notice/end/createNotice',
             routeName: '新建公告',
             routeHidden: false,
-            routeMeta: {
-              title: '公告管理-新建公告',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            }
+            }),
+            childrenList:[]
           },
           {
-            path: 'noticeDetailEnd',
-            routeComponent: () => import('@/components/notice/end/noticeDetailEnd'),
+            routePath: 'noticeDetailEnd',
+            routeComponent: 'components/notice/end/noticeDetailEnd',
             routeName: '公告详情',
             routeHidden: false,
-            routeMeta: {
-              title: '公告管理-公告详情',
-              routeHidden: true
-            }
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
+              routeHidden: false
+            }),
+            childrenList:[]
           },
           {
-            path: 'modifyNotice',
-            routeComponent: () => import('@/components/notice/end/modifyNotice'),
+            routePath: 'modifyNotice',
+            routeComponent: 'components/notice/end/modifyNotice',
             routeName: '编辑公告',
             routeHidden: false,
-            routeMeta: {
-              title: '公告管理-编辑公告',
-              routeHidden: true
-            }
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
+              routeHidden: false
+            }),
+            childrenList:[]
           },
           {
-            path: 'feedback',
-            routeComponent: () => import('@/components/notice/end/feedback'),
+            routePath: 'feedback',
+            routeComponent: 'components/notice/end/feedback',
             routeName: '公告反馈',
             routeHidden: false,
-            routeMeta: {
-              title: '公告管理-公告反馈',
-              routeHidden: true
-            }
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
+              routeHidden: false
+            }),
+            childrenList:[]
           },
           {
-            path: 'historyNotice',
-            routeComponent: () => import('@/components/notice/end/historyNotice'),
+            routePath: 'historyNotice',
+            routeComponent: 'components/notice/end/historyNotice',
             routeName: '公告历史',
             routeHidden: false,
-            routeMeta: {
-              title: '公告管理-公告历史',
-              routeHidden: true
-            }
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
+              routeHidden: false
+            }),
+            childrenList:[]
           }
         ]
       },
       {
-        path: 'receipt',
-        routeComponent: () => import('@/components/notice/end/receipt'),
+        routePath: 'receipt',
+        routeComponent: 'components/notice/end/receipt',
         routeName: '公告回执',
         routeHidden: false,
-        routeMeta: {
-          title: '公告回执',
+        routeHideChildrenList: false,
+        routeMeta: JSON.stringify({
+          title: '电脑审批-审批信息',
           routeHidden: false
-        }
+        }),
+        childrenList:[]
       }
     ]
   },
   {
-    path: '/manage',
-    // routeRedirect: '/manage/companyInfo',
-    routeComponent: Layout,
+    routePath: '/manage',
+    // routeRedirect: 'manage/companyInfo',
+    routeComponent: 'Layout',
     routeName: '管理',
     routeIcon: 'manage',
     routeHidden: false,
+    routeHideChildrenList: false,
+    routeMeta: JSON.stringify({
+      title: '电脑审批-审批信息',
+      routeHidden: false
+    }),   
     childrenList: [
       // 系统
       // {
-      //   path: '/manage/platformSystemSetting',
-      //   routeComponent: () => import('@/components/manage/userManage/userManage'),
+      //   routePath: '/manage/platformSystemSetting',
+      //   routeComponent: 'components/manage/userManage/userManage',
       //   routeName: '平台系统设置',
       //   routeHidden: false,
+      // routeHideChildrenList: false,
       //   routeMeta: {
       //     title: '管理-平台系统设置',
       //     routeHidden: false     
       //   },
       //   childrenList: [
       //     {
-      //       path: '/manage/platformSystemSetting/systemSetting',
+      //       routePath: '/manage/platformSystemSetting/systemSetting',
       //       // routeRedirect: '/manage/platformSystemSetting/systemSetting/menuManage', // 重定向到 二级菜单 平台系统设置
-      //       routeComponent: () => import('@/components/manage/userManage/systemSetting/systemSetting'),
+      //       routeComponent: 'components/manage/userManage/systemSetting/systemSetting',
       //       routeName: '系统配置',
       //       routeHidden: false,
+      // routeHideChildrenList: false,
       //       routeMeta: {
       //         title: '平台系统设置-系统配置',
       //         routeHidden: false
       //       },
       //       childrenList: [
       //         {
-      //           path: 'menuManage',
-      //           routeComponent: () => import('@/components/manage/userManage/systemSetting/menuManage/menuManage'),
+      //           routePath: 'menuManage',
+      //           routeComponent: 'components/manage/userManage/systemSetting/menuManage/menuManage',
       //           routeName: '菜单管理',
       //           routeHidden: false,
+      // routeHideChildrenList: false,
       //           routeMeta: {
       //             title: '系统配置-菜单管理',
       //             routeHidden: false
       //           }
       //         },
       //         {
-      //           path: 'pageManage',
-      //           routeComponent: () => import('@/components/manage/userManage/systemSetting/pageManage/pageManage'),
+      //           routePath: 'pageManage',
+      //           routeComponent: 'components/manage/userManage/systemSetting/pageManage/pageManage',
       //           routeName: '页面管理',
       //           routeHidden: false,
+      // routeHideChildrenList: false,
       //           routeMeta: {
       //             title: '系统配置-页面管理',
       //             routeHidden: false
       //           }                
       //         },
       //         {
-      //           path: 'componentsManage',
-      //           routeComponent: () => import('@/components/manage/userManage/systemSetting/componentsManage/componentsManage'),
+      //           routePath: 'componentsManage',
+      //           routeComponent: 'components/manage/userManage/systemSetting/componentsManage/componentsManage',
       //           routeName: '组件管理',
       //           routeHidden: false,
+      // routeHideChildrenList: false,
       //           routeMeta: {
       //             title: '系统配置-组件管理',
       //             routeHidden: false
       //           }                
       //         },  
       //         {
-      //           path: 'pageComManage',
-      //           routeComponent: () => import('@/components/manage/userManage/systemSetting/pageComponents/pageComManage'),
+      //           routePath: 'pageComManage',
+      //           routeComponent: 'components/manage/userManage/systemSetting/pageComponents/pageComManage',
       //           routeName: '页面组件管理',
       //           routeHidden: false,
+      // routeHideChildrenList: false,
       //           routeMeta: {
       //             title: '系统配置-页面组件管理',
       //             routeHidden: false
@@ -2057,80 +2351,88 @@ export let asyncRouterMap = [
       //       ]
       //     },
       //     {
-      //       path: '/manage/platformSystemSetting/userRole',
-      //       routeComponent: () => import('@/components/manage/userManage/userRole/userRole'),
+      //       routePath: '/manage/platformSystemSetting/userRole',
+      //       routeComponent: 'components/manage/userManage/userRole/userRole',
       //       routeName: '用户角色',
       //       routeHidden: false,
+      // routeHideChildrenList: false,
       //       routeMeta: {
       //         title: '平台系统设置-用户角色',
       //         routeHidden: false    
       //       },
       //       childrenList: [
       //         {
-      //           path: 'account',
-      //           routeComponent: () => import('@/components/manage/userManage/userRole/account/account'),
+      //           routePath: 'account',
+      //           routeComponent: 'components/manage/userManage/userRole/account/account',
       //           routeName: '账户',
       //           routeHidden: false,
+      // routeHideChildrenList: false,
       //           routeMeta: {
       //             title: '用户角色-账户',
       //             routeHidden: false
       //           }                
       //         },
       //         {
-      //           path: 'sysManager',
-      //           routeComponent: () => import('@/components/manage/userManage/userRole/sysManager/sysManager'),
+      //           routePath: 'sysManager',
+      //           routeComponent: 'components/manage/userManage/userRole/sysManager/sysManager',
       //           routeName: '企业系统管理员',
       //           routeHidden: false,
+      // routeHideChildrenList: false,
       //           routeMeta: {
       //             title: '用户角色-系统管理员',
       //             routeHidden: false
       //           }
       //         },
       //         {
-      //           path: 'userGroup',
-      //           routeComponent: () => import('@/components/manage/userManage/userRole/userGroup/userGroup'), 
+      //           routePath: 'userGroup',
+      //           routeComponent: 'components/manage/userManage/userRole/userGroup/userGroup', 
       //           routeName: '用户组',
       //           routeHidden: false,
+      // routeHideChildrenList: false,
       //           routeMeta: {
       //             title: '用户角色-用户组',
       //             routeHidden: false   
       //           }             
       //         },
       //         {
-      //           path: 'roleGroup',
-      //           routeComponent: () => import('@/components/manage/userManage/userRole/roleGroup/roleGroup'),
+      //           routePath: 'roleGroup',
+      //           routeComponent: 'components/manage/userManage/userRole/roleGroup/roleGroup',
       //           routeName: '角色组',
       //           routeHidden: false,
+      // routeHideChildrenList: false,
       //           routeMeta: {
       //             title: '用户角色-角色组',
       //             routeHidden: false 
       //           }               
       //         },
       //         {
-      //           path: 'authorityList',
-      //           routeComponent: () => import('@/components/manage/userManage/userRole/authorityList/commonAuthorityList'),
+      //           routePath: 'authorityList',
+      //           routeComponent: 'components/manage/userManage/userRole/authorityList/commonAuthorityList',
       //           routeName: '权限引用列表',
       //           routeHidden: false,
+      // routeHideChildrenList: false,
       //           routeMeta: {
       //             title: '用户角色-权限引用列表',
       //             routeHidden: false    
       //           }            
       //         },
       //         {
-      //           path: 'userManage',
-      //           routeComponent: () => import('@/components/manage/userManage/userRole/userManage/commonUserManage'),
+      //           routePath: 'userManage',
+      //           routeComponent: 'components/manage/userManage/userRole/userManage/commonUserManage',
       //           routeName: '用户管理',
       //           routeHidden: false,
+      // routeHideChildrenList: false,
       //           routeMeta: {
       //             title: '用户角色-用户管理',
       //             routeHidden: false 
       //           }               
       //         },
       //         {
-      //           path: 'roleManage',
-      //           routeComponent: () => import('@/components/manage/userManage/userRole/roleManage/commonRoleManage'),
+      //           routePath: 'roleManage',
+      //           routeComponent: 'components/manage/userManage/userRole/roleManage/commonRoleManage',
       //           routeName: '角色管理',
       //           routeHidden: false,
+      // routeHideChildrenList: false,
       //           routeMeta: {
       //             title: '用户角色-角色管理',
       //             routeHidden: false 
@@ -2139,21 +2441,23 @@ export let asyncRouterMap = [
       //       ]  
       //     },
       //     {
-      //       path: '/manage/platformSystemSetting/licensingRights',
-      //       routeComponent: () => import('@/components/manage/userManage/licensingRights/licensingRights'),
+      //       routePath: '/manage/platformSystemSetting/licensingRights',
+      //       routeComponent: 'components/manage/userManage/licensingRights/licensingRights',
       //       routeRedirect: '/manage/platformSystemSetting/licensingRights/permit',
       //       routeName: '许可权',
       //       routeHidden: false,
+      // routeHideChildrenList: false,
       //       routeMeta: {
       //         title: '平台系统设置-许可权',
       //         routeHidden: false
       //       },
       //       childrenList: [
       //         {
-      //           path: 'permit',
-      //           routeComponent: () => import('@/components/manage/userManage/licensingRights/permit/common-permit'),
+      //           routePath: 'permit',
+      //           routeComponent: 'components/manage/userManage/licensingRights/permit/common-permit',
       //           routeName: '许可权',
       //           routeHidden: false,
+      // routeHideChildrenList: false,
       //           routeMeta: {
       //             title: '许可权-许可权',
       //             routeHidden: false
@@ -2162,60 +2466,66 @@ export let asyncRouterMap = [
       //       ]
       //     },
       //     {
-      //       path: '/manage/platformSystemSetting/versionPackage',
-      //       routeComponent: () => import('@/components/manage/userManage/versionPackage/versionPackage'),
+      //       routePath: '/manage/platformSystemSetting/versionPackage',
+      //       routeComponent: 'components/manage/userManage/versionPackage/versionPackage',
       //       routeName: '版本套包',
       //       routeHidden: false,
+      // routeHideChildrenList: false,
       //       routeMeta: {
       //         title: '平台系统设置-版本套包',
       //         routeHidden: false
       //       },
       //       childrenList: [
       //         {
-      //           path: 'setting',
-      //           routeComponent: () => import('@/components/manage/userManage/versionPackage/setting/setting'),
+      //           routePath: 'setting',
+      //           routeComponent: 'components/manage/userManage/versionPackage/setting/setting',
       //           routeName: '设置',
       //           routeHidden: false,
+      // routeHideChildrenList: false,
       //           routeMeta: {
       //             title: '版本套包-设置',
       //             routeHidden: false
       //           } 
       //         },
       //         {
-      //           path: 'buyDiscount',
-      //           routeComponent: () => import('@/components/manage/userManage/versionPackage/buyDiscount/buyDiscount'),
+      //           routePath: 'buyDiscount',
+      //           routeComponent: 'components/manage/userManage/versionPackage/buyDiscount/buyDiscount',
       //           routeName: '统一购买折扣',
       //           routeHidden: false,
+      // routeHideChildrenList: false,
       //           routeMeta: {
       //             title: '版本套包-统一购买折扣',
       //             routeHidden: false
       //           }                 
       //         },
       //         {
-      //           path: 'version',
-      //           routeComponent: () => import('@/components/manage/userManage/versionPackage/version/version'),
+      //           routePath: 'version',
+      //           routeComponent: 'components/manage/userManage/versionPackage/version/version',
       //           routeName: '版本',
       //           routeHidden: false,
+      // routeHideChildrenList: false,
       //           routeMeta: {
       //             title: '版本套包-版本',
       //             routeHidden: false
       //           }                 
       //         },
       //         {
-      //           path: 'package',
-      //           routeComponent: () => import('@/components/manage/userManage/versionPackage/package/package'),
+      //           routePath: 'package',
+      //           routeComponent: 'components/manage/userManage/versionPackage/package/package',
       //           routeName: '套包',
       //           routeHidden: false,
+      // routeHideChildrenList: false,
       //           routeMeta: {
       //             title: '版本套包-套包',
       //             routeHidden: false
       //           }                 
       //         },
       //         {
-      //           path: 'customerVersion',
-      //           routeComponent: () => import('@/components/manage/userManage/versionPackage/customerVersion/customerVersion'),
+      //           routePath: 'customerVersion',
+      //           routeComponent: 'components/manage/userManage/versionPackage/customerVersion/customerVersion',
       //           routeName: '客户版本',
       //           routeHidden: false,
+      // routeHideChildrenList: false,
       //           routeMeta: {
       //             title: '版本套包-客户版本',
       //             routeHidden: false
@@ -2224,10 +2534,11 @@ export let asyncRouterMap = [
       //       ]
       //     },
       //     {
-      //       path: 'companyInfo',
-      //       routeComponent: () => import('@/components/manage/userManage/companyInfo/companyInfo'),
+      //       routePath: 'companyInfo',
+      //       routeComponent: 'components/manage/userManage/companyInfo/companyInfo',
       //       routeName: '企业信息',
       //       routeHidden: false,
+      // routeHideChildrenList: false,
       //       routeMeta: {
       //         title: '平台系统设置-企业信息',
       //         routeHidden: false
@@ -2237,175 +2548,216 @@ export let asyncRouterMap = [
       // },
       // 企业      
       {
-        path: 'companyInfo',
-        routeComponent: () => import('@/components/manage/companySetting/sysRightsSetting/companyInfo/companyInfo'),
+        routePath: 'companyInfo',
+        routeComponent: 'components/manage/companySetting/sysRightsSetting/companyInfo/companyInfo',
         routeName: '企业信息',
         routeHidden: false,
-        routeMeta: {
-          title: '管理-企业信息',
-          routeHidden: false    
-        }
+        routeHideChildrenList: false,
+        routeMeta: JSON.stringify({
+          title: '电脑审批-审批信息',
+          routeHidden: false
+        }),
+        childrenList:[]
       },           
       {
-        path: '/manage/companySetting/systemSetting',
-        routeComponent: () => import('@/components/manage/companySetting/systemSetting/systemSetting'),
+        routePath: '/manage/companySetting/systemSetting',
+        routeComponent: 'components/manage/companySetting/systemSetting/systemSetting',
         routeRedirect: '/manage/companySetting/systemSetting/displayGroup',
         routeName: '系统设置',
         routeHidden: false,
-        routeMeta: {
-          title: '企业-系统设置',
+        routeHideChildrenList: false,
+        routeMeta: JSON.stringify({
+          title: '电脑审批-审批信息',
           routeHidden: false
-        },
+        }),
         childrenList: [
           {
-            path: 'dataBase',
-            routeComponent: () => import('@/components/manage/companySetting/systemSetting/dataBase/index'),
+            routePath: 'dataBase',
+            routeComponent: 'components/manage/companySetting/systemSetting/dataBase/index',
             routeName: '物理表',
             routeHidden: false,
-            routeMeta: {
-              title: '物理表',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            }                
+            }),
+            childrenList:[]               
           },          
           {
-            path: 'showTable',
-            routeComponent: () => import('@/components/manage/companySetting/systemSetting/showTable/showTable'),
+            routePath: 'showTable',
+            routeComponent: 'components/manage/companySetting/systemSetting/showTable/showTable',
             routeName: '显示表',
             routeHidden: false,
-            routeMeta: {
-              title: '显示表-表配置',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            }                
+            }),
+            childrenList:[]               
           },
           {
-            path: 'displayGroup',
-            routeComponent: () => import('@/components/manage/companySetting/systemSetting/displayGroup/displayGroup'),
+            routePath: 'displayGroup',
+            routeComponent: 'components/manage/companySetting/systemSetting/displayGroup/displayGroup',
             routeName: '显示分组',
             routeHidden: false,
-            routeMeta: {
-              title: '显示分组-表配置',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            }                 
+            }),
+            childrenList:[]               
           },
           {
-            path: 'components',
-            routeComponent: () => import('@/components/manage/companySetting/systemSetting/components/componentsManage'),
+            routePath: 'pageManage',
+            routeComponent: 'components/manage/companySetting/systemSetting/pageManage/index',
+            routeName: '页面管理',
+            routeHidden: false,
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '页面管理',
+              routeHidden: false
+            })             
+          },          
+          {
+            routePath: 'components',
+            routeComponent: 'components/manage/companySetting/systemSetting/components/componentsManage',
             routeName: '显示组件',
             routeHidden: false,
-            routeMeta: {
-              title: '显示组件-组件配置',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            }                 
+            }),
+            childrenList:[]              
           },
           {
-            path: 'pages',
-            routeComponent: () => import('@/components/manage/companySetting/systemSetting/pages/pageManage'),
+            routePath: 'pages',
+            routeComponent: 'components/manage/companySetting/systemSetting/pages/pageManage',
             routeName: '显示页面',
             routeHidden: false,
-            routeMeta: {
-              title: '显示页面-页面配置',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            }                 
+            }),
+            childrenList:[]                
           },
           {
-            path: 'pageComponets',
-            routeComponent: () => import('@/components/manage/companySetting/systemSetting/pageComponents/pageComManage'),
+            routePath: 'pageComponets',
+            routeComponent: 'components/manage/companySetting/systemSetting/pageComponents/pageComManage',
             routeName: '显示页面组件',
             routeHidden: false,
-            routeMeta: {
-              title: '页面组件-页面组件配置',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            }                 
+            }),
+            childrenList:[]                
           }                             
         ]           
       },   
       {
-        path: '/manage/platformSystemSetting/userRole',
-        routeComponent: () => import('@/components/manage/userManage/userRole/userRole'),
+        routePath: '/manage/platformSystemSetting/userRole',
+        routeComponent: 'components/manage/userManage/userRole/userRole',
         routeRedirect: '/manage/platformSystemSetting/userRole/userManage',
         routeName: '用户角色',
         routeHidden: false,
-        routeMeta: {
-          title: '管理-用户角色',
-          routeHidden: false    
-        },
+        routeHideChildrenList: false,
+        routeMeta: JSON.stringify({
+          title: '电脑审批-审批信息',
+          routeHidden: false
+        }),
         childrenList: [
           {
-            path: 'userManage',
-            routeComponent: () => import('@/components/manage/userManage/userRole/userManage/commonUserManage'),
+            routePath: 'userManage',
+            routeComponent: 'components/manage/userManage/userRole/userManage/commonUserManage',
             routeName: '用户管理',
             routeHidden: false,
-            routeMeta: {
-              title: '用户角色-用户管理',
-              routeHidden: false 
-            }               
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
+              routeHidden: false
+            }),
+            childrenList:[]              
           },              
           {
-            path: 'userGroup',
-            routeComponent: () => import('@/components/manage/userManage/userRole/userGroup/userGroup'), 
+            routePath: 'userGroup',
+            routeComponent: 'components/manage/userManage/userRole/userGroup/userGroup', 
             routeName: '用户组',
             routeHidden: false,
-            routeMeta: {
-              title: '用户角色-用户组',
-              routeHidden: false   
-            }             
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
+              routeHidden: false
+            }),
+            childrenList:[]            
           },
           {
-            path: 'roleManage',
-            routeComponent: () => import('@/components/manage/userManage/userRole/roleManage/commonRoleManage'),
+            routePath: 'roleManage',
+            routeComponent: 'components/manage/userManage/userRole/roleManage/commonRoleManage',
             routeName: '角色管理',
             routeHidden: false,
-            routeMeta: {
-              title: '用户角色-角色管理',
-              routeHidden: false 
-            }               
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
+              routeHidden: false
+            }),
+            childrenList:[]             
           },            
           {
-            path: 'roleGroup',
-            routeComponent: () => import('@/components/manage/userManage/userRole/roleGroup/roleGroup'),
+            routePath: 'roleGroup',
+            routeComponent: 'components/manage/userManage/userRole/roleGroup/roleGroup',
             routeName: '角色组',
             routeHidden: false,
-            routeMeta: {
-              title: '用户角色-角色组',
-              routeHidden: false 
-            }               
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
+              routeHidden: false
+            }),
+            childrenList:[]              
           },
           {
-            path: 'authorityList',
-            routeComponent: () => import('@/components/manage/userManage/userRole/authorityList/commonAuthorityList'),
+            routePath: 'authorityList',
+            routeComponent: 'components/manage/userManage/userRole/authorityList/commonAuthorityList',
             routeName: '权限引用列表',
             routeHidden: false,
-            routeMeta: {
-              title: '用户角色-权限引用列表',
-              routeHidden: false    
-            }            
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
+              routeHidden: false
+            }),
+            childrenList:[]           
           },
           {
-            path: 'permit',
-            routeComponent: () => import('@/components/manage/userManage/licensingRights/permit/common-permit'),
+            routePath: 'permit',
+            routeComponent: 'components/manage/userManage/licensingRights/permit/common-permit',
             routeName: '许可权配置',
             routeHidden: false,
-            routeMeta: {
-              title: '许可权配置-许可权',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            }               
+            }),
+            childrenList:[]              
           },
           // {
-          //   path: 'licensingRights',
-          //   routeComponent: () => import('@/components/manage/userManage/licensingRights/licensingRights'),
+          //   routePath: 'licensingRights',
+          //   routeComponent: 'components/manage/userManage/licensingRights/licensingRights',
           //   routeRedirect: '/manage/platformSystemSetting/licensingRights/permit',
           //   routeName: '许可权配置',
           //   routeHidden: false,
+          // routeHideChildrenList: false,
           //   routeMeta: {
           //     title: '用户角色-许可权',
           //     routeHidden: false
           //   },
           //   childrenList: [
           //     {
-          //       path: 'permit',
-          //       routeComponent: () => import('@/components/manage/userManage/licensingRights/permit/common-permit'),
+          //       routePath: 'permit',
+          //       routeComponent: 'components/manage/userManage/licensingRights/permit/common-permit',
           //       routeName: '许可权',
           //       routeHidden: false,
+          // routeHideChildrenList: false,
           //       routeMeta: {
           //         title: '许可权配置-许可权',
           //         routeHidden: false
@@ -2414,67 +2766,81 @@ export let asyncRouterMap = [
           //   ]
           // },
           {
-            path: 'companyRole',
-            routeComponent: () => import('@/components/manage/userManage/userRole/companyRole/companyRole'),
+            routePath: 'companyRole',
+            routeComponent: 'components/manage/userManage/userRole/companyRole/companyRole',
             routeName: '企业角色',
             routeHidden: false,
-            routeMeta: {
-              title: '系统权限-企业角色',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            }                
+            }),
+            childrenList:[]              
           }                                      
         ]
       },
       {
-        path: '/manage/buySystem',
-        routeComponent: () => import('@/components/manage/buySystem/buySystem'),
+        routePath: '/manage/buySystem',
+        routeComponent: 'components/manage/buySystem/buySystem',
         routeRedirect: '/manage/buySystem/companyBuy',
         routeName: '购买系统',
         routeHidden: false,
-        routeMeta: {
-          title: '购买系统',
+        routeHideChildrenList: false,
+        routeMeta: JSON.stringify({
+          title: '电脑审批-审批信息',
           routeHidden: false
-        },
+        }),
         childrenList: [
           {
-            path: 'companyBuy',
-            routeComponent: () => import('@/components/manage/buySystem/companyBuy/companyBuy'),
+            routePath: 'companyBuy',
+            routeComponent: 'components/manage/buySystem/companyBuy/companyBuy',
             routeName: '企业购买',
             routeHidden: false,
-            routeMeta: {
-              titile: '购买系统-企业购买',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            }
+            }),
+            childrenList:[]
           },
           {
-            path: 'orderList',
-            routeComponent: () => import('@/components/manage/buySystem/orderList/orderList'),
+            routePath: 'orderList',
+            routeComponent: 'components/manage/buySystem/orderList/orderList',
             routeName: '订单',
             routeHidden: false,
-            routeMeta: {
-              titile: '购买系统-订单',
+            routeHideChildrenList: false,
+            routeMeta: JSON.stringify({
+              title: '电脑审批-审批信息',
               routeHidden: false
-            }
+            }),
+            childrenList:[]
           }           
         ]
       }  
     ]
   },
   {
-    path: '/guid',
-    routeComponent: () => import('@/base/NewStyle-cmp/guid-test'),
+    routePath: '/guid',
+    routeComponent: 'base/NewStyle-cmp/guid-test',
     routeName: '引导',
-    routeHidden: true
+    routeHidden: true,
+    routeHideChildrenList: false,
+    routeMeta: JSON.stringify({
+      title: '电脑审批-审批信息',
+      routeHidden: false
+    }),
+    childrenList:[]    
   },      
   {
-    path: '*',
-    // routeRedirect: '/404',
-    routeComponent: () => import('@/base/errorPage/404'),
+    routePath: '*',
+    routeComponent: 'base/errorPage/404',
     routeName: '404',
     routeHidden: true,
-    routeMeta: {
-      routeHidden: true,
-      title: '出错啦'
-    }
+    routeHideChildrenList: false,
+    routeMeta: JSON.stringify({
+      title: '出错了',
+      routeHidden: false
+    }),
+    childrenList:[]
   }
 ]

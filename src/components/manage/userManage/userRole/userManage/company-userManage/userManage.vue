@@ -556,7 +556,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import SaveFooter from '@/base/Save-footer/Save-footer'
+  import SaveFooter from '@/base/Save-footer/index'
   import SearchToolsCmp from '@/base/NewStyle-cmp/common-cmp/searchTool-cmp'
   import ShowColumnCmp from './SetShowColumn-cmp'
   import AddToUserGroupCmp from '@/base/Manage-common-cmp/addToUsergroup-cmp/addToUsergroupWrap-cmp'
@@ -1125,7 +1125,7 @@
         let statusText = row.state == 1? '停用': '启用'
         let name = row.rolename || ''
         let ids = row.id ? [row.id] : []
-        let baseKey = 'plat_sysmg_sys_rolegroup'
+        let baseKey = '1679091c'
         this.commonSetStatusMixin({
             statusText,
             name,
@@ -1137,7 +1137,7 @@
       handlerBatchDelete(){
         debugger
         let statusText = '批量删除'
-        let baseKey = 'plat_sysmg_sys_rolegroup'            
+        let baseKey = '1679091c'            
         let name = ''
         let ids = []
         let length = this.multipleSelection.length
@@ -1166,7 +1166,7 @@
             let statusText = '删除'
             let name = row.rolename || ''
             let ids = row.id ? [row.id] : []
-            let baseKey = 'plat_sysmg_sys_rolegroup'
+            let baseKey = '1679091c'
             this.commonDeleteListMixin({
                 statusText,
                 name,

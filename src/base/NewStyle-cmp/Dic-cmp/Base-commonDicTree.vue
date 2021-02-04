@@ -444,7 +444,7 @@ import {
     deleteDicItem
 } from '@/api/dic'
 import BaseImgUpload from '@/base/NewStyle-cmp/common-cmp/img-upload'
-import SaveFooter from '../../Save-footer/Save-footer.vue';
+import SaveFooter from '@/base/Save-footer/index.vue';
 import { CommonInterfaceMixin } from '@/utils/CommonInterfaceMixin'
 let that = null;
 let treeId = 0;  
@@ -749,7 +749,7 @@ export default {
                 let statusText = '删除'
                 let name = data.dicCode || ''
                 let ids = data.id ? [data.id] : []
-                let baseKey = 'plat_sysmg_sys_dic'
+                let baseKey = 'c4ca4238'
                 this.commonDeleteListMixin({
                     statusText,
                     name,

@@ -51,7 +51,7 @@
 <script type="text/ecmascript-6">
   import { REQ_OK } from '@/api/config'
   import { getToNodeSet, addDirection, deleteDirection } from '@/api/approve'
-  import SaveFooter from '@/base/Save-footer/Save-footer'
+  import SaveFooter from '@/base/Save-footer/index'
   import { flowNodeSet } from '@/utils/mixin'
   export default {
     mixins: [flowNodeSet],

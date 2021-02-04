@@ -197,7 +197,7 @@
     // import AddPermitCmp from './permit-cmp/addPermit-cmp'
     import { 
         compRolePermitList,
-        batchDelSecurityTypeGroup
+        // batchDelSecurityTypeGroup
     } from '@/api/systemManage'
     export default {
         props: {

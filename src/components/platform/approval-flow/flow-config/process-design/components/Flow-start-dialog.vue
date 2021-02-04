@@ -97,7 +97,7 @@
 
 <script type="text/ecmascript-6">
   import { REQ_OK } from '@/api/config'
-  import SaveFooter from '@/base/Save-footer/Save-footer'
+  import SaveFooter from '@/base/Save-footer/index'
   import CommonSelectOrg from '@/base/Common-select-org/Common-select-org'
   import CommonSelectEmp from '@/base/Common-select-emp/Common-select-emp'
   import CommonSelectStation from '@/base/Common-select-station/Common-select-station'

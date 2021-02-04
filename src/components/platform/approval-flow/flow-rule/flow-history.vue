@@ -58,7 +58,7 @@
   import { REQ_OK } from '@/api/config'
   import { getFlowHistoryVersion, upgradeFlowVersion, checkNewVersionTable } from '@/api/approve'
   import FlowQuote from './flow-quote'
-  import SaveFooter from '@/base/Save-footer/Save-footer'
+  import SaveFooter from '@/base/Save-footer/index'
   import { Loading } from 'element-ui'
   export default {
     props: {

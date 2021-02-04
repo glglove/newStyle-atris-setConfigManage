@@ -39,20 +39,31 @@
                     </div>
 
                     <div class="moreConditionsBtnBox u-f-ajc">
-                        <div class="keyWrap u-f-ajc">
-                            <span class="searchTit">关键词:</span>
+                        <div class="keyWrap u-f-ajc" v-if="outShowSearchInput">
+                            <!-- <span class="searchTit" style="font-size: 12px">关键词:</span> -->
                             <el-input
-                                size="small"
+                                size="mini"
+                                style="width: 150px"
                                 :placeholder="searchPlaceholder"
                                 clearable
+                                v-model="queryObj.key"
                             >
-                            <i slot="suffix" class="el-input__icon el-icon-date"></i>
+                                <i slot="prefix" class="el-input__icon el-icon-search"></i>
                             </el-input>
+                            <el-button
+                                class="marginL5 marginR5"
+                                size="mini"
+                                type="primary"
+                                @click.native="handlerClickSearchBtn"
+                            >
+                                搜索
+                            </el-button>
                         </div>
                         <el-button 
                             type="primary" 
                             size="mini" 
                             @click.native="clickMoreConditionBtn"
+                            :icon="!outShowSearchInput? 'el-icon-search': ''"
                         >
                             筛选
                             <i :class="[showMoreSearchWrap? 'el-icon-caret-top': 'el-icon-caret-bottom']"></i>
@@ -93,6 +104,12 @@
             default: () => {
                 return '关键词'
             }
+        },
+        outShowSearchInput: {
+            type: Boolean,
+            default: () => {
+                return false
+            }
         }
     },
     components: {
@@ -110,6 +127,9 @@
       return {
         showMoreSearchWrap: false,
         searchContentHeight: 0,  // 搜索内容的宽度
+        queryObj: {
+            key: ''
+        }
       }
     },
     created(){
@@ -137,6 +157,10 @@
                 this.searchContentHeight = 0
                 newObj.style.height = '1px'
             }
+        },
+        handlerClickSearchBtn(){
+            this.$emit("commonSearchToolEmit", this.queryObj)
+            // console.log(this.$slots)
         }
     }
 }

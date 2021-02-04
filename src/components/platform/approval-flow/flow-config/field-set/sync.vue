@@ -118,7 +118,7 @@
   import { REQ_OK } from '@/api/config'
   import { getSyncSetting, saveSyncSetting } from '@/api/approve'
   import { getRoleRange } from '@/api/permission'
-  import SaveFooter from '@/base/Save-footer/Save-footer'
+  import SaveFooter from '@/base/Save-footer/index'
   import SortField from './sync/sort-field'
   import {flowNodeSet} from '@/utils/mixin'
   export default {

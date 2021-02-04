@@ -13,7 +13,7 @@ import FieldGroupCmp from '@/base/NewStyle-cmp/Content-section-cmp/FieldGroup-cm
 import TableCmp from '@/base/NewStyle-cmp/Content-section-cmp/Table-cmp/Base-table'
 import NextStep from '@/base/NewStyle-cmp/Content-section-cmp/Next-step-cmp/Base-nextStep'
 import UpBtnCmp from '@/base/NewStyle-cmp/UpBtn-section-cmp/Base-UpBtn'
-import UpTextCmp from '@/base/NewStyle-cmp/UpText-section-cmp/Base-UpText'
+import UpTextCmp from '@/base/NewStyle-cmp/UpText-section-cmp/Base-Uptext'
 
 import SeriesBarCmp from '@/base/NewStyle-cmp/Content-section-cmp/Echarts-cmp/Base-seriesBar'
 import TreeCmp from '@/base/NewStyle-cmp/Content-section-cmp/Tree-cmp/Base-Tree'

@@ -257,7 +257,7 @@
    } from '@/api/config'
    import FieldsetAddCmp from './fieldsetAdd-cmp'
    import FieldSortCmp from './fieldSort-cmp'
-   import SaveFooter from '@/base/Save-footer/Save-footer'
+   import SaveFooter from '@/base/Save-footer/index'
    import {
        CompFieldList,
        SelectCompField,

@@ -241,11 +241,8 @@
 </template>
 
 <script>
-    import SaveFooter from '@/base/Save-footer/Save-footer'
+    import SaveFooter from '@/base/Save-footer/index'
     import Vuedraggable from 'vuedraggable'
-    import {
-        // saveViewCol
-    } from '@/api/employee'
     import { REQ_OK } from '@/api/config'
     let example1=[
         // {

@@ -205,7 +205,7 @@ const user = {
     // 获取
     // 设置是 企业用户还是 系统用户 0 是企业用户  1 是系统用户
     setIsCompanyOrSystemUser ({commit, state}, type) {
-      commit(types.SET_COMPANY_OR_SYSTEM, type)
+      commit(types.SET_COMPANYORSYSTEM, type)
     },    
     // 登出
     LogOut ({ commit, state }) {

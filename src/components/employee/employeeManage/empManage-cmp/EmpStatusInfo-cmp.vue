@@ -88,11 +88,11 @@
 
 <script type="text/ecmascript-6">
   import IconSvg from '@/base/Icon-svg/index'
-  import { REQ_Ok } from '@/api/config'
+  import { REQ_OK } from '@/api/config'
   import {
     deleteEmp
   } from '@/api/employee'
-  import SaveFooter from '@/base/Save-footer/Save-footer'
+  import SaveFooter from '@/base/Save-footer/index'
   import EventBtnCmp from '@/components/commonComponents-cmp/eventBtnComponents-cmp'
   import CommonDialog from './CommonDialog'
   export default {
@@ -203,7 +203,7 @@
       // 删除员工
       _deleteEmp(){
         deleteEmp().then(res => {
-          if( res && res.data.State === REQ_Ok ){
+          if( res && res.data.State === REQ_OK ){
             this.$message({
               type: 'success',
               message: '删除员工成功'

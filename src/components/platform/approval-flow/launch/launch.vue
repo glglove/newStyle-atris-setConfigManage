@@ -526,7 +526,7 @@
   import { mapGetters } from 'vuex'
   import { workFlowControlRuleMixin, flowAutoLogin } from '@/utils/mixin'
   import UploadFile from '@/base/flowUpload/uploadFile'
-  import SaveFooter from '@/base/Save-footer/Save-footer'
+  import SaveFooter from '@/base/Save-footer/index'
   import NextStepAcceptersCmp from '@/components/platform/approval-flow/right-fixed/nextStepAccepters-cmp'
   import {
     startList,

@@ -187,7 +187,7 @@
 </template>
 
 <script>
-import SaverFooter from '@/base/Save-footer/Save-footer'
+import SaverFooter from '@/base/Save-footer/index'
 import CompanyRoleGroupSelectCmp from './company_roleGroupSelect-cmp'
 import SystemRoleGroupSelectCmp from './system_roleGroupSelect-cmp'
 import CompanyRoleSelectCmp from './company_roleSelect-cmp'

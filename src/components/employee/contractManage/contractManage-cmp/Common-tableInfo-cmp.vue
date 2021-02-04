@@ -261,7 +261,7 @@
     // import EmpDetailInfoCmp from './EmpDetailInfo-cmp'
     // import ShowColumnCmp from './SetShowColumn-cmp'
     // import { PaEmployeeManageMixin } from '@/utils/PA-mixins'
-    import SaveFooter from '@/base/Save-footer/Save-footer'
+    import SaveFooter from '@/base/Save-footer/index'
     import EmpAvatarInfoCmp from '@/components/commonComponents-cmp/contractManageDetailAvatar-cmp'
     import ShowColumnCmp from '../../employeeManage/empManage-cmp/SetShowColumn-cmp'
     // import EmpContractDetailFieldCmp from './empContractDetailField-cmp'

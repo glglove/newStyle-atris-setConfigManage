@@ -334,7 +334,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import SaveFooter from '@/base/Save-footer/Save-footer'
+  import SaveFooter from '@/base/Save-footer/index'
   import PageComSetCmp from './pageComSetDialog-cmp'
   import SearchToolsCmp from '@/base/NewStyle-cmp/common-cmp/searchTool-cmp'
   import { REQ_OK } from '@/api/config'

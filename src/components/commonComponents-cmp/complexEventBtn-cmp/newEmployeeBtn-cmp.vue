@@ -74,7 +74,7 @@
   import { REQ_OK } from '@/api/config'
 //   import BasicGroupFieldCmp from '@/components/employee/employeeManage/empManage-cmp/BasicGroupfield-cmp'
   import EmpGroupFieldCmp from '@/components/employee/employeeManage/empManage-cmp/EmpGroupfieldEdit-cmp'
-  import SaveFooter from '@/base/Save-footer/Save-footer'
+  import SaveFooter from '@/base/Save-footer/index'
   import EmpEventHandlerCmp from '../empEventHandler-cmp'
   import OrgEventHandlerCmp from '../orgEventHandler-cmp'
   import PositionEventHandlerCmp from '../positionEventHandler-cmp'

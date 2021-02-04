@@ -258,7 +258,7 @@
     GetEvaluation,
     SaveEvaluation} from '@/api/approve'
   import { flowAutoLogin, flowBaseFn, flowNodeSet } from '@/utils/mixin'
-  import SaveFooter from '@/base/Save-footer/Save-footer'
+  import SaveFooter from '@/base/Save-footer/index'
   import FunctionControl from './function-control'
   // import FunctionAuth from '@/components/platform/approval-flow/flow-config/field-set/function-auth'
   import TableAssign from './table-assign'

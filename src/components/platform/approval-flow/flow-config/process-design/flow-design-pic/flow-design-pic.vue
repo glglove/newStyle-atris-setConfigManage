@@ -687,7 +687,7 @@
 
 <script type="text/ecmascript-6">
   import { REQ_OK } from '@/api/config'
-  import SaveFooter from '@/base/Save-footer/Save-footer'
+  import SaveFooter from '@/base/Save-footer/index'
   import StartEmpDialog from '../components/Start-emp-dialog'
   import RecursiveDesignPic from './Flow-designpic-recursive'
   import RecursiveCmp from '../components/Recursive-cmp'

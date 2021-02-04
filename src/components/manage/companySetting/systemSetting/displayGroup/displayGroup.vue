@@ -333,7 +333,7 @@
 
 <script type="text/ecmascript-6">
   import EntryCmp from './displayGroup-cmp/entry-cmp'
-  import SaveFooter from '@/base/Save-footer/Save-footer'
+  import SaveFooter from '@/base/Save-footer/index'
   import SearchToolsCmp from '@/base/NewStyle-cmp/common-cmp/searchTool-cmp'
   import ShowColumnCmp from '@/base/NewStyle-cmp/common-cmp/setTableShowColumn-cmp/setTableShowColumn-cmp'
   import AddGroupCmp from './displayGroup-cmp/addGroup-cmp'
@@ -359,7 +359,7 @@
     data(){     
       return {
         loading: false, // loading 状态
-        baseKey: 'plat_configsys_hr_team_control',
+        baseKey: 'c9f0f895',
         stopOrUsingTitKey: 'name',
         showAddGroup: false, // 控制 新增分组/ 弹框显示/隐藏
         showEditGroup: false, // 控制 编辑分组 弹框显示/隐藏
@@ -566,35 +566,35 @@
             no: 1,
             code: 'entry',
             tit: '条目',
-            baseKey:'plat_configsys_hr_team_control',
+            baseKey:'c9f0f895',
             stopOrUsingTitKey: 'name'
           },
           {
             no: 2,
             code: 'stop',
             tit: '停用',
-            baseKey:'plat_configsys_hr_team_control',
+            baseKey:'c9f0f895',
             stopOrUsingTitKey: 'name'
           },
           {
             no: 3,
             code: 'using',
             tit: '启用',
-            baseKey:'plat_configsys_hr_team_control',
+            baseKey:'c9f0f895',
             stopOrUsingTitKey: 'name'
           },          
           {
             no: 4,
             code: 'mark',
             tit: '标签',
-            baseKey:'plat_configsys_hr_team_control',
+            baseKey:'c9f0f895',
             stopOrUsingTitKey: 'name'
           },
           {
             no: 5,
             code: 'edit',
             tit: '编辑分组',
-            baseKey:'plat_configsys_hr_team_control',
+            baseKey:'c9f0f895',
             stopOrUsingTitKey: 'name'            
           },                              
         ],

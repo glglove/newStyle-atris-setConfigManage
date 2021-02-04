@@ -129,11 +129,11 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import SaveFooter from '@/base/Save-footer/Save-footer'
+    import SaveFooter from '@/base/Save-footer/index'
     import BasicGroupfieldCmp from './BasicGroupfield-cmp'
     import FieldEditCmp from './FieldEdit-cmp'
     import { 
-        directJoinJob, 
+        // directJoinJob, 
         loadEvent,
         execute
     } from '@/api/employee'

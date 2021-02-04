@@ -158,7 +158,7 @@
     getComTeamsAndFields,
     getBusinessAreaList
   } from '@/api/approve'
-  import SaveFooter from '@/base/Save-footer/Save-footer'
+  import SaveFooter from '@/base/Save-footer/index'
 
   export default {
     mixins: [flowBaseFn],

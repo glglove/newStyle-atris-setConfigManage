@@ -131,7 +131,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import SearchToolCmp from './searchTool-cmp'
+  import SearchToolCmp from '@/components/employee/eventHandler/executeEvent/executeEvent-cmp/SearchTool-cmp'
   export default {
     data(){
       return {

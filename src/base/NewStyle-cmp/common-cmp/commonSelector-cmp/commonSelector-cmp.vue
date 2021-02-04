@@ -310,7 +310,7 @@ import {
     CommonInterfaceMixin
 } from '@/utils/CommonInterfaceMixin'
 import SearchToolsCmp from '@/base/NewStyle-cmp/common-cmp/searchTool-cmp'
-import SaveFooter from '@/base/Save-footer/Save-footer'
+import SaveFooter from '@/base/Save-footer/index'
 import Vuedraggable from 'vuedraggable'
 export default {
     mixins: [CommonInterfaceMixin],

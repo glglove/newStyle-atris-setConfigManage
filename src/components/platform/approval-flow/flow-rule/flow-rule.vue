@@ -209,7 +209,7 @@
     deleteRule,
     setFlowState
   } from '@/api/approve'
-  import SaveFooter from '@/base/Save-footer/Save-footer'
+  import SaveFooter from '@/base/Save-footer/index'
   import CompanyStructureCmp from '@/base/Company-structure-cmp/dialog-common'
   import FlowQuote from './flow-quote'
   import FlowHistory from './flow-history'

@@ -51,7 +51,7 @@
 
 <script type="text/ecmascript-6">
   import { REQ_OK } from '@/api/config'
-  import SaveFooter from '@/base/Save-footer/Save-footer'
+  import SaveFooter from '@/base/Save-footer/index'
   import EventTopCmp from './eventTop-cmp'
   import EventMiddleCmp from './eventMiddle-cmp'
   import EventBottomCmp from './eventBottom-cmp'

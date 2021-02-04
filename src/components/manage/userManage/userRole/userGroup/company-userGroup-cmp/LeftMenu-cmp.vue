@@ -140,7 +140,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import SaveFooter from '@/base/Save-footer/Save-footer'
+    import SaveFooter from '@/base/Save-footer/index'
     import TreeCmp from './Tree-cmp'
     import  { REQ_OK } from '@/api/config'
     import { 

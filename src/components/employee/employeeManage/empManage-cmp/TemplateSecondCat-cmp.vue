@@ -137,7 +137,7 @@
 <script type="text/ecmascript-6">
   import Vuedraggable from 'vuedraggable'
   import { REQ_OK } from '@/api/config'
-  import SaveFooter from '@/base/Save-footer/Save-footer'
+  import SaveFooter from '@/base/Save-footer/index'
   export default {
     props:{
         //指定模板下的 所有的全量数据

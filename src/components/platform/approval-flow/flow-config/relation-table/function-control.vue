@@ -224,7 +224,7 @@
   import {
     getRoleRange
   } from '@/api/permission'
-  import SaveFooter from '@/base/Save-footer/Save-footer'
+  import SaveFooter from '@/base/Save-footer/index'
   import { flowAutoLogin, flowBaseFn, flowNodeSet } from '@/utils/mixin'
   export default {
     mixins: [flowBaseFn, flowAutoLogin, flowNodeSet],

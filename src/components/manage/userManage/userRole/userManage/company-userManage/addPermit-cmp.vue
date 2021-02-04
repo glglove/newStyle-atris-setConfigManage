@@ -88,7 +88,7 @@
 <script type="text/ecmascript-6">
     import { mapGetters } from 'vuex'
     import { REQ_OK } from '@/api/config'
-    import SaveFooter from '@/base/Save-footer/Save-footer'
+    import SaveFooter from '@/base/Save-footer/index'
     import PermitSetCmp from './permitSet-cmp'
     import { 
         SaveComPermitPSet

@@ -369,7 +369,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import SaveFooter from '@/base/Save-footer/Save-footer'
+  import SaveFooter from '@/base/Save-footer/index'
   import CompanyRoleEditInfoCmp from './roleManage-cmp/common-roleEditInfo-cmp'
   import {  REQ_OK, BASE_URL } from '@/api/config'
   import { mapGetters } from 'vuex'
@@ -565,7 +565,7 @@
           let statusText = row.state == 1? '停用': '启用'
           let name = row.dicName || ''
           let ids = row.id ? [row.id] : []
-          let baseKey = 'plat_sysmg_sys_rolegroup'
+          let baseKey = '1679091c'
           this.commonSetStatusMixin({
               statusText,
               name,
@@ -652,7 +652,7 @@
         let statusText = row.state == 1? '停用': '启用'
         let name = row.rolename || ''
         let ids = row.id ? [row.id] : []
-        let baseKey = 'plat_sysmg_sys_role'
+        let baseKey = 'c81e728d'
         this.commonSetStatusMixin({
           statusText,
           name,

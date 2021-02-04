@@ -273,7 +273,7 @@
     huiQianRole,
     getNodeList
   } from '@/api/approve'
-  import SaveFooter from '@/base/Save-footer/Save-footer'
+  import SaveFooter from '@/base/Save-footer/index'
   import { flowBaseFn, flowAutoLogin } from '@/utils/mixin'
 
   export default {

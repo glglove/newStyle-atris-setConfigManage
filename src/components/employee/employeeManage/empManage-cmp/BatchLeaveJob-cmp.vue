@@ -135,7 +135,7 @@
 
 <script type="text/ecmascript-6">
     // import UploadFile from '@/base/PA-common-cmp/pa-Upload/uploadFile' 
-    import SaveFooter from '@/base/Save-footer/Save-footer'
+    import SaveFooter from '@/base/Save-footer/index'
     import EmpSelectListCmp from '@/base/PA-common-cmp/commonEmp-select-cmp/select-cmp'
     export default {
       components: {

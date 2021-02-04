@@ -282,7 +282,7 @@
     SaveEvaluation
   } from '@/api/approve'
   import { flowAutoLogin, flowBaseFn, flowNodeSet } from '@/utils/mixin'
-  import SaveFooter from '@/base/Save-footer/Save-footer'
+  import SaveFooter from '@/base/Save-footer/index'
   import TableAssign from '../relation-table/table-assign'
 
   export default {

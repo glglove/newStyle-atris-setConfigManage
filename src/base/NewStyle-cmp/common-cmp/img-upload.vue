@@ -50,7 +50,7 @@
   import { REQ_OK } from '@/api/config'
   import {
     UploadAttachments,
-    DeleteAttachment
+    // DeleteAttachment
   } from '@/api/newStyle'
   import { mapGetters } from 'vuex';
 

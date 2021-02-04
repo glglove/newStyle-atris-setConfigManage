@@ -230,7 +230,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import SaveFooter from '@/base/Save-footer/Save-footer'
+    import SaveFooter from '@/base/Save-footer/index'
     import { REQ_OK } from '@/api/config'
     import { 
         teamCodeGetFeild,

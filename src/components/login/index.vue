@@ -3,101 +3,100 @@
   Date: 2017/11/13
   功能：登陆页面
 -->
-<style lang="stylus" rel="stylesheet/stylus">
-  @import "~common/css/variable"
-  @import "~common/css/mixin"
-  .pageLogin{
-    position: relative;
-    height: 100vh;
-    background-color: $color-background;
-    background: url('../../assets/login-bg.jpg') repeat-x top left;
-  }
+<style lang="stylus" rel="stylesheet/stylus" scoped>
+@import "~common/css/variable"
+@import "~common/css/mixin"
+.pageLogin{
+  position: relative;
+  height: 100vh;
+  background-color: $color-background;
+  background: url('../../assets/login-bg.jpg') repeat-x top left;
+}
 
- .login-container
-   position: absolute;
-   left:20px;
-   top:0;
-   right:20px;
-   bottom:0;
-   margin:0 auto;
-  //  width: 500px;
-   input:-webkit-autofill
-     -webkit-box-shadow: 0 0 0px 1000px #293444 inset !important;
-     -webkit-text-fill-color: #fff !important;
-   input
-     background: rgba(203, 200, 200, 0.1)
-     border: 0px;
-     -webkit-appearance: none;
-     border-radius: 0px;
-     padding: 12px 5px 12px 15px;
-     color: $color-text;
-     height: 47px;
-   .el-input
-     display: inline-block;
-     height: 47px;
-   .tips
-     font-size: 14px;
-     color: #fff;
-     margin-bottom: 10px;
-   .svg-container
-     padding: 6px 0px 6px 15px;
-     color: $color-text;
-     vertical-align: middle;
-     display: inline-block;
-   .title
-     font-size: 26px;
-     font-weight: 400;
-     color: $color-text;
-     margin: 0px auto 40px auto;
-     text-align: center;
-     font-weight: bold;
-   .login-form
-     position: absolute;
-     left: 0;
-     right: 0;
-     padding: 35px 35px 15px 35px;
-     margin: 120px auto;
-     background rgba(255,255,255,.5);
-     border 1px #d2d2d2 solid;
-     border-radius 10px;
-     box-shadow 0 0 10px 10px rgba(255,255,255,.5);
-     box-sizing border-box;
-     .tagBox
+.login-container
+  position: absolute;
+  left:20px;
+  top:0;
+  right:20px;
+  bottom:0;
+  margin:0 auto;
+  // width: 500px;
+  input:-webkit-autofill
+    -webkit-box-shadow: 0 0 0px 1000px #293444 inset !important;
+    -webkit-text-fill-color: #fff !important;
+  input
+    background: rgba(203, 200, 200, 0.1)
+    border: 0px;
+    -webkit-appearance: none;
+    border-radius: 0px;
+    padding: 12px 5px 12px 15px;
+    color: $color-text;
+    height: 47px;
+  .el-input
+    display: inline-block;
+    height: 47px;
+  .tips
+    font-size: 14px;
+    color: #fff;
+    margin-bottom: 10px;
+  .svg-container
+    padding: 6px 0px 6px 15px;
+    color: $color-text;
+    vertical-align: middle;
+    display: inline-block;
+  .title
+    font-size: 26px;
+    font-weight: 400;
+    color: $color-text;
+    margin: 0px auto 40px auto;
+    text-align: center;
+    font-weight: bold;
+  .login-form
+    position: absolute;
+    left: 0;
+    right: 0;
+    padding: 35px 35px 15px 35px;
+    margin: 120px auto;
+    background rgba(255,255,255,.5);
+    border 1px #d2d2d2 solid;
+    border-radius 10px;
+    box-shadow 0 0 10px 10px rgba(255,255,255,.5);
+    box-sizing border-box;
+    .tagBox
       border 1px solid rgba(203, 200, 200, 0.1)
       overflow hidden 
       border-radius 4px
       box-shadow 0 0 10px 10px rgba(203, 200, 200, 0.2)
-      .user
-        border none !important
-        border-radius 0 !important
-      .admin
-        border none !important
-        border-radius 0 !important
-     .rememberBox
-     .noAccount
+    .user
+      border none !important
+      border-radius 0 !important
+    .admin
+      border none !important
+      border-radius 0 !important
+    .rememberBox
+    .noAccount
       font-size 14px
       text-align center
-   .el-form-item
-     border-1px()
-     border-radius: 5px;
-     color: $color-input;
-    //  border 1px solid #f3dcdc;
-     margin-bottom: 15px !important
-     .el-form-item__content
+  >>>.el-form-item
+    // border-1px();
+    border-radius: 5px;
+    color: $color-input;
+    margin-bottom: 15px !important
+    .el-form-item__content
       display flex
       justify-content flex-start
       align-items center
-   .show-pwd
-     position: absolute;
-     right: 10px;
-     top: 7px;
-     font-size: 16px;
-     color: $color-text;
-     cursor: pointer;
-   .thirdparty-button
-     position: absolute;
-     right: 35px;
-     bottom: 28px;
+    .show-pwd
+      position: absolute;
+      right: 10px;
+      top: 7px;
+      font-size: 16px;
+      color: $color-text;
+      cursor: pointer;
+    .thirdparty-button
+      position: absolute;
+      right: 35px;
+      bottom: 28px;
 </style>
 <template>
 <el-row>
@@ -196,8 +195,7 @@
 
 <script type="text/ecmascript-6">
   import * as config from 'api/config'
-  import { Message } from 'element-ui'
-  import slidingValidateCmp from '@/base/SlidingValid/SlidingValid'
+  import slidingValidateCmp from '@/base/SlidingValid/index'
   import store from '@/store'
   export default {
     name: 'login',
@@ -308,11 +306,11 @@
               } else {
                 debugger                
                 this.switchError(res)
-                Message.error(`登录失败，${this.errorText}，请重试!`)
+                this.$message.error(`登录失败，${this.errorText}，请重试!`)
               }
             }).catch(() => {
               this.loading = false
-              // Message.error('登录失败，网络超时，请重试!')
+              // this.$message.error('登录失败，网络超时，请重试!')
             })
           } else {
             return false
