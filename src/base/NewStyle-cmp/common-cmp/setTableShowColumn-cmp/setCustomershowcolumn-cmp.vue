@@ -78,7 +78,7 @@
 
 <template>
     <div class="customerShowColumn-cmp" v-loading = 'loading'>
-        <!-- allboxGroup: {{allboxGroup}} -->
+        <!-- totalTableData: {{totalTableData}} -->
         <!-- --------------------- -->
         <!-- alreadyChecked: {{alreadyChecked}} -->
         <!-- rightMultipleSelection: {{rightMultipleSelection}}
@@ -101,7 +101,7 @@
                         <span style="font-weight:bold;font-size:14px">所有表头字段</span>
                         <el-button style="float: right; padding: 3px 0" type="text">共{{tableDataLeft.length}}项</el-button>
                     </div>    
-                    tableDataLeft: {{tableDataLeft}}
+                    <!-- tableDataLeft: {{tableDataLeft}} -->
                     <div class="list">
                         <el-table
                             ref="leftTable"
@@ -165,7 +165,7 @@
                             </el-button>                            
                             
                         </div>
-                        <!-- tableDataRight:{{tableDataRight} -->
+                        <!-- tableDataRight:{{tableDataRight}} -->
                         <vuedraggable 
                             class="wrapper" 
                             v-model="tableDataRight"  
@@ -251,7 +251,7 @@
         //     property: 'empNo'
         // },
         {
-            label:'姓名',
+            label:'名称',
             property: 'empName'
         },
         // {
@@ -274,7 +274,7 @@
                     return example1
                 }
             },
-            allboxGroup: {
+            totalTableData: {
                 type: Array,
                 default: () => {
                     return []
@@ -313,13 +313,7 @@
         data(){
             return {
                 loading: false, // 控制loading的显示/隐藏
-                // tableHead: this.tableHeadProp, 
-                tableHead: [
-                    {
-                        label: '名称',
-                        property: 'FieldName'
-                    }
-                ], 
+                tableHead: this.tableHeadProp, 
                 tableDataLeft: [], // 左边所有的数据
                 tableDataRight: [],  // 右边部分的数据集合
                 leftMultipleSelection: [],  // 左边已经选取的数据集合
@@ -329,7 +323,7 @@
             }
         },
         created(){
-            // 处理 allboxGroup  和 alreadyChecked
+            // 处理 totalTableData  和 alreadyChecked
             this._initData()
         },
         watch: {
@@ -353,11 +347,11 @@
             }
         },
         methods: { 
-            // 处理 allboxGroup  和 alreadyChecked
+            // 处理 totalTableData  和 alreadyChecked
             _initData(){
                 debugger
-                if(this.allboxGroup && this.allboxGroup.length){
-                    this.tableDataLeft = this.allboxGroup.map((item, key) => {
+                if(this.totalTableData && this.totalTableData.length){
+                    this.tableDataLeft = this.totalTableData.map((item, key) => {
                         return item
                     })
                     console.log(this.tableDataLeft)

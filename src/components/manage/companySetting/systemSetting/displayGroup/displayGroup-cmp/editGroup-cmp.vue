@@ -8,21 +8,16 @@
     min-height 300px
     max-height 80vh
     overflow: auto;
-    .parentGroupForm {
+    .groupForm {
         border-bottom: 1px solid silver
-        padding: 20px 
+        padding: 0 20px 
         box-sizing border-box
         .fieldContentBox {
-            min-height 100px
+            min-height 200px
         }
         &:nth-last-of-type {
             border-bottom: none
         }
-    }
-    .childrenListWrap {
-        margin-top: 20px
-        border: 1px dotted silver
-        padding-left: 20px
     }
 }
 </style>

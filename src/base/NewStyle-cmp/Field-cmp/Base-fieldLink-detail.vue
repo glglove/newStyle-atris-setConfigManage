@@ -16,13 +16,11 @@
 </style>
 <template>
     <el-row :class="['com-section-cmp']">
-        dfdfddf对方讲道理
-        comData： {{comData}}
         <div v-loading="loading" :class="[data_res.DataWithoutObject && data_res.DataWithoutObject.length<=0? 'not_found':'']">
             <!-- ------content中 的单个组件 里面的通用布局  com-section-cmp组件-------------
             comData: {{comData}}
             ------ -->
-            调取接口后的data_res: {{data_res}}
+            <!-- 调取接口后的data_res: {{data_res}} -->
             <el-col 
                 :span="columnNum"
                 class="contentComSectionItem marginT10"

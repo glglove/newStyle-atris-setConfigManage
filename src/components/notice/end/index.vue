@@ -25,16 +25,18 @@
       </div>
 
       <el-tabs addable v-model="activeName" type="border-card" @tab-add="addTab">
-        <el-tab-pane v-for="(item, index) in typeList"
-                     :key="item.Code"
-                     :label="item.TypeName"
-                     :name="item.Code"
+        <el-tab-pane 
+          v-for="(item, index) in typeList"
+          :key="item.Code"
+          :label="item.TypeName"
+          :name="item.Code"
         >
-          <tab-pane v-if='activeName == item.Code'
-                    :type="item.Code"
-                    class="list"
-                    ref="refreshList"
-                    :isModify="true"
+          <tab-pane 
+            v-if='activeName == item.Code'
+            :type="item.Code"
+            class="list"
+            ref="refreshList"
+            :isModify="true"
           ></tab-pane>
         </el-tab-pane>
       </el-tabs>

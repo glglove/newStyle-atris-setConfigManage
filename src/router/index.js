@@ -8,14 +8,14 @@ Vue.use(Router)
 * routeIcon : 对应的sidebar icon图标
 * routeHidden : 如果 `routeHidden:true` 将不显示在siderbar中
 * routeRedirect : 重定向
-* routeHideChildrenList : 如果 `routeHideChildrenList:true` 将没有子菜单
+* routehidechildrenlist : 如果 `routehidechildrenlist:true` 将没有子菜单
 **/
 export let consRouterMap = [
   {
     path: '/login',
     component: () => import('@/components/login/index'),
     name: '登陆',
-    routeHideChildrenList: true,
+    routehidechildrenlist: true,
     hidden: true,
     meta: {
       title: '登录'
@@ -25,7 +25,7 @@ export let consRouterMap = [
     path: '/forgetWord',
     component: () => import('@/components/login/forgetWord/forgetWord'),
     name: '忘记密码',
-    routeHideChildrenList: true,
+    routehidechildrenlist: true,
     hidden: true,
     meta: {
       title: '忘记密码-找回密码'
@@ -35,7 +35,7 @@ export let consRouterMap = [
     path: '/register',
     component: () => import('@/components/login/register/register'),
     name: '注册',
-    routeHideChildrenList: true,
+    routehidechildrenlist: true,
     hidden: true,
     meta: {
       title: '注册'
@@ -45,14 +45,14 @@ export let consRouterMap = [
     path: '/authredirect',
     component: () => import('@/components/login/authredirect'),
     name: '权限跳转',
-    routeHideChildrenList: true,
+    routehidechildrenlist: true,
     hidden: true    
   },
   {
     path: '/setModule',
     component: () => import('@/components/setModule/index'),
     name: '配置系统',
-    routeHideChildrenList: true,
+    routehidechildrenlist: true,
     hidden: true,
     meta: {
       title: '配置系统'
@@ -62,7 +62,7 @@ export let consRouterMap = [
     path: '/page_fieldSet',
     component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page_fieldSet'),
     name: '字段设置页面',
-    routeHideChildrenList: true,
+    routehidechildrenlist: true,
     hidden: true,
     meta: {
       title: '字段设置'
@@ -74,15 +74,15 @@ export let consRouterMap = [
     redirect: '/index',
     name: '首页',
     icon: 'people',
-    routeHideChildrenList: true,
+    routehidechildrenlist: false,
     hidden: false,
     children: [
       {
         path: 'index',
         component: () => import('@/base/index/index'),
         name: '简述',
-        routeHideChildrenList: true,
-        hidden: true,
+        routehidechildrenlist: true,
+        hidden: false,
         meta: {
           title: '首页-简述'
         },
@@ -92,7 +92,7 @@ export let consRouterMap = [
         path: 'test',
         component: () => import('@/components/test/test'),
         name: 'test',
-        routeHideChildrenList: true,
+        routehidechildrenlist: true,
         hidden: false,
         meta: {
           title: '动态显示测试'
@@ -103,7 +103,7 @@ export let consRouterMap = [
         path: 'testDic',
         component: () => import('@/components/test/testDicTree'),
         name: 'testDic',
-        routeHideChildrenList: true,
+        routehidechildrenlist: true,
         hidden: true,
         meta: {
           title: 'testDicTree'
@@ -115,7 +115,7 @@ export let consRouterMap = [
         component: () => import('@/components/dispose/dispose'),
         // component: 'Layout',
         name: 'dispose',
-        routeHideChildrenList: true,
+        routehidechildrenlist: true,
         hidden: true,
         meta: {
           title: '配置系统'
@@ -126,7 +126,7 @@ export let consRouterMap = [
         path: '/P1',
         component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P1'),
         name: 'P1页面',
-        routeHideChildrenList: true,
+        routehidechildrenlist: true,
         hidden: true, 
         meta: {
           hidden: true,
@@ -140,7 +140,7 @@ export let consRouterMap = [
         // component: 'base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P5',
         component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P2'),
         name: '待入职',
-        routeHideChildrenList: true,
+        routehidechildrenlist: true,
         hidden: true, 
         meta: {
           hidden: true,
@@ -153,7 +153,7 @@ export let consRouterMap = [
         path: '/P5',
         component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P5'),
         name: '待入职',
-        routeHideChildrenList: true,
+        routehidechildrenlist: true,
         hidden: true , 
         meta: {
           hidden: true,
@@ -166,7 +166,7 @@ export let consRouterMap = [
         path: '/P6',
         component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P6'),
         name: '重新入职',
-        routeHideChildrenList: true,
+        routehidechildrenlist: true,
         hidden: true,
         meta: {
           hidden: true,
@@ -179,7 +179,7 @@ export let consRouterMap = [
         path: '/P7',
         component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P7'),
         name: '直接入职',
-        routeHideChildrenList: true,
+        routehidechildrenlist: true,
         hidden: true,
         meta: {
           hidden: true,
@@ -192,7 +192,7 @@ export let consRouterMap = [
         path: '/P8',
         component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P8'),
         name: '新增人事档案机构',
-        routeHideChildrenList: true,
+        routehidechildrenlist: true,
         hidden: true,
         meta: {
           hidden: true,
@@ -205,7 +205,7 @@ export let consRouterMap = [
         path: '/P9',
         component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P9'),
         name: '编辑人事档案机构',
-        routeHideChildrenList: true,
+        routehidechildrenlist: true,
         hidden: true,
         meta: {
           hidden: true,
@@ -218,7 +218,7 @@ export let consRouterMap = [
         path: '/P10',
         component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P10'),
         name: '调入',
-        routeHideChildrenList: true,
+        routehidechildrenlist: true,
         hidden: true,
         meta: {
           hidden: true,
@@ -233,7 +233,7 @@ export let consRouterMap = [
   //   path: '/test',
   //   component: () => import('@/components/employee/eventHandler/event/test'),
   //   name: 'test',
-  //   routeHideChildrenList: true,
+  //   routehidechildrenlist: true,
   //   hidden: false,
   //   meta: {
   //     title: '事件处理器-事件',
@@ -245,7 +245,7 @@ export let consRouterMap = [
     path: '/flow/print',
     component: () => import('@/components/platform/approval-flow/right-fixed/print'),
     name: '流程打印',
-    routeHideChildrenList: true,
+    routehidechildrenlist: true,
     hidden: true,
     meta: {
       title: '流程打印'
@@ -262,7 +262,7 @@ export let asyncRouter = [
     routeName: '员工',
     routeIcon: 'employee',
     routeHidden: false,
-    routeHideChildrenList: false,
+    routehidechildrenlist: false,
     hidden: false,    
     routeMeta: JSON.stringify({
       title: '员工',
@@ -274,7 +274,7 @@ export let asyncRouter = [
         routeComponent: 'components/employee/employeeManage/index',
         routeName: '员工管理',
         routeHidden: false,
-        routeHideChildrenList: false,
+        routehidechildrenlist: false,
         hidden: false,          
         routeMeta: JSON.stringify({
           title: '员工-员工管理',
@@ -286,7 +286,7 @@ export let asyncRouter = [
             routeComponent: 'components/employee/employeeManage/joinedEmployee/index',
             routeName: '在职员工',
             routeHidden: false,
-            routeHideChildrenList: true,
+            routehidechildrenlist: true,
             hidden: false,              
             routeMeta: JSON.stringify({
               title: '员工管理-在职员工',
@@ -306,7 +306,7 @@ export let constantRouterMap = [
     component: () => import('@/components/login/index'),
     name: '登录',
     routeHidden: true,
-    routeHideChildrenList: true,    
+    routehidechildrenlist: true,    
     routeMeta: {
       title: '登录'
     },
@@ -317,7 +317,7 @@ export let constantRouterMap = [
     component: () => import('@/components/login/forgetWord/forgetWord'),
     name: '忘记',
     routeHidden: true,
-    routeHideChildrenList: true,
+    routehidechildrenlist: true,
     routeMeta: {
       title: '忘记密码-找回密码'
     },
@@ -328,7 +328,7 @@ export let constantRouterMap = [
     component: () => import('@/components/login/register/register'),
     name: '注册',
     routeHidden: true,
-    routeHideChildrenList: true,
+    routehidechildrenlist: true,
     routeMeta: {
       title: '注册'
     },
@@ -339,7 +339,7 @@ export let constantRouterMap = [
     component: () => import('@/components/login/authredirect'),
     name: '权限',
     routeHidden: true,
-    routeHideChildrenList: true,
+    routehidechildrenlist: true,
     routeMeta: {
       title: '权限'
     },
@@ -350,7 +350,7 @@ export let constantRouterMap = [
     component: () => import('@/components/setModule/index'),
     name: '配置',
     routeHidden: true,
-    routeHideChildrenList: true,
+    routehidechildrenlist: true,
     routeMeta: {
       title: '配置系统'
     },  
@@ -361,7 +361,7 @@ export let constantRouterMap = [
     component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page_fieldSet'),
     name: '字段设置',
     routeHidden: true,
-    routeHideChildrenList: true,
+    routehidechildrenlist: true,
     routeMeta: {
       title: '字段设置'
     },  
@@ -373,7 +373,7 @@ export let constantRouterMap = [
     redirect: '/index',
     name: '首页',
     routeIcon: 'people',
-    routeHideChildrenList: true,
+    routehidechildrenlist: false,
     routeHidden: false,
     children: [
       {
@@ -381,7 +381,7 @@ export let constantRouterMap = [
         component: () => import('@/base/index/index'),
         name: '简述',
         routeHidden: true,
-        routeHideChildrenList: true,
+        routehidechildrenlist: true,
         routeMeta: {
           title: '首页-简述'
         },
@@ -392,7 +392,7 @@ export let constantRouterMap = [
         component: () => import('@/components/test/test'),
         name: 'test',
         routeHidden: true,
-        routeHideChildrenList: true,
+        routehidechildrenlist: true,
         routeMeta: {
           title: '动态显示测试'
         },
@@ -403,7 +403,7 @@ export let constantRouterMap = [
         component: () => import('@/components/test/testDicTree'),
         name: 'testDic',
         routeHidden: true,
-        routeHideChildrenList: true,
+        routehidechildrenlist: true,
         routeMeta: {
           title: 'testDicTree'
         },
@@ -414,7 +414,7 @@ export let constantRouterMap = [
         component: () => import('@/components/dispose/dispose'),
         name: 'dispose',
         routeHidden: true,
-        routeHideChildrenList: true,
+        routehidechildrenlist: true,
         routeMeta: {
           title: '配置系统'
         },
@@ -425,7 +425,7 @@ export let constantRouterMap = [
         component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P1'),
         name: 'P1页面',
         routeHidden: true, 
-        routeHideChildrenList: true,
+        routehidechildrenlist: true,
         routeMeta: {
           routeHidden: true,
           MetaCode: 'PreHire',
@@ -439,7 +439,7 @@ export let constantRouterMap = [
         component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P2'),
         name: '待入职',
         routeHidden: true, 
-        routeHideChildrenList: true,
+        routehidechildrenlist: true,
         routeMeta: {
           routeHidden: true,
           MetaCode: 'PreHire',
@@ -452,7 +452,7 @@ export let constantRouterMap = [
         component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P5'),
         name: '待入职',
         routeHidden: true , 
-        routeHideChildrenList: true,
+        routehidechildrenlist: true,
         routeMeta: {
           routeHidden: true,
           MetaCode: 'PreHire',
@@ -465,7 +465,7 @@ export let constantRouterMap = [
         component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P6'),
         name: '重新入职',
         routeHidden: true,
-        routeHideChildrenList: true,
+        routehidechildrenlist: true,
         routeMeta: {
           routeHidden: true,
           MetaCode: 'Rehire',
@@ -477,7 +477,7 @@ export let constantRouterMap = [
         path: 'P7',
         component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P7'),
         name: '直接入职',
-        routeHideChildrenList: true,
+        routehidechildrenlist: true,
         routeHidden: true,
         routeMeta: {
           routeHidden: true,
@@ -491,7 +491,7 @@ export let constantRouterMap = [
         component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P8'),
         name: '新增人事档案机构',
         routeHidden: true,
-        routeHideChildrenList: true,
+        routehidechildrenlist: true,
         routeMeta: {
           routeHidden: true,
           MetaCode: 'AddPFileLocat2',
@@ -504,7 +504,7 @@ export let constantRouterMap = [
         component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P9'),
         name: '编辑人事档案机构',
         routeHidden: true,
-        routeHideChildrenList: true,
+        routehidechildrenlist: true,
         routeMeta: {
           routeHidden: true,
           MetaCode: 'EditPFileLocat2',
@@ -517,7 +517,7 @@ export let constantRouterMap = [
         component: () => import('@/base/NewStyle-cmp/Page-cmp/Link-page-cmp/page-P10'),
         name: '调入',
         routeHidden: true,
-        routeHideChildrenList: true,
+        routehidechildrenlist: true,
         routeMeta: {
           routeHidden: true,
           MetaCode: 'transferin',
@@ -532,7 +532,7 @@ export let constantRouterMap = [
   //   routeComponent: () => import('@/components/employee/eventHandler/event/test'),
   //   name: 'test',
   //   routeHidden: false,
-  // routeHideChildrenList: true,
+  // routehidechildrenlist: true,
   //   routeMeta: {
   //     title: '事件处理器-事件',
   //     routeHidden: false
@@ -544,7 +544,7 @@ export let constantRouterMap = [
     component: () => import('@/components/platform/approval-flow/right-fixed/print'),
     name: '流程',
     routeHidden: true,
-    routeHideChildrenList: true,
+    routehidechildrenlist: true,
     routeMeta: {
       title: '流程打印'
     },
@@ -566,7 +566,7 @@ export let asyncRouterMap = [
     routeName: '员工',
     routeIcon: 'employee',
     routeHidden: false,
-    routeHideChildrenList: false,
+    routehidechildrenlist: false,
     routeMeta: JSON.stringify({
       title: '员工',
       routeHidden: false
@@ -577,7 +577,7 @@ export let asyncRouterMap = [
         routeComponent: 'components/employee/employeeManage/index',
         routeName: '员工管理',
         routeHidden: false,
-        routeHideChildrenList: false,
+        routehidechildrenlist: false,
         routeMeta: JSON.stringify({
           title: '员工-员工管理',
           routeHidden: false
@@ -588,7 +588,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/employee/employeeManage/joinedEmployee/index',
             routeName: '在职员工',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '员工管理-在职员工',
               routeHidden: false
@@ -600,7 +600,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/employee/employeeManage/waitEmployee/waitEmployee',
             routeName: '待入职员工',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '员工管理-待入职员工',
               routeHidden: false
@@ -612,7 +612,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/employee/employeeManage/leavedEmployee/index',
             routeName: '离职员工',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '员工管理-离职员工',
               routeHidden: false
@@ -624,7 +624,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/employee/employeeManage/empDetailInfo',
             routeName: '员工详情',
             routeHidden: true,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '员工管理-员工详情',
               routeHidden: false
@@ -638,7 +638,7 @@ export let asyncRouterMap = [
         routeComponent: 'components/employee/pcApprove/pcApprove',
         routeName: '电脑审批',
         routeHidden: false,
-        routeHideChildrenList: false,
+        routehidechildrenlist: false,
         routeMeta: JSON.stringify({
           title: '员工-电脑审批',
           routeHidden: false
@@ -649,7 +649,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/employee/pcApprove/todoList/todoCatList',        
             routeName: '待办事宜',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-待办事宜',
               routeHidden: false
@@ -661,7 +661,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/employee/pcApprove/approveInfo/approveInfo',        
             routeName: '审批信息',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -673,7 +673,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/employee/pcApprove/empInfoChange/empInfoChange',          
             routeName: '员工档案变更',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -685,7 +685,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/employee/pcApprove/applyQuery/applyQuery',         
             routeName: '员工申请查询',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -699,7 +699,7 @@ export let asyncRouterMap = [
         routeComponent: 'components/employee/contractManage/contractManage',
         routeName: '合同管理',
         routeHidden: false,
-        routeHideChildrenList: false,
+        routehidechildrenlist: false,
         routeMeta: JSON.stringify({
           title: '电脑审批-审批信息',
           routeHidden: false
@@ -710,7 +710,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/employee/contractManage/contract/contract',
             routeName: '合同管理',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -722,7 +722,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/employee/contractManage/contractRemind/contractRemind',
             routeName: '合同提醒',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -736,7 +736,7 @@ export let asyncRouterMap = [
         routeComponent: 'components/employee/eventHandler/eventHandler',
         routeName: '事件处理器',
         routeHidden: false,
-        routeHideChildrenList: false,
+        routehidechildrenlist: false,
         routeMeta: JSON.stringify({
           title: '电脑审批-审批信息',
           routeHidden: false
@@ -747,7 +747,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/employee/eventHandler/event/event',
             routeName: '事件',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -759,7 +759,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/employee/eventHandler/executeEvent/executeEvent',
             routeName: '执行事件',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -771,7 +771,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/employee/eventHandler/setEvent/setEvent',
             routeName: '事件管理',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -783,7 +783,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/employee/eventHandler/batchEventsImport/batchEventsImport',
             routeName: '批量事件导入',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -798,7 +798,7 @@ export let asyncRouterMap = [
         routeName: '基础设置',
         routeRedirect: '/employee/baseSet/set',
         routeHidden: false,
-        routeHideChildrenList: false,
+        routehidechildrenlist: false,
         routeMeta: JSON.stringify({
           title: '电脑审批-审批信息',
           routeHidden: false
@@ -809,7 +809,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/employee/baseSet/baseSet',
             routeName:'设置',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -821,7 +821,7 @@ export let asyncRouterMap = [
           //   routeComponent: 'components/employee/baseSet/personnelFile/personnelFile',
           //   routeName:'人事档案地点',
           //   routeHidden: false,
-          // routeHideChildrenList: false,
+          // routehidechildrenlist: false,
           // routeMeta: JSON.stringify({
           //   title: '电脑审批-审批信息',
           //   routeHidden: false
@@ -833,7 +833,7 @@ export let asyncRouterMap = [
           //   routeComponent: 'components/employee/baseSet/showGroupSet/showGroupSet',
           //   routeName:'显示组表配置',
           //   routeHidden: false,
-          // routeHideChildrenList: false,
+          // routehidechildrenlist: false,
           // routeMeta: JSON.stringify({
           //   title: '电脑审批-审批信息',
           //   routeHidden: false
@@ -845,7 +845,7 @@ export let asyncRouterMap = [
           //   routeComponent: 'components/employee/baseSet/fieldAuthority/fieldAuthority',
           //   routeName:'组件字段权限',
           //   routeHidden: false,
-          // routeHideChildrenList: false,
+          // routehidechildrenlist: false,
           // routeMeta: JSON.stringify({
           //   title: '电脑审批-审批信息',
           //   routeHidden: false
@@ -857,7 +857,7 @@ export let asyncRouterMap = [
           //   routeComponent: 'components/employee/baseSet/customerDIC/customerDICList',
           //   routeName:'自定义字典表',
           //   routeHidden: false,
-          // routeHideChildrenList: false,
+          // routehidechildrenlist: false,
           // routeMeta: JSON.stringify({
           //   title: '电脑审批-审批信息',
           //   routeHidden: false
@@ -869,7 +869,7 @@ export let asyncRouterMap = [
           //   routeComponent: 'components/employee/baseSet/assignmentRules/assignmentRules',
           //   routeName:'工号分配规则',
           //   routeHidden: false,
-          // routeHideChildrenList: false,
+          // routehidechildrenlist: false,
           // routeMeta: JSON.stringify({
           //   title: '电脑审批-审批信息',
           //   routeHidden: false
@@ -886,7 +886,7 @@ export let asyncRouterMap = [
   //   routeName: '组织',
   //   routeIcon: 'socialSecurity',
   //   routeHidden: false,
-  // routeHideChildrenList: false,
+  // routehidechildrenlist: false,
   // routeMeta: JSON.stringify({
   //   title: '电脑审批-审批信息',
   //   routeHidden: false
@@ -897,7 +897,7 @@ export let asyncRouterMap = [
   //       routeComponent: 'components/organization/set/index',
   //       routeName: '设置',
   //       routeHidden: false,
-  // routeHideChildrenList: false,
+  // routehidechildrenlist: false,
   // routeMeta: JSON.stringify({
   //   title: '电脑审批-审批信息',
   //   routeHidden: false
@@ -909,7 +909,7 @@ export let asyncRouterMap = [
   //       routeComponent: 'components/organization/org/index',
   //       routeName: '组织',
   //       routeHidden: false,
-  // routeHideChildrenList: false,
+  // routehidechildrenlist: false,
   // routeMeta: JSON.stringify({
   //   title: '电脑审批-审批信息',
   //   routeHidden: false
@@ -921,7 +921,7 @@ export let asyncRouterMap = [
   //       routeComponent: 'components/organization/rankSystem/index',
   //       routeName: '职级体系',
   //       routeHidden: false,
-  // routeHideChildrenList: false,
+  // routehidechildrenlist: false,
   // routeMeta: JSON.stringify({
   //   title: '电脑审批-审批信息',
   //   routeHidden: false
@@ -933,7 +933,7 @@ export let asyncRouterMap = [
   //       routeComponent: 'components/organization/duty/index',
   //       routeName: '职务',
   //       routeHidden: false,
-  // routeHideChildrenList: false,
+  // routehidechildrenlist: false,
   // routeMeta: JSON.stringify({
   //   title: '电脑审批-审批信息',
   //   routeHidden: false
@@ -945,7 +945,7 @@ export let asyncRouterMap = [
   //       routeComponent: 'components/organization/position/index',
   //       routeName: '职位',
   //       routeHidden: false,
-  // routeHideChildrenList: false,
+  // routehidechildrenlist: false,
   // routeMeta: JSON.stringify({
   //   title: '电脑审批-审批信息',
   //   routeHidden: false
@@ -961,7 +961,7 @@ export let asyncRouterMap = [
     routeName: '社保',
     routeIcon: 'socialSecuri',
     routeHidden: false,
-    routeHideChildrenList: false,
+    routehidechildrenlist: false,
     routeMeta: JSON.stringify({
       title: '电脑审批-审批信息',
       routeHidden: false
@@ -972,7 +972,7 @@ export let asyncRouterMap = [
         routeComponent: 'components/socialSecurity/homeIndex/index',
         routeName: '社保-首页',
         routeHidden: false,
-        routeHideChildrenList: false,
+        routehidechildrenlist: false,
         routeMeta: JSON.stringify({
           title: '电脑审批-审批信息',
           routeHidden: false
@@ -984,7 +984,7 @@ export let asyncRouterMap = [
         routeComponent: 'components/socialSecurity/index/thisMonth/thisMonth',
         routeName: '本月变动',
         routeHidden: false,
-        routeHideChildrenList: false,
+        routehidechildrenlist: false,
         routeMeta: JSON.stringify({
           title: '电脑审批-审批信息',
           routeHidden: false
@@ -996,7 +996,7 @@ export let asyncRouterMap = [
         routeComponent: 'components/socialSecurity/index/monthlyReport/monthlyReport',
         routeName: '月报',
         routeHidden: false,
-        routeHideChildrenList: false,
+        routehidechildrenlist: false,
         routeMeta: JSON.stringify({
           title: '电脑审批-审批信息',
           routeHidden: false
@@ -1008,7 +1008,7 @@ export let asyncRouterMap = [
         routeComponent: 'components/socialSecurity/index/payBack/payBack',
         routeName: '补缴',
         routeHidden: false,
-        routeHideChildrenList: false,
+        routehidechildrenlist: false,
         routeMeta: JSON.stringify({
           title: '电脑审批-审批信息',
           routeHidden: false
@@ -1020,7 +1020,7 @@ export let asyncRouterMap = [
         routeComponent: 'components/socialSecurity/index/insuranceTable/insuranceTable',
         routeName: '参保报表',
         routeHidden: false,
-        routeHideChildrenList: false,
+        routehidechildrenlist: false,
         routeMeta: JSON.stringify({
           title: '电脑审批-审批信息',
           routeHidden: false
@@ -1032,7 +1032,7 @@ export let asyncRouterMap = [
         routeComponent: 'components/socialSecurity/index/insuranceConfig/insuranceConfig',
         routeName: '参保配置',
         routeHidden: false,
-        routeHideChildrenList: false,
+        routehidechildrenlist: false,
         routeMeta: JSON.stringify({
           title: '电脑审批-审批信息',
           routeHidden: false
@@ -1048,7 +1048,7 @@ export let asyncRouterMap = [
     routeName: '薪资',
     routeIcon: 'salary',
     routeHidden: false,
-    routeHideChildrenList: false,
+    routehidechildrenlist: false,
     routeMeta: JSON.stringify({
       title: '电脑审批-审批信息',
       routeHidden: false
@@ -1059,7 +1059,7 @@ export let asyncRouterMap = [
         routeComponent: 'components/salary/salaryRule/index',
         routeName: '薪资规则',
         routeHidden: false,
-        routeHideChildrenList: false,
+        routehidechildrenlist: false,
         routeMeta: JSON.stringify({
           title: '电脑审批-审批信息',
           routeHidden: false
@@ -1070,7 +1070,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/salary/salaryRule/addProject',
             routeName: '新增方案',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -1082,7 +1082,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/salary/salaryRule/addProject',
             routeName: '编辑方案',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -1096,7 +1096,7 @@ export let asyncRouterMap = [
         routeComponent: 'components/salary/salaryProject/index',
         routeName: '薪资项目',
         routeHidden: false,
-        routeHideChildrenList: false,
+        routehidechildrenlist: false,
         routeMeta: JSON.stringify({
           title: '电脑审批-审批信息',
           routeHidden: false
@@ -1107,7 +1107,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/salary/salaryProject/salaryArchiveInfo',
             routeName: '薪资项目-个人信息',
             routeHidden: true,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -1121,7 +1121,7 @@ export let asyncRouterMap = [
         routeComponent: 'components/salary/salaryScheme/index',
         routeName: '薪资档案',
         routeHidden: false,
-        routeHideChildrenList: false,
+        routehidechildrenlist: false,
         routeMeta: JSON.stringify({
           title: '电脑审批-审批信息',
           routeHidden: false
@@ -1133,7 +1133,7 @@ export let asyncRouterMap = [
         routeComponent: 'components/salary/salaryUpdate/index',
         routeName: '定薪调薪',
         routeHidden: false,
-        routeHideChildrenList: false,
+        routehidechildrenlist: false,
         routeMeta: JSON.stringify({
           title: '电脑审批-审批信息',
           routeHidden: false
@@ -1145,7 +1145,7 @@ export let asyncRouterMap = [
         routeComponent: 'components/salary/salaryMonthReport/index',
         routeName: '薪资月报',
         routeHidden: false,
-        routeHideChildrenList: false,
+        routehidechildrenlist: false,
         routeMeta: JSON.stringify({
           title: '电脑审批-审批信息',
           routeHidden: false
@@ -1157,7 +1157,7 @@ export let asyncRouterMap = [
         routeComponent: 'components/salary/salaryCommonMonth/index',
         routeName: '普通月发薪',
         routeHidden: false,
-        routeHideChildrenList: false,
+        routehidechildrenlist: false,
         routeMeta: JSON.stringify({
           title: '电脑审批-审批信息',
           routeHidden: false
@@ -1168,7 +1168,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/salary/salaryCommonMonth/salaryCMPInfo.vue',
             routeName: '普通月发薪-个人信息',
             routeHidden: true,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -1182,7 +1182,7 @@ export let asyncRouterMap = [
         routeComponent: 'components/salary/salarySpecial/index',
         routeName: '特殊发薪',
         routeHidden: false,
-        routeHideChildrenList: false,
+        routehidechildrenlist: false,
         routeMeta: JSON.stringify({
           title: '电脑审批-审批信息',
           routeHidden: false
@@ -1194,7 +1194,7 @@ export let asyncRouterMap = [
         routeComponent: 'components/salary/salaryContrastTable/index',
         routeName: '薪酬对比分析表',
         routeHidden: false,
-        routeHideChildrenList: false,
+        routehidechildrenlist: false,
         routeMeta: JSON.stringify({
           title: '电脑审批-审批信息',
           routeHidden: false
@@ -1206,7 +1206,7 @@ export let asyncRouterMap = [
         routeComponent: 'components/salary/salaryApproval/index',
         routeName: '薪资审批',
         routeHidden: false,
-        routeHideChildrenList: false,
+        routehidechildrenlist: false,
         routeMeta: JSON.stringify({
           title: '电脑审批-审批信息',
           routeHidden: false
@@ -1218,7 +1218,7 @@ export let asyncRouterMap = [
         routeComponent: 'components/salary/salaryProvision/index',
         routeName: '薪资计提',
         routeHidden: false,
-        routeHideChildrenList: false,
+        routehidechildrenlist: false,
         routeMeta: JSON.stringify({
           title: '电脑审批-审批信息',
           routeHidden: false
@@ -1230,7 +1230,7 @@ export let asyncRouterMap = [
         routeComponent: 'components/salary/salaryBillSet/index',
         routeName: '工资条设定',
         routeHidden: false,
-        routeHideChildrenList: false,
+        routehidechildrenlist: false,
         routeMeta: JSON.stringify({
           title: '电脑审批-审批信息',
           routeHidden: false
@@ -1242,7 +1242,7 @@ export let asyncRouterMap = [
         routeComponent: 'components/salary/salaryAmerceSet/index',
         routeName: '惩奖设定',
         routeHidden: false,
-        routeHideChildrenList: false,
+        routehidechildrenlist: false,
         routeMeta: JSON.stringify({
           title: '电脑审批-审批信息',
           routeHidden: false
@@ -1254,7 +1254,7 @@ export let asyncRouterMap = [
         routeComponent: 'components/salary/leaveSet/index',
         routeName: '请假款项',
         routeHidden: false,
-        routeHideChildrenList: false,
+        routehidechildrenlist: false,
         routeMeta: JSON.stringify({
           title: '电脑审批-审批信息',
           routeHidden: false
@@ -1266,7 +1266,7 @@ export let asyncRouterMap = [
         routeComponent: 'components/salary/overtimeSet/index',
         routeName: '加班款项',
         routeHidden: false,
-        routeHideChildrenList: false,
+        routehidechildrenlist: false,
         routeMeta: JSON.stringify({
           title: '电脑审批-审批信息',
           routeHidden: false
@@ -1282,7 +1282,7 @@ export let asyncRouterMap = [
     routeName: '考勤',
     routeIcon: 'salary',
     routeHidden: false,
-    routeHideChildrenList: false,
+    routehidechildrenlist: false,
     routeMeta: JSON.stringify({
       title: '电脑审批-审批信息',
       routeHidden: false
@@ -1293,7 +1293,7 @@ export let asyncRouterMap = [
         routeComponent: 'components/attendance/base-config/index',
         routeName: '基础配置',
         routeHidden: false,
-        routeHideChildrenList: false,
+        routehidechildrenlist: false,
         routeMeta: JSON.stringify({
           title: '电脑审批-审批信息',
           routeHidden: false
@@ -1304,7 +1304,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/attendance/base-config/day-set/index',
             routeName: '班次设置',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -1315,7 +1315,7 @@ export let asyncRouterMap = [
                 routeComponent: 'components/attendance/base-config/day-set/detail',
                 routeName: '新增班次',
                 routeHidden: false,
-                routeHideChildrenList: false,
+                routehidechildrenlist: false,
                 routeMeta: JSON.stringify({
                   title: '电脑审批-审批信息',
                   routeHidden: false
@@ -1327,7 +1327,7 @@ export let asyncRouterMap = [
                 routeComponent: 'components/attendance/base-config/day-set/detail',
                 routeName: '编辑班次',
                 routeHidden: false,
-                routeHideChildrenList: false,
+                routehidechildrenlist: false,
                 routeMeta: JSON.stringify({
                   title: '电脑审批-审批信息',
                   routeHidden: false
@@ -1341,7 +1341,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/attendance/base-config/attendance-team/index',
             routeName: '考勤组',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -1352,7 +1352,7 @@ export let asyncRouterMap = [
                 routeComponent: 'components/attendance/base-config/attendance-team/detail',
                 routeName: '新增考勤组',
                 routeHidden: false,
-                routeHideChildrenList: false,
+                routehidechildrenlist: false,
                 routeMeta: JSON.stringify({
                   title: '电脑审批-审批信息',
                   routeHidden: false
@@ -1364,7 +1364,7 @@ export let asyncRouterMap = [
                 routeComponent: 'components/attendance/base-config/attendance-team/detail',
                 routeName: '新增考勤组',
                 routeHidden: false,
-                routeHideChildrenList: false,
+                routehidechildrenlist: false,
                 routeMeta: JSON.stringify({
                   title: '电脑审批-审批信息',
                   routeHidden: false
@@ -1378,18 +1378,18 @@ export let asyncRouterMap = [
             routeComponent: 'components/attendance/base-config/attendance-rule/index',
             routeName: '出勤规则',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
             }),
             childrenList: [
               {
-                routePath: '/overtimeRule',
+                routePath: 'overtimeRule',
                 routeComponent: 'components/attendance/base-config/attendance-rule/overtime-rule-list',
                 routeName: '加班规则',
                 routeHidden: false,
-                routeHideChildrenList: false,
+                routehidechildrenlist: false,
                 routeMeta: JSON.stringify({
                   title: '电脑审批-审批信息',
                   routeHidden: false
@@ -1400,7 +1400,7 @@ export let asyncRouterMap = [
                     routeComponent: 'components/attendance/base-config/attendance-rule/overtime-rule-detail',
                     routeName: '新增加班规则',
                     routeHidden: false,
-                    routeHideChildrenList: false,
+                    routehidechildrenlist: false,
                     routeMeta: JSON.stringify({
                       title: '电脑审批-审批信息',
                       routeHidden: false
@@ -1411,7 +1411,7 @@ export let asyncRouterMap = [
                     routeComponent: 'components/attendance/base-config/attendance-rule/overtime-rule-detail',
                     routeName: '编辑加班规则',
                     routeHidden: false,
-                    routeHideChildrenList: false,
+                    routehidechildrenlist: false,
                     routeMeta: JSON.stringify({
                       title: '电脑审批-审批信息',
                       routeHidden: false
@@ -1423,7 +1423,7 @@ export let asyncRouterMap = [
                 routePath: '/offdayRule',
                 routeComponent: 'components/attendance/base-config/attendance-rule/offday-rule-list',
                 routeName: '调休规则',
-                routeHideChildrenList: false,
+                routehidechildrenlist: false,
                 routeHidden: true,
                 routeMeta: JSON.stringify({
                   title: '电脑审批-审批信息',
@@ -1435,7 +1435,7 @@ export let asyncRouterMap = [
                     routeComponent: 'components/attendance/base-config/attendance-rule/offday-rule-detail',
                     routeName: '新增调休规则',
                     routeHidden: true,
-                    routeHideChildrenList: false,
+                    routehidechildrenlist: false,
                     routeMeta: JSON.stringify({
                       title: '电脑审批-审批信息',
                       routeHidden: false
@@ -1446,7 +1446,7 @@ export let asyncRouterMap = [
                     routePath: 'editOffdayRule',
                     routeComponent: 'components/attendance/base-config/attendance-rule/offday-rule-detail',
                     routeName: '编辑调休规则',
-                    routeHideChildrenList: false,
+                    routehidechildrenlist: false,
                     routeHidden: true,
                     routeMeta: JSON.stringify({
                       title: '电脑审批-审批信息',
@@ -1461,7 +1461,7 @@ export let asyncRouterMap = [
                 routeComponent: 'components/attendance/base-config/attendance-rule/business-rule-list',
                 routeName: '出差规则',
                 routeHidden: true,
-                routeHideChildrenList: false,
+                routehidechildrenlist: false,
                 routeMeta: JSON.stringify({
                   title: '电脑审批-审批信息',
                   routeHidden: false
@@ -1472,7 +1472,7 @@ export let asyncRouterMap = [
                     routeComponent: 'components/attendance/base-config/attendance-rule/business-rule-detail',
                     routeName: '新增出差规则',
                     routeHidden: true,
-                    routeHideChildrenList: false,
+                    routehidechildrenlist: false,
                     routeMeta: JSON.stringify({
                       title: '电脑审批-审批信息',
                       routeHidden: false
@@ -1483,7 +1483,7 @@ export let asyncRouterMap = [
                     routeComponent: 'components/attendance/base-config/attendance-rule/business-rule-detail',
                     routeName: '编辑出差规则',
                     routeHidden: true,
-                    routeHideChildrenList: false,
+                    routehidechildrenlist: false,
                     routeMeta: JSON.stringify({
                       title: '电脑审批-审批信息',
                       routeHidden: false
@@ -1497,7 +1497,7 @@ export let asyncRouterMap = [
                 routeComponent: 'components/attendance/base-config/attendance-rule/public-rule-list',
                 routeName: '公出规则',
                 routeHidden: true,
-                routeHideChildrenList: false,
+                routehidechildrenlist: false,
                 routeMeta: JSON.stringify({
                   title: '电脑审批-审批信息',
                   routeHidden: false
@@ -1508,7 +1508,7 @@ export let asyncRouterMap = [
                     routeComponent: 'components/attendance/base-config/attendance-rule/public-rule-detail',
                     routeName: '新增公出规则',
                     routeHidden: true,
-                    routeHideChildrenList: false,
+                    routehidechildrenlist: false,
                     routeMeta: JSON.stringify({
                       title: '电脑审批-审批信息',
                       routeHidden: false
@@ -1520,7 +1520,7 @@ export let asyncRouterMap = [
                     routeComponent: 'components/attendance/base-config/attendance-rule/public-rule-detail',
                     routeName: '编辑公出规则',
                     routeHidden: true,
-                    routeHideChildrenList: false,
+                    routehidechildrenlist: false,
                     routeMeta: JSON.stringify({
                       title: '电脑审批-审批信息',
                       routeHidden: false
@@ -1534,7 +1534,7 @@ export let asyncRouterMap = [
                 routeComponent: 'components/attendance/base-config/attendance-rule/supplement-rule-list',
                 routeName: '补签规则',
                 routeHidden: true,
-                routeHideChildrenList: false,
+                routehidechildrenlist: false,
                 routeMeta: JSON.stringify({
                   title: '电脑审批-审批信息',
                   routeHidden: false
@@ -1545,7 +1545,7 @@ export let asyncRouterMap = [
                     routeComponent: 'components/attendance/base-config/attendance-rule/supplement-rule-detail',
                     routeName: '新增补签规则',
                     routeHidden: true,
-                    routeHideChildrenList: false,
+                    routehidechildrenlist: false,
                     routeMeta: JSON.stringify({
                       title: '电脑审批-审批信息',
                       routeHidden: false
@@ -1557,7 +1557,7 @@ export let asyncRouterMap = [
                     routeComponent: 'components/attendance/base-config/attendance-rule/supplement-rule-detail',
                     routeName: '编辑补签规则',
                     routeHidden: true,
-                    routeHideChildrenList: false,
+                    routehidechildrenlist: false,
                     routeMeta: JSON.stringify({
                       title: '电脑审批-审批信息',
                       routeHidden: false
@@ -1571,7 +1571,7 @@ export let asyncRouterMap = [
                 routeComponent: 'components/attendance/base-config/attendance-rule/appeal-rule-list',
                 routeName: '申述规则',
                 routeHidden: true,
-                routeHideChildrenList: false,
+                routehidechildrenlist: false,
                 routeMeta: JSON.stringify({
                   title: '电脑审批-审批信息',
                   routeHidden: false
@@ -1582,7 +1582,7 @@ export let asyncRouterMap = [
                     routeComponent: 'components/attendance/base-config/attendance-rule/appeal-rule-detail',
                     routeName: '新增申述规则',
                     routeHidden: true,
-                    routeHideChildrenList: false,
+                    routehidechildrenlist: false,
                     routeMeta: JSON.stringify({
                       title: '电脑审批-审批信息',
                       routeHidden: false
@@ -1594,7 +1594,7 @@ export let asyncRouterMap = [
                     routeComponent: 'components/attendance/base-config/attendance-rule/appeal-rule-detail',
                     routeName: '编辑申述规则',
                     routeHidden: true,
-                    routeHideChildrenList: false,
+                    routehidechildrenlist: false,
                     routeMeta: JSON.stringify({
                       title: '电脑审批-审批信息',
                       routeHidden: false
@@ -1608,7 +1608,7 @@ export let asyncRouterMap = [
                 routeComponent: 'components/attendance/base-config/attendance-rule/leave-rule-list',
                 routeName: '请假规则',
                 routeHidden: true,
-                routeHideChildrenList: false,
+                routehidechildrenlist: false,
                 routeMeta: JSON.stringify({
                   title: '电脑审批-审批信息',
                   routeHidden: false
@@ -1619,7 +1619,7 @@ export let asyncRouterMap = [
                     routeComponent: 'components/attendance/base-config/attendance-rule/leave-rule-detail',
                     routeName: '新增请假规则',
                     routeHidden: true,
-                    routeHideChildrenList: false,
+                    routehidechildrenlist: false,
                     routeMeta: JSON.stringify({
                       title: '电脑审批-审批信息',
                       routeHidden: false
@@ -1631,7 +1631,7 @@ export let asyncRouterMap = [
                     routeComponent: 'components/attendance/base-config/attendance-rule/leave-rule-detail',
                     routeName: '编辑请假规则',
                     routeHidden: true,
-                    routeHideChildrenList: false,
+                    routehidechildrenlist: false,
                     routeMeta: JSON.stringify({
                       title: '电脑审批-审批信息',
                       routeHidden: false
@@ -1650,7 +1650,7 @@ export let asyncRouterMap = [
         routeComponent: 'components/attendance/handle-service/index',
         routeName: '业务处理',
         routeHidden: false,
-        routeHideChildrenList: false,
+        routehidechildrenlist: false,
         routeMeta: JSON.stringify({
           title: '电脑审批-审批信息',
           routeHidden: false
@@ -1661,7 +1661,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/attendance/handle-service/attendance-archives/index',
             routeName: '考勤档案',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -1673,7 +1673,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/attendance/handle-service/scheduling/index',
             routeName: '排班表',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -1684,7 +1684,7 @@ export let asyncRouterMap = [
                 routeComponent: 'components/attendance/handle-service/scheduling/scheduling-count',
                 routeName: '排班统计',
                 routeHidden: false,
-                routeHideChildrenList: false,
+                routehidechildrenlist: false,
                 routeMeta: JSON.stringify({
                   title: '电脑审批-审批信息',
                   routeHidden: false
@@ -1696,7 +1696,7 @@ export let asyncRouterMap = [
                 routeComponent: 'components/attendance/handle-service/scheduling/scheduling-batch',
                 routeName: '批量排班',
                 routeHidden: false,
-                routeHideChildrenList: false,
+                routehidechildrenlist: false,
                 routeMeta: JSON.stringify({
                   title: '电脑审批-审批信息',
                   routeHidden: false
@@ -1708,7 +1708,7 @@ export let asyncRouterMap = [
                 routeComponent: 'components/attendance/handle-service/scheduling/scheduling-high-batch',
                 routeName: '高级批量排班',
                 routeHidden: false,
-                routeHideChildrenList: false,
+                routehidechildrenlist: false,
                 routeMeta: JSON.stringify({
                   title: '电脑审批-审批信息',
                   routeHidden: false
@@ -1720,7 +1720,7 @@ export let asyncRouterMap = [
                 routeComponent: 'components/attendance/handle-service/scheduling/scheduling-import',
                 routeName: '导入排班',
                 routeHidden: false,
-                routeHideChildrenList: false,
+                routehidechildrenlist: false,
                 routeMeta: JSON.stringify({
                   title: '电脑审批-审批信息',
                   routeHidden: false
@@ -1737,7 +1737,7 @@ export let asyncRouterMap = [
         routeComponent: 'components/attendance/handle-data/index',
         routeName: '数据处理',
         routeHidden: false,
-        routeHideChildrenList: false,
+        routehidechildrenlist: false,
         routeMeta: JSON.stringify({
           title: '电脑审批-审批信息',
           routeHidden: false
@@ -1748,7 +1748,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/attendance/handle-data/clock-record/index',
             routeName: '打卡记录',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -1760,7 +1760,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/attendance/handle-data/supplement-record/index',
             routeName: '补签单据',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -1772,7 +1772,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/attendance/handle-data/attendance-appeal/index',
             routeName: '考勤申诉',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -1784,7 +1784,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/attendance/handle-data/time-receipt/index',
             routeName: '时间单据',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -1796,7 +1796,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/attendance/handle-data/overtime-receipt/index',
             routeName: '加班单据',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -1811,7 +1811,7 @@ export let asyncRouterMap = [
         routeComponent: 'components/attendance/attendance-report/index',
         routeName: '考勤报告',
         routeHidden: false,
-        routeHideChildrenList: false,
+        routehidechildrenlist: false,
         routeMeta: JSON.stringify({
           title: '电脑审批-审批信息',
           routeHidden: false
@@ -1822,7 +1822,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/attendance/attendance-report/attendance-day-report/index',
             routeName: '考勤日报',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -1834,7 +1834,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/attendance/attendance-report/attendance-month-report/index',
             routeName: '考勤月报',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -1846,7 +1846,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/attendance/attendance-report/overtime-count/index',
             routeName: '加班统计',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -1858,7 +1858,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/attendance/attendance-report/working-hours-month-report/index',
             routeName: '工时月报',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -1876,7 +1876,7 @@ export let asyncRouterMap = [
     routeName: '平台',
     routeIcon: 'platform',
     routeHidden: false,
-    routeHideChildrenList: false,
+    routehidechildrenlist: false,
     routeMeta: JSON.stringify({
       title: '电脑审批-审批信息',
       routeHidden: false
@@ -1887,7 +1887,7 @@ export let asyncRouterMap = [
         routeComponent: 'components/platform/socialManage/joinType/joinType',
         routeName: '参保类型',
         routeHidden: false,
-        routeHideChildrenList: false,
+        routehidechildrenlist: false,
         routeMeta: JSON.stringify({
           title: '电脑审批-审批信息',
           routeHidden: false
@@ -1899,7 +1899,7 @@ export let asyncRouterMap = [
         routeComponent: 'components/platform/socialManage/thisMonth/thisMonth',
         routeName: '本月变动',
         routeHidden: false,
-        routeHideChildrenList: false,
+        routehidechildrenlist: false,
         routeMeta: JSON.stringify({
           title: '电脑审批-审批信息',
           routeHidden: false
@@ -1912,7 +1912,7 @@ export let asyncRouterMap = [
         routeComponent: 'components/platform/approval-flow/index',
         routeName: '审批流',
         routeHidden: false,
-        routeHideChildrenList: false,
+        routehidechildrenlist: false,
         routeMeta: JSON.stringify({
           title: '电脑审批-审批信息',
           routeHidden: false
@@ -1923,7 +1923,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/platform/approval-flow/table-manage/table-manage',
             routeName: '表单管理',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -1934,7 +1934,7 @@ export let asyncRouterMap = [
                 routeComponent: 'components/platform/approval-flow/table-manage/table-show',
                 routeName: '表单信息',
                 routeHidden: true,
-                routeHideChildrenList: false,
+                routehidechildrenlist: false,
                 routeMeta: JSON.stringify({
                   title: '电脑审批-审批信息',
                   routeHidden: false
@@ -1946,7 +1946,7 @@ export let asyncRouterMap = [
                 routeComponent: 'components/platform/approval-flow/table-manage/table-edit',
                 routeName: '表单编辑',
                 routeHidden: true,
-                routeHideChildrenList: false,
+                routehidechildrenlist: false,
                 routeMeta: JSON.stringify({
                   title: '电脑审批-审批信息',
                   routeHidden: false
@@ -1960,7 +1960,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/platform/approval-flow/flow-info/flow-info',
             routeName: '审批流信息',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -1972,7 +1972,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/platform/approval-flow/flow-rule/flow-rule',
             routeName: '审批规则',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -1984,7 +1984,7 @@ export let asyncRouterMap = [
                 routeRedirect: '/platform/approvalFlow/flowRule/flowConfig/processSet',  // 查看、新增和编辑时，重定向到了 processSet子路由页面
                 routeName: '审批流配置',
                 routeHidden: true,
-                routeHideChildrenList: false,
+                routehidechildrenlist: false,
                 routeMeta: JSON.stringify({
                   title: '电脑审批-审批信息',
                   routeHidden: false
@@ -1995,7 +1995,7 @@ export let asyncRouterMap = [
                     routeComponent: 'components/platform/approval-flow/flow-config/process-set/process-set',
                     routeName: '流程设置',
                     routeHidden: true,
-                    routeHideChildrenList: false,
+                    routehidechildrenlist: false,
                     routeMeta: JSON.stringify({
                       title: '电脑审批-审批信息',
                       routeHidden: false
@@ -2007,7 +2007,7 @@ export let asyncRouterMap = [
                     routeComponent: 'components/platform/approval-flow/flow-config/relation-table/relation-table',
                     routeName: '流程表单',
                     routeHidden: true,
-                    routeHideChildrenList: false,
+                    routehidechildrenlist: false,
                     routeMeta: JSON.stringify({
                       title: '电脑审批-审批信息',
                       routeHidden: false
@@ -2019,7 +2019,7 @@ export let asyncRouterMap = [
                     routeComponent: 'components/platform/approval-flow/flow-config/process-design/process-design',
                     routeName: '流程设计',
                     routeHidden: true,
-                    routeHideChildrenList: false,
+                    routehidechildrenlist: false,
                     routeMeta: JSON.stringify({
                       title: '电脑审批-审批信息',
                       routeHidden: false
@@ -2031,7 +2031,7 @@ export let asyncRouterMap = [
                     routeComponent: 'components/platform/approval-flow/flow-config/field-set/field-set',
                     routeName: '节点设置',
                     routeHidden: true,
-                    routeHideChildrenList: false,
+                    routehidechildrenlist: false,
                     routeMeta: JSON.stringify({
                       title: '电脑审批-审批信息',
                       routeHidden: false
@@ -2047,7 +2047,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/platform/approval-flow/launch/launch',
             routeName: '发起',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -2059,7 +2059,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/platform/approval-flow/todo/todo',
             routeName: '待办',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -2071,7 +2071,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/platform/approval-flow/on-the-way/on-the-way',
             routeName: '在途',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -2083,7 +2083,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/platform/approval-flow/my-start/my-start',
             routeName: '我发起的',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -2095,7 +2095,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/platform/approval-flow/my-approval/my-approval',
             routeName: '我处理的',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -2107,7 +2107,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/platform/approval-flow/copy-with-me/copy-with-me',
             routeName: '抄送我的',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -2119,7 +2119,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/platform/approval-flow/my-follow/my-follow',
             routeName: '我关注的',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -2131,7 +2131,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/platform/approval-flow/set/set',
             routeName: "设置",
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -2149,7 +2149,7 @@ export let asyncRouterMap = [
     routeName: '公告',
     routeIcon: 'notice',
     routeHidden: false,
-    routeHideChildrenList: false,
+    routehidechildrenlist: false,
     routeMeta: JSON.stringify({
       title: '电脑审批-审批信息',
       routeHidden: false
@@ -2160,7 +2160,7 @@ export let asyncRouterMap = [
         routeComponent: 'components/notice/front/index',
         routeName: '公告首页',
         routeHidden: false,
-        routeHideChildrenList: false,
+        routehidechildrenlist: false,
         routeMeta: JSON.stringify({
           title: '电脑审批-审批信息',
           routeHidden: false
@@ -2171,7 +2171,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/notice/front/noticeDetailFront',
             routeName: '员工公告详情',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -2185,7 +2185,7 @@ export let asyncRouterMap = [
         routeComponent: 'components/notice/end/index',
         routeName: '公告管理',
         routeHidden: false,
-        routeHideChildrenList: false,
+        routehidechildrenlist: false,
         routeMeta: JSON.stringify({
           title: '电脑审批-审批信息',
           routeHidden: false
@@ -2196,7 +2196,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/notice/end/createNotice',
             routeName: '新建公告',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -2208,7 +2208,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/notice/end/noticeDetailEnd',
             routeName: '公告详情',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -2220,7 +2220,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/notice/end/modifyNotice',
             routeName: '编辑公告',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -2232,7 +2232,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/notice/end/feedback',
             routeName: '公告反馈',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -2244,7 +2244,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/notice/end/historyNotice',
             routeName: '公告历史',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -2258,7 +2258,7 @@ export let asyncRouterMap = [
         routeComponent: 'components/notice/end/receipt',
         routeName: '公告回执',
         routeHidden: false,
-        routeHideChildrenList: false,
+        routehidechildrenlist: false,
         routeMeta: JSON.stringify({
           title: '电脑审批-审批信息',
           routeHidden: false
@@ -2274,7 +2274,7 @@ export let asyncRouterMap = [
     routeName: '管理',
     routeIcon: 'manage',
     routeHidden: false,
-    routeHideChildrenList: false,
+    routehidechildrenlist: false,
     routeMeta: JSON.stringify({
       title: '电脑审批-审批信息',
       routeHidden: false
@@ -2286,7 +2286,7 @@ export let asyncRouterMap = [
       //   routeComponent: 'components/manage/userManage/userManage',
       //   routeName: '平台系统设置',
       //   routeHidden: false,
-      // routeHideChildrenList: false,
+      // routehidechildrenlist: false,
       //   routeMeta: {
       //     title: '管理-平台系统设置',
       //     routeHidden: false     
@@ -2298,7 +2298,7 @@ export let asyncRouterMap = [
       //       routeComponent: 'components/manage/userManage/systemSetting/systemSetting',
       //       routeName: '系统配置',
       //       routeHidden: false,
-      // routeHideChildrenList: false,
+      // routehidechildrenlist: false,
       //       routeMeta: {
       //         title: '平台系统设置-系统配置',
       //         routeHidden: false
@@ -2309,7 +2309,7 @@ export let asyncRouterMap = [
       //           routeComponent: 'components/manage/userManage/systemSetting/menuManage/menuManage',
       //           routeName: '菜单管理',
       //           routeHidden: false,
-      // routeHideChildrenList: false,
+      // routehidechildrenlist: false,
       //           routeMeta: {
       //             title: '系统配置-菜单管理',
       //             routeHidden: false
@@ -2320,7 +2320,7 @@ export let asyncRouterMap = [
       //           routeComponent: 'components/manage/userManage/systemSetting/pageManage/pageManage',
       //           routeName: '页面管理',
       //           routeHidden: false,
-      // routeHideChildrenList: false,
+      // routehidechildrenlist: false,
       //           routeMeta: {
       //             title: '系统配置-页面管理',
       //             routeHidden: false
@@ -2331,7 +2331,7 @@ export let asyncRouterMap = [
       //           routeComponent: 'components/manage/userManage/systemSetting/componentsManage/componentsManage',
       //           routeName: '组件管理',
       //           routeHidden: false,
-      // routeHideChildrenList: false,
+      // routehidechildrenlist: false,
       //           routeMeta: {
       //             title: '系统配置-组件管理',
       //             routeHidden: false
@@ -2342,7 +2342,7 @@ export let asyncRouterMap = [
       //           routeComponent: 'components/manage/userManage/systemSetting/pageComponents/pageComManage',
       //           routeName: '页面组件管理',
       //           routeHidden: false,
-      // routeHideChildrenList: false,
+      // routehidechildrenlist: false,
       //           routeMeta: {
       //             title: '系统配置-页面组件管理',
       //             routeHidden: false
@@ -2355,7 +2355,7 @@ export let asyncRouterMap = [
       //       routeComponent: 'components/manage/userManage/userRole/userRole',
       //       routeName: '用户角色',
       //       routeHidden: false,
-      // routeHideChildrenList: false,
+      // routehidechildrenlist: false,
       //       routeMeta: {
       //         title: '平台系统设置-用户角色',
       //         routeHidden: false    
@@ -2366,7 +2366,7 @@ export let asyncRouterMap = [
       //           routeComponent: 'components/manage/userManage/userRole/account/account',
       //           routeName: '账户',
       //           routeHidden: false,
-      // routeHideChildrenList: false,
+      // routehidechildrenlist: false,
       //           routeMeta: {
       //             title: '用户角色-账户',
       //             routeHidden: false
@@ -2377,7 +2377,7 @@ export let asyncRouterMap = [
       //           routeComponent: 'components/manage/userManage/userRole/sysManager/sysManager',
       //           routeName: '企业系统管理员',
       //           routeHidden: false,
-      // routeHideChildrenList: false,
+      // routehidechildrenlist: false,
       //           routeMeta: {
       //             title: '用户角色-系统管理员',
       //             routeHidden: false
@@ -2388,7 +2388,7 @@ export let asyncRouterMap = [
       //           routeComponent: 'components/manage/userManage/userRole/userGroup/userGroup', 
       //           routeName: '用户组',
       //           routeHidden: false,
-      // routeHideChildrenList: false,
+      // routehidechildrenlist: false,
       //           routeMeta: {
       //             title: '用户角色-用户组',
       //             routeHidden: false   
@@ -2399,7 +2399,7 @@ export let asyncRouterMap = [
       //           routeComponent: 'components/manage/userManage/userRole/roleGroup/roleGroup',
       //           routeName: '角色组',
       //           routeHidden: false,
-      // routeHideChildrenList: false,
+      // routehidechildrenlist: false,
       //           routeMeta: {
       //             title: '用户角色-角色组',
       //             routeHidden: false 
@@ -2410,7 +2410,7 @@ export let asyncRouterMap = [
       //           routeComponent: 'components/manage/userManage/userRole/authorityList/commonAuthorityList',
       //           routeName: '权限引用列表',
       //           routeHidden: false,
-      // routeHideChildrenList: false,
+      // routehidechildrenlist: false,
       //           routeMeta: {
       //             title: '用户角色-权限引用列表',
       //             routeHidden: false    
@@ -2421,7 +2421,7 @@ export let asyncRouterMap = [
       //           routeComponent: 'components/manage/userManage/userRole/userManage/commonUserManage',
       //           routeName: '用户管理',
       //           routeHidden: false,
-      // routeHideChildrenList: false,
+      // routehidechildrenlist: false,
       //           routeMeta: {
       //             title: '用户角色-用户管理',
       //             routeHidden: false 
@@ -2432,7 +2432,7 @@ export let asyncRouterMap = [
       //           routeComponent: 'components/manage/userManage/userRole/roleManage/commonRoleManage',
       //           routeName: '角色管理',
       //           routeHidden: false,
-      // routeHideChildrenList: false,
+      // routehidechildrenlist: false,
       //           routeMeta: {
       //             title: '用户角色-角色管理',
       //             routeHidden: false 
@@ -2446,7 +2446,7 @@ export let asyncRouterMap = [
       //       routeRedirect: '/manage/platformSystemSetting/licensingRights/permit',
       //       routeName: '许可权',
       //       routeHidden: false,
-      // routeHideChildrenList: false,
+      // routehidechildrenlist: false,
       //       routeMeta: {
       //         title: '平台系统设置-许可权',
       //         routeHidden: false
@@ -2457,7 +2457,7 @@ export let asyncRouterMap = [
       //           routeComponent: 'components/manage/userManage/licensingRights/permit/common-permit',
       //           routeName: '许可权',
       //           routeHidden: false,
-      // routeHideChildrenList: false,
+      // routehidechildrenlist: false,
       //           routeMeta: {
       //             title: '许可权-许可权',
       //             routeHidden: false
@@ -2470,7 +2470,7 @@ export let asyncRouterMap = [
       //       routeComponent: 'components/manage/userManage/versionPackage/versionPackage',
       //       routeName: '版本套包',
       //       routeHidden: false,
-      // routeHideChildrenList: false,
+      // routehidechildrenlist: false,
       //       routeMeta: {
       //         title: '平台系统设置-版本套包',
       //         routeHidden: false
@@ -2481,7 +2481,7 @@ export let asyncRouterMap = [
       //           routeComponent: 'components/manage/userManage/versionPackage/setting/setting',
       //           routeName: '设置',
       //           routeHidden: false,
-      // routeHideChildrenList: false,
+      // routehidechildrenlist: false,
       //           routeMeta: {
       //             title: '版本套包-设置',
       //             routeHidden: false
@@ -2492,7 +2492,7 @@ export let asyncRouterMap = [
       //           routeComponent: 'components/manage/userManage/versionPackage/buyDiscount/buyDiscount',
       //           routeName: '统一购买折扣',
       //           routeHidden: false,
-      // routeHideChildrenList: false,
+      // routehidechildrenlist: false,
       //           routeMeta: {
       //             title: '版本套包-统一购买折扣',
       //             routeHidden: false
@@ -2503,7 +2503,7 @@ export let asyncRouterMap = [
       //           routeComponent: 'components/manage/userManage/versionPackage/version/version',
       //           routeName: '版本',
       //           routeHidden: false,
-      // routeHideChildrenList: false,
+      // routehidechildrenlist: false,
       //           routeMeta: {
       //             title: '版本套包-版本',
       //             routeHidden: false
@@ -2514,7 +2514,7 @@ export let asyncRouterMap = [
       //           routeComponent: 'components/manage/userManage/versionPackage/package/package',
       //           routeName: '套包',
       //           routeHidden: false,
-      // routeHideChildrenList: false,
+      // routehidechildrenlist: false,
       //           routeMeta: {
       //             title: '版本套包-套包',
       //             routeHidden: false
@@ -2525,7 +2525,7 @@ export let asyncRouterMap = [
       //           routeComponent: 'components/manage/userManage/versionPackage/customerVersion/customerVersion',
       //           routeName: '客户版本',
       //           routeHidden: false,
-      // routeHideChildrenList: false,
+      // routehidechildrenlist: false,
       //           routeMeta: {
       //             title: '版本套包-客户版本',
       //             routeHidden: false
@@ -2538,7 +2538,7 @@ export let asyncRouterMap = [
       //       routeComponent: 'components/manage/userManage/companyInfo/companyInfo',
       //       routeName: '企业信息',
       //       routeHidden: false,
-      // routeHideChildrenList: false,
+      // routehidechildrenlist: false,
       //       routeMeta: {
       //         title: '平台系统设置-企业信息',
       //         routeHidden: false
@@ -2552,7 +2552,7 @@ export let asyncRouterMap = [
         routeComponent: 'components/manage/companySetting/sysRightsSetting/companyInfo/companyInfo',
         routeName: '企业信息',
         routeHidden: false,
-        routeHideChildrenList: false,
+        routehidechildrenlist: false,
         routeMeta: JSON.stringify({
           title: '电脑审批-审批信息',
           routeHidden: false
@@ -2565,7 +2565,7 @@ export let asyncRouterMap = [
         routeRedirect: '/manage/companySetting/systemSetting/displayGroup',
         routeName: '系统设置',
         routeHidden: false,
-        routeHideChildrenList: false,
+        routehidechildrenlist: false,
         routeMeta: JSON.stringify({
           title: '电脑审批-审批信息',
           routeHidden: false
@@ -2576,7 +2576,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/manage/companySetting/systemSetting/dataBase/index',
             routeName: '物理表',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -2588,7 +2588,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/manage/companySetting/systemSetting/showTable/showTable',
             routeName: '显示表',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -2600,7 +2600,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/manage/companySetting/systemSetting/displayGroup/displayGroup',
             routeName: '显示分组',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -2612,7 +2612,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/manage/companySetting/systemSetting/pageManage/index',
             routeName: '页面管理',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '页面管理',
               routeHidden: false
@@ -2623,7 +2623,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/manage/companySetting/systemSetting/components/componentsManage',
             routeName: '显示组件',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -2635,7 +2635,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/manage/companySetting/systemSetting/pages/pageManage',
             routeName: '显示页面',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -2647,7 +2647,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/manage/companySetting/systemSetting/pageComponents/pageComManage',
             routeName: '显示页面组件',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -2662,7 +2662,7 @@ export let asyncRouterMap = [
         routeRedirect: '/manage/platformSystemSetting/userRole/userManage',
         routeName: '用户角色',
         routeHidden: false,
-        routeHideChildrenList: false,
+        routehidechildrenlist: false,
         routeMeta: JSON.stringify({
           title: '电脑审批-审批信息',
           routeHidden: false
@@ -2673,7 +2673,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/manage/userManage/userRole/userManage/commonUserManage',
             routeName: '用户管理',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -2685,7 +2685,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/manage/userManage/userRole/userGroup/userGroup', 
             routeName: '用户组',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -2697,7 +2697,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/manage/userManage/userRole/roleManage/commonRoleManage',
             routeName: '角色管理',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -2709,7 +2709,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/manage/userManage/userRole/roleGroup/roleGroup',
             routeName: '角色组',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -2721,7 +2721,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/manage/userManage/userRole/authorityList/commonAuthorityList',
             routeName: '权限引用列表',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -2733,7 +2733,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/manage/userManage/licensingRights/permit/common-permit',
             routeName: '许可权配置',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -2746,7 +2746,7 @@ export let asyncRouterMap = [
           //   routeRedirect: '/manage/platformSystemSetting/licensingRights/permit',
           //   routeName: '许可权配置',
           //   routeHidden: false,
-          // routeHideChildrenList: false,
+          // routehidechildrenlist: false,
           //   routeMeta: {
           //     title: '用户角色-许可权',
           //     routeHidden: false
@@ -2757,7 +2757,7 @@ export let asyncRouterMap = [
           //       routeComponent: 'components/manage/userManage/licensingRights/permit/common-permit',
           //       routeName: '许可权',
           //       routeHidden: false,
-          // routeHideChildrenList: false,
+          // routehidechildrenlist: false,
           //       routeMeta: {
           //         title: '许可权配置-许可权',
           //         routeHidden: false
@@ -2770,7 +2770,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/manage/userManage/userRole/companyRole/companyRole',
             routeName: '企业角色',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -2785,7 +2785,7 @@ export let asyncRouterMap = [
         routeRedirect: '/manage/buySystem/companyBuy',
         routeName: '购买系统',
         routeHidden: false,
-        routeHideChildrenList: false,
+        routehidechildrenlist: false,
         routeMeta: JSON.stringify({
           title: '电脑审批-审批信息',
           routeHidden: false
@@ -2796,7 +2796,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/manage/buySystem/companyBuy/companyBuy',
             routeName: '企业购买',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -2808,7 +2808,7 @@ export let asyncRouterMap = [
             routeComponent: 'components/manage/buySystem/orderList/orderList',
             routeName: '订单',
             routeHidden: false,
-            routeHideChildrenList: false,
+            routehidechildrenlist: false,
             routeMeta: JSON.stringify({
               title: '电脑审批-审批信息',
               routeHidden: false
@@ -2824,7 +2824,7 @@ export let asyncRouterMap = [
     routeComponent: 'base/NewStyle-cmp/guid-test',
     routeName: '引导',
     routeHidden: true,
-    routeHideChildrenList: false,
+    routehidechildrenlist: false,
     routeMeta: JSON.stringify({
       title: '电脑审批-审批信息',
       routeHidden: false
@@ -2836,7 +2836,7 @@ export let asyncRouterMap = [
     routeComponent: 'base/errorPage/404',
     routeName: '404',
     routeHidden: true,
-    routeHideChildrenList: false,
+    routehidechildrenlist: false,
     routeMeta: JSON.stringify({
       title: '出错了',
       routeHidden: false

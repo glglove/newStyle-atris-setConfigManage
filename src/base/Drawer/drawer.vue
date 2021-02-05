@@ -148,6 +148,9 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
+>>>.el-drawer__header {
+    margin-bottom: 0 !important
+}
 >>>.atris-drawer
     overflow auto
     .el-drawer__body

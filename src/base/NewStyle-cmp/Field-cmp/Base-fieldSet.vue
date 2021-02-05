@@ -24,9 +24,9 @@
     :rules="rules"
     v-show="(beforeHasShow==1) && isShowField"
   >
-    obj：{{obj}}
+    <!-- obj：{{obj}}
     eventTypeResult: {{eventTypeResult}}
-    字段设置器组件
+    字段设置器组件 -->
     <div 
       class="filedContentWrap u-f-ac u-f-jst"
     >
