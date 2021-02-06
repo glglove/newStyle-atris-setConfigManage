@@ -5,6 +5,7 @@ import router from '@/router'
 import Layout from '@/components/layout/Layout'
 
 function loadView(view, name) {
+  // console.log(`${name}:`,view)
   return (resolve) => require(['@/' + view + '.vue'], resolve)
   // 此处用reqiure比较好，import引入变量会有各种莫名的错误
   // if(process.env.NODE_ENV){
@@ -64,7 +65,7 @@ const permission = {
         debugger
         // 获取的用户可访问路由与 配置的 asyncRouterMap 路由做递归匹配 得到用户真实的可访问的路由地址
         // let accessedRouters = filterAsyncRouter(asyncRouterMap, rootState.user.userAccessRouters)
-        let res = filterAsyncRouter(asyncRouterMap)
+        let res = filterAsyncRouter(asyncRouter)
         console.log("----999-----", res)
         let accessedRouters = constantRouterMap.concat(res)
         // let accessedRouters = constantRouterMap.concat([])

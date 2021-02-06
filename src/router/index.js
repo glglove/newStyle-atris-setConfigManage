@@ -263,7 +263,6 @@ export let asyncRouter = [
     routeIcon: 'employee',
     routeHidden: false,
     routehidechildrenlist: false,
-    hidden: false,    
     routeMeta: JSON.stringify({
       title: '员工',
       routeHidden: false
@@ -275,7 +274,6 @@ export let asyncRouter = [
         routeName: '员工管理',
         routeHidden: false,
         routehidechildrenlist: false,
-        hidden: false,          
         routeMeta: JSON.stringify({
           title: '员工-员工管理',
           routeHidden: false
@@ -287,17 +285,65 @@ export let asyncRouter = [
             routeName: '在职员工',
             routeHidden: false,
             routehidechildrenlist: true,
-            hidden: false,              
             routeMeta: JSON.stringify({
               title: '员工管理-在职员工',
               routeHidden: false
             }),
             childrenList: []
           },
+          {
+            routePath: 'selector',
+            routeComponent: 'base/NewStyle-cmp/common-cmp/picOrFileSelector-cmp/index',
+            routeName: '图片/文件选择器',
+            routeHidden: false,
+            routehidechildrenlist: true,
+            routeMeta: JSON.stringify({
+              title: '员工管理-图片文件选择器',
+              routeHidden: false
+            }),
+            childrenList: [
+              {
+                routePath: 'picSelector',
+                routeComponent: 'base/NewStyle-cmp/common-cmp/picOrFileSelector-cmp/picSelector',
+                routeName: '图片选择器',
+                routeHidden: false,
+                routehidechildrenlist: true,
+                routeMeta: JSON.stringify({
+                  title: '图文选择器-图片选择器',
+                  routeHidden: false
+                }),
+                childrenList: []
+              },
+              {
+                routePath: 'fileSelector',
+                routeComponent: 'base/NewStyle-cmp/common-cmp/picOrFileSelector-cmp/fileSelector',
+                routeName: '文件选择器',
+                routeHidden: false,
+                routehidechildrenlist: true,
+                routeMeta: JSON.stringify({
+                  title: '图文选择器-文件选择器',
+                  routeHidden: false
+                }),
+                childrenList: []
+              }
+            ]            
+          }
         ]        
       }
     ]
-  }
+  },
+  // {
+  //   routePath: '/employee/employeeManage/selector/picSelector',
+  //   routeComponent: 'base/NewStyle-cmp/common-cmp/picOrFileSelector-cmp/picSelector',
+  //   routeName: '图片选择器',
+  //   routeHidden: false,
+  //   routehidechildrenlist: true,
+  //   routeMeta: JSON.stringify({
+  //     title: '图文选择器-图片选择器',
+  //     routeHidden: false
+  //   }),
+  //   childrenList: []
+  // }
 ]
 
 export let constantRouterMap = [
@@ -1165,7 +1211,7 @@ export let asyncRouterMap = [
         childrenList: [
           {
             routePath: 'salaryCMPInfo',
-            routeComponent: 'components/salary/salaryCommonMonth/salaryCMPInfo.vue',
+            routeComponent: 'components/salary/salaryCommonMonth/salaryCMPInfo',
             routeName: '普通月发薪-个人信息',
             routeHidden: true,
             routehidechildrenlist: false,
