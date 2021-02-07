@@ -5,6 +5,7 @@ const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HappyPack = require('happyPack')
+const webpack = require('webpack')
 const os = require('os')
 const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
 function resolve (dir) {
@@ -51,7 +52,12 @@ module.exports = {
         }
       ],
       threadPool: happyThreadPool
-    })    
+    }),
+    new webpack.ProvidePlugin({
+      $: "jquery",
+      jQuery: "jquery",
+      "windows.jQuery":"jquery"
+    })      
   ],  
   module: {
     rules: [

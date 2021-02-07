@@ -18,6 +18,7 @@
           defaultOpen：preview  展示区域，预览区域
           toolbarsFlag：false，工具栏展示
         -->
+        <div class="testjquery">tttt</div>
         <mavon-editor 
             class="markdown"
             :value="get_mark_data()"
@@ -49,6 +50,7 @@
     import SeriesLineCmp from '@/base/NewStyle-cmp/Content-section-cmp/Echarts-cmp/Base-seriesLine'
     import TestLineCmp from '@/base/NewStyle-cmp/Content-section-cmp/Echarts-cmp/test-cmp'
     import CommonTableCmp from '@/base/NewStyle-cmp/Table-common-cmp/Base-Common-Table'
+    import $ from 'jquery'
     import {
         setLocalStorage,
         getLocalStorage
@@ -79,6 +81,9 @@ export default {
       }        
     },
     created(){
+        $(function(){
+            $('.testjquery').text(78787878)
+        })
         let authrityObj = getLocalStorage("pageAuthrity")
         if(authrityObj) {
 
