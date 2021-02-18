@@ -44,6 +44,7 @@
         >>>.leftSectionWrap {
             height: 100%;
             min-width: 200px;
+            max-width: 300px;
             padding: 0 10px;
             box-sizing: border-box;
             overflow: auto;
@@ -60,6 +61,7 @@
         >>>.rightSectionWrap {
             height: 100%;
             // min-width: 200px;
+            max-width: 400px;
             padding: 0 10px 20px 0;
             box-sizing: border-box;
             overflow: auto;    
@@ -113,7 +115,7 @@
                 ></left-cmp>
             </el-col>
 
-            <el-col :span="12" class="middleSectionWrap u-f-g1 u-f-s1">
+            <el-col :span="10" class="middleSectionWrap u-f-g1 u-f-s1">
                 <!-- currentMiddleSelectArr: {{currentMiddleSelectArr}} -->
                 <middle-cmp
                     v-loading="loading"
@@ -122,7 +124,7 @@
                 ></middle-cmp>
             </el-col>
 
-            <el-col :span="8" class="rightSectionWrap u-f-g1 u-f-s1">
+            <el-col :span="10" class="rightSectionWrap u-f-g1 u-f-s1">
                 <right-cmp 
                     ref="rightCmpRef"
                     :objP="objP"

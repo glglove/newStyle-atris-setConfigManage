@@ -283,7 +283,6 @@
                         ></contract-detailInfo-cmp>
                     </div>
                 </el-card>
-
             </el-dialog>
         </div>
         <!--合同详情dailog区域---end-->        

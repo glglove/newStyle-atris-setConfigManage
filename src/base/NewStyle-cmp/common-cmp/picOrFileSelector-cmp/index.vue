@@ -1,0 +1,80 @@
+<!--
+    User:
+    Date: newStyle 图片文件选择器
+    功能:
+-->
+<style lang="stylus" rel="stylesheet/stylus" scoped>
+
+</style>
+<template>
+    <div class="picOrFileSelectorCmp page">
+        金风科技萨克发动机打扫房间第三节疯狂荆防颗粒大数据发大厦咖啡店静安寺发动机
+        <el-tabs 
+            v-model="activeName" 
+            @tab-click="handleClickTab"
+        >
+            <el-tab-pane 
+                label="图片选择器" 
+                name="first"
+            ></el-tab-pane>
+            <el-tab-pane 
+                label="文件选择器" 
+                name="second"
+            ></el-tab-pane>
+        </el-tabs>
+        <router-view></router-view>
+    </div>
+</template>
+<script type="text/ecmascript-6">
+import { 
+    REQ_OK
+} from '@/api/config'
+import { CommonInterfaceMixin } from '@/utils/CommonInterfaceMixin.js'
+import SearchToolsCmp from '@/base/NewStyle-cmp/common-cmp/searchTool-cmp'
+export default {
+    mixins: [CommonInterfaceMixin],
+    props: {
+
+    },
+    components: {
+        SearchToolsCmp,
+    },
+    data() {
+        return {
+            activeName: 'first',
+        }
+    },
+    created(){
+    },
+    computed:{
+    },
+    watch:{
+        activeName: {
+            handler(newValue, oldValue){
+                if(newValue === 'first'){
+                    this.$router.push({
+                        path:'/employee/employeeManage/selector/picSelector'
+                    })
+                }else if(newValue === 'second'){
+                    this.$router.push({
+                        path:'/employee/employeeManage/selector/fileSelector'
+                    })
+                }
+            },
+            immediate: true
+        }
+    },
+    methods:{
+        //重新刷新获取数据
+        _refreshData () {
+
+        },
+        _getComTables(){
+
+        },
+        handleClickTab(tab, event){
+
+        },
+    }
+}
+</script>

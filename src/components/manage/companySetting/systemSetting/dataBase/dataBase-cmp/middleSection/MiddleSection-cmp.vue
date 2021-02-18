@@ -16,7 +16,7 @@
         }
     }
     .cmp-item {
-        padding: 10px;
+        padding: 5px 10px;
         box-sizing: border-box;
         background-color: #ffffff;
         &:hover {

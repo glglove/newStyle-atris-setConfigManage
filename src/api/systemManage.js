@@ -3491,10 +3491,12 @@ export function getEntryList (obj) {
  * 获取 页面管理 树形数据
  * @params {} 
  */
-export function getPageManageTreeList (obj = {pageSize:10, pageNum:1}) { 
+export function getPageManageTreeList (obj) { 
     let {
         pageSize=10,
         pageNum = 1,
+        state,
+        content
     } = obj
     return fetch({
         module: 'SystemManage',
@@ -3505,7 +3507,8 @@ export function getPageManageTreeList (obj = {pageSize:10, pageNum:1}) {
             size: pageSize,
             current: pageNum,
             params: {
-
+                state, 
+                content
             }
         }
     })
@@ -3516,10 +3519,13 @@ export function getPageManageTreeList (obj = {pageSize:10, pageNum:1}) {
  * 获取 页面管理 table list 数据
  * @params {} 
  */
-export function getPageManageTableList (obj = {pageSize:10, pageNum:1}) { 
+export function getPageManageTableList (obj) { 
     let {
         pageSize=10,
         pageNum = 1,
+        state,
+        metacode,
+        hasPage,
     } = obj
     return fetch({
         module: 'SystemManage',
@@ -3530,7 +3536,88 @@ export function getPageManageTableList (obj = {pageSize:10, pageNum:1}) {
             size: pageSize,
             current: pageNum,
             params: {
+                state,
+                metacode,
+                hasPage
+            }
+        }
+    })
+}
 
+
+/**
+ *  添加页面
+ * @params {} 
+ */
+export function addPageOne (obj) { 
+    let {
+        pageSize=10,
+        pageNum = 1,
+        state,
+        description,
+        routeName,
+        modulecode,
+        pcode,
+        ispc,
+        ismobile,
+        templateId,
+        existMetaCode
+    } = obj
+    return fetch({
+        module: 'SystemManage',
+        url: '/plat-sysmg-sys-route/addPageOne',
+        method: 'post',
+        data: {
+            Method: 'addPageOne',
+            size: pageSize,
+            current: pageNum,
+            params: {
+                state,
+                description,
+                templateId,
+                routeName,
+                pcode,
+                modulecode,
+                ispc,
+                ismobile,
+                existMetaCode
+            }
+        }
+    })
+}
+
+/**
+ *  添加群组
+ * @params {} 
+ */
+export function addGroupOne (obj) { 
+    let {
+        pageSize=10,
+        pageNum = 1,
+        pcode,
+        modulecode,
+        routeName,
+        routeIcon,
+        ispc,
+        ismobile,
+        state
+    } = obj
+    return fetch({
+        module: 'SystemManage',
+        url: '/plat-sysmg-sys-route/addGroupOne',
+        method: 'post',
+        data: {
+            Method: 'addGroupOne',
+            size: pageSize,
+            current: pageNum,
+            params: {
+                pcode,
+                modulecode,
+                routeName,
+                routeIcon,
+                ispc,
+                ismobile,
+                state
             }
         }
     })

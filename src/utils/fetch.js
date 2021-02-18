@@ -131,7 +131,7 @@ service.interceptors.response.use(
   error => {
     if(!store.getters.netWorkStatus){
       Message.warning({
-        message: '请求失败,请检查网络'
+        message: '网路走神了,请检查网络环境！'
       })
     }else {
       Message({
@@ -139,12 +139,12 @@ service.interceptors.response.use(
         type: 'error',
         duration: 2000
       })
-      console.log(error)
-      // 生产环境中请求超时后 自动跳转至 https://www.caihuiyun.cn/ 页面进行重新登录
+      // // 生产环境中请求超时后 自动跳转至 https://www.caihuiyun.cn/ 页面进行重新登录
       // if (process.env.NODE_ENV === 'production') {
       //   window.location.href = 'https://www.caihuiyun.cn/'
-      // }
+      // }      
     }
+    console.log(error)
     return Promise.reject(error)
   }
 )

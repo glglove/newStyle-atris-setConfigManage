@@ -18,7 +18,7 @@
         <el-tab-pane label="系统" name="first">用户管理</el-tab-pane>
         <el-tab-pane label="企业自定义" name="second">配置管理</el-tab-pane>
       </el-tabs> -->
-      queryObj: {{queryObj}}
+      <!-- queryObj: {{queryObj}} -->
       <!--搜索部分--start-->
       <search-tools-cmp>
         <div slot="handlerBtnWrap">              
@@ -213,6 +213,9 @@
           <!---引入设置自定义显示列组件--start-->
           <show-column-cmp 
             ref="showColumnCmp"
+            :propLeftTableData= "tableHeadData"
+            @saveSuccess="saveSuccess"
+            @cancelSuccess="cancelSuccess"
           >
           </show-column-cmp>  
           <!--引入设置自定义显示列组件--end-->              
@@ -272,6 +275,7 @@
         <div class="addGroupBox" v-if="showEditGroup">
           <atris-drawer-cmp
             :tit="dialogTit"    
+            width="25%"
             :dialog.sync="showEditGroup"        
             @emitClickSureBtn="editSaveGroup"
           >           
@@ -345,6 +349,7 @@
     getShowGroupList,
     getGroupTreeList,
   } from '@/api/systemManage.js'
+import flowNewVersionVue from '../../../../platform/approval-flow/flow-rule/flow-new-version.vue'
   export default {
     mixins: [CommonInterfaceMixin],
     components: {
@@ -729,6 +734,26 @@
           })
         }
         // console.log(data)
+      },
+      cancelSuccess(){
+        this.showSetColumnDailog = false
+      },
+      renderTableHead(arr){
+        if(arr && arr.length){
+          let newTableHeadData = [] 
+          arr.forEach(item => {
+            this.tableHeadData.forEach((k, v) => {
+              if(item.label === k.label){
+                newTableHeadData.push(k)
+              }
+            })
+          })
+          this.tableHeadData = newTableHeadData
+        }
+      },
+      saveSuccess(data){
+        this.renderTableHead(data)
+        this.showSetColumnDailog = false
       },
       // 获取模块下拉源
       GetModuleList(pageSize, pageNum){

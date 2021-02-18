@@ -8,32 +8,42 @@
     <!-- routes: {{routes}} -->
     <template v-for="(item,key) in routes" v-if="!item.routeHidden">
       <!-- horizontalFlag: {{horizontalFlag}} -->
-      <!-- {{routes[5].routeHidden}} && {{routes[5].routeHideChildrenList}} && {{routes[5].children.length}} && {{horizontalFlag}}------ -->
+      <!-- {{routes[5].routeHidden}} && {{routes[5].routehidechildrenlist}} && {{routes[5].children.length}} && {{horizontalFlag}}------ -->
       <!--菜单只有主菜单一级的情况-->
-      <!-- <router-link v-if="!item.routeHidden&&item.routeHideChildrenList&&item.children.length>0&&!horizontalFlag"
+      <!-- <router-link v-if="!item.routeHidden&&item.routehidechildrenlist&&item.children.length>0&&!horizontalFlag"
                    :to="item.path + item.children[0].path">
-        <el-menu-item :index="item.path + item.children[0].path" class='submenu-title-routeHideChildrenList'>
+        <el-menu-item :index="item.path + item.children[0].path" class='submenu-title-routehidechildrenlist'>
           <icon-svg v-if='item.icon' :icon-class="item.icon"></icon-svg>
           <span>{{item.name}}</span>
         </el-menu-item>
       </router-link> -->
 
-      <!-- <template > -->
-        <router-link v-if="!item.routeHidden&&item.routeHideChildrenList&&item.children.length>0"
-            :to="'/' + item.children[0].path">
-          <el-menu-item :index="item.path +'/'+ item.children[0].path" 
-                        style="display:inline-block" 
-                        :class="['submenu-title-routeHideChildrenList',!horizontalFlag? 'leftSidebar-submenu-title-routeHideChildrenList': '']">
+      <!-- <template> -->
+        <!--一级菜单名下不需要有子菜单显示的情况-->
+        <router-link 
+          v-if="!item.routeHidden
+          &&item.routehidechildrenlist
+          &&item.children.length>0"
+          :to="item.path + item.children[0].path"
+        >
+          <el-menu-item 
+            :index="item.path + item.children[0].path" 
+            style="display:inline-block" 
+            :class="['submenu-title-routehidechildrenlist',!horizontalFlag? 'leftSidebar-submenu-title-routehidechildrenlist': '']"
+          >
             <icon-svg v-if='item.icon' :icon-class="item.icon"></icon-svg>
             <span>{{item.name}}</span>
           </el-menu-item>
-        </router-link>
+        </router-link>   
       <!-- </template> -->
+    
 
 
-      <!--菜单名下有子菜单的情况-->
-       <el-submenu :index="item.path" v-if="!item.routeHideChildrenList&&!item.routeHidden">
 
+      <!--一级菜单名下需要有子菜单显示的情况-->
+       <el-submenu :index="item.path" v-if="!item.routehidechildrenlist&&!item.routeHidden">
+
+        <!-----只有一层子路由------->
         <template slot="title">
           <icon-svg v-if='item.icon' :icon-class="item.icon"></icon-svg>
           <span class="parentName">{{item.name}}</span>
@@ -41,9 +51,9 @@
 
         <template v-for="itemChild in item.children" v-if='!itemChild.routeHidden'>
 
-          <!--子菜单下又有子菜单的时候，递归调用此 sider-item 的组件-->
+          <!--有多层子路由，需要递归调用此 sider-item 的组件-->
           <sidebar-item class='nest-menu' 
-            v-if='!itemChild.routeHideChildrenList&&itemChild.children && itemChild.children.length>0' 
+            v-if='!itemChild.routehidechildrenlist&&itemChild.children && itemChild.children.length>0' 
             :routes='[itemChild]'>
           </sidebar-item>
 
@@ -81,6 +91,9 @@
     },
     components: {
       iconSvg
+    },
+    methods: {
+
     }
   }
 </script>
@@ -89,7 +102,7 @@
   .menu-wrapper
     .parentName
       margin-right 20px
-    .leftSidebar-submenu-title-routeHideChildrenList
+    .leftSidebar-submenu-title-routehidechildrenlist
       width 190px !important
 </style>
 

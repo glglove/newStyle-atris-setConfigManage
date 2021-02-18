@@ -12,8 +12,8 @@
     :rules="rules"
     v-show="(beforeHasShow==1) && isShowField"
   >
-    prop: {{prop}}
-    // eventTypeResult: {{eventTypeResult}}
+    <!-- prop: {{prop}} -->
+    <!-- eventTypeResult: {{eventTypeResult}} -->
     <div 
       class="filedContentWrap u-f-ac u-f-jst"
     >

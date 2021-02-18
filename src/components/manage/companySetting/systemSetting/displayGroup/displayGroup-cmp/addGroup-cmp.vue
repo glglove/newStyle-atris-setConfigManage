@@ -10,7 +10,7 @@
     overflow: auto;
     .parentGroupForm {
         border-bottom: 1px solid silver
-        padding: 20px 
+        padding: 0px 20px 
         box-sizing border-box
         .fieldContentBox {
             min-height 100px
@@ -169,13 +169,11 @@ export default {
                 this.saveFinalData.push(...this.changeData(groupItem.teamControlList))
             })
             Promise.all(resArr).then(res => {
-                alert(3)
                 this.saveGroup(this.saveFinalData)
             }).catch(err => {
                 console.log(err)
             })
 
-            alert(2)
         }
     }
 }

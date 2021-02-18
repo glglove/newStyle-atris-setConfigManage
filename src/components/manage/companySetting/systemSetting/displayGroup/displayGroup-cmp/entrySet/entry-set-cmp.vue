@@ -44,6 +44,7 @@
         >>>.leftSectionWrap {
             height: 100%;
             min-width: 200px;
+            max-width: 300px;
             padding: 0 20px;
             box-sizing: border-box;
             overflow: auto;
@@ -60,6 +61,7 @@
         >>>.rightSectionWrap {
             height: 100%;
             // min-width: 200px;
+            max-width: 400px;
             padding: 0 10px 20px 0;
             box-sizing: border-box;
             overflow: auto;    

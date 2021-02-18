@@ -48,7 +48,7 @@ export const CommonInterfaceMixin = {
       } 
     },
     // 通用的
-    // 获取通用的 数据下拉源
+    // 获取通用的 数据下拉源 (RoleTypeEnum, RoleLevelEnum, ModulesetEnum等)
     commonDataSourceListMixin(){
       if(Object.keys(this.commonDataSourceConfig).length){
 

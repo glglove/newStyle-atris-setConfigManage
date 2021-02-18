@@ -23,7 +23,7 @@
     v-show="(beforeHasShow==1) && isShowField"
   >
     <!-- obj: {{obj}} -->
-    eventTypeResult: {{eventTypeResult}}
+    <!-- eventTypeResult: {{eventTypeResult}} -->
     <div 
       class="filedContentWrap u-f-ac u-f-jst"
     >
@@ -47,10 +47,10 @@
       </div>  
 
       <!-- dataSource: {{dataSource}} -->
-      isShowing: {{isShowing}}
+      <!-- isShowing: {{isShowing}}
       copyObj.convalue: {{copyObj.convalue}}
       -----
-      obj.convalue: {{obj.convalue}}
+      obj.convalue: {{obj.convalue}} -->
       <div 
         v-if="!isShowing" 
         class="fieldValueWrap u-f-g0"

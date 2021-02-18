@@ -174,24 +174,32 @@
                                         </span>
                                     </span>                                                                                                                           
 
+
+                                    <!----操作图标区----->
                                     <span 
                                         v-if="!onlyRead"
                                         class="handlerBox" 
-                                    >                         
-                                        <i 
-                                            v-if="!data.isEditing"
-                                            class="el-icon-folder-add btn btn-add"
-                                            size="mini"
-                                            type="text"
-                                            @click.stop="() => append(node,data)">
-                                        </i>                                    
-                                        <i
-                                            v-show="!data.isEditing"
-                                            class="el-icon-edit btn btn-edit"
-                                            size="mini"
-                                            type="text"
-                                            @click.stop="() => edit(node, data)">
-                                        </i>  
+                                    >          
+                                        <el-tooltip class="item" effect="dark" content="新增组" placement="top-start">                
+                                            <i 
+                                                v-if="!data.isEditing"
+                                                class="el-icon-folder-add btn btn-add"
+                                                size="mini"
+                                                type="text"
+                                                @click.stop="() => append(node,data)">
+                                            </i> 
+                                        </el-tooltip>
+
+                                        <el-tooltip class="item" effect="dark" content="编辑组" placement="top-start"> 
+                                            <i
+                                                v-show="!data.isEditing"
+                                                class="el-icon-edit btn btn-edit"
+                                                size="mini"
+                                                type="text"
+                                                @click.stop="() => edit(node, data)">
+                                            </i>  
+                                        </el-tooltip>
+
                                         <el-button
                                             v-show="data.isEditing"
                                             class="btn btn-edit"
@@ -208,13 +216,17 @@
                                             @click.native="() => cancel($event, node, data)">
                                             取消
                                         </el-button>
-                                        <i
-                                            v-if="data.id && !data.isEditing"
-                                            :class="[data.state==1? 'el-icon-video-pause':'el-icon-video-play','btn','btn-delet']"
-                                            size="mini"
-                                            type="text"
-                                            @click.stop="() => setStatus(node, data)">
-                                        </i>                                           
+
+                                        <el-tooltip class="item" effect="dark" :content="data.state ==1? '停用':'启用'" placement="top-start">
+                                            <i
+                                                v-if="data.id && !data.isEditing"
+                                                :class="[data.state==1? 'el-icon-video-pause':'el-icon-video-play','btn','btn-delet']"
+                                                size="mini"
+                                                type="text"
+                                                @click.stop="() => setStatus(node, data)">
+                                            </i>  
+                                        </el-tooltip>  
+
                                         <el-button
                                             v-if="!data.id"
                                             class="btn btn-delet"
@@ -222,14 +234,27 @@
                                             type="text"
                                             @click.native.stop="() => remove(node, data)">
                                             移除
-                                        </el-button>     
-                                        <i
-                                            v-if="data.id && !data.isEditing"
-                                            class="el-icon-delete btn btn-delet"
-                                            size="mini"
-                                            type="text"
-                                            @click.stop="() => deleteBtn(node, data)">
-                                        </i>                                                                                                            
+                                        </el-button>   
+                                        <el-tooltip class="item" effect="dark" content="删除" placement="top-start">
+                                            <i
+                                                v-if="data.id && !data.isEditing"
+                                                class="el-icon-delete btn btn-delet"
+                                                size="mini"
+                                                type="text"
+                                                @click.stop="() => deleteBtn(node, data)">
+                                            </i>  
+                                        </el-tooltip> 
+
+                                        <el-tooltip class="item" effect="dark" content="新增页面" placement="top-start">
+                                            <i
+                                                v-if="!data.isEditing"
+                                                class="el-icon-circle-plus-outline btn btn-delet"
+                                                size="mini"
+                                                type="text"
+                                                @click.stop="() => addPageBtn(node, data)">
+                                            </i>  
+                                        </el-tooltip>                                       
+
                                     </span>
                                 </el-form>
                             </span> 
@@ -366,8 +391,8 @@
             // 树形节点被点击
             nodeClick(data, node){
                 debugger
-                this.$emit("treeEmit", data)
-                this.$bus.$emit("treeEmitBus", data)
+                this.$emit("treeClick", data)
+                // this.$bus.$emit("treeEmitBus", data)
             },
             // 拖拽完成后
             nodeDrop(a,b){
@@ -422,7 +447,7 @@
                     this.currentUserGroupCode = ''
                 }
             },
-            //新增
+            //新增组
             append (node, data) {
                 debugger
                 // let newChild = { 
@@ -480,6 +505,13 @@
                 let copyData = JSON.parse(JSON.stringify(data))
                 let newData = copyData            
                 this.$emit("treeEmitEdit", newData)
+            },
+            // 新增页面
+            addPageBtn(node, data){
+                debugger
+                let copyData = JSON.parse(JSON.stringify(data))
+                let newData = copyData                   
+                this.$emit("addNewPageEmit", newData)
             },
             _signChanged(arr, id){
                 if(arr && arr.length){

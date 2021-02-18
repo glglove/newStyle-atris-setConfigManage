@@ -3,11 +3,19 @@
 * Date: 2020/07/31
 * Desc： 测试动态页面  页面code 为 config.js 中的 PA_PAGECODE_WAITEDEMPLOYEE
 */
+
+<style lang="stylus" rel="stylesheet/stylus" scoped>
+.testpage {
+    height 100%;
+}
+</style>
+
+
 <template>
-    <div>
+    <div class="testpage">
         <!-- <input type="file" id="file" @input="upload">
         <el-button type="button" size="mini" @click.native="joinToPage('test1')">跳转到test1 页面</el-button> -->
-        pageCode: {{pageCode}}
+        <!-- pageCode: {{pageCode}} -->
         <!-- <base-page-cmp
             :pageCode="pageCode"
             :authrityObj="authrityObj"
@@ -18,7 +26,8 @@
           defaultOpen：preview  展示区域，预览区域
           toolbarsFlag：false，工具栏展示
         -->
-        <mavon-editor 
+        <!-- <div class="testjquery">tttt</div> -->
+        <!-- <mavon-editor 
             class="markdown"
             :value="get_mark_data()"
             :subfield = "false"    
@@ -26,10 +35,155 @@
             :toolbarsFlag = "prop.toolbarsFlag"
             :editable="prop.editable"
             :scrollStyle="prop.scrollStyle"
-        ></mavon-editor>
+        ></mavon-editor> -->
         <!-- <common-table-cmp></common-table-cmp> -->
         <!-- <series-line-cmp></series-line-cmp> -->
         <!-- <test-line-cmp></test-line-cmp> -->
+
+        <div
+            :class="['tableBox', tableData.length<=0? 'not_found':'']"
+            v-loading="loading"
+        >
+            <!-- tableData: {{tableData}} -->
+            <el-table
+                :data="tableData"
+                border
+                max-height="500px"
+                empty-text=" "
+            >
+
+            <el-table-column
+                type="selection"
+                width="50"
+            >
+            </el-table-column>
+
+            <el-table-column
+                label="物理表名"
+                prop="dbcode"
+                width="200"
+                show-overflow-tooltip
+                sortable          
+            >
+                <template slot-scope="scope">
+                <span>{{scope.row.dbcode}}</span>
+                </template>
+            </el-table-column>
+
+            <el-table-column
+                label="中文名"
+                prop="name"
+                width="200"
+                show-overflow-tooltip
+                sortable          
+            >
+                <template slot-scope="scope">
+                <span>{{scope.row.name}}</span>
+                </template>
+            </el-table-column>
+
+            <el-table-column
+                label="主键"
+                prop="pk"
+                show-overflow-tooltip
+                sortable     
+                width="120"     
+            >
+                <template slot-scope="scope">
+                <span>{{scope.row.pk}}</span>
+                </template>
+            </el-table-column>
+
+            <el-table-column
+                label="是否多行"
+                prop="hasmore"
+                show-overflow-tooltip
+                sortable   
+                width="120"       
+            >
+                <template slot-scope="scope">
+                <span>{{scope.row.hasmore? '否':'是'}}</span>
+                </template>
+            </el-table-column>   
+
+            <el-table-column
+                label="状态"
+                prop="state"
+                width="120"
+                show-overflow-tooltip
+                sortable          
+            >
+                <template slot-scope="scope">
+                <span>{{scope.row.state  == 1? '启用':'停用'}}</span>
+                </template>
+            </el-table-column>
+
+            <el-table-column
+                label="描述"
+                show-overflow-tooltip
+                prop="description"
+            >
+                <template slot-scope="scope">
+                <span>{{scope.row.description}}</span>
+                </template>
+            </el-table-column>                  
+
+
+            <el-table-column
+                label="操作"
+                width="250"
+                fixed="right"
+            >
+                <template slot-scope="scope">
+                <el-button 
+                    v-if="scope.row.State == 0"
+                    type="text" 
+                    size="mini"
+                    @click.native="handlerUsing(scope.row, 1)"
+                >启用</el-button>
+                <el-button 
+                    v-if="scope.row.State == 1"
+                    type="text" 
+                    size="mini"
+                    @click.native="handlerUsing(scope.row, 0)"
+                >停用</el-button>      
+
+                <el-button 
+                    type="text" 
+                    size="mini" 
+                    @click.native="handleTableSet(scope.row, scope.$index)"
+                >物理表设置</el-button>                       
+
+                </template>
+            </el-table-column>     
+            </el-table>
+
+            <!--分页部分--start--->
+            <div class="pagination-container">
+                <!-- <el-pagination
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page.sync="queryObj.pageNum"
+                    :page-sizes="[10, 20, 30, 50]"
+                    :page-size="queryObj.pageSize"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="queryObj.total">
+                </el-pagination> -->
+            </div>
+            <!---分页部分--end--->           
+        </div>
+
+        <el-dialog
+            v-if="showPageSet"
+            fullscreen
+            :visible.sync="showPageSet"
+            :append-to-body="true"
+            :close-on-click-modal="false"
+        >
+            <page-set-module-cmp
+                :objP.sync="currentTableSetRow"                
+            ></page-set-module-cmp>
+        </el-dialog>
     </div>
 </template>
 
@@ -45,25 +199,40 @@
     } from '@/api/newStyleConfig'
     import { authorityArr } from '@/utils/authority1.js'
     //   import pageCmp from '@/base/NewStyle-cmp/Page-cmp/Base-page'
-    import BasePageCmp from '@/base/NewStyle-cmp/Page-cmp/Base-page'
-    import SeriesLineCmp from '@/base/NewStyle-cmp/Content-section-cmp/Echarts-cmp/Base-seriesLine'
-    import TestLineCmp from '@/base/NewStyle-cmp/Content-section-cmp/Echarts-cmp/test-cmp'
-    import CommonTableCmp from '@/base/NewStyle-cmp/Table-common-cmp/Base-Common-Table'
+    // import BasePageCmp from '@/base/NewStyle-cmp/Page-cmp/Base-page'
+    // import SeriesLineCmp from '@/base/NewStyle-cmp/Content-section-cmp/Echarts-cmp/Base-seriesLine'
+    // import TestLineCmp from '@/base/NewStyle-cmp/Content-section-cmp/Echarts-cmp/test-cmp'
+    // import CommonTableCmp from '@/base/NewStyle-cmp/Table-common-cmp/Base-Common-Table'
+    import pageSetModuleCmp from '@/base/NewStyle-cmp/common-cmp/pageSetModule-cmp/index'
+    import $ from 'jquery'
+    import { 
+        getDataBaseList,
+    } from '@/api/systemManage.js'
     import {
         setLocalStorage,
         getLocalStorage
     } from '@/utils/auth.js'
 export default {
     components: {
-        BasePageCmp,
-        SeriesLineCmp,
-        TestLineCmp,
-        CommonTableCmp
+        pageSetModuleCmp,
+        // BasePageCmp,
+        // SeriesLineCmp,
+        // TestLineCmp,
+        // CommonTableCmp
     },
     data(){
         return {
-            authrityObj: authorityArr,
-            pageCode: PA_PAGECODE_JOINEDEMPLOYEE
+            loading: false,
+            tableData: [],
+            showPageSet: false,
+            currentTableSetRow: {},
+            queryObj: {
+                pageSize: 10,
+                pageNum: 1,
+                total: 0,
+                state: 1,
+                moduleCode: ''
+            },
         }
     },
     computed: {
@@ -79,6 +248,9 @@ export default {
       }        
     },
     created(){
+        // $(function(){
+        //     $('.testjquery').text("这是用jq填充的内容")
+        // })
         let authrityObj = getLocalStorage("pageAuthrity")
         if(authrityObj) {
 
@@ -87,6 +259,7 @@ export default {
             // 存入缓存
             setLocalStorage("authrityObj", JSON.stringify(this.authrityObj))
         }
+        this.getDataBaseList()
     },
     methods: {
         get_mark_data(){
@@ -136,12 +309,24 @@ export default {
                 }
             }
             xhr.send(fd);
-        }        
+        },
+        // 获取物理表列表
+        getDataBaseList(){
+            this.loading = true
+            getDataBaseList().then(res => {
+                this.loading = false
+                this.tableData = res.data.Data.records
+                this.queryObj.total = res.data.Data.total
+            })
+        },        
+        // 物理表设置
+        handleTableSet(row, index){
+            debugger
+            this.currentTableSetRow = JSON.parse(JSON.stringify(row))
+            this.showPageSet  = true
+        },         
 
     }
 }
 </script>
 
-<style>
-
-</style>

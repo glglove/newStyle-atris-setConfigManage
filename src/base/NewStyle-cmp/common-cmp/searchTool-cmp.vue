@@ -38,25 +38,32 @@
                         <slot name="handlerBtnWrap"></slot>
                     </div>
 
-                    <div class="moreConditionsBtnBox">
-                        <el-input
-                            size="small"
-                            :placehoder="placehoder"
-                            v-model="queryObj.key"
-                        >
-                        </el-input>
-                        <el-button
-                            type="primary"
-                            size="small"
-                            @click.native="handlerClickSearchBtn"
-                            icon="el-icon-search"
-                        >
-                            搜索
-                        </el-button>
+                    <div class="moreConditionsBtnBox u-f-ajc">
+                        <div class="keyWrap u-f-ajc" v-if="outShowSearchInput">
+                            <!-- <span class="searchTit" style="font-size: 12px">关键词:</span> -->
+                            <el-input
+                                size="mini"
+                                style="width: 150px"
+                                :placeholder="searchPlaceholder"
+                                clearable
+                                v-model="queryObj.key"
+                            >
+                                <i slot="prefix" class="el-input__icon el-icon-search"></i>
+                            </el-input>
+                            <el-button
+                                class="marginL5 marginR5"
+                                size="mini"
+                                type="primary"
+                                @click.native="handlerClickSearchBtn"
+                            >
+                                搜索
+                            </el-button>
+                        </div>
                         <el-button 
                             type="primary" 
                             size="mini" 
                             @click.native="clickMoreConditionBtn"
+                            :icon="!outShowSearchInput? 'el-icon-search': ''"
                         >
                             筛选
                             <i :class="[showMoreSearchWrap? 'el-icon-caret-top': 'el-icon-caret-bottom']"></i>
@@ -92,10 +99,16 @@
                 return 'searchContentId'
             }
         },
-        placehoder: {
+        searchPlaceholder: {
             type: String,
             default: () => {
-                return "输入关键词搜索"
+                return '关键词'
+            }
+        },
+        outShowSearchInput: {
+            type: Boolean,
+            default: () => {
+                return false
             }
         }
     },
@@ -146,8 +159,8 @@
             }
         },
         handlerClickSearchBtn(){
-            this.$emit("commonSearchToolEmit")
-            console.log(this.$slots)
+            this.$emit("commonSearchToolEmit", this.queryObj)
+            // console.log(this.$slots)
         }
     }
 }

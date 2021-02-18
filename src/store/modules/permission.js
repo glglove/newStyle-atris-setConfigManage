@@ -5,6 +5,7 @@ import router from '@/router'
 import Layout from '@/components/layout/Layout'
 
 function loadView(view, name) {
+  // console.log(`${name}:`,view)
   return (resolve) => require(['@/' + view + '.vue'], resolve)
   // 此处用reqiure比较好，import引入变量会有各种莫名的错误
   // if(process.env.NODE_ENV){

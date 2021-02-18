@@ -40,8 +40,8 @@
         </span>
       </div>
 
-      dataSource: {{dataSource}}---
-      obj.convalue: {{obj.convalue}}
+      <!-- dataSource: {{dataSource}}---
+      obj.convalue: {{obj.convalue}} -->
       <div 
         v-if="!isShowing" 
         class="fieldValueWrap u-f-g0"

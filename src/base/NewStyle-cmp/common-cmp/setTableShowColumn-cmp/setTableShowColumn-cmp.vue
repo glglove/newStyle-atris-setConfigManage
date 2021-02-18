@@ -15,7 +15,7 @@
 </style>
 
 <template>
-    <div :class="['showColumn-cmp', !tableHeaderData.length ? 'not_found':'']" v-loading = 'loading'>
+    <div :class="['showColumn-cmp', !tableHeadData.length ? 'not_found':'']" v-loading = 'loading'>
         <!-- checkboxGroup: {{checkboxGroup}}
         ---------->
         <!-- obj: {{obj}}  -->
@@ -41,12 +41,13 @@
             </el-card>
         </div>
         <!---普通版--end--->
-        tableHeaderData: {{tableHeaderData}}
+        <!-- tableHeadData: {{tableHeadData}} -->
         <!--高级版本---start-->
         <div v-if="version==1">
             <set-customershowcolumn-cmp 
                 ref="customerShowColumnHighCmp" 
-                :allboxGroup="tableHeaderData"
+                :tableHeadProp="tableHeadData"
+                :totalTableData="LeftTableData"
                 @emitSave="emitSave"
             ></set-customershowcolumn-cmp>
         </div>
@@ -77,15 +78,13 @@
                 default: 1  // 0 是普通版本 1 是高级版本
             },
             // 所有的数据
-            tableHeaderData: {
+            tableHeadData: {
                 type: Array,
                 default: () => {
                     return [
                         {
-                            FieldName: '模块'
-                        },
-                        {
-                            FieldName: '类型',
+                            label: '名称',
+                            property: 'FieldName',
                         }
                     ]
                 }
@@ -115,19 +114,28 @@
             return {
                 loading: false, // 控制loading的显示/隐藏
                 checkboxGroup: [], // 已勾选的分类
-                // allboxGroup: [], // 所有的分类
+                // totalTableData: [], // 所有的分类
                 checkAll: false,
                 checkedTbale: [],
                 isIndeterminate: true                
             }
         },
         created(){
-            // this.allboxGroup = this.obj.Fields
+            // this.totalTableData = this.obj.Fields
             // 获取自定义配置的列表数据
             // this._getCustomerSetData()
         },
         computed:{
             ...mapGetters(['currentPageCode']),
+            LeftTableData(){
+                let res = this.propLeftTableData.filter(item => {
+                    item.FieldName = item.label
+                    item.Lock = 1
+                    item.Hidden = 1
+                    return true
+                })
+                return res 
+            }
         },
         watch: {
 
