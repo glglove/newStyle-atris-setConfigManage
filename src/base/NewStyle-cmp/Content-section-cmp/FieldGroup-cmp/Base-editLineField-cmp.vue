@@ -46,7 +46,7 @@
 
 <script type="text/ecmascript-6">
     import SaveFooter from '@/base/Save-footer/index'
-    import { fieldControlTypeMixin } from '@/utils/newStyleMixins-fields.js'
+    import { fieldControlTypeMixin } from '@/utils/newStyleMixins-components.js'
     // import { deepCopyArr } from '@/utils/clone'
     import {
         REQ_OK

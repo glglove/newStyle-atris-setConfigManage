@@ -99,7 +99,7 @@
                                     </span>
                                 </div>
                                 <component 
-                                    :is="currentFieldComponentMixin(obj.controlType)"
+                                    :is="currentComponentMixin(obj.controlType)"
                                     :obj.sync="obj"
                                     :isTitle="false"
                                     :isNeedGetDataSource="false"
@@ -127,7 +127,7 @@
         getMiddleSetData
     } from '@/api/systemManage.js'
     import Vuedraggable from 'vuedraggable'
-    import { fieldControlTypeMixin } from '@/utils/newStyleMixins-fields.js'
+    import { fieldControlTypeMixin } from '@/utils/newStyleMixins-components.js'
     export default {
         mixins: [ fieldControlTypeMixin ],
         props:{

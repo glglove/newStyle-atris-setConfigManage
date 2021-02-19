@@ -39,7 +39,6 @@
                         >搜索</el-button>
 
                     </div>
-<<<<<<< HEAD
                     <!-- queryTreeObj.state: {{queryTreeObj.state}} -->
                     <div class="u-f-jsb">
                         <el-checkbox 
@@ -60,13 +59,6 @@
                             ></i>  
                         </el-tooltip>                  
                     </div>
-=======
-                    <el-checkbox 
-                        v-model="queryTreeObj.state"
-                        :true-label="1"
-                        :false-label="0"
-                    >停用</el-checkbox>
->>>>>>> 647f424eacf3628f59a21f35558a161809302448
                     <left-tree-cmp
                         ref="leftpageManageTreeRef"
                         :treeData="pageDatatree"
@@ -96,11 +88,7 @@
                                 type="primary" 
                                 size="mini"
                                 @click.native="handlerAddPage"
-<<<<<<< HEAD
                             >新增</el-button> -->
-=======
-                            >新增</el-button>
->>>>>>> 647f424eacf3628f59a21f35558a161809302448
                             <el-button type="primary" 
                                 :disabled="!multipleSelection.length"
                                 size="mini"
@@ -230,11 +218,7 @@
        
 
        <!--树形上面 新增/编辑--->
-<<<<<<< HEAD
        <!-- showAddTreeDialog: {{showAddTreeDialog}} -->
-=======
-       showAddTreeDialog: {{showAddTreeDialog}}
->>>>>>> 647f424eacf3628f59a21f35558a161809302448
         <el-dialog
             v-if="showAddTreeDialog"
             :title="dialogTitTree"    
@@ -246,14 +230,9 @@
             <!-- currentRow: {{currentRow}} -->
             <!-- pageData: {{pageData}} -->
             <el-form 
-<<<<<<< HEAD
                 ref="dialogForm_tree"
                 :model="currentRowTree" 
                 :rules="dialogTreeObjRules" 
-=======
-                :model="currentRowTree" 
-                :rules="dialogTableObjRules" 
->>>>>>> 647f424eacf3628f59a21f35558a161809302448
                 label-width="100px">
                 <div class="item-container">
                     <el-form-item
@@ -277,11 +256,7 @@
                     </el-form-item>
                 </div>  
 
-<<<<<<< HEAD
                 <!-- <div class="item-container">
-=======
-                <div class="item-container">
->>>>>>> 647f424eacf3628f59a21f35558a161809302448
                     <el-form-item
                         label="群组编号"
                         prop=""
@@ -292,37 +267,22 @@
                             size="small"
                         ></el-input>                     
                     </el-form-item>
-<<<<<<< HEAD
                 </div>        -->
-=======
-                </div>       
->>>>>>> 647f424eacf3628f59a21f35558a161809302448
 
                 <div class="item-container">
                     <el-form-item
                         label="群组名称"
-<<<<<<< HEAD
                         prop="routeName"
-=======
-                        prop=""
->>>>>>> 647f424eacf3628f59a21f35558a161809302448
                     >
                         <el-input 
                             style="width: 200px"
                             placeholder="请输入"
-<<<<<<< HEAD
                             v-model="currentRowTree.routeName"
-=======
->>>>>>> 647f424eacf3628f59a21f35558a161809302448
                         ></el-input>
                     </el-form-item>
                 </div>        
 
-<<<<<<< HEAD
                 <!-- <div class="item-container">
-=======
-                <div class="item-container">
->>>>>>> 647f424eacf3628f59a21f35558a161809302448
                     <el-form-item
                         label="群组子类型"
                         prop=""
@@ -331,7 +291,6 @@
 
                         </el-select>
                     </el-form-item>
-<<<<<<< HEAD
                 </div>     -->
 
                 <div class="item-container">
@@ -354,16 +313,6 @@
                         label="描述"
                         prop="description"
                         
-=======
-                </div>    
-
-                <!-- pageData: {{pageData}} -->                   
-
-                <div class="item-container">
-                    <el-form-item
-                        label="描述"
-                        prop="description"
->>>>>>> 647f424eacf3628f59a21f35558a161809302448
                     >
                         <el-input 
                             style="width: 200px"
@@ -371,7 +320,6 @@
                             placeholder="请输入"
                         ></el-input>
                     </el-form-item>
-<<<<<<< HEAD
                 </div>       -->
 
                 <div class="item-container">
@@ -387,9 +335,6 @@
                         </el-switch>
                     </el-form-item>
                 </div>                  
-=======
-                </div>      
->>>>>>> 647f424eacf3628f59a21f35558a161809302448
 
                 <div class="item-container">
                     <el-form-item
@@ -397,10 +342,7 @@
                         prop="state"
                     >
                         <el-switch
-<<<<<<< HEAD
                             v-model="currentRowTree.state"
-=======
->>>>>>> 647f424eacf3628f59a21f35558a161809302448
                             :inactive-value="0"
                             :active-value="1"
                         >
@@ -424,19 +366,11 @@
         >            
             <!-- pageData: {{pageData}} -->
             <el-form 
-<<<<<<< HEAD
                 ref="dialogForm_table" 
                 slot="container-slot"
                 :model="currentRowTable" 
                 :rules="dialogTableObjRules" 
                 label-width="150px">
-=======
-                ref="dialogForm" 
-                slot="container-slot"
-                :model="currentRowTable" 
-                :rules="dialogTableObjRules" 
-                label-width="100px">
->>>>>>> 647f424eacf3628f59a21f35558a161809302448
                 <div class="item-container">
                     <el-form-item
                         label="模块"
@@ -461,30 +395,19 @@
 
                 <!-- <div class="item-container">
                     <el-form-item
-<<<<<<< HEAD
                         label="页面编号"
-=======
-                        label="群组编号"
->>>>>>> 647f424eacf3628f59a21f35558a161809302448
                         prop=""
                     >
                         <el-input 
                             placeholder="请输入"
-<<<<<<< HEAD
                             style="width: 200px"
-=======
->>>>>>> 647f424eacf3628f59a21f35558a161809302448
                         ></el-input>                     
                     </el-form-item>
                 </div>        -->
 
                 <div class="item-container">
                     <el-form-item
-<<<<<<< HEAD
                         label="页面名称"
-=======
-                        label="群组名称"
->>>>>>> 647f424eacf3628f59a21f35558a161809302448
                         prop="routeName"
                     >
                         <el-input 
@@ -496,15 +419,9 @@
                     </el-form-item>
                 </div>        
 
-<<<<<<< HEAD
                 <!-- <div class="item-container">
                     <el-form-item
                         label="页面子类型"
-=======
-                <div class="item-container">
-                    <el-form-item
-                        label="群组子类型"
->>>>>>> 647f424eacf3628f59a21f35558a161809302448
                         prop=""
                     >
                         <el-select 
@@ -513,7 +430,6 @@
 
                         </el-select>
                     </el-form-item>
-<<<<<<< HEAD
                 </div>   -->
 
 
@@ -538,9 +454,6 @@
                         </el-select>                        
                     </el-form-item>
                 </div>                  
-=======
-                </div>    
->>>>>>> 647f424eacf3628f59a21f35558a161809302448
 
                 <!-- pageData: {{pageData}} -->                   
 
@@ -557,7 +470,6 @@
                     </el-form-item>
                 </div>      
 
-<<<<<<< HEAD
                 <!-- <div class="item-container">
                     <el-form-item
                         label="路由"
@@ -631,26 +543,15 @@
                     <el-form-item
                         label="启用/停用"
                         prop="state"
-=======
-                <div class="item-container">
-                    <el-form-item
-                        label="状态"
-                        prop="state"
-                        v-model="currentRowTable.state"
->>>>>>> 647f424eacf3628f59a21f35558a161809302448
                     >
                         <el-switch
                             :inactive-value="0"
                             :active-value="1"
-<<<<<<< HEAD
                             v-model="currentRowTable.state"
-=======
->>>>>>> 647f424eacf3628f59a21f35558a161809302448
                         >
                         </el-switch>
                     </el-form-item>
                 </div>  
-<<<<<<< HEAD
 
                 <div class="item-container" v-if="tableEditType == 1">
                      
@@ -674,8 +575,6 @@
                         </el-select>  
                     </el-form-item>
                 </div>                 
-=======
->>>>>>> 647f424eacf3628f59a21f35558a161809302448
             </el-form>
         </atris-drawer-cmp>        
     </div>
@@ -880,7 +779,6 @@ export default {
                 metacode: ''           
             },  
             currentRowTree: {
-<<<<<<< HEAD
                 pcode: '',
                 modulecode: '',
                 routeName: '',
@@ -914,23 +812,6 @@ export default {
                 routeHidden: 0,
                 state: 1,
                 existMetaCode: '',
-=======
-                modulecode: '',
-            },
-            treeEditType: '', // 1 新增  2 编辑
-            dialogTitTree: '',
-            showAddTreeDialog: false, 
-            dialogTableObjRules: {
-                modulecode: [
-                    {required: true, message: '请选择模块', trrigger: ['blur','change']}
-                ],
-            },
-            currentRowTable: {
-                modulecode: '',
-                routeName: '',
-                description: '',
-                state: 1
->>>>>>> 647f424eacf3628f59a21f35558a161809302448
             },
             tableEditType: '', // 1新增 2 编辑
             dialogTitTable: '',
@@ -940,17 +821,10 @@ export default {
                     {required: true, message: '请选择模块', trrigger: ['blur','change']}
                 ],
                 routeName: [
-<<<<<<< HEAD
                     {required: true, message: '请输入名称', trrigger: 'blur'}
                 ],
                 description: [
                     {required: true, message: '请输入描述', trrigger: 'blur'}
-=======
-                    {required: true, message: '请输入名称', trrigger: ['blur','change']}
-                ],
-                description: [
-                    {required: true, message: '请输入描述', trrigger: ['blur','change']}
->>>>>>> 647f424eacf3628f59a21f35558a161809302448
                 ],
             },
         }
@@ -978,12 +852,8 @@ export default {
                 pageSize: this.queryObj.pageSize,
                 pageNum: this.queryObj.pageNum,
                 state: this.queryObj.state,
-<<<<<<< HEAD
                 metacode: this.queryObj.metacode,
                 hasPage: this.currentTableHasPage ? 1 : ''
-=======
-                metacode: this.queryObj.metacode
->>>>>>> 647f424eacf3628f59a21f35558a161809302448
             }
             this.tableLoading = true
             getPageManageTableList(params).then(res => {
@@ -1005,49 +875,35 @@ export default {
             let params = {
                 pageSize: this.queryTreeObj.pageSize,
                 pageNum: this.queryTreeObj.pageNum,
-<<<<<<< HEAD
                 modulecode: this.currentRowTree.modulecode,
                 pcode: this.currentRowTree.pcode,
                 routeName: this.currentRowTree.routeName,
-=======
->>>>>>> 647f424eacf3628f59a21f35558a161809302448
                 routeIcon: this.currentRowTree.routeIcon,
                 ispc: this.currentRowTree.ispc,
                 ismobile: this.currentRowTree.ismobile,
                 state: this.currentRowTree.state
             }
-<<<<<<< HEAD
             // console.log("-------fddf---------", this.currentRowTree)
             addGroupOne(params).then(res => {
                 this.treeLoding = false
                 this.$message.success("保存成功")
                 this.hideTreeDialog()
-=======
-            addGroupOne(params).then(res => {
-                this.treeLoding = false
-                this.$message.success("新增成功")
->>>>>>> 647f424eacf3628f59a21f35558a161809302448
                 this.getPageManageTreeList(this.queryTreeObj)
             })
         },
         saveDialogTable(){
             // 先验证
-<<<<<<< HEAD
             this.$refs.dialogForm_table.validate(valid => {
                 if(valid) {
                     this.addPageOne()
                 }
             })
-=======
-            this.addPageOne()
->>>>>>> 647f424eacf3628f59a21f35558a161809302448
         },
         addPageOne(){
             this.tableLoading = true
             let params = {
                 pageSize: this.queryObj.pageSize,
                 pageNum: this.queryObj.pageNum,
-<<<<<<< HEAD
                 modulecode: this.currentRowTable.modulecode,
                 pcode: this.currentRowTable.pcode,
                 templateId: this.currentRowTable.templateId,
@@ -1061,16 +917,6 @@ export default {
             addPageOne(params).then(res => {
                 this.tableLoading = false
                 this.$message.success("保存成功")
-=======
-                state: this.currentRowTable.state,
-                description: this.currentRowTable.description,
-                routeName: this.currentRowTable.routeName,
-                moduleCode: this.currentRowTable.moduleCode
-            }
-            addPageOne(params).then(res => {
-                this.tableLoading = false
-                this.$message.success("新增成功")
->>>>>>> 647f424eacf3628f59a21f35558a161809302448
                 this.hideTableDialog()
                 this._getComTables()
             })
@@ -1149,21 +995,16 @@ export default {
             this.showAddTreeDialog = false
         },
         saveAddGroup(){
-<<<<<<< HEAD
             // 先验证
             this.$refs.dialogForm_tree.validate(valid => {
                 if(valid) {
                     this.addGroupOne()
                 }
             })            
-=======
-
->>>>>>> 647f424eacf3628f59a21f35558a161809302448
         },
         cancelAddGroup(){
             this.hideTreeDialog()
         },
-<<<<<<< HEAD
         // 新增组
         addNewTreeGroup(type, flag){
             // debugger
@@ -1193,34 +1034,21 @@ export default {
             this.addNewTreeGroup(1, 'outer')// inner 表示树形层级上面新增下级  outer 表示 外面添加
             this.showTreeDialog()             
         },
-=======
->>>>>>> 647f424eacf3628f59a21f35558a161809302448
         // 树形新增
         treeEmitAdd(obj){
             // 新增
             debugger
             this.currentTreeLevelObj = obj                
-<<<<<<< HEAD
             this.currentRowTree = obj
             this.dialogTitTree = '新增'
             this.treeEditType = 1
             this.addNewTreeGroup(1, 'inner')// inner 表示树形层级上面新增下级  outer 表示 外面添加
-=======
-            // this.addNewUserGroup(1, 'inner')// inner 表示树形层级上面新增下级  outer 表示 外面添加
-            this.currentRowTree = obj
-            this.dialogTitTree = '新增'
-            this.treeEditType = 1
-            Object.assign(this.currentRowTree, {
-
-            })
->>>>>>> 647f424eacf3628f59a21f35558a161809302448
             this.showTreeDialog() 
         },
         // 树形编辑
         treeEmitEdit(obj){
             // 编辑
             this.currentTreeLevelObj = obj                
-<<<<<<< HEAD
             this.currentRowTree = obj
             this.dialogTitTree = '编辑'
             this.treeEditType = 2
@@ -1237,21 +1065,12 @@ export default {
             this.handlerAddPage()
 
         },  
-=======
-            // this.addNewUserGroup(2, 'inner') // inner 表示树形层级上面新增下级  outer 表示 外面添加
-            this.currentRowTree = obj
-            this.dialogTitTree = '编辑'
-            this.treeEditType = 2
-            this.showTreeDialog()
-        },    
->>>>>>> 647f424eacf3628f59a21f35558a161809302448
         showTableDialog(){
             this.showAddTableDialog = true
         },
         hideTableDialog(){
             this.showAddTableDialog = false
         },
-<<<<<<< HEAD
         // page 新增  
         handlerAddPage(){
             debugger
@@ -1267,31 +1086,17 @@ export default {
                 ismobile: 0,
                 routeHidden: 0,
                 state: 1,
-=======
-        // tablelist 新增  
-        handlerAddPage(){
-            this.dialogTitTable = "新增"
-            this.tableEditType = 1
-            Object.assign(this.currentRowTable, {
-                
->>>>>>> 647f424eacf3628f59a21f35558a161809302448
             })
             this.showTableDialog()
         },  
         // tablelist 编辑
         handlerEditPage(row){
-<<<<<<< HEAD
             debugger
             this.dialogTitTable = "编辑"
             this.tableEditType = 2
             this.currentTableHasPage = true
             console.log("--------------------------", row)
             Object.assign(this.currentRowTable, JSON.parse(JSON.stringify(row)))
-=======
-            this.dialogTitTable = "编辑"
-            this.tableEditType = 2
-            this.currentRowTable = row
->>>>>>> 647f424eacf3628f59a21f35558a161809302448
             this.showTableDialog()
         },         
         getPageManageTreeList(){
@@ -1300,11 +1105,7 @@ export default {
                 pageSize: 10,
                 pageNum: 1,
                 content: this.queryTreeObj.content,
-<<<<<<< HEAD
                 state: this.queryTreeObj.state
-=======
-                state: 1
->>>>>>> 647f424eacf3628f59a21f35558a161809302448
             }
             getPageManageTreeList(params).then(res => {
                 this.treeLoding = false

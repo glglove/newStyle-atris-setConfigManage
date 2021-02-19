@@ -24,7 +24,7 @@
                 <component 
                     v-for="(field, key) in formObj.teamControlList"
                     :key="key"                
-                    :is="currentFieldComponentMixin(field.controltype)"
+                    :is="currentComponentMixin(field.controltype)"
                     :obj.sync="field"
                     :prop="'field.' + key + '.convalue'"
                     :isNeedGetDataSource="true"
@@ -45,7 +45,7 @@ import {
 } from '@/utils/CommonInterfaceMixin'
 import {
     fieldControlTypeMixin
-} from '@/utils/newStyleMixins-fields'
+} from '@/utils/newStyleMixins-components'
 import SearchToolsCmp from '@/base/NewStyle-cmp/common-cmp/searchTool-cmp'
 export default {
     mixins: [fieldControlTypeMixin, CommonInterfaceMixin],

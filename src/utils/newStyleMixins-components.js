@@ -34,10 +34,54 @@ import BaseFieldSet from '@/base/NewStyle-cmp/Field-cmp/Base-fieldSet'
 import BasePageLinkField from '@/base/NewStyle-cmp/Field-cmp/Base-pageLink'
 
 
-// 分组字段控件类型  mixins
+// --------高级组件(表布局组件、 分组组件、 选项卡组件)---------
+import BaseTableSection from '@/base/NewStyle-cmp/common-cmp/HighLevel-cmp/table-section'
+import BaseFeildGroupSection from '@/base/NewStyle-cmp/common-cmp/HighLevel-cmp/fieldGroup-section'
+import BaseTabSection from '@/base/NewStyle-cmp/common-cmp/HighLevel-cmp/tab-section'
+
+// -----------容器组件 ------
+import BaseGeneralContainer from '@/base/NewStyle-cmp/common-cmp/container-cmp/general-container'
+import BaseCustomContainer from '@/base/NewStyle-cmp/common-cmp/container-cmp/custom-container'
+
+// 组件类型 mixins
 export const fieldControlTypeMixin = {
+    components: {
+        BaseInput,  // 单行文本输入框
+        TextareaInput, // 多行文本输入框
+        NumInput,   // 数字输入框
+        MoneyInput,  // 金额输入框
+        BaseSelect,  // 单选下拉框
+        MultipleSelect, // 多选下拉框
+        BaseDate,  // 时间——年月日
+        RangeDate, // 时间区间
+        TimeDate,  // 时分
+        MonthSelect, // 月份
+        BaseSwitch, // switch 选择器
+        BaseRadio, // 单选radio
+        BaseCheckbox, //多选chekbox
+        BaseImgUpload, // 图片
+        BaseFileUpload, // 附件
+        BaseEmpSelect,  //  人员
+        BaseOrgSelect,  // 组织
+        BaseMapSelect,  // 地图
+        BaseCalculate, // 计算公式
+        BaseEditor,  // 富文本编辑器
+        BaseExplain,  // 说明
+        // OrgAndEmpSelect,  // 组织和人员选择
+        BaseProvinces,  //省市区,
+        BaseFieldSelect, // 字段选择器
+        BaseFieldSet, // 字段设置器
+        BasePageLinkField, // 页面跳转字段
+        RangeNum,  // 数字区间
+        BaseSwitchSelect,  // 是否下拉选择
+        BaseTableSection, // 表布局组件
+        BaseFeildGroupSection, //分组布局组件
+        BaseTabSection,  // 选项卡布局组件
+        BaseGeneralContainer,  // 普通容器组件
+        BaseCustomContainer,  // 自定义容器组件
+    },    
     methods: {
-        currentFieldComponentMixin (controltype) {
+        currentComponentMixin (controltype) {
             switch (controltype) {
                 case '1':
                 case 1:
@@ -128,39 +172,48 @@ export const fieldControlTypeMixin = {
                 case '32':
                 case 32:
                     return BaseSwitchSelect
+                case 1000:
+                case '1000':
+                    return BaseTableSection
+                case 1001:
+                case '1001':
+                    return BaseFeildGroupSection
+                case 1002:
+                case '1002':
+                    return BaseTabSection                    
+                case 2000:
+                case '2000':
+                    return BaseGeneralContainer
+                case 2001:
+                case '2001':
+                    return BaseCustomContainer
                 default: 
                     return BaseInput
             }
+        },
+        // 判断是否容器
+        isContainerMixin (obj) {
+            let controlType = obj.controlType
+            if(controlType<1000) return false
+            if(controlType>=1000) return true
+        },
+        // 判断是否是 高级组件里面的容器
+        isHighLevelCmpMixin (obj) {
+            let controlType = obj.controlType
+            if((controlType >=1000) && (controlType<2000)){
+                return true
+            }else {
+                return false
+            }
+        },
+        // 判断是否是  非高级组件容器
+        isSimpleContainerMixin (obj) {
+            let controlType = obj.controlType
+            if(controlType >=2000){
+                return true
+            }else {
+                return false
+            }             
         }
     },
-    components: {
-        BaseInput,  // 单行文本输入框
-        TextareaInput, // 多行文本输入框
-        NumInput,   // 数字输入框
-        MoneyInput,  // 金额输入框
-        BaseSelect,  // 单选下拉框
-        MultipleSelect, // 多选下拉框
-        BaseDate,  // 时间——年月日
-        RangeDate, // 时间区间
-        TimeDate,  // 时分
-        MonthSelect, // 月份
-        BaseSwitch, // switch 选择器
-        BaseRadio, // 单选radio
-        BaseCheckbox, //多选chekbox
-        BaseImgUpload, // 图片
-        BaseFileUpload, // 附件
-        BaseEmpSelect,  //  人员
-        BaseOrgSelect,  // 组织
-        BaseMapSelect,  // 地图
-        BaseCalculate, // 计算公式
-        BaseEditor,  // 富文本编辑器
-        BaseExplain,  // 说明
-        // OrgAndEmpSelect,  // 组织和人员选择
-        BaseProvinces,  //省市区,
-        BaseFieldSelect, // 字段选择器
-        BaseFieldSet, // 字段设置器
-        BasePageLinkField, // 页面跳转字段
-        RangeNum,  // 数字区间
-        BaseSwitchSelect  // 是否下拉选择
-    }
 }

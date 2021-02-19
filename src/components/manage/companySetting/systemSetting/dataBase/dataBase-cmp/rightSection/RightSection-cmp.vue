@@ -35,7 +35,7 @@
                 <component 
                     v-for="(obj, key) in cmp.allTeamControl"
                     :key="key"                
-                    :is="currentFieldComponentMixin(obj.controltype)"
+                    :is="currentComponentMixin(obj.controltype)"
                     :obj.sync="obj"
                     :isNeedGetDataSource="true"
                     :disableFlag="false"
@@ -66,7 +66,7 @@
         saveControlAttributes
     } from '@/api/systemManage'
     import FieldGroupCmp from '@/base/NewStyle-cmp/common-cmp/FieldGroup-cmp/FieldGroup-cmp'
-    import { fieldControlTypeMixin } from '@/utils/newStyleMixins-fields.js'
+    import { fieldControlTypeMixin } from '@/utils/newStyleMixins-components.js'
     let that = null
     export default {
         mixins: [ fieldControlTypeMixin ],

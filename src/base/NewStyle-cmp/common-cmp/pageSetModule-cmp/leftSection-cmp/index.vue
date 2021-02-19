@@ -1,6 +1,6 @@
 <!--
     User:
-    Date: pageSetModule  组件
+    Date: pageSetModule  组件 - 左边部分
     功能:
 -->
 <style lang="stylus" rel="stylesheet/stylus" scoped>
@@ -206,7 +206,12 @@
                                 name:'control',
                                 pull:'clone',
                                 put:false
-                            }" 
+                            }"
+                            :clone="cloneFuc"
+                            @change="change"
+                            @start="start"
+                            @end="end"                
+                            :move='allow'                            
                         >
                             <!-- <transition-group> -->
                             <li
@@ -270,10 +275,7 @@
                             }" 
                         >
                             <!-- <transition-group> -->
-                            <left-components-by-layouts
-                                :layoutData="layoutData"
-                            >
-                            </left-components-by-layouts>
+                            <left-components-by-layouts></left-components-by-layouts>
                             <!-- </transition-group> -->
                         </vuedraggable>       
                     
@@ -299,6 +301,7 @@
     import Vuedraggable from 'vuedraggable'   
     import LeftComponentsByLayouts from './leftComponentsByLayouts' 
     let that = null
+    // 容器
     let gridCmps = {
         "allTeamControl": null,
         "attributionList": null,
@@ -310,7 +313,7 @@
                 "commonCode": "sysfield",
                 "controlEnName": "TMText",
                 "controlName": "栅格布局",
-                "controlType": 1,
+                "controlType": 2000,
                 "flagNum": 0,
                 "hasChildren": true,
                 "id": 1,
@@ -319,6 +322,7 @@
                 "sysControlUnicode": null,
                 "type": 1,
                 "unicode": null,
+
                 atrisCode: '',
                 atrisGuid: '',
                 atrisIcon: '',
@@ -356,6 +360,7 @@
         "type": 1,
         "unicode": "123456789"        
     }
+    // 高级组件
     let highLevelCmps = {
         "allTeamControl": null,
         "attributionList": null,
@@ -364,10 +369,10 @@
                 "allTeamControl": null,
                 "attributionList": null,
                 "childrenList": [],
-                "commonCode": "sysfield",
+                "commonCode": "sysGrid",
                 "controlEnName": "TMText",
                 "controlName": "表布局组件",
-                "controlType": 1,
+                "controlType": 1000,
                 "flagNum": 0,
                 "hasChildren": true,
                 "id": 1,
@@ -392,7 +397,7 @@
                 },
                 atrisCols:[
                     {
-                        span: 12,
+                        span: 24,
                         list: [
 
                         ]
@@ -405,8 +410,47 @@
                 "childrenList": [],
                 "commonCode": "sysfield",
                 "controlEnName": "TMText",
+                "controlName": "分组组件",
+                "controlType": 1001,
+                "flagNum": 0,
+                "hasChildren": true,
+                "id": 1,
+                "pcode": "abcdefgh",
+                "sortId": null,
+                "sysControlUnicode": null,
+                "type": 1,
+                "unicode": null,
+                atrisCode: '',
+                atrisGuid: '',
+                atrisIcon: '',
+                atrisTitle: '分组组件',
+                atrisType: 'grid',
+                atrisConValue: '',
+                atrisOptions: {
+                    width: '100%',
+                    defaultValue:'',
+                    disabled: false,
+                    placeholder: '',
+                    required: true,
+                    regEx: ''
+                },
+                atrisCols:[
+                    {
+                        span: 12,
+                        list: [
+
+                        ]
+                    }
+                ]
+            },
+            {
+                "allTeamControl": null,
+                "attributionList": null,
+                "childrenList": [],
+                "commonCode": "sysGrid",
+                "controlEnName": "TMText",
                 "controlName": "选项卡组件",
-                "controlType": 1,
+                "controlType": 1002,
                 "flagNum": 0,
                 "hasChildren": true,
                 "id": 1,
@@ -431,13 +475,13 @@
                 },
                 atrisCols:[
                     {
-                        span: 12,
+                        span: 24,
                         list: [
 
                         ]
                     }
                 ]
-            },
+            },            
         ],
         "commonCode": "sysGrid",
         "controlEnName": null,
@@ -472,123 +516,7 @@
                 currentClickObjIndex: '',
                 activeIndex: 0,
                 gridCmps: gridCmps,
-                highLevelCmps: highLevelCmps,
-                layoutData: [
-                    { 
-                        name:'布局 1',
-                        id: 0, 
-                        componentName: 'Iflex',
-                        iStyle:{},
-                        iClass: [],
-                        num: [{
-                            iStyle:{},
-                            iClass: [],
-                            itemList: [],
-                            layoutClass:'flex-one',
-                        }]
-                    },
-                    {
-                        name:'布局 2:2',
-                        id: 1, componentName: 'Iflex',
-                        iStyle:{},
-                        iClass: [],
-                        num: [{
-                            iStyle:{},
-                            iClass: [],
-                            layoutClass:'flex-one',
-                            itemList: []
-                        },{
-                            iStyle:{},
-                            iClass: [],
-                            layoutClass:'flex-one',
-                            itemList: []
-                        }]},
-                    {
-                        name:'布局 3:3:3',
-                        id: 2, 
-                        componentName: 'Iflex',
-                        iStyle:{},
-                        iClass: [],
-                        num: [
-                            {
-                            iClass: [],
-                            iStyle:{},
-                            layoutClass:'flex-one',
-                            itemList: []
-                            },{
-                                iClass: [],
-                                iStyle:{},
-                                layoutClass:'flex-one',
-                                itemList: []
-                            },{
-                                iStyle:{},
-                                iClass: [],
-                                layoutClass:'flex-one',
-                                itemList: []
-                            }
-                        ]
-                    },
-                    {
-                        name:'布局 1:1:1:1',
-                        id: 3, 
-                        componentName: 'Iflex',
-                        iStyle:{},
-                        iClass: [],
-                        num: [{
-                            iClass: [],
-                            iStyle:{},
-                            layoutClass:'flex-one',
-                            itemList: []
-                        },{
-                            iStyle:{},
-                            iClass: [],
-                            layoutClass:'flex-one',
-                            itemList: []
-                        },{
-                            iStyle:{},
-                            iClass: [],
-                            layoutClass:'flex-one',
-                            itemList: []
-                        },{
-                            iStyle:{},
-                            iClass: [],
-                            layoutClass:'flex-one',
-                            itemList: []
-                        }]},
-                    {
-                        name:'布局 1:1:1:1:1',
-                        id: 4, 
-                        componentName: 'Iflex',
-                        iStyle:{},
-                        iClass: [],
-                        num: [{
-                            iClass: [],
-                            iStyle:{},
-                            layoutClass:'flex-one',
-                            itemList: []
-                        },{
-                            iClass: [],
-                            iStyle:{},
-                            layoutClass:'flex-one',
-                            itemList: []
-                        },{
-                            iStyle:{},
-                            iClass: [],
-                            layoutClass:'flex-one',
-                            itemList: []
-                        },{
-                            iClass: [],
-                            iStyle:{},
-                            layoutClass:'flex-one',
-                            itemList: []
-                        },{
-                            iStyle:{},
-                            iClass: [],
-                            layoutClass:'flex-one',
-                            itemList: []
-                        }
-                    ]
-                }]             
+                highLevelCmps: highLevelCmps,       
             }
         },
         computed: {
@@ -611,14 +539,14 @@
                 debugger
                 this.$bus.$on("changeBadageNum", (obj, flag) => {
                     debugger
-                    let result = that.cmps.filter(item => {
-                        return item.unicode === obj.pcode
-                    })
+                    // let result = that.cmps.filter(item => {
+                    //     return item.unicode === obj.pcode
+                    // })
 
-                    let resArr = result[0].childrenList.filter((item, key) => {
-                        return item.controlType === obj.controlType
-                    })
-                    that.changeBadageNum(resArr[0], flag)
+                    // let resArr = result[0].childrenList.filter((item, key) => {
+                    //     return item.controlType === obj.controlType
+                    // })
+                    // that.changeBadageNum(resArr[0], flag)
                 })
             })    
         },
@@ -634,6 +562,8 @@
             },                     
             cloneFuc(controlItem){
                 // 处理 拖拽的元素
+                debugger
+                console.log("---------拖拽的元素----------", controlItem)
                 // this.currentObj = controlItem
                 // this.changeBadageNum(controlItem, true)              
                 return controlItem       

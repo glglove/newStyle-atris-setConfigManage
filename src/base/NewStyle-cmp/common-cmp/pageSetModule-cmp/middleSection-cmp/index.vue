@@ -1,7 +1,7 @@
 /
 * Author: gaol
 * Date: 2020/10/30
-* Desc： 配置板块 - 中间部分
+* Desc： pageSetModule  组件 - 中间部分
 */
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 .middleCmp {
@@ -102,32 +102,37 @@
                                     </span>
                                 </div>
 
-                                <component 
-                                    :is="currentFieldComponentMixin(obj.controlType)"
-                                    :obj.sync="obj"
-                                    :isTitle="false"
-                                    :isNeedGetDataSource="false"
-                                    :disableFlag="true"
-                                >
-                                </component>
+                                <template v-if="!isContainerMixin(obj)">
+                                    非容器组件(高级组件和容器)
+                                    <component 
+                                        :is="currentComponentMixin(obj.controlType)"
+                                        :obj.sync="obj"
+                                        :isTitle="false"
+                                        :isNeedGetDataSource="false"
+                                        :disableFlag="true"
+                                    >
+                                    </component>
+                                </template>
                                 
-                                contentCmpsList1： {{contentCmpsList1}}
-                                <vuedraggable
-                                    v-model="contentCmpsList1"  
-                                    v-bind="dragOptions"
-                                    :group="{
-                                        name:'control',
-                                        pull:'clone',
-                                        put:true
-                                    }"
-                                >
-                                    <transition-group 
-                                        class="transitionGroup" 
-                                        style="display: inline-block;min-height: 20vh;width: 100%;"
-                                    >   
+                                <template v-else>
+                                    容器组件
+                                    contentCmpsList1： {{contentCmpsList1}}
 
-                                    </transition-group>
-                                </vuedraggable>
+                                    <template v-if="isHighLevelCmpMixin(obj)">
+                                        高级组件中的【{{obj.controlName}}】组件
+                                        <base-grid-high-level-cmp
+                                            :obj.sync="obj"
+                                        ></base-grid-high-level-cmp>
+                                    </template>
+
+                                    <template v-else>
+                                        纯容器组件中的【{{obj.controlName}}】组件
+                                        <base-grid-simple-container-cmp
+                                            :obj.sync="obj"
+                                        ></base-grid-simple-container-cmp>
+                                    </template>
+                                </template>
+                                
                             </div>
                         </div>
                     </transition-group>              
@@ -149,7 +154,9 @@
         getMiddleSetData
     } from '@/api/systemManage.js'
     import Vuedraggable from 'vuedraggable'
-    import { fieldControlTypeMixin } from '@/utils/newStyleMixins-fields.js'
+    import { fieldControlTypeMixin } from '@/utils/newStyleMixins-components.js'
+    import BaseGridHighLevelCmp from './components-items-cmp/grid-cmp/base-grid-highLevel-cmp.vue'
+    import BaseGridSimpleContainerCmp from './components-items-cmp/grid-cmp/base-grid-simpleContainer-cmp.vue'
     export default {
         mixins: [ fieldControlTypeMixin ],
         props:{
@@ -162,8 +169,10 @@
         },
         components: {
             Vuedraggable,
+            BaseGridHighLevelCmp,
+            BaseGridSimpleContainerCmp
         },
-        data(){
+        data() {
             return {
                 loading: false,
                 contentCmpsList: [],

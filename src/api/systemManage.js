@@ -12,7 +12,7 @@ import fetch from '@/utils/fetch'
 /**
  * 获取省市
  * @params  {*} CompanyCode  企业code
- * @params  {*} tokenId  用户凭据
+ * @params  {*} tokenId  用户凭据33131
  * @params  {*} UserId  用户id
  * @params  {} parentId  上级id，默认0
 */

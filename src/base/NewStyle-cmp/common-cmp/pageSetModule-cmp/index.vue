@@ -75,7 +75,7 @@ import {
 } from '@/utils/CommonInterfaceMixin'
 import {
     fieldControlTypeMixin
-} from '@/utils/newStyleMixins-fields'
+} from '@/utils/newStyleMixins-components'
 import SearchToolsCmp from '@/base/NewStyle-cmp/common-cmp/searchTool-cmp'
 import LeftPageSetmoduleCmp from './leftSection-cmp/index'
 import MiddlePageSetmoduleCmp from './middleSection-cmp/index'

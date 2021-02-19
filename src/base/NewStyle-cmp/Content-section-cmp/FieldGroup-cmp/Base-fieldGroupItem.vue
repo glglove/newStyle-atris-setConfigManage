@@ -139,7 +139,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import { fieldControlTypeMixin } from '@/utils/newStyleMixins-fields.js'
+    import { fieldControlTypeMixin } from '@/utils/newStyleMixins-components.js'
     import SaveFooter from '@/base/Save-footer/index'
     import EditLineField from './Base-editLineField-cmp'
     import { checkFormArray } from '@/utils/newStyleFieldValidate'

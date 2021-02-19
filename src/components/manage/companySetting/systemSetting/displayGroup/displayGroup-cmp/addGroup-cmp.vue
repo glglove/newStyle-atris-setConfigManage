@@ -45,7 +45,7 @@
                     :class="`${parentItem.metacode}_field_${field.concode}`"
                     v-for="(field, key) in parentItem.teamControlList"
                     :key="key"                
-                    :is="currentFieldComponentMixin(field.controltype)"
+                    :is="currentComponentMixin(field.controltype)"
                     :obj.sync="field"
                     :style="fieldStyle(field)"
                     :prop="'teamControlList.' + key + '.convalue'"
@@ -76,7 +76,7 @@ import {
     CommonInterfaceMixin
 } from '@/utils/CommonInterfaceMixin'
 import SearchToolsCmp from '@/base/NewStyle-cmp/common-cmp/searchTool-cmp'
-import { fieldControlTypeMixin } from '@/utils/newStyleMixins-fields.js'
+import { fieldControlTypeMixin } from '@/utils/newStyleMixins-components.js'
 import { newStyleCheckFormArray } from '@/utils/newStyleFieldValidate.js'
 let that = null
 export default {

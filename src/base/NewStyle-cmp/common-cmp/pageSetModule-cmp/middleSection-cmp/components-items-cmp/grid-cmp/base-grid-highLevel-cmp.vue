@@ -1,16 +1,17 @@
 <!--
     User:
     Date:
-    功能: 布局控件
+    功能: 高级组件(表布局组件、分组组件、tab选项卡组件)
 -->
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 
 </style>
 <template>
-    <div class="basicGrid-cmp" :id="ballId">
+    <div class="basicGrid-highLevel-cmp" :id="ballId">
+        obj: {{obj}}
         <el-row :style="styleWidth">
             <el-col :span="24">
-                basicGrid-cmp    
+                高级组件(表布局组件、分组组件、tab选项卡组件)   
             </el-col>
         </el-row>
     </div>
@@ -52,19 +53,20 @@ export default {
         return {
         }
     },
-   created(){
-   },
-   computed:{
-       ballId(){
-           if(this.parentAtrisCode && this.obj.atrisCode) {
-               return `${this.parentAtrisCode}-${this.obj.atrisCode}`
-           }
-       },
-       styleWidth(){
-           return `${this.obj.options.width}`
-       }
-   },
-   methods:{
-   },
+    created(){
+    },
+    computed:{
+        ballId(){
+            if(this.parentAtrisCode && this.obj.atrisCode) {
+                return `${this.parentAtrisCode}-${this.obj.atrisCode}`
+            }
+        },
+        styleWidth(){
+            return `${this.obj.atrisOptions.width}`
+            // return '100%'
+        }
+    },
+    methods:{
+    },
 }
 </script>

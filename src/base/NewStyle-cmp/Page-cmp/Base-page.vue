@@ -55,7 +55,7 @@
   import { 
     REQ_OK, 
   } from '@/api/config'
-  import { fieldControlTypeMixin } from '@/utils/newStyleMixins-fields.js'
+  import { fieldControlTypeMixin } from '@/utils/newStyleMixins-components.js'
 //   import TabCmp from '@/base/NewStyle-cmp/Content-section-cmp/Tab-cmp/Base-tab'
   import TitleCmp from '@/base/NewStyle-cmp/Title-section-cmp/Base-Title'
   import ShowFieldsCmp from '@/base/NewStyle-cmp/ShowFields-section-cmp/Base-ShowFields'

@@ -65,7 +65,7 @@ const permission = {
         debugger
         // 获取的用户可访问路由与 配置的 asyncRouterMap 路由做递归匹配 得到用户真实的可访问的路由地址
         // let accessedRouters = filterAsyncRouter(asyncRouterMap, rootState.user.userAccessRouters)
-        let res = filterAsyncRouter(asyncRouter)
+        let res = filterAsyncRouter(asyncRouterMap)
         console.log("----999-----", res)
         let accessedRouters = constantRouterMap.concat(res)
         // let accessedRouters = constantRouterMap.concat([])
@@ -75,7 +75,7 @@ const permission = {
         commit(types.SET_ADD_ROUTERS, accessedRouters)
 
         // 路由 options 并不会随着 addRoutes 动态响应，所以要在这里进行设置
-        // router.options.routes = constantRouterMap.concat(changeRoutesData(asyncRouter))        
+        // router.options.routes = constantRouterMap.concat(changeRoutesData(asyncRouterMap))        
         // 将添加的路由 写入到路由表
         // await router.addRoutes(accessedRouters) // 动态添加可访问路由表
         resolve()
