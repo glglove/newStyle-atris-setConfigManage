@@ -66,7 +66,7 @@
                 :move='allow'
             >
                 <transition-group>
-                    <ul  v-for="(obj, index) in contentCmpsList" :key="index+1" class="inputItemBox">
+                    <ul  v-for="(obj, index) in contentCmpsList" :key="index+1" class="cmpItemBox">
                         <!-- <el-button type="primary" size="mini">{{obj.ControlName}}</el-button> -->
                         <li 
                             :class="['cmp-item', index == currentClickItemObjIndex ? 'is-active': '']" 

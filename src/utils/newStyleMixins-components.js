@@ -40,8 +40,7 @@ import BaseFeildGroupSection from '@/base/NewStyle-cmp/common-cmp/HighLevel-cmp/
 import BaseTabSection from '@/base/NewStyle-cmp/common-cmp/HighLevel-cmp/tab-section'
 
 // -----------容器组件 ------
-import BaseGeneralContainer from '@/base/NewStyle-cmp/common-cmp/container-cmp/general-container'
-import BaseCustomContainer from '@/base/NewStyle-cmp/common-cmp/container-cmp/custom-container'
+import BaseSimpleContainer from '@/base/NewStyle-cmp/common-cmp/container-cmp/simpleContainer-cmp'
 
 // 组件类型 mixins
 export const fieldControlTypeMixin = {
@@ -77,8 +76,7 @@ export const fieldControlTypeMixin = {
         BaseTableSection, // 表布局组件
         BaseFeildGroupSection, //分组布局组件
         BaseTabSection,  // 选项卡布局组件
-        BaseGeneralContainer,  // 普通容器组件
-        BaseCustomContainer,  // 自定义容器组件
+        BaseSimpleContainer,  // 纯容器组件
     },    
     methods: {
         currentComponentMixin (controltype) {
@@ -183,10 +181,7 @@ export const fieldControlTypeMixin = {
                     return BaseTabSection                    
                 case 2000:
                 case '2000':
-                    return BaseGeneralContainer
-                case 2001:
-                case '2001':
-                    return BaseCustomContainer
+                    return BaseSimpleContainer
                 default: 
                     return BaseInput
             }
@@ -206,10 +201,10 @@ export const fieldControlTypeMixin = {
                 return false
             }
         },
-        // 判断是否是  非高级组件容器
+        // 判断是否是  纯容器布局组件
         isSimpleContainerMixin (obj) {
             let controlType = obj.controlType
-            if(controlType >=2000){
+            if(controlType==2000){
                 return true
             }else {
                 return false

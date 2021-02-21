@@ -30,7 +30,32 @@ const deepCopyArr = function(obj) {
     return newObj;
 }
 
+const  deepClone = function (obj) {
+  var o
+  if (typeof obj === 'object') {
+    if (obj === null) {
+      o = null
+    } else {
+      if (obj instanceof Array) {
+        o = []
+        for (var i = 0, len = obj.length; i < len; i++) {
+          o.push(this.deepClone(obj[i]))
+        }
+      } else {
+        o = {}
+        for (var j in obj) {
+          o[j] = this.deepClone(obj[j])
+        }
+      }
+    }
+  } else {
+    o = obj
+  }
+  return o
+}
+
 export {
   cloneObj,
-  deepCopyArr
+  deepCopyArr,
+  deepClone
 }

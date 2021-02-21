@@ -61,7 +61,7 @@
                     v-model="contentCmpsList"  
                     v-bind="dragOptions"
                     :group="{
-                        name:'control',
+                        name:'component',
                         pull:'clone',
                         put:true
                     }"
@@ -78,7 +78,7 @@
                         <div  
                             v-for="(obj, index) in contentCmpsList" 
                             :key="index+1" 
-                            class="inputItemBox"
+                            class="cmpItemBox"
                         >
                             <!-- <el-button type="primary" size="mini">{{obj.controlName}}</el-button> -->
                             <div 

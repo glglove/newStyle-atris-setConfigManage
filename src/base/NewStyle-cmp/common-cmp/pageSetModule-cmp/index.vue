@@ -26,6 +26,7 @@
 }
 .container-right {
     border: 1px solid black
+    width: calc(100% - 300px);
     .setMainBox {
         height: 100%
     }
@@ -51,8 +52,8 @@
                     :objP="objP"
                 ></left-page-setmodule-cmp>
             </div>
-            <div class="container-right u-f-jc u-f-g1">
-                <div class="setMainBox u-f-g1">
+            <div class="container-right u-f-jst u-f-g1">
+                <div class="setMainBox u-f-g1 u-f-s1">
                     设置区
                     <middle-page-setmodule-cmp></middle-page-setmodule-cmp>
                 </div>

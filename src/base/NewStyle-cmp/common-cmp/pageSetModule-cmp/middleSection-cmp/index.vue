@@ -15,7 +15,11 @@
             border: 1px dotted red 
         }
     }
+    .cmpItemBox {
+        margin: 20px 0;
+    }
     .cmp-item {
+        width: 100%;
         padding: 5px 10px;
         box-sizing: border-box;
         background-color: #ffffff;
@@ -54,14 +58,14 @@
             data-containerBox="middleCmpContainerBox"         
         >
             <!-- 配置板块——中间 -->    
-            <!-- {{contentCmpsList}}  -->
+            <!-- {{currentPageSetDataList}}  -->
             <el-form>
                 <vuedraggable 
                     class="wrapper" 
-                    v-model="contentCmpsList"  
+                    v-model="currentPageSetDataList"  
                     v-bind="dragOptions"
                     :group="{
-                        name:'control',
+                        name:'component',
                         pull:'clone',
                         put:true
                     }"
@@ -79,9 +83,9 @@
                         style="display: inline-block;min-height: 80vh;width: 100%;"
                     >
                         <div  
-                            v-for="(obj, index) in contentCmpsList" 
+                            v-for="(obj, index) in currentPageSetDataList" 
                             :key="index+1" 
-                            class="inputItemBox"
+                            class="cmpItemBox"
                         >
                             <!-- <el-button type="primary" size="mini">{{obj.controlName}}</el-button> -->
                             <div 
@@ -102,37 +106,14 @@
                                     </span>
                                 </div>
 
-                                <template v-if="!isContainerMixin(obj)">
-                                    非容器组件(高级组件和容器)
-                                    <component 
-                                        :is="currentComponentMixin(obj.controlType)"
-                                        :obj.sync="obj"
-                                        :isTitle="false"
-                                        :isNeedGetDataSource="false"
-                                        :disableFlag="true"
-                                    >
-                                    </component>
-                                </template>
-                                
-                                <template v-else>
-                                    容器组件
-                                    contentCmpsList1： {{contentCmpsList1}}
-
-                                    <template v-if="isHighLevelCmpMixin(obj)">
-                                        高级组件中的【{{obj.controlName}}】组件
-                                        <base-grid-high-level-cmp
-                                            :obj.sync="obj"
-                                        ></base-grid-high-level-cmp>
-                                    </template>
-
-                                    <template v-else>
-                                        纯容器组件中的【{{obj.controlName}}】组件
-                                        <base-grid-simple-container-cmp
-                                            :obj.sync="obj"
-                                        ></base-grid-simple-container-cmp>
-                                    </template>
-                                </template>
-                                
+                                <component 
+                                    :is="currentComponentMixin(obj.controlType)"
+                                    :obj.sync="obj"
+                                    :isTitle="false"
+                                    :isNeedGetDataSource="false"
+                                    :disableFlag="true"
+                                >
+                                </component>
                             </div>
                         </div>
                     </transition-group>              
@@ -156,26 +137,25 @@
     import Vuedraggable from 'vuedraggable'
     import { fieldControlTypeMixin } from '@/utils/newStyleMixins-components.js'
     import BaseGridHighLevelCmp from './components-items-cmp/grid-cmp/base-grid-highLevel-cmp.vue'
-    import BaseGridSimpleContainerCmp from './components-items-cmp/grid-cmp/base-grid-simpleContainer-cmp.vue'
+    import BaseGridSimpleContainerCmp from '@/base/NewStyle-cmp/common-cmp/pageSetModule-cmp/middleSection-cmp/components-items-cmp/grid-cmp/base-grid-simpleContainer-cmp.vue'
+    // import BaseSimpleContainerCmp from '@/base/NewStyle-cmp/common-cmp/container-cmp/simpleContainer-cmp.vue'
+    import { getGuid, getGuid2 } from '@/utils/guid.js'
+    import {setLocalStorage, getLocalStorage} from '@/utils/auth.js'
     export default {
         mixins: [ fieldControlTypeMixin ],
         props:{
-            objP: {
-                type: Object,
-                default: () => {
-                    return {}
-                }
-            }             
+            
         },
         components: {
             Vuedraggable,
+            // BaseSimpleContainerCmp,
             BaseGridHighLevelCmp,
             BaseGridSimpleContainerCmp
         },
         data() {
             return {
                 loading: false,
-                contentCmpsList: [],
+                currentPageSetDataList: [],
                 contentCmpsList1: [],
                 currentClickItemObjIndex: '',
             }
@@ -194,22 +174,22 @@
             currentClickItemObjIndex: {
                 handler(newValue, oldValue){
                     debugger
-                    let obj = this.contentCmpsList[newValue]
+                    let obj = this.currentPageSetDataList[newValue]
                     this.$bus.$emit("middleClickEmit", obj, newValue)
                 },
                 immediate: true
             },
-            'contentCmpsList.length': {
+            'currentPageSetDataList.length': {
                 handler(newValue, oldValue){
-                    this.$bus.$emit("rightDataArr", this.contentCmpsList)
+                    this.$bus.$emit("rightDataArr", this.currentPageSetDataList)
                 }
             }
         },
         created(){
             this.$nextTick(() => {
                 this.$bus.$on("leftClickItem", (obj, callback) => {
-                    this.contentCmpsList.push(obj)
-                    this.currentClickItemObjIndex = (this.contentCmpsList.length)-1
+                    this.currentPageSetDataList.push(obj)
+                    this.currentClickItemObjIndex = (this.currentPageSetDataList.length)-1
                     if(callback){
                         callback(obj,true)
                     }
@@ -233,8 +213,8 @@
                 // 获取中间部分的回显数据
                 getMiddleSetData(obj).then(res => {
                     this.loading = false
-                    this.contentCmpsList = res.data.Data
-                    if(this.contentCmpsList.length){
+                    this.currentPageSetDataList = res.data.Data
+                    if(this.currentPageSetDataList.length){
                         this.currentClickItemObjIndex = 0                
                     }
                 })
@@ -272,9 +252,9 @@
                 // let str = e.currentTarget.dataset.containerbox
                 // if(str === 'middleCmpContainerBox'){
                 //     // 释放时 是在 middle 中
-                //     this.contentCmpsList.push(data)
+                //     this.currentPageSetDataList.push(data)
                 //     this.$bus.$emit("changeBadageNum", data, true)
-                //     this.currentClickItemObjIndex = (this.contentCmpsList.length)-1
+                //     this.currentClickItemObjIndex = (this.currentPageSetDataList.length)-1
                 // }
                 document.getElementsByClassName('containerBox')[0].classList.remove("droping")
             }, 
@@ -297,16 +277,29 @@
                     confirmButtonText: '确定',
                     cancelButtonText: '取消'
                 }).then(res => {
-                    this.contentCmpsList.splice(index,1)
+                    this.currentPageSetDataList.splice(index,1)
                     this.$bus.$emit("changeBadageNum", obj, false)
                 }).catch(err => {
                     // this.$message.info("删除已取消")
                 })
             },            
-            //evt里面有两个值，一个evt.added 和evt.removed  可以分别知道移动元素的ID和删除元素的ID
+            //evt里面有几个值，一个evt.added 和evt.removed,evt.moved  可以分别知道移动元素的ID和删除元素的ID
             change: function (evt) {
                 debugger
                 console.log("vuedragable拖拽完成后打印", evt)
+                if(evt.added){
+                    // 给拖拽后的数据对象生成  唯一码
+                    let obj = evt.added.element
+                    obj.atrisCode = getGuid2()
+                    obj.atrisGuid = getGuid()
+                    console.log("vuedragable拖拽完成后添加了唯一码（atrisCode 、 atrisGuid）打印", obj.atrisCode, obj.atrisGuid)
+                }else if(evt.moved) {
+
+                }else if(evt.removed){
+
+                }
+                // 将中间的所有数据存入缓存中
+                setLocalStorage('currentPageSetDataList', JSON.stringify(this.currentPageSetDataList))
             },
             dragedAdd(evt){
                 debugger
@@ -330,8 +323,10 @@
                 let evtoldIndex = evt.oldIndex;
                 let evtnewIndex = evt.newIndex;
                 this.currentClickItemObjIndex = evtnewIndex
-                // console.log("updated", this.contentCmpsList)
-                this.$bus.$emit("sortRightDataArr", this.contentCmpsList, evtnewIndex)
+                // console.log("updated", this.currentPageSetDataList)
+                this.$bus.$emit("sortRightDataArr", this.currentPageSetDataList, evtnewIndex)
+                // 将中间的所有数据存入缓存中
+                setLocalStorage('currentPageSetDataList', JSON.stringify(this.currentPageSetDataList))                                
 
             },                       
             //start ,end ,add,update, sort, remove 得到的都差不多
@@ -346,24 +341,27 @@
                 // evt.from  // 可以知道之前的列表
                 // evt.oldIndex  // 可以知道拖动前的位置
                 // evt.newIndex  // 可以知道拖动后的位置
-                console.log("拖动结束后打印contentCmpsList", this.contentCmpsList)
+                console.log("拖动结束后打印contentCmpsList", this.currentPageSetDataList)
                 let oldIndex = evt.oldIndex, newIndex = evt.newIndex
                 // this.$emit("middleDraggedEmitVueDraged", oldIndex, newIndex)
-            },                       
+            }, 
+            // 排序后                      
             checkMove(evt, originalEvent){
                 debugger
-                console.log("---排序后contentCmpsList---", this.contentCmpsList)
-                console.log(originalEvent) //鼠标位置
-                console.log(evt.draggedContext.index)
-                console.log(evt.draggedContext.element)
-                console.log(evt.draggedContext.futureIndex)
-                console.log(evt.relatedContext.index)
-                console.log(evt.relatedContext.element)
-                console.log(evt.relatedContext.list)
-                console.log(evt.relatedContext.component)
+                console.log("---排序后contentCmpsList---", this.currentPageSetDataList)
+                // console.log(originalEvent) //鼠标位置
+                // console.log(evt.draggedContext.index)
+                // console.log(evt.draggedContext.element)
+                // console.log(evt.draggedContext.futureIndex)
+                // console.log(evt.relatedContext.index)
+                // console.log(evt.relatedContext.element)
+                // console.log(evt.relatedContext.list)
+                // console.log(evt.relatedContext.component)
                 // 排序后
                 // console.log("---排序后打印 evt.draggedContext.futureIndex---", evt.draggedContext.futureIndex)
                 // this.currentClickItemObjIndex = evt.draggedContext.futureIndex
+                // 排序后
+                
             }            
         }
     }

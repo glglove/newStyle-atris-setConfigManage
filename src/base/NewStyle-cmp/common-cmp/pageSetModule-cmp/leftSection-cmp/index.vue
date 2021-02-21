@@ -103,7 +103,7 @@
                             v-model="cmpItem.childrenList"  
                             v-bind="dragOptions"
                             :group="{
-                                name:'control',
+                                name:'component',
                                 pull:'clone',
                                 put:false
                             }" 
@@ -203,7 +203,7 @@
                             v-model="highLevelCmps.childrenList"  
                             v-bind="dragOptions"
                             :group="{
-                                name:'control',
+                                name:'component',
                                 pull:'clone',
                                 put:false
                             }"
@@ -269,7 +269,7 @@
                             v-model="gridCmps.childrenList"  
                             v-bind="dragOptions"
                             :group="{
-                                name:'control',
+                                name:'component',
                                 pull:'clone',
                                 put:false
                             }" 
@@ -566,8 +566,7 @@
                 console.log("---------拖拽的元素----------", controlItem)
                 // this.currentObj = controlItem
                 // this.changeBadageNum(controlItem, true)              
-                return controlItem       
-                // return true          
+                return JSON.parse(JSON.stringify(controlItem))       
             },
             //evt里面有两个值，一个evt.added 和evt.removed  可以分别知道移动元素的ID和删除元素的ID
             change: function (evt) {

@@ -100,7 +100,7 @@
                             v-model="cmpItem.childrenList"  
                             v-bind="dragOptions"
                             :group="{
-                                name:'control',
+                                name:'component',
                                 pull:'clone',
                                 put:false
                             }" 

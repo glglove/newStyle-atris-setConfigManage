@@ -4,7 +4,10 @@
     功能:  高级组件——分组布局组件
 -->
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-
+.highLevel-fieldGroupSection {
+    width: 100%;
+    min-height: 100px
+}
 </style>
 <template>
     <div class="highLevel-fieldGroupSection">

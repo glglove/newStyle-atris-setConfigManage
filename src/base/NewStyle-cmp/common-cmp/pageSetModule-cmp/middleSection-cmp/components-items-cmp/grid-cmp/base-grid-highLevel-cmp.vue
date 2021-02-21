@@ -12,11 +12,16 @@
         <el-row :style="styleWidth">
             <el-col :span="24">
                 高级组件(表布局组件、分组组件、tab选项卡组件)   
+                <component 
+                    :is="currentComponentMixin(obj.controlTyoe)"
+                    
+                ></component>
             </el-col>
         </el-row>
     </div>
 </template>
 <script type="text/ecmascript-6">
+import { fieldControlTypeMixin } from '@/utils/newStyleMixins-components.js'
 import { 
     REQ_OK
 } from '@/api/config'
@@ -35,6 +40,7 @@ let flexHash = {
     'flex-five': 5
 }
 export default {
+    mixins: [fieldControlTypeMixin],
     props:{
         parentAtrisCode: {
             type: String,
