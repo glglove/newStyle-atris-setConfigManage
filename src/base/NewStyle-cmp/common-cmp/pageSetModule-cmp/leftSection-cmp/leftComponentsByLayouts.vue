@@ -20,6 +20,7 @@
 <template>
     <div style="width: 95%;padding: 0 2.5%">
         <el-tabs v-model="activeName" type="card">
+            <!------默认的容器------->
             <el-tab-pane label="默认" name="first">
                 <div style="display: flex;justify-content: center;width: 100%">
                     <!-- layoutGeneral: {{layoutGeneral}}
@@ -28,7 +29,11 @@
                     <vuedraggable 
                         :list="layoutGeneral"
                         :options="{sort:false}"
-                        :group="{ name: 'control', pull: 'clone', put: false}"
+                        :group="{
+                            name:'component',
+                            pull:'clone',
+                            put:false
+                        }" 
                         :clone="cloneFuc"
                         @change="change"
                         @start="start"
@@ -46,13 +51,16 @@
                                 :class="item.layoutClass" 
                                 v-for="(item,index) in item.num" 
                                 :key="index"
-                            >{{flexHash[item.layoutClass]}}</div>
+                            >
+                            {{flexHash[item.layoutClass]}}
+                        </div>
                         </div>                        
                     </vuedraggable>
                 </div>
                 <!--<el-divider><span style="color: #DCDFE6">拖动布局</span></el-divider>-->
             </el-tab-pane>
 
+            <!-----自定义的容器------>
             <el-tab-pane label="自定义" name="tow">
                 <div class="u-f-ac">
                     <el-form 
@@ -97,8 +105,17 @@
                     <vuedraggable 
                         :list="layoutCustom"
                         :options="{sort:false}"
-                        :group="{ name: 'control', pull: 'clone', put: false}"
+                        :group="{
+                            name:'component',
+                            pull:'clone',
+                            put:false
+                        }" 
                         style="position: relative;width: 70%"
+                        :clone="cloneFuc"
+                        @change="change"
+                        @start="start"
+                        @end="end"                
+                        :move='allow'                          
                     >
                         <!-- <transition-group> -->
                             <div 
@@ -111,7 +128,9 @@
                                     :class="item.layoutClass" 
                                     v-for="(item,index) in layoutCustomItem.num" 
                                     :key="index"
-                                >{{flexHash[item.layoutClass]}}</div>
+                                >
+                                {{flexHash[item.layoutClass]}}
+                            </div>
                             </div>
                         <!-- </transition-group> -->
                     </vuedraggable>
@@ -204,7 +223,7 @@
                     atrisGuid: '',
                     atrisIcon: '',
                     atrisTitle: '一列布局',
-                    atrisType: 'grid',
+                    atrisComponentType: 'grid-simple',
                     atrisConValue: '',
                     atrisOptions: {
                         width: '100%',
@@ -264,7 +283,7 @@
                     atrisGuid: '',
                     atrisIcon: '',
                     atrisTitle: '两列等宽布局',
-                    atrisType: 'grid',
+                    atrisComponentType: 'grid-simple',
                     atrisConValue: '',
                     atrisOptions: {
                         width: '100%',
@@ -334,7 +353,7 @@
                     atrisGuid: '',
                     atrisIcon: '',
                     atrisTitle: '三列等宽布局',
-                    atrisType: 'grid',
+                    atrisComponentType: 'grid-simple',
                     atrisConValue: '',
                     atrisOptions: {
                         width: '100%',
@@ -465,8 +484,8 @@
                 console.log("---------拖拽的元素----------", controlItem)
                 // this.currentObj = controlItem
                 // this.changeBadageNum(controlItem, true)              
-                return controlItem       
-                // return true          
+                let obj = controlItem
+                return JSON.parse(JSON.stringify(obj))          
             },
             //evt里面有两个值，一个evt.added 和evt.removed  可以分别知道移动元素的ID和删除元素的ID
             change: function (evt) {
@@ -558,7 +577,7 @@
                                 atrisGuid: '',
                                 atrisIcon: '',
                                 atrisTitle: `${name}布局`,
-                                atrisType: 'grid',
+                                atrisComponentType: 'grid-simple',
                                 atrisConValue: '',
                                 atrisOptions: {
                                     width: '100%',

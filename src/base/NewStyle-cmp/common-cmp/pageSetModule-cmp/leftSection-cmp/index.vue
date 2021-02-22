@@ -294,6 +294,7 @@
     import { 
         getControlInfo
     } from '@/api/systemManage'
+    // import { getGuid, getGuid2 } from '@/utils/guid.js'
     import {
         // setLocalStorage,
         // getLocalStorage
@@ -327,7 +328,7 @@
                 atrisGuid: '',
                 atrisIcon: '',
                 atrisTitle: '栅格布局',
-                atrisType: 'grid',
+                atrisComponentType: 'grid-simple',
                 atrisConValue: '',
                 atrisOptions: {
                     width: '100%',
@@ -385,7 +386,7 @@
                 atrisGuid: '',
                 atrisIcon: '',
                 atrisTitle: '表布局组件',
-                atrisType: 'grid',
+                atrisComponentType: 'grid-table',
                 atrisConValue: '',
                 atrisOptions: {
                     width: '100%',
@@ -424,7 +425,7 @@
                 atrisGuid: '',
                 atrisIcon: '',
                 atrisTitle: '分组组件',
-                atrisType: 'grid',
+                atrisComponentType: 'grid-fieldGroup',
                 atrisConValue: '',
                 atrisOptions: {
                     width: '100%',
@@ -463,7 +464,7 @@
                 atrisGuid: '',
                 atrisIcon: '',
                 atrisTitle: '选项卡组件',
-                atrisType: 'grid',
+                atrisComponentType: 'grid-tab',
                 atrisConValue: '',
                 atrisOptions: {
                     width: '100%',
@@ -565,8 +566,9 @@
                 debugger
                 console.log("---------拖拽的元素----------", controlItem)
                 // this.currentObj = controlItem
-                // this.changeBadageNum(controlItem, true)              
-                return JSON.parse(JSON.stringify(controlItem))       
+                // this.changeBadageNum(controlItem, true)    
+                let obj = controlItem
+                return JSON.parse(JSON.stringify(obj))       
             },
             //evt里面有两个值，一个evt.added 和evt.removed  可以分别知道移动元素的ID和删除元素的ID
             change: function (evt) {

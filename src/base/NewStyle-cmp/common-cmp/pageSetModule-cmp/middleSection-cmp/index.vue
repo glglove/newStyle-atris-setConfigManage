@@ -66,7 +66,7 @@
                     v-bind="dragOptions"
                     :group="{
                         name:'component',
-                        pull:'clone',
+                        pull: true,
                         put:true
                     }"
                     sort:true
@@ -188,11 +188,14 @@
         created(){
             this.$nextTick(() => {
                 this.$bus.$on("leftClickItem", (obj, callback) => {
-                    this.currentPageSetDataList.push(obj)
+                    this.currentPageSetDataList.push(JSON.parse(JSON.stringify(obj)))
                     this.currentClickItemObjIndex = (this.currentPageSetDataList.length)-1
                     if(callback){
                         callback(obj,true)
                     }
+                }),
+                this.$bus.$on("simpleContainerEmit", () => {
+                    this.simpleContainerEmit()
                 })
             })
             // this.getMiddleSetData()
@@ -257,10 +260,6 @@
                 //     this.currentClickItemObjIndex = (this.currentPageSetDataList.length)-1
                 // }
                 document.getElementsByClassName('containerBox')[0].classList.remove("droping")
-            }, 
-            cloneFuc(obj){
-                // debugger
-                console.log("-----------cloneFuc----")
             },                 
             clickCmpItem(obj, index){
                 debugger
@@ -282,7 +281,19 @@
                 }).catch(err => {
                     // this.$message.info("删除已取消")
                 })
-            },            
+            }, 
+            // 将当前中间部分配置的所有页面信息存入缓存
+            saveCurrentPageSetData(){
+                setLocalStorage('currentPageSetDataList', JSON.stringify(this.currentPageSetDataList))
+            }, 
+            simpleContainerEmit(){
+                this.saveCurrentPageSetData()
+            },
+            cloneFuc(obj){
+                // debugger
+                console.log("-----------cloneFuc----")
+                return obj
+            },                       
             //evt里面有几个值，一个evt.added 和evt.removed,evt.moved  可以分别知道移动元素的ID和删除元素的ID
             change: function (evt) {
                 debugger
@@ -299,7 +310,7 @@
 
                 }
                 // 将中间的所有数据存入缓存中
-                setLocalStorage('currentPageSetDataList', JSON.stringify(this.currentPageSetDataList))
+                this.saveCurrentPageSetData()
             },
             dragedAdd(evt){
                 debugger
@@ -326,8 +337,7 @@
                 // console.log("updated", this.currentPageSetDataList)
                 this.$bus.$emit("sortRightDataArr", this.currentPageSetDataList, evtnewIndex)
                 // 将中间的所有数据存入缓存中
-                setLocalStorage('currentPageSetDataList', JSON.stringify(this.currentPageSetDataList))                                
-
+                this.saveCurrentPageSetData()
             },                       
             //start ,end ,add,update, sort, remove 得到的都差不多
             start: function (evt) {
