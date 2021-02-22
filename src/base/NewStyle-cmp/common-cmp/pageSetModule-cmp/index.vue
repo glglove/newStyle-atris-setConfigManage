@@ -29,6 +29,7 @@
     width: calc(100% - 300px);
     .setMainBox {
         height: 100%
+        width: 100%;
     }
     .setPropertyBox {
         width: 300px;
