@@ -109,6 +109,8 @@ export default {
                 let obj = evt.added.element
                 obj.atrisCode = getGuid2()
                 obj.atrisGuid = getGuid()
+                // this.$set(obj, 'atrisGuid', getGuid())
+                // this.$set(obj, 'atrisCode', getGuid2())                
                 console.log("vuedragable拖拽完成后添加了唯一码（atrisCode 、 atrisGuid）打印", obj.atrisCode, obj.atrisGuid)
             }else if(evt.moved) {
 

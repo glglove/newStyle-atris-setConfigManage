@@ -9,10 +9,12 @@
     }
     .content-layout-item{
         display: flex;
-        justify-content: center;
+        justify-content: space-around;
         align-items: center;
+        align-content: space-around;
         margin: 0 2px;
-        background-color: #837e87;
+        margin: 0 2px;
+        background-color: rgba(31, 56, 88, 0.2);
         color: #ffffff;
     }
 </style>
@@ -64,16 +66,16 @@
             <el-tab-pane label="自定义" name="tow">
                 <div class="u-f-ac">
                     <el-form 
-                        :inline="true" 
                         :model="form" 
                         :rules="formRule"  
                         ref="ruleForm" 
                         style="width:100%"
-                        class="demo-form-inline u-f-jst u-f-ac"
+                        class="u-f-jst u-f-ac"
                     >
                         <el-form-item 
                             label="布局比例" 
                             prop="layoutRatio"
+                            label-position="top"
                             class="u-f-g1"
                         >
                             <el-input 
@@ -101,7 +103,7 @@
                     </el-form>
                 </div>
                 <div class="u-f-ajc">
-                    <!-- layoutCustom: {{layoutCustom}} -->
+                    layoutCustom: {{layoutCustom}}
                     <vuedraggable 
                         :list="layoutCustom"
                         :options="{sort:false}"
@@ -233,10 +235,12 @@
                         required: true,
                         regEx: ''
                     },
-                    atrisCols:[
+                    atrisChildrenList:[
                         {
                             span: 24,
-                            list: [
+                            controlName: `第1列`,
+                            atrisComponentType: 'grid-simple',                                
+                            atrisChildrenList: [
 
                             ]
                         }
@@ -293,16 +297,20 @@
                         required: true,
                         regEx: ''
                     },
-                    atrisCols:[
+                    atrisChildrenList:[
                         {
                             span: 12,
-                            list: [
+                            controlName: `第1列`,
+                            atrisComponentType: 'grid-simple',                                
+                            atrisChildrenList: [
 
                             ]
                         },
                         {
                             span: 12,
-                            list: [
+                            controlName: `第2列`,
+                            atrisComponentType: 'grid-simple',                                
+                            atrisChildrenList: [
 
                             ]                                    
                         }
@@ -363,22 +371,28 @@
                         required: true,
                         regEx: ''
                     },
-                    atrisCols:[
+                    atrisChildrenList:[
                         {
                             span: 8,
-                            list: [
+                            controlName: `第1列`,
+                            atrisComponentType: 'grid-simple',                                
+                            atrisChildrenList: [
 
                             ]
                         },
                         {
                             span: 8,
-                            list: [
+                            controlName: `第2列`,
+                            atrisComponentType: 'grid-simple',                            
+                            atrisChildrenList: [
 
                             ]                                    
                         },
                         {
                             span: 8,
-                            list: [
+                            controlName: `第3列`,
+                            atrisComponentType: 'grid-simple',                            
+                            atrisChildrenList: [
 
                             ]                                    
                         }                                
@@ -529,10 +543,11 @@
                         let value = this.form.layoutRatio
                         let arrValue = value.split("-")
                         let num = []
-                        let atrisCols = []
+                        let atrisChildrenList = []
                         let total = arrValue.reduce(function(pre, current, idx, []){
                             return parseInt(pre) + parseInt(current)
                         })
+                        let name = arrValue.join(':')
                         console.log("-------total------------",total)
                         for (let i = 0; i < arrValue.length; i++) {
                             let index =( parseInt(arrValue[i]) - 1)
@@ -542,16 +557,18 @@
                                 iStyle:{},
                                 iClass:[]
                             })
-                            atrisCols.push({
+                            atrisChildrenList.push({
                                 span: (arrValue[i]/total)*24,
-                                list: [
+                                controlName: `${name}——第${i}列`,
+                                atrisComponentType: 'grid-simple',
+                                atrisChildrenList: [
 
                                 ]
                             })
                         }
-                        let name = arrValue.join(':')
                         this.layoutCustom.push(
-                            {   name:`布局 ${name}`,
+                            {   
+                                name:`布局 ${name}`,
                                 id: layoutGlobalId++, 
                                 containerType: 'customGrid',                                
                                 componentName: 'Iflex',
@@ -587,7 +604,7 @@
                                     required: true,
                                     regEx: ''
                                 },
-                                atrisCols: atrisCols                             
+                                atrisChildrenList: atrisChildrenList                             
                             }
                         )
                     }else {

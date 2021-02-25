@@ -4,15 +4,18 @@
 * Desc： pageSetModule  组件 - 中间部分
 */
 <style lang="stylus" rel="stylesheet/stylus" scoped>
+@import "~common/css/variable.styl"
 .middleCmp {
     width: 100%;
-    height: 100%;
+    height: calc(100vh - 130px);
+    margin-top: 20px;
     overflow auto;
     font-size: 14px;
+    background: #ffffff
     .containerBox {
         height: 100%;
-        &.droping {
-            border: 1px dotted red 
+        &.cmpSelected {
+            border: $page-set-border
         }
     }
     .cmpItemBox {
@@ -25,12 +28,15 @@
         background-color: #ffffff;
         &:hover {
             // cursor: pointer;
-            background-color: #f5f5f5            
+            background-color: #f5f5f5         
         }
         &.is-active {
             background-color: #f5f5f5;
-            border-top: 1px dotted #000000;                      
-            border-bottom: 1px dotted #000000;                      
+            // border-top: 1px dotted #000000;                      
+            // border-bottom: 1px dotted #000000;                      
+        }
+        .handlerBox {
+            display: none;
         }
         .item-titwrap {
             .iconwrap {
@@ -46,6 +52,44 @@
         }
     }
 }
+
+.cmpSelected {
+    border: $page-set-border
+    &.cmpItemBox {
+        .cmp-item {
+            position: relative;
+            .handlerBox {
+                position: absolute;
+                display: block;
+                right: 0;
+                bottom: -20px;
+                padding:  0 5px;
+                height: 20px;
+                line-height: 20px;
+                text-align: center;
+                background: $page-set-bgc
+                color: $page-set-font
+                &:hover {
+                    cursor: pointer;
+                }
+            }            
+        }
+    }
+    
+}
+.cmpHover {
+    border: $page-set-border-dot
+    // .cmp-item {
+    //     position: relative;
+    //     .handlerBox {
+    //         position: absolute;
+    //         display: block;
+    //         right: 0;
+    //         background: $page-set-bgc
+    //         color: $page-set-font
+    //     }
+    // }
+}
 </style>
 <template>
     <div class="middleCmp">
@@ -55,6 +99,7 @@
             @dragleave="leaveDrag($event)" 
             @drop="dropDrag($event)"        
             class="containerBox"    
+            @click="clickConteainerBox"
             data-containerBox="middleCmpContainerBox"         
         >
             <!-- 配置板块——中间 -->    
@@ -62,7 +107,7 @@
             <el-form>
                 <vuedraggable 
                     class="wrapper" 
-                    v-model="currentPageSetDataList"  
+                    v-model="currentPageSetData.currentPageSetDataList"  
                     v-bind="dragOptions"
                     :group="{
                         name:'component',
@@ -83,37 +128,39 @@
                         style="display: inline-block;min-height: 80vh;width: 100%;"
                     >
                         <div  
-                            v-for="(obj, index) in currentPageSetDataList" 
+                            v-for="(obj, index) in currentPageSetData.currentPageSetDataList" 
                             :key="index+1" 
-                            class="cmpItemBox"
+                            :class="[`cmp_${obj.atrisCode}`, 'cmpItemBox', index == currentClickItemObjIndex ? 'cmpSelected': '']"
                         >
                             <!-- <el-button type="primary" size="mini">{{obj.controlName}}</el-button> -->
                             <div 
-                                :class="['cmp-item', index == currentClickItemObjIndex ? 'is-active': '']" 
-                                @click="clickCmpItem(obj, index)"
+                                :class="['cmp-item', 'clickable', index == currentClickItemObjIndex ? 'is-active': '']" 
+                                @click.stop="clickCmpItem($event, obj, index)"
+                                @mouseover.stop="mouseoverCmpItem(obj, index)"
+                                @mouseout.stop="mouseoutCmpItem(obj, index)"
                             >
-                                <div class="item-titwrap u-f-jsb">
-                                    <span class="tit">{{obj.controlName}}</span>
-                                    <span class="iconwrap">
-                                        <!-- <i 
-                                            class="el-icon-document-copy"
-                                            @click.stop="handlerClickCopy(obj, index)"
-                                        ></i> -->
+                                <!----动态渲染当前组件---->
+                                <current-component-cmp
+                                    :obj.sync="obj"
+                                    :isTitle="false"
+                                    :isNeedGetDataSource="false"
+                                    :disableFlag="true"                                    
+                                >
+                                </current-component-cmp>
+
+                                <!----复制、删除----->
+                                <div :class="['handlerBox', `cmp_handler_${obj.atrisCode}`]" >
+                                    <el-tooltip effect="dark" content="复制" placement="top-start">
+                                        <i class="el-icon-document-copy"
+                                        ></i>
+                                    </el-tooltip>
+                                    <el-tooltip effect="dark" content="删除" placement="top-start">
                                         <i 
                                             class="el-icon-delete"
                                             @click.stop="handlerClickDelete(obj, index)"
                                         ></i>
-                                    </span>
+                                    </el-tooltip>                                    
                                 </div>
-
-                                <component 
-                                    :is="currentComponentMixin(obj.controlType)"
-                                    :obj.sync="obj"
-                                    :isTitle="false"
-                                    :isNeedGetDataSource="false"
-                                    :disableFlag="true"
-                                >
-                                </component>
                             </div>
                         </div>
                     </transition-group>              
@@ -135,29 +182,32 @@
         getMiddleSetData
     } from '@/api/systemManage.js'
     import Vuedraggable from 'vuedraggable'
-    import { fieldControlTypeMixin } from '@/utils/newStyleMixins-components.js'
-    import BaseGridHighLevelCmp from './components-items-cmp/grid-cmp/base-grid-highLevel-cmp.vue'
-    import BaseGridSimpleContainerCmp from '@/base/NewStyle-cmp/common-cmp/pageSetModule-cmp/middleSection-cmp/components-items-cmp/grid-cmp/base-grid-simpleContainer-cmp.vue'
+    // import { fieldControlTypeMixin } from '@/utils/newStyleMixins-components.js'
     // import BaseSimpleContainerCmp from '@/base/NewStyle-cmp/common-cmp/container-cmp/simpleContainer-cmp.vue'
+    import CurrentComponentCmp from './currentComponent-cmp'
     import { getGuid, getGuid2 } from '@/utils/guid.js'
     import {setLocalStorage, getLocalStorage} from '@/utils/auth.js'
+    import $ from 'jquery'
+    import { mapGetters } from 'vuex'
     export default {
-        mixins: [ fieldControlTypeMixin ],
+        // mixins: [ fieldControlTypeMixin ],
         props:{
             
         },
         components: {
             Vuedraggable,
             // BaseSimpleContainerCmp,
-            BaseGridHighLevelCmp,
-            BaseGridSimpleContainerCmp
+            CurrentComponentCmp,
         },
         data() {
             return {
                 loading: false,
-                currentPageSetDataList: [],
+                currentPageSetData: {
+                    currentPageSetDataList: []
+                },
                 contentCmpsList1: [],
                 currentClickItemObjIndex: '',
+                currentTreeClickObj: {},
             }
         },
         computed: {
@@ -168,40 +218,63 @@
                 disabled: false,
                 // ghostClass: "ghost"
                 }
-            }              
+            },
+            ...mapGetters([
+                'pageSetTotalData'
+            ])
         },
         watch: {
             currentClickItemObjIndex: {
                 handler(newValue, oldValue){
                     debugger
-                    let obj = this.currentPageSetDataList[newValue]
+                    let obj = this.currentPageSetData.currentPageSetDataList[newValue]
                     this.$bus.$emit("middleClickEmit", obj, newValue)
                 },
                 immediate: true
             },
-            'currentPageSetDataList.length': {
+            'currentPageSetData.currentPageSetDataList.length': {
                 handler(newValue, oldValue){
-                    this.$bus.$emit("rightDataArr", this.currentPageSetDataList)
+                    // 更新缓存 和 stroe中的 总配置数据
+                    // this.saveCurrentPageSetData()
+                    this.$bus.$emit("rightDataArr", this.currentPageSetData.currentPageSetDataList)
                 }
-            }
+            },          
         },
         created(){
-            this.$nextTick(() => {
+            // this.$nextTick(() => {
                 this.$bus.$on("leftClickItem", (obj, callback) => {
-                    this.currentPageSetDataList.push(JSON.parse(JSON.stringify(obj)))
-                    this.currentClickItemObjIndex = (this.currentPageSetDataList.length)-1
+                    // 给 点击的 obj 添加唯一码
+                    obj.atrisCode = getGuid2()
+                    obj.atrisGuid = getGuid()    
+                    // this.$set(obj, 'atrisGuid', getGuid())
+                    // this.$set(obj, 'atrisCode', getGuid2())                                    
+                    this.currentPageSetData.currentPageSetDataList.push(JSON.parse(JSON.stringify(obj)))
+                    this.currentClickItemObjIndex = (this.currentPageSetData.currentPageSetDataList.length)-1
+                    this.saveCurrentPageSetData()
                     if(callback){
                         callback(obj,true)
                     }
                 }),
+                this.$bus.$on("progressTreeSort", (arr) => {
+                    this.currentPageSetData.currentPageSetDataList = arr
+                    this.saveCurrentPageSetData()
+                })
                 this.$bus.$on("simpleContainerEmit", () => {
                     this.simpleContainerEmit()
                 })
-            })
+                this.$bus.$on("progressTreeEmitClick", (data) => {
+                    debugger
+                    this.currentTreeClickObj = data
+                    this.setClickStyle(this.currentTreeClickObj.atrisCode)
+                })
+            // })
             // this.getMiddleSetData()
         },
         beforeDestroy(){
             this.$bus.$off("leftClickItem")
+            this.$bus.$off("progressTreeSort")
+            this.$bus.$off("simpleContainerEmit")
+            this.$bus.$off("progressTreeEmitClick")
         },
         mounted () {
 
@@ -216,11 +289,18 @@
                 // 获取中间部分的回显数据
                 getMiddleSetData(obj).then(res => {
                     this.loading = false
-                    this.currentPageSetDataList = res.data.Data
-                    if(this.currentPageSetDataList.length){
+                    this.currentPageSetData.currentPageSetDataList = res.data.Data
+                    if(this.currentPageSetData.currentPageSetDataList.length){
                         this.currentClickItemObjIndex = 0                
                     }
                 })
+            },
+            clickConteainerBox(){
+                $('.cmpItemBox').each(function(){
+                    console.log($(this))
+                    $(this).removeClass("cmpSelected")
+                })
+                this.addContainerBoxSelected(".containerBox", 0)
             },
             // 拖起来的元素进入到目标区域中时触发事件
             enterDrag(event, sourceId) {
@@ -229,7 +309,7 @@
                 e.preventDefault()
                 console.log("middleSection拖拽进入到目标元素",e)   
                 // e.dataTransfer.dropEffect = "copy" // 允许拖放复制    
-                document.getElementsByClassName('containerBox')[0].className += ' droping'                      
+                document.getElementsByClassName('containerBox')[0].className += ' cmpSelected'                      
             },  
             // 拖动元素在目标区域中移动时触发事件
             overDrag(event){
@@ -255,15 +335,90 @@
                 // let str = e.currentTarget.dataset.containerbox
                 // if(str === 'middleCmpContainerBox'){
                 //     // 释放时 是在 middle 中
-                //     this.currentPageSetDataList.push(data)
+                //     this.currentPageSetData.currentPageSetDataList.push(data)
                 //     this.$bus.$emit("changeBadageNum", data, true)
-                //     this.currentClickItemObjIndex = (this.currentPageSetDataList.length)-1
+                //     this.currentClickItemObjIndex = (this.currentPageSetData.currentPageSetDataList.length)-1
                 // }
-                document.getElementsByClassName('containerBox')[0].classList.remove("droping")
-            },                 
-            clickCmpItem(obj, index){
+                document.getElementsByClassName('containerBox')[0].classList.remove("cmpSelected")
+            }, 
+            removeContainerBoxSelected() {
+                $('.containerBox:eq(0)').removeClass("cmpSelected")
+            },
+            addContainerBoxSelected(){
+                $('.containerBox:eq(0)').addClass("cmpSelected")
+            },
+            addCmpItemSelected(str, index){
+                this.removeContainerBoxSelected()
+                $(str).eq(index).siblings().removeClass("cmpSelected")
+                $(str).eq(index).addClass("cmpSelected")
+            },   
+            removeCmpItemSelected(str, index){
+            },             
+            clickCmpItem($event, obj, index){
                 debugger
+                console.log("-----------$event----------------------", $event)
                 this.currentClickItemObjIndex = index
+                
+                // this.addCmpItemSelected('.cmpItemBox',index)   
+
+                this.setClickStyle(obj.atrisCode)
+
+            },
+            // 取消其他所有的 cmpSelected 属性
+            cancelAttribute( arr, atrisCode , str){
+                debugger
+                if(arr && arr.length){
+                    arr.forEach((item, key) => {
+                        if(item.atrisCode && (item.atrisCode!== atrisCode)){
+                            $(`.cmp_${item.atrisCode}`).removeClass(str)
+                            $(`.cmp_handler_${item.atrisCode}`).style.display = "none"
+                        }
+                        // console.log($(`.cmp_${item.atrisCode}`))
+                        console.log("item", item, `${item.atrisCode}`, $(`.cmp_${item.atrisCode}`))
+                        if(item.atrisChildrenList && item.atrisChildrenList.length){
+                            this.cancelAttribute(item.atrisChildrenList, atrisCode , str)
+                        }
+                    })
+                }
+            },
+            setClickStyle(atrisCode){
+                debugger
+                console.log($(`.cmp_${atrisCode}`))
+                if(atrisCode){
+                    $(`.cmp_${atrisCode}`).addClass("cmpSelected")
+                    $(`.cmp_handler_${atrisCode}`).show()
+                    this.cancelAttribute(this.currentPageSetDataList, atrisCode, 'cmpSelected')
+                }
+            },            
+            mouseoverCmpItem (obj, index) {
+                $(".containerBox").eq(0).removeClass("cmpHover")
+                $(".cmpItemBox").eq(index).addClass("cmpHover").siblings().removeClass("cmpHover")
+            },
+            mouseoutCmpItem(obj, index){
+                $(".cmpItemBox").eq(index).removeClass("cmpHover")
+            },
+            // 取消其他所有的 cmpSelected 属性
+            cancelAttribute( arr, atrisCode , str){
+                debugger
+                if(arr && arr.length){
+                    arr.forEach((item, key) => {
+                        if(item.atrisCode && (item.atrisCode!== atrisCode)){
+                            $(`.cmp_${item.atrisCode}`).removeClass(str)
+                        }
+                        // console.log($(`.cmp_${item.atrisCode}`))
+                        console.log("item", item, `${item.atrisCode}`, $(`.cmp_${item.atrisCode}`))
+                        if(item.atrisChildrenList && item.atrisChildrenList.length){
+                            this.cancelAttribute(item.atrisChildrenList, atrisCode , str)
+                        }
+                    })
+                }
+            },
+            setClickStyle(atrisCode){
+                console.log($(`.cmp_${atrisCode}`))
+                if(atrisCode){
+                    $(`.cmp_${atrisCode}`).addClass("cmpSelected")
+                    this.cancelAttribute(this.currentPageSetData.currentPageSetDataList, atrisCode, 'cmpSelected')
+                }
             },
             // 点击 复制的图标
             handlerClickCopy(obj, index){
@@ -272,11 +427,12 @@
             },
             // 点击 删除的图标
             handlerClickDelete(obj, index){
-                this.$confirm("确定要删除吗？","提示", {
+                this.$confirm("确定要删除此组件?,删除后用户已填写的数据将一并被删除","提示", {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消'
                 }).then(res => {
-                    this.currentPageSetDataList.splice(index,1)
+                    this.currentPageSetData.currentPageSetDataList.splice(index,1)
+                    this.saveCurrentPageSetData()
                     this.$bus.$emit("changeBadageNum", obj, false)
                 }).catch(err => {
                     // this.$message.info("删除已取消")
@@ -284,7 +440,12 @@
             }, 
             // 将当前中间部分配置的所有页面信息存入缓存
             saveCurrentPageSetData(){
-                setLocalStorage('currentPageSetDataList', JSON.stringify(this.currentPageSetDataList))
+                // 以下可以使得 拖拽完成后 template模板中绑定的 atrisCode 值
+                // this.currentPageSetData.currentPageSetDataList = [].concat(this.currentPageSetData.currentPageSetDataList)
+                this.$forceUpdate()       
+                setLocalStorage('currentPageSetData', JSON.stringify(this.currentPageSetData))
+                // 存入 store中
+                this.$store.dispatch('setPageSetDataList', this.currentPageSetData.currentPageSetDataList)
             }, 
             simpleContainerEmit(){
                 this.saveCurrentPageSetData()
@@ -303,7 +464,7 @@
                     let obj = evt.added.element
                     obj.atrisCode = getGuid2()
                     obj.atrisGuid = getGuid()
-                    console.log("vuedragable拖拽完成后添加了唯一码（atrisCode 、 atrisGuid）打印", obj.atrisCode, obj.atrisGuid)
+                    console.log(`vuedragable拖拽完成后${obj.controlName}添加了唯一码（atrisCode 、 atrisGuid）打印`, obj.atrisCode, obj.atrisGuid)
                 }else if(evt.moved) {
 
                 }else if(evt.removed){
@@ -326,6 +487,7 @@
                 // this.evtoldIndex = evt.oldIndex;
                 // this.evtnewIndex = evt.newIndex;
                 // console.log("0000000000000000000000",JSON.parse(evt.item.dataset.itemdata))
+                console.log("---dragedAdd----", evt)
             },  
             drageUpdate(evt){
                 // 排序后的更新操作
@@ -334,8 +496,8 @@
                 let evtoldIndex = evt.oldIndex;
                 let evtnewIndex = evt.newIndex;
                 this.currentClickItemObjIndex = evtnewIndex
-                // console.log("updated", this.currentPageSetDataList)
-                this.$bus.$emit("sortRightDataArr", this.currentPageSetDataList, evtnewIndex)
+                // console.log("updated", this.currentPageSetData.currentPageSetDataList)
+                this.$bus.$emit("sortRightDataArr", this.currentPageSetData.currentPageSetDataList, evtnewIndex)
                 // 将中间的所有数据存入缓存中
                 this.saveCurrentPageSetData()
             },                       
@@ -345,20 +507,20 @@
             },
             end(evt) {
                 debugger
-                console.log("----------------000---------------",evt)
+                console.log("拖动结束后打印contentCmpsList", this.currentPageSetData.currentPageSetDataList)
+                console.log("----------------end---------------",evt)
                 // evt.item //可以知道拖动的本身
                 // evt.to    // 可以知道拖动的目标列表
                 // evt.from  // 可以知道之前的列表
                 // evt.oldIndex  // 可以知道拖动前的位置
                 // evt.newIndex  // 可以知道拖动后的位置
-                console.log("拖动结束后打印contentCmpsList", this.currentPageSetDataList)
                 let oldIndex = evt.oldIndex, newIndex = evt.newIndex
                 // this.$emit("middleDraggedEmitVueDraged", oldIndex, newIndex)
             }, 
             // 排序后                      
             checkMove(evt, originalEvent){
                 debugger
-                console.log("---排序后contentCmpsList---", this.currentPageSetDataList)
+                console.log("---排序后contentCmpsList---", this.currentPageSetData.currentPageSetDataList)
                 // console.log(originalEvent) //鼠标位置
                 // console.log(evt.draggedContext.index)
                 // console.log(evt.draggedContext.element)

@@ -8,15 +8,24 @@
     width: 100%;
     min-height: 100%
 }
+.transitionGroup-simpleContainer {
+    display: block;
+    width: 100%;
+    min-height: 200px;
+    padding: 20px 0;
+    box-sizing: border-box;
+    .cmpItemBox {
+        margin: 10px 0;
+    }
+}
 </style>
 <template>
     <div class="highLevel-tabSection">
-        obj: {{obj}}
-        选项卡布局组件
-        tabSectionData: {{tabSectionData}}
+        <!-- obj: {{obj}} -->
+        <!-- tabSectionData: {{tabSectionData}} -->
         <vuedraggable
             class="draggableWrap highLevel-tabSection-draggableWrap"
-            v-model="tabSectionData"
+            v-model="obj.atrisChildrenList"
             v-bind="dragOptions"
             :group="{
                 name:'component',
@@ -33,22 +42,31 @@
             :move='checkMove'            
         >
             <transition-group
-                class="transitionGroup" 
-                style="display: inline-block;min-height: 200px;width: 100%;"                
+                class="transitionGroup-simpleContainer" 
             >
                 <div  
-                    v-for="(obj, index) in tabSectionData" 
+                    v-for="(cmpObj, index) in obj.atrisChildrenList" 
                     :key="index+1" 
                     class="cmpItemBox"
                 >
-                    <component 
-                        :is="getComponentUtils(obj.controlType)"
-                        :obj.sync="obj"
+                    <!-- cmpObj.controlType: {{cmpObj.controlType}} -->
+                    <!-- <component 
+                        :is="getComponentUtils(cmpObj.controlType)"
+                        :obj.sync="cmpObj"
                         :isTitle="false"
                         :isNeedGetDataSource="false"
                         :disableFlag="true"
                     >
-                    </component>                
+                    </component> -->
+
+                    <!----动态渲染当前组件---->
+                    <current-component-cmp
+                        :obj.sync="cmpObj"
+                        :isTitle="false"
+                        :isNeedGetDataSource="false"
+                        :disableFlag="true"                                    
+                    >
+                    </current-component-cmp>                    
                 </div>
             </transition-group>
         </vuedraggable>
@@ -64,6 +82,7 @@ import {
 } from '@/utils/CommonInterfaceMixin'
 import { fieldControlTypeMixin } from '@/utils/newStyleMixins-components.js'
 import { getComponentUtils } from '@/utils/newStyle-components-type.js'
+import CurrentComponentCmp from '@/base/NewStyle-cmp/common-cmp/pageSetModule-cmp/middleSection-cmp/currentComponent-cmp'
 import { getGuid, getGuid2 } from '@/utils/guid.js'
 import SearchToolsCmp from '@/base/NewStyle-cmp/common-cmp/searchTool-cmp'
 export default {
@@ -78,14 +97,16 @@ export default {
     },
     components: {
         SearchToolsCmp,
-        Vuedraggable
+        Vuedraggable,
+        CurrentComponentCmp
     },
     data() {
         return {
-            tabSectionData: []
+
         }
     },
     created(){
+        this.initData()
     },
     computed:{
         dragOptions() {
@@ -101,6 +122,71 @@ export default {
 
     },
     methods:{
+        initData(){
+            this.obj.atrisChildrenList = this.obj.atrisChildrenList.concat({  
+                span: 24,
+                controlName: "选项卡(一列容器)",      
+                controlType: 2000,      
+                iClass: [],
+                iStyle: {},
+                name: "1列布局",    
+                num: [
+                    {
+                        iClass: [],
+                        iStyle: {},
+                        itemList: [],
+                        layoutClass: "flex-one" 
+                    }                   
+                ],                       
+                atrisCode: getGuid2(),
+                atrisGuid: getGuid(),
+                atrisIcon: '',
+                atrisTitle: '选项卡(一列容器)',
+                atrisComponentType: 'grid-simple',
+                atrisConValue: '',
+                atrisOptions: {
+                    width: '100%',
+                    defaultValue:'',
+                    disabled: false,
+                    placeholder: '',
+                    required: true,
+                    regEx: ''
+                },                                        
+                atrisChildrenList: [
+                    {
+                        span: 24,
+                        controlName: "选项卡(一列容器)",      
+                        controlType: 2000,      
+                        iClass: [],
+                        iStyle: {},
+                        name: "1列布局",    
+                        num: [
+                            {
+                                iClass: [],
+                                iStyle: {},
+                                itemList: [],
+                                layoutClass: "flex-one" 
+                            }                   
+                        ],                       
+                        atrisCode: getGuid2(),
+                        atrisGuid: getGuid(),
+                        atrisIcon: '',
+                        atrisTitle: '选项卡(一列容器)',
+                        atrisComponentType: 'grid-simple',
+                        atrisConValue: '',
+                        atrisOptions: {
+                            width: '100%',
+                            defaultValue:'',
+                            disabled: false,
+                            placeholder: '',
+                            required: true,
+                            regEx: ''
+                        },   
+                        atrisChildrenList: []
+                    }
+                ]
+            })
+        },
         getComponentUtils(controlType){
             return getComponentUtils(controlType)
         },
@@ -108,17 +194,27 @@ export default {
             // debugger
             console.log("-----------cloneFuc----")
             return obj
-        },                       
+        },    
+        addTabSectionCode(){
+            obj.atrisChildrenList.forEach((item, key) => {
+                item.atrisCode = getGuid2()
+                item.atrisGuid = getGuid()
+            })
+        },                   
         //evt里面有几个值，一个evt.added 和evt.removed,evt.moved  可以分别知道移动元素的ID和删除元素的ID
         change: function (evt) {
             debugger
             console.log("vuedragable拖拽完成后打印", evt)
             if(evt.added){
-                // 给拖拽后的数据对象生成  唯一码
+                // 给拖拽后的选项卡数据对象生成  唯一码
                 let obj = evt.added.element
                 obj.atrisCode = getGuid2()
                 obj.atrisGuid = getGuid()
+                // this.$set(obj, 'atrisGuid', getGuid())
+                // this.$set(obj, 'atrisCode', getGuid2())                
                 console.log("vuedragable拖拽完成后添加了唯一码（atrisCode 、 atrisGuid）打印", obj.atrisCode, obj.atrisGuid)
+                // 给选项卡里面的一列布局组件添加 唯一码
+                this.addTabSectionCode(obj)
             }else if(evt.moved) {
 
             }else if(evt.removed){

@@ -5,7 +5,7 @@
 -->
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 >>>.el-collapse {
-    max-height: 90vh;
+    max-height: calc(100vh - 150px);
     overflow: auto;
     border-bottom: none !important
 }
@@ -13,7 +13,7 @@
     padding-top: 5px;
 }
 >>>.el-collapse-item {
-    margin: 10px 0;
+    margin: 5px 0 5px 10px;
     &.is-active {
         box-shadow: 1px 1px 10px 1px #e8dede
     }
@@ -78,13 +78,46 @@
 </style>
 <template>
     <div class="left-pageSetModul-cmp">
-        <div class="topContent" v-loading="loading">
+        <div class="programTreeWrap" v-show="currentLeftNavType ===1">
+            <program-tree-cmp></program-tree-cmp>
+        </div>
+        <div class="topContent" v-loading="loading" v-show="currentLeftNavType ===2">
             <!-- objP: {{objP}} -->
             <el-collapse 
                 :accordion="false"
                 v-model="activeIndex"
                 @change="collapseChange"
-            >      
+            >   
+
+
+                <!---布局组件------>
+                <el-collapse-item>  
+                    <span slot="title">
+                        布局容器
+                        <i class="header-icon el-icon-info"></i>
+                    </span>
+
+                    <div class="setCmpContentBox">
+                        <vuedraggable 
+                            class="wrapper u-f-jst u-f-wrap" 
+                            data-flag="leftFlag-grid"
+                            v-model="gridCmps.childrenList"  
+                            v-bind="dragOptions"
+                            :group="{
+                                name:'component',
+                                pull:'clone',
+                                put:false
+                            }" 
+                        >
+                            <!-- <transition-group> -->
+                            <left-components-by-layouts></left-components-by-layouts>
+                            <!-- </transition-group> -->
+                        </vuedraggable>       
+                    
+                    </div>                       
+                </el-collapse-item>   
+
+                <!-----常规控件----->               
                 <el-collapse-item 
                     v-for="(cmpItem, index) in cmps"
                     :key="index"
@@ -252,35 +285,7 @@
                         </vuedraggable>       
                     
                     </div>                     
-                </el-collapse-item>
-
-
-                <!---布局组件------>
-                <el-collapse-item>  
-                    <span slot="title">
-                        布局容器
-                        <i class="header-icon el-icon-info"></i>
-                    </span>
-
-                    <div class="setCmpContentBox">
-                        <vuedraggable 
-                            class="wrapper u-f-jst u-f-wrap" 
-                            data-flag="leftFlag-grid"
-                            v-model="gridCmps.childrenList"  
-                            v-bind="dragOptions"
-                            :group="{
-                                name:'component',
-                                pull:'clone',
-                                put:false
-                            }" 
-                        >
-                            <!-- <transition-group> -->
-                            <left-components-by-layouts></left-components-by-layouts>
-                            <!-- </transition-group> -->
-                        </vuedraggable>       
-                    
-                    </div>                       
-                </el-collapse-item>    
+                </el-collapse-item> 
    
             </el-collapse> 
         </div>        
@@ -295,12 +300,14 @@
         getControlInfo
     } from '@/api/systemManage'
     // import { getGuid, getGuid2 } from '@/utils/guid.js'
+    import { mapGetters } from 'vuex'
     import {
         // setLocalStorage,
         // getLocalStorage
     } from '@/utils/auth.js'  
     import Vuedraggable from 'vuedraggable'   
     import LeftComponentsByLayouts from './leftComponentsByLayouts' 
+    import ProgramTreeCmp from './programTree-cmp'
     let that = null
     // 容器
     let gridCmps = {
@@ -338,10 +345,25 @@
                     required: true,
                     regEx: ''
                 },
-                atrisCols:[
+                atrisChildrenList:[
                     {
-                        span: 12,
-                        list: [
+                        span: 24,
+                        controlName: "一列容器",                        
+                        atrisCode: '',
+                        atrisGuid: '',
+                        atrisIcon: '',
+                        atrisTitle: '一列容器',
+                        atrisComponentType: 'grid-simple',
+                        atrisConValue: '',
+                        atrisOptions: {
+                            width: '100%',
+                            defaultValue:'',
+                            disabled: false,
+                            placeholder: '',
+                            required: true,
+                            regEx: ''
+                        },                        
+                        atrisChildrenList: [
 
                         ]
                     }
@@ -396,10 +418,25 @@
                     required: true,
                     regEx: ''
                 },
-                atrisCols:[
+                atrisChildrenList:[
                     {
                         span: 24,
-                        list: [
+                        controlName: "表(一列容器)",                        
+                        atrisCode: '',
+                        atrisGuid: '',
+                        atrisIcon: '',
+                        atrisTitle: '表(一列容器)',
+                        atrisComponentType: 'grid-simple',
+                        atrisConValue: '',
+                        atrisOptions: {
+                            width: '100%',
+                            defaultValue:'',
+                            disabled: false,
+                            placeholder: '',
+                            required: true,
+                            regEx: ''
+                        },                          
+                        atrisChildrenList: [
 
                         ]
                     }
@@ -435,10 +472,25 @@
                     required: true,
                     regEx: ''
                 },
-                atrisCols:[
+                atrisChildrenList:[
                     {
-                        span: 12,
-                        list: [
+                        span: 24,
+                        controlName: "分组(一列容器)",                        
+                        atrisCode: '',
+                        atrisGuid: '',
+                        atrisIcon: '',
+                        atrisTitle: '分组(一列容器)',
+                        atrisComponentType: 'grid-simple',
+                        atrisConValue: '',
+                        atrisOptions: {
+                            width: '100%',
+                            defaultValue:'',
+                            disabled: false,
+                            placeholder: '',
+                            required: true,
+                            regEx: ''
+                        },  
+                        atrisChildrenList: [
 
                         ]
                     }
@@ -474,13 +526,8 @@
                     required: true,
                     regEx: ''
                 },
-                atrisCols:[
-                    {
-                        span: 24,
-                        list: [
+                atrisChildrenList:[
 
-                        ]
-                    }
                 ]
             },            
         ],
@@ -508,6 +555,7 @@
         },
         components: {
             Vuedraggable,
+            ProgramTreeCmp,
             LeftComponentsByLayouts
         },
         data(){
@@ -528,7 +576,10 @@
                 disabled: false,
                 // ghostClass: "ghost"
                 }
-            }            
+            },
+            ...mapGetters([
+                'currentLeftNavType'
+            ])           
         },
         watch: {
 
@@ -580,7 +631,7 @@
             },
             end(evt) {
                 // debugger
-                console.log("----------------000---------------",evt)
+                // console.log("----------------000---------------",evt)
                 // evt.item //可以知道拖动的本身
                 // evt.to    // 可以知道拖动的目标列表
                 // evt.from  // 可以知道之前的列表
@@ -605,7 +656,19 @@
                 }else {
                     return true
                 }
-            },            
+            },    
+            changeData(arr){
+                if(arr && arr.length){
+                    arr.forEach((item) => {
+                        let itemChildrenList = item.childrenList
+                        if(itemChildrenList && itemChildrenList.length){
+                            this.changeData(itemChildrenList)
+                        }
+                        this.$set(item, 'atrisChildrenList', [])
+                        this.$set(item, 'atrisComponentType', 'comonControl')
+                    })
+                }
+            },        
             getControlInfo(){
                 this.loading = true
                 let params = {
@@ -614,7 +677,9 @@
                 }
                 getControlInfo(params).then(res => {
                     this.loading = false
+                    // 处理cmps
                     this.cmps = res.data.Data.records
+                    this.changeData(this.cmps)
                     // this.cmps =[gridCmps].concat(res.data.Data.records)
                 })
             }, 

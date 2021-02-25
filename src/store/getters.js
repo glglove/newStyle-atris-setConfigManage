@@ -103,3 +103,10 @@ export const currentActiveNameStr = state => state.directive.currentActiveNameSt
 export const companyRoleScanFlag = state => state.directive.companyRoleScanFlag
 // 当前的权限页面pageCode
 export const currentAuthorityPageCode = state => state.directive.currentAuthorityPageCode
+
+//----------------pageset------------------
+export const leftCmpBoxShow = state => state.pageset.leftCmpBoxShow
+
+export const currentLeftNavType = state => state.pageset.currentLeftNavType
+
+export const pageSetTotalData = state => state.pageset.pageSetTotalData
