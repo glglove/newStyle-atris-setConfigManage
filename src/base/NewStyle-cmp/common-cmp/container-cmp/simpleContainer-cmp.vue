@@ -34,6 +34,7 @@
     margin: 20px 0;
 }
 .cmp-item {
+    position: relative;
     width: 100%;
     padding: 5px 10px;
     box-sizing: border-box;
@@ -46,9 +47,6 @@
         background-color: #f5f5f5;
         // border-top: 1px dotted #000000;                      
         // border-bottom: 1px dotted #000000;                      
-    }
-    .handlerBox {
-        display: none;
     }
     .item-titwrap {
         .iconwrap {
@@ -68,22 +66,38 @@
     border: $page-set-border    
 }
 
+.handlerBox {
+    position: absolute;
+    display: none;
+    right: 0;
+    bottom: -20px;
+    padding:  0 5px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    background: $page-set-bgc
+    color: $page-set-font
+    &:hover {
+        cursor: pointer;
+    }
+} 
+
 .cmpSelected {
-    .handlerBox {
-        position: absolute;
-        display: block;
-        right: 0;
-        bottom: -20px;
-        padding:  0 5px;
-        height: 20px;
-        line-height: 20px;
-        text-align: center;
-        background: $page-set-bgc
-        color: $page-set-font
-        &:hover {
-            cursor: pointer;
-        }
-    } 
+    // .handlerBox {
+    //     position: absolute;
+    //     display: block;
+    //     right: 0;
+    //     bottom: -20px;
+    //     padding:  0 5px;
+    //     height: 20px;
+    //     line-height: 20px;
+    //     text-align: center;
+    //     background: $page-set-bgc
+    //     color: $page-set-font
+    //     &:hover {
+    //         cursor: pointer;
+    //     }
+    // } 
 }
 
 .cmpItemBox {
@@ -300,7 +314,7 @@ export default {
         mouseoutCmpItem(obj, index){
             // $(".cmpItemBox").eq(index).removeClass("cmpHover")
             if(obj.atrisCode){
-                this.cancelAllAttibute(this.pageSetTotalData.pageSetTotalDataList, obj.atrisCode, 'cmpSelected')
+                // this.cancelAllAttibute(this.pageSetTotalData.pageSetTotalDataList, obj.atrisCode, 'cmpSelected')
             }
         },                               
         //evt里面有几个值，一个evt.added 和evt.removed,evt.moved  可以分别知道移动元素的ID和删除元素的ID
@@ -395,7 +409,8 @@ export default {
                 arr.forEach((item, key) => {
                     if(item.atrisCode && (item.atrisCode!== atrisCode)){
                         $(`.cmp_${item.atrisCode}`).removeClass(str)
-                        $(`.cmp_handler_${item.atrisCode}`).style.display = "none"
+                        $(`.cmp_handler_${item.atrisCode}`).hide()
+                        // alert(7)
                     }
                     // console.log($(`.cmp_${item.atrisCode}`))
                     console.log("item", item, `${item.atrisCode}`, $(`.cmp_${item.atrisCode}`))
@@ -410,7 +425,7 @@ export default {
                 arr.forEach((item, key) => {
                     if(item.atrisCode){
                         $(`.cmp_${item.atrisCode}`).removeClass(str)
-                        // $(`.cmp_handler_${item.atrisCode}`).style.display = "none"
+                        $(`.cmp_handler_${item.atrisCode}`).hide()
                     }
                     // console.log($(`.cmp_${item.atrisCode}`))
                     console.log("item", item, `${item.atrisCode}`, $(`.cmp_${item.atrisCode}`))
@@ -426,7 +441,7 @@ export default {
             if(atrisCode){
                 $(`.cmp_${atrisCode}`).addClass("cmpSelected")
                 $(`.cmp_handler_${atrisCode}`).show()
-                this.cancelAttribute(this.currentPageSetDataList, atrisCode, 'cmpSelected')
+                this.cancelAttribute(this.pageSetTotalData.pageSetTotalDataList, atrisCode, 'cmpSelected')
             }
         },
         // 点击 复制的图标

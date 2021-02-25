@@ -21,61 +21,52 @@
     .cmpItemBox {
         margin: 20px 0;
     }
-    .cmp-item {
-        width: 100%;
-        padding: 5px 10px;
-        box-sizing: border-box;
-        background-color: #ffffff;
-        &:hover {
-            // cursor: pointer;
-            background-color: #f5f5f5         
-        }
-        &.is-active {
-            background-color: #f5f5f5;
-            // border-top: 1px dotted #000000;                      
-            // border-bottom: 1px dotted #000000;                      
-        }
-        .handlerBox {
-            display: none;
-        }
-        .item-titwrap {
-            .iconwrap {
-                .el-icon-document-copy, .el-icon-delete {
-                    &:hover {
-                        cursor pointer
-                    }
+}
+.cmp-item {
+    position: relative;
+    width: 100%;
+    padding: 5px 10px;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    &:hover {
+        // cursor: pointer;
+        background-color: #f5f5f5         
+    }
+    &.is-active {
+        background-color: #f5f5f5;
+        // border-top: 1px dotted #000000;                      
+        // border-bottom: 1px dotted #000000;                      
+    }
+    .item-titwrap {
+        .iconwrap {
+            .el-icon-document-copy, .el-icon-delete {
+                &:hover {
+                    cursor pointer
                 }
-                .el-icon-document-copy {
-                    margin-right: 10px
-                }
+            }
+            .el-icon-document-copy {
+                margin-right: 10px
             }
         }
     }
 }
-
-.cmpSelected {
-    border: $page-set-border
-    &.cmpItemBox {
-        .cmp-item {
-            position: relative;
-            .handlerBox {
-                position: absolute;
-                display: block;
-                right: 0;
-                bottom: -20px;
-                padding:  0 5px;
-                height: 20px;
-                line-height: 20px;
-                text-align: center;
-                background: $page-set-bgc
-                color: $page-set-font
-                &:hover {
-                    cursor: pointer;
-                }
-            }            
-        }
+.handlerBox {
+    position: absolute;
+    display: block;
+    right: 0;
+    bottom: -20px;
+    padding:  0 5px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    background: $page-set-bgc
+    color: $page-set-font
+    &:hover {
+        cursor: pointer;
     }
-    
+} 
+.cmpSelected {
+    border: $page-set-border 
 }
 .cmpHover {
     border: $page-set-border-dot
@@ -371,7 +362,8 @@
                     arr.forEach((item, key) => {
                         if(item.atrisCode && (item.atrisCode!== atrisCode)){
                             $(`.cmp_${item.atrisCode}`).removeClass(str)
-                            $(`.cmp_handler_${item.atrisCode}`).style.display = "none"
+                            $(`.cmp_handler_${item.atrisCode}`).hide()
+                            // alert(7)
                         }
                         // console.log($(`.cmp_${item.atrisCode}`))
                         console.log("item", item, `${item.atrisCode}`, $(`.cmp_${item.atrisCode}`))
@@ -387,15 +379,15 @@
                 if(atrisCode){
                     $(`.cmp_${atrisCode}`).addClass("cmpSelected")
                     $(`.cmp_handler_${atrisCode}`).show()
-                    this.cancelAttribute(this.currentPageSetDataList, atrisCode, 'cmpSelected')
+                    this.cancelAttribute(this.pageSetTotalData.pageSetTotalDataList, atrisCode, 'cmpSelected')
                 }
             },            
             mouseoverCmpItem (obj, index) {
-                $(".containerBox").eq(0).removeClass("cmpHover")
-                $(".cmpItemBox").eq(index).addClass("cmpHover").siblings().removeClass("cmpHover")
+                // $(".containerBox").eq(0).removeClass("cmpHover")
+                // $(".cmpItemBox").eq(index).addClass("cmpHover").siblings().removeClass("cmpHover")
             },
             mouseoutCmpItem(obj, index){
-                $(".cmpItemBox").eq(index).removeClass("cmpHover")
+                // $(".cmpItemBox").eq(index).removeClass("cmpHover")
             },
             // 取消其他所有的 cmpSelected 属性
             cancelAttribute( arr, atrisCode , str){
@@ -404,6 +396,7 @@
                     arr.forEach((item, key) => {
                         if(item.atrisCode && (item.atrisCode!== atrisCode)){
                             $(`.cmp_${item.atrisCode}`).removeClass(str)
+                            $(`.cmp_handler_${item.atrisCode}`).hide()
                         }
                         // console.log($(`.cmp_${item.atrisCode}`))
                         console.log("item", item, `${item.atrisCode}`, $(`.cmp_${item.atrisCode}`))
