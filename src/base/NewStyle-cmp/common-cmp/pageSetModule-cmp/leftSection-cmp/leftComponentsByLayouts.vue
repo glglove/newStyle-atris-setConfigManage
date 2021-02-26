@@ -103,7 +103,7 @@
                     </el-form>
                 </div>
                 <div class="u-f-ajc">
-                    layoutCustom: {{layoutCustom}}
+                    <!-- layoutCustom: {{layoutCustom}} -->
                     <vuedraggable 
                         :list="layoutCustom"
                         :options="{sort:false}"

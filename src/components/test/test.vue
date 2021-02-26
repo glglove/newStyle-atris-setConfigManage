@@ -8,8 +8,10 @@
 .testpage {
     height 100%;
 }
+.selected {
+    border: 1px dotted black
+}
 </style>
-
 
 <template>
     <div class="testpage">
@@ -184,6 +186,28 @@
                 :objP.sync="currentTableSetRow"                
             ></page-set-module-cmp>
         </el-dialog>
+
+
+        <div class="wrap" style="border: 1px solid red" @click="handlerClick0($event)">
+            wrap
+            <div class="item1" style="border: 1px solid blue" @click="handlerClick1($event)">
+                item1
+                <div class="item2" style="border: 1px solid yellow" @click="handlerClick2($event)">
+                    item2
+                    <div 
+                        class="item3" style="width: 300px;height: 300px;border: 1px solid silver"
+                        @click="handlerClick3($event)"
+                    >
+                        item 3
+                        <span class="ui yti">大家疯狂撒肥料大家发大水就</span>
+                        <div class="uy marginT30" data-yu="fdjksf">
+                            15范德萨发
+                            <div data-atirsCode="78342ui" class="ui marginT30">的会计法律的</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -214,7 +238,7 @@
     } from '@/utils/auth.js'
 export default {
     components: {
-        pageSetModuleCmp,
+        pageSetModuleCmp
         // BasePageCmp,
         // SeriesLineCmp,
         // TestLineCmp,
@@ -324,7 +348,36 @@ export default {
             debugger
             this.currentTableSetRow = JSON.parse(JSON.stringify(row))
             this.showPageSet  = true
-        },         
+        },  
+        handlerClick0(event){
+            console.log("0中 打印 event",event)
+        },
+        handlerClick1(event){
+            console.log("1中 打印 event",event)
+
+        },
+        handlerClick2(event){
+            console.log("2中 打印 event",event)
+
+        },
+        handlerClick3(e){
+            let event = e || window.event
+            console.log("3中 打印 event",event)
+            event.preventDefault ? event.preventDefault() : (event.returnValue = false)
+            event.stopPropagation ? event.stopPropagation() : (event.cancelBubble = true)
+
+            let target = event.target||event.srcElement
+            if($(target).hasClass("ui")) {
+                let code = target.dataset.atirsCode
+                alert('code')
+                $(target).css({
+                    backgroundColor: 'red'
+                })
+            }else {
+                // alert('no')
+                alert(89)
+            }
+        }                                     
 
     }
 }

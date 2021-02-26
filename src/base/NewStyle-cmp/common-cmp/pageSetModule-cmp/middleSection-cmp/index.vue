@@ -65,7 +65,9 @@
         cursor: pointer;
     }
 } 
-.cmpSelected {
+
+// 点击之后的样式
+.cmp-item-selected {
     border: $page-set-border 
 }
 .cmpHover {
@@ -121,14 +123,13 @@
                         <div  
                             v-for="(obj, index) in currentPageSetData.currentPageSetDataList" 
                             :key="index+1" 
-                            :class="[`cmp_${obj.atrisCode}`, 'cmpItemBox', index == currentClickItemObjIndex ? 'cmpSelected': '']"
+                            :class="[`cmpBox_${obj.atrisCode}`, 'cmpItemBox']"
                         >
                             <!-- <el-button type="primary" size="mini">{{obj.controlName}}</el-button> -->
                             <div 
-                                :class="['cmp-item', 'clickable', index == currentClickItemObjIndex ? 'is-active': '']" 
+                                :class="['cmp-item', `cmp-item-${obj.atrisCode}`, 'atris-selecteable']" 
+                                :data-atriscode="`${obj.atrisCode}`"
                                 @click.stop="clickCmpItem($event, obj, index)"
-                                @mouseover.stop="mouseoverCmpItem(obj, index)"
-                                @mouseout.stop="mouseoutCmpItem(obj, index)"
                             >
                                 <!----动态渲染当前组件---->
                                 <current-component-cmp
@@ -140,7 +141,10 @@
                                 </current-component-cmp>
 
                                 <!----复制、删除----->
-                                <div :class="['handlerBox', `cmp_handler_${obj.atrisCode}`]" >
+                                <div 
+                                    :class="['cmp-item-handlerBox', `cmp-item-handler-${obj.atrisCode}`]" 
+                                    :data-atriscode="`${obj.atrisCode}`"
+                                >
                                     <el-tooltip effect="dark" content="复制" placement="top-start">
                                         <i class="el-icon-document-copy"
                                         ></i>
@@ -179,6 +183,7 @@
     import { getGuid, getGuid2 } from '@/utils/guid.js'
     import {setLocalStorage, getLocalStorage} from '@/utils/auth.js'
     import $ from 'jquery'
+    import { getCurrentHandlerDom, findEventElement, setEventElementAttributes, cancelElementAttribute } from '@/utils/dom.js'
     import { mapGetters } from 'vuex'
     export default {
         // mixins: [ fieldControlTypeMixin ],
@@ -345,15 +350,24 @@
             },   
             removeCmpItemSelected(str, index){
             },             
-            clickCmpItem($event, obj, index){
+            clickCmpItem(e, obj, index){
                 debugger
-                console.log("-----------$event----------------------", $event)
                 this.currentClickItemObjIndex = index
-                
+
                 // this.addCmpItemSelected('.cmpItemBox',index)   
 
-                this.setClickStyle(obj.atrisCode)
+                // this.setClickStyle(obj.atrisCode)
 
+                let handlerClickDom = getCurrentHandlerDom(e)
+                let $target = findEventElement($(handlerClickDom), 'atris-selecteable')
+                let targetCode = $target.data("atriscode")
+                console.log("$target, targetCode", $target, targetCode)
+                if($target && targetCode) {
+                    let targetStr = `.cmp-item-${targetCode}`
+                    setEventElementAttributes('.cmp-item-', targetCode, ['cmp-item-selected'])
+                    cancelElementAttribute(this.pageSetTotalData.pageSetTotalDataList, targetCode, '.cmp-item-', ['cmp-item-selected'])
+                    this.$forceUpdate()
+                }
             },
             // 取消其他所有的 cmpSelected 属性
             cancelAttribute( arr, atrisCode , str){
