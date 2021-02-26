@@ -46,23 +46,55 @@ export const setEventElementAttributes = function (str, targetCode, classNameArr
         }
     }
 }
+/**
+ * 
+ * @param {*} arr 
+ * @param {*} targetCode 
+ * @param {*} param2 {'cancel': {'str': '.cmp-item-', 'attr': ['cmp-item-selected']},'hide': {'str': ['.cmp-item-handler-']},'show': {'str': []}}
+ */
+export const cancelElementAttribute = function (arr, targetCode, obj) {
+    let {
+        cancel = {},
+        hide = {},
+        show = {}
+    } = obj
 
-export const cancelElementAttribute = function (arr, targetCode, str, classNameArr) {
+    let cancelStr = cancel.str
+    let cancelClassNameArr = cancel.attr
+    let hideStrArr = hide.str
+    let showStrArr = show.str
     if(arr && arr.length){
         arr.forEach((item, key) => {
             if(item.atrisCode && (item.atrisCode != targetCode)) {
-                alert(`${str}${item.atrisCode}`)
-                console.log(`${str}${item.atrisCode}`)
-                classNameArr.forEach((item, key) => {
-                    // if($(`${str}${item.atrisCode}`).is('.'+item)){
-                        $(`${str}${item.atrisCode}`).removeClass(item) 
-                        alert($(`${str}${item.atrisCode}`).is('.'+item))  
-                    // }       
-                })                
+                // alert(`${str}${item.atrisCode}`)
+                // console.log(str + `${item.atrisCode}`)
+                if(cancelClassNameArr && cancelClassNameArr.length){
+                    cancelClassNameArr.forEach((classNameItem, key) => {
+                        // alert($(cancelStr + `${item.atrisCode}`).hasClass(classNameItem))  
+                        $(cancelStr + `${item.atrisCode}`).removeClass(`${classNameItem}`) 
+                        // alert($(cancelStr + `${item.atrisCode}`).hasClass(classNameItem))  
+                    }) 
+                }
+ 
+                if(hideStrArr && hideStrArr.length) {
+                    hideStrArr.forEach((hideStrItem, index) => {
+                        $(hideStrItem + `${item.atrisCode}`).hide()
+                    })
+                } 
+                
+                if(showStrArr && showStrArr.length) {
+                    showStrArr.forEach((showStrItem, index) => {
+                        $(showStrItem + `${item.atrisCode}`).show()
+                    })
+                }
             }
-            // if(item.atrisChildrenList && item.atrisChildrenList.length){
-            //     cancelElementAttribute(item.atrisChildrenList, targetCode, str, className)
-            // }
+            if(item.atrisChildrenList && item.atrisChildrenList.length){
+                cancelElementAttribute(item.atrisChildrenList, targetCode, obj)
+            }
         })
     }
+}
+
+export const showElement = function () {
+
 }

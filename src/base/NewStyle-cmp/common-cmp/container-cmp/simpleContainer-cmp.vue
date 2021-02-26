@@ -62,15 +62,11 @@
     }
 }
 
-.cmpSelected {
-    border: $page-set-border    
-}
-
-.handlerBox {
+.cmp-item-handlerBox {
     position: absolute;
     display: none;
     right: 0;
-    bottom: -20px;
+    bottom: 0;
     padding:  0 5px;
     height: 20px;
     line-height: 20px;
@@ -82,43 +78,14 @@
     }
 } 
 
-.cmpSelected {
-    // .handlerBox {
-    //     position: absolute;
-    //     display: block;
-    //     right: 0;
-    //     bottom: -20px;
-    //     padding:  0 5px;
-    //     height: 20px;
-    //     line-height: 20px;
-    //     text-align: center;
-    //     background: $page-set-bgc
-    //     color: $page-set-font
-    //     &:hover {
-    //         cursor: pointer;
-    //     }
-    // } 
+// 点击之后的样式
+.cmp-item-selected {
+    border: $page-set-border 
 }
 
-.cmpItemBox {
-    position: relative;
-    &.cmpSelected {
-        border: $page-set-border           
-    }
-}
-    
-.cmpHover {
+// moseover 之后的样式
+.cmp-item-mouseover {
     border: $page-set-border-dot
-    // .cmp-item {
-    //     position: relative;
-    //     .handlerBox {
-    //         position: absolute;
-    //         display: block;
-    //         right: 0;
-    //         background: $page-set-bgc
-    //         color: $page-set-font
-    //     }
-    // }
 }
 </style>
 <template>
@@ -158,9 +125,10 @@
                         <div  
                             v-for="(itemCol, index) in col.atrisChildrenList" 
                             :key="index+1" 
-                            :class="[`cmp_${itemCol.atrisCode}`, 'cmpItemBox']"  
-                            @mouseover.stop="mouseoverCmpItem(obj, index)"
-                            @mouseout.stop="mouseoutCmpItem(obj, index)"                          
+                            :class="['cmp-item',`cmp-item-${itemCol.atrisCode}`,'atris-selectable', 'atris-hoverable']" 
+                            :data-atriscode="`${itemCol.atrisCode}`"
+                            @click.stop="clickCmpItem($event, obj, index)"
+                            @mouseover.stop="mouseoverCmpItem($event, obj, index)"
                         >
                             <!----容器中如果又拖过来纯容器 需要递归调用本组件------->
                             <span v-if="itemCol.atrisComponentType=='grid-simple'">
@@ -196,7 +164,10 @@
                             </span>   
 
                             <!----复制、删除----->
-                            <div :class="['handlerBox', `cmp_handler_${itemCol.atrisCode}`]" >
+                            <div 
+                                :class="['cmp-item-handlerBox', `cmp-item-handler-${itemCol.atrisCode}`]" 
+                                :data-atriscode="`${itemCol.atrisCode}`"
+                            >
                                 <el-tooltip effect="dark" content="复制" placement="top-start">
                                     <i class="el-icon-document-copy"
                                     ></i>
@@ -221,6 +192,7 @@ import { getGuid, getGuid2 } from '@/utils/guid.js'
 import { setLocalStorage } from '@/utils/auth.js'
 import CurrentComponentCmp from '@/base/NewStyle-cmp/common-cmp/pageSetModule-cmp/middleSection-cmp/currentComponent-cmp'
 // import CurrentComponentCmp from './current'
+import { getCurrentHandlerDom, findEventElement, setEventElementAttributes, cancelElementAttribute } from '@/utils/dom.js'
 import Vuedraggable from 'vuedraggable'
 import $ from 'jquery'
 import { 
@@ -264,7 +236,7 @@ export default {
         this.$bus.$on("progressTreeEmitClick", (data) => {
             debugger
             this.currentTreeClickObj = data
-            this.setClickStyle(this.currentTreeClickObj.atrisCode)
+            this.programTreeEmit(this.currentTreeClickObj.atrisCode)
         })       
     },
     watch: {
@@ -303,20 +275,7 @@ export default {
             // debugger
             console.log("-----------cloneFuc----")
             return obj
-        },
-        mouseoverCmpItem (obj, index) {
-            // $(".containerBox").eq(0).removeClass("cmpHover")
-            // $(".cmpItemBox").eq(index).addClass("cmpHover").siblings().removeClass("cmpHover")
-            if(obj.atrisCode){
-                this.setClickStyle(obj.atrisCode)
-            }
-        },
-        mouseoutCmpItem(obj, index){
-            // $(".cmpItemBox").eq(index).removeClass("cmpHover")
-            if(obj.atrisCode){
-                // this.cancelAllAttibute(this.pageSetTotalData.pageSetTotalDataList, obj.atrisCode, 'cmpSelected')
-            }
-        },                               
+        },                              
         //evt里面有几个值，一个evt.added 和evt.removed,evt.moved  可以分别知道移动元素的ID和删除元素的ID
         change: function (evt) {
             debugger
@@ -402,47 +361,47 @@ export default {
             // 排序后
             
         },
-        // 取消其他所有的 cmpSelected 属性
-        cancelAttribute( arr, atrisCode , str){
+        programTreeEmit(targetCode){
+            if(targetCode) {
+                let targetStr = `.cmp-item-${targetCode}`
+                setEventElementAttributes('.cmp-item-', targetCode, ['cmp-item-selected'])
+                $('.cmp-item-handler-' + `${targetCode}`).show()
+                cancelElementAttribute(this.pageSetTotalData.pageSetTotalDataList, targetCode, {
+                    'cancel': {'str': '.cmp-item-', 'attr': ['cmp-item-selected']},
+                    'hide': {'str': ['.cmp-item-handler-']},
+                })
+            }                
+        },  
+        clickCmpItem(e, obj, index){
             debugger
-            if(arr && arr.length){
-                arr.forEach((item, key) => {
-                    if(item.atrisCode && (item.atrisCode!== atrisCode)){
-                        $(`.cmp_${item.atrisCode}`).removeClass(str)
-                        $(`.cmp_handler_${item.atrisCode}`).hide()
-                        // alert(7)
-                    }
-                    // console.log($(`.cmp_${item.atrisCode}`))
-                    console.log("item", item, `${item.atrisCode}`, $(`.cmp_${item.atrisCode}`))
-                    if(item.atrisChildrenList && item.atrisChildrenList.length){
-                        this.cancelAttribute(item.atrisChildrenList, atrisCode , str)
-                    }
+            // this.currentClickItemObjIndex = index
+
+            let handlerClickDom = getCurrentHandlerDom(e)
+            let $target = findEventElement($(handlerClickDom), 'atris-selectable')
+            let targetCode = $target.data("atriscode")
+            console.log("$target, targetCode", $target, targetCode)
+            if($target && targetCode) {
+                let targetStr = `.cmp-item-${targetCode}`
+                setEventElementAttributes('.cmp-item-', targetCode, ['cmp-item-selected'])
+                $('.cmp-item-handler-' + `${targetCode}`).show()
+                cancelElementAttribute(this.pageSetTotalData.pageSetTotalDataList, targetCode, {
+                    'cancel': {'str': '.cmp-item-', 'attr': ['cmp-item-selected']},
+                    'hide': {'str': ['.cmp-item-handler-']},
                 })
             }
-        },
-        cancelAllAttibute(arr, atrisCode , str){
-            if(arr && arr.length){
-                arr.forEach((item, key) => {
-                    if(item.atrisCode){
-                        $(`.cmp_${item.atrisCode}`).removeClass(str)
-                        $(`.cmp_handler_${item.atrisCode}`).hide()
-                    }
-                    // console.log($(`.cmp_${item.atrisCode}`))
-                    console.log("item", item, `${item.atrisCode}`, $(`.cmp_${item.atrisCode}`))
-                    if(item.atrisChildrenList && item.atrisChildrenList.length){
-                        this.cancelAttribute(item.atrisChildrenList, atrisCode , str)
-                    }
+        },          
+        mouseoverCmpItem (e, obj, index) {
+            let handlerClickDom = getCurrentHandlerDom(e)
+            let $target = findEventElement($(handlerClickDom), 'atris-hoverable')
+            let targetCode = $target.data("atriscode")
+            console.log("$target, targetCode", $target, targetCode)
+            if($target && targetCode) {
+                let targetStr = `.cmp-item-${targetCode}`
+                setEventElementAttributes('.cmp-item-', targetCode, ['cmp-item-mouseover'])
+                cancelElementAttribute(this.pageSetTotalData.pageSetTotalDataList, targetCode, {
+                    'cancel': {'str': '.cmp-item-', 'attr': ['cmp-item-mouseover']},
                 })
-            }
-        },
-        setClickStyle(atrisCode){
-            debugger
-            console.log($(`.cmp_${atrisCode}`))
-            if(atrisCode){
-                $(`.cmp_${atrisCode}`).addClass("cmpSelected")
-                $(`.cmp_handler_${atrisCode}`).show()
-                this.cancelAttribute(this.pageSetTotalData.pageSetTotalDataList, atrisCode, 'cmpSelected')
-            }
+            }               
         },
         // 点击 复制的图标
         handlerClickCopy(obj, index){

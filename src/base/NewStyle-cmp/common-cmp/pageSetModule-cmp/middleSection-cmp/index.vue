@@ -50,11 +50,11 @@
         }
     }
 }
-.handlerBox {
+.cmp-item-handlerBox {
     position: absolute;
-    display: block;
+    display: none;
     right: 0;
-    bottom: -20px;
+    bottom: 0;
     padding:  0 5px;
     height: 20px;
     line-height: 20px;
@@ -70,19 +70,12 @@
 .cmp-item-selected {
     border: $page-set-border 
 }
-.cmpHover {
+
+// moseover 之后的样式
+.cmp-item-mouseover {
     border: $page-set-border-dot
-    // .cmp-item {
-    //     position: relative;
-    //     .handlerBox {
-    //         position: absolute;
-    //         display: block;
-    //         right: 0;
-    //         background: $page-set-bgc
-    //         color: $page-set-font
-    //     }
-    // }
 }
+
 </style>
 <template>
     <div class="middleCmp">
@@ -127,9 +120,10 @@
                         >
                             <!-- <el-button type="primary" size="mini">{{obj.controlName}}</el-button> -->
                             <div 
-                                :class="['cmp-item', `cmp-item-${obj.atrisCode}`, 'atris-selecteable']" 
+                                :class="['cmp-item',`cmp-item-${obj.atrisCode}`,'atris-selectable', 'atris-hoverable']" 
                                 :data-atriscode="`${obj.atrisCode}`"
                                 @click.stop="clickCmpItem($event, obj, index)"
+                                @mouseover.stop = "mouseoverCmpItem($event, obj, index)"
                             >
                                 <!----动态渲染当前组件---->
                                 <current-component-cmp
@@ -261,7 +255,7 @@
                 this.$bus.$on("progressTreeEmitClick", (data) => {
                     debugger
                     this.currentTreeClickObj = data
-                    this.setClickStyle(this.currentTreeClickObj.atrisCode)
+                    this.programTreeEmit(this.currentTreeClickObj.atrisCode)
                 })
             // })
             // this.getMiddleSetData()
@@ -349,83 +343,48 @@
                 $(str).eq(index).addClass("cmpSelected")
             },   
             removeCmpItemSelected(str, index){
-            },             
+            },  
+            programTreeEmit(targetCode){
+                if(targetCode) {
+                    let targetStr = `.cmp-item-${targetCode}`
+                    setEventElementAttributes('.cmp-item-', targetCode, ['cmp-item-selected'])
+                    $('.cmp-item-handler-' + `${targetCode}`).show()
+                    cancelElementAttribute(this.pageSetTotalData.pageSetTotalDataList, targetCode, {
+                        'cancel': {'str': '.cmp-item-', 'attr': ['cmp-item-selected']},
+                        'hide': {'str': ['.cmp-item-handler-']},
+                    })
+                }                
+            },           
             clickCmpItem(e, obj, index){
                 debugger
-                this.currentClickItemObjIndex = index
-
-                // this.addCmpItemSelected('.cmpItemBox',index)   
-
-                // this.setClickStyle(obj.atrisCode)
+                // this.currentClickItemObjIndex = index
 
                 let handlerClickDom = getCurrentHandlerDom(e)
-                let $target = findEventElement($(handlerClickDom), 'atris-selecteable')
+                let $target = findEventElement($(handlerClickDom), 'atris-selectable')
                 let targetCode = $target.data("atriscode")
                 console.log("$target, targetCode", $target, targetCode)
                 if($target && targetCode) {
                     let targetStr = `.cmp-item-${targetCode}`
                     setEventElementAttributes('.cmp-item-', targetCode, ['cmp-item-selected'])
-                    cancelElementAttribute(this.pageSetTotalData.pageSetTotalDataList, targetCode, '.cmp-item-', ['cmp-item-selected'])
-                    this.$forceUpdate()
-                }
-            },
-            // 取消其他所有的 cmpSelected 属性
-            cancelAttribute( arr, atrisCode , str){
-                debugger
-                if(arr && arr.length){
-                    arr.forEach((item, key) => {
-                        if(item.atrisCode && (item.atrisCode!== atrisCode)){
-                            $(`.cmp_${item.atrisCode}`).removeClass(str)
-                            $(`.cmp_handler_${item.atrisCode}`).hide()
-                            // alert(7)
-                        }
-                        // console.log($(`.cmp_${item.atrisCode}`))
-                        console.log("item", item, `${item.atrisCode}`, $(`.cmp_${item.atrisCode}`))
-                        if(item.atrisChildrenList && item.atrisChildrenList.length){
-                            this.cancelAttribute(item.atrisChildrenList, atrisCode , str)
-                        }
+                    $('.cmp-item-handler-' + `${targetCode}`).show()
+                    cancelElementAttribute(this.pageSetTotalData.pageSetTotalDataList, targetCode, {
+                        'cancel': {'str': '.cmp-item-', 'attr': ['cmp-item-selected']},
+                        'hide': {'str': ['.cmp-item-handler-']},
                     })
                 }
-            },
-            setClickStyle(atrisCode){
-                debugger
-                console.log($(`.cmp_${atrisCode}`))
-                if(atrisCode){
-                    $(`.cmp_${atrisCode}`).addClass("cmpSelected")
-                    $(`.cmp_handler_${atrisCode}`).show()
-                    this.cancelAttribute(this.pageSetTotalData.pageSetTotalDataList, atrisCode, 'cmpSelected')
-                }
-            },            
-            mouseoverCmpItem (obj, index) {
-                // $(".containerBox").eq(0).removeClass("cmpHover")
-                // $(".cmpItemBox").eq(index).addClass("cmpHover").siblings().removeClass("cmpHover")
-            },
-            mouseoutCmpItem(obj, index){
-                // $(".cmpItemBox").eq(index).removeClass("cmpHover")
-            },
-            // 取消其他所有的 cmpSelected 属性
-            cancelAttribute( arr, atrisCode , str){
-                debugger
-                if(arr && arr.length){
-                    arr.forEach((item, key) => {
-                        if(item.atrisCode && (item.atrisCode!== atrisCode)){
-                            $(`.cmp_${item.atrisCode}`).removeClass(str)
-                            $(`.cmp_handler_${item.atrisCode}`).hide()
-                        }
-                        // console.log($(`.cmp_${item.atrisCode}`))
-                        console.log("item", item, `${item.atrisCode}`, $(`.cmp_${item.atrisCode}`))
-                        if(item.atrisChildrenList && item.atrisChildrenList.length){
-                            this.cancelAttribute(item.atrisChildrenList, atrisCode , str)
-                        }
+            },          
+            mouseoverCmpItem (e, obj, index) {
+                let handlerClickDom = getCurrentHandlerDom(e)
+                let $target = findEventElement($(handlerClickDom), 'atris-hoverable')
+                let targetCode = $target.data("atriscode")
+                console.log("$target, targetCode", $target, targetCode)
+                if($target && targetCode) {
+                    let targetStr = `.cmp-item-${targetCode}`
+                    setEventElementAttributes('.cmp-item-', targetCode, ['cmp-item-mouseover'])
+                    cancelElementAttribute(this.pageSetTotalData.pageSetTotalDataList, targetCode, {
+                        'cancel': {'str': '.cmp-item-', 'attr': ['cmp-item-mouseover']},
                     })
-                }
-            },
-            setClickStyle(atrisCode){
-                console.log($(`.cmp_${atrisCode}`))
-                if(atrisCode){
-                    $(`.cmp_${atrisCode}`).addClass("cmpSelected")
-                    this.cancelAttribute(this.currentPageSetData.currentPageSetDataList, atrisCode, 'cmpSelected')
-                }
+                }               
             },
             // 点击 复制的图标
             handlerClickCopy(obj, index){
