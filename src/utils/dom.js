@@ -94,7 +94,3 @@ export const cancelElementAttribute = function (arr, targetCode, obj) {
         })
     }
 }
-
-export const showElement = function () {
-
-}

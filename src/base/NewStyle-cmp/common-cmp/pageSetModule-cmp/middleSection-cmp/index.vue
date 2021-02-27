@@ -115,7 +115,7 @@
                     >
                         <div  
                             v-for="(obj, index) in currentPageSetData.currentPageSetDataList" 
-                            :key="index+1" 
+                            :key="index" 
                             :class="[`cmpBox_${obj.atrisCode}`, 'cmpItemBox']"
                         >
                             <!-- <el-button type="primary" size="mini">{{obj.controlName}}</el-button> -->
@@ -141,6 +141,7 @@
                                 >
                                     <el-tooltip effect="dark" content="复制" placement="top-start">
                                         <i class="el-icon-document-copy"
+                                            @click.stop = "handlerClickCopy(obj, index)"
                                         ></i>
                                     </el-tooltip>
                                     <el-tooltip effect="dark" content="删除" placement="top-start">
@@ -286,11 +287,11 @@
                 })
             },
             clickConteainerBox(){
-                $('.cmpItemBox').each(function(){
-                    console.log($(this))
-                    $(this).removeClass("cmpSelected")
-                })
-                this.addContainerBoxSelected(".containerBox", 0)
+                // $('.cmpItemBox').each(function(){
+                //     console.log($(this))
+                //     $(this).removeClass("cmpSelected")
+                // })
+                // this.addContainerBoxSelected(".containerBox", 0)
             },
             // 拖起来的元素进入到目标区域中时触发事件
             enterDrag(event, sourceId) {
@@ -345,6 +346,7 @@
             removeCmpItemSelected(str, index){
             },  
             programTreeEmit(targetCode){
+                this.removeContainerBoxSelected()
                 if(targetCode) {
                     let targetStr = `.cmp-item-${targetCode}`
                     setEventElementAttributes('.cmp-item-', targetCode, ['cmp-item-selected'])
@@ -358,7 +360,7 @@
             clickCmpItem(e, obj, index){
                 debugger
                 // this.currentClickItemObjIndex = index
-
+                this.removeContainerBoxSelected()
                 let handlerClickDom = getCurrentHandlerDom(e)
                 let $target = findEventElement($(handlerClickDom), 'atris-selectable')
                 let targetCode = $target.data("atriscode")
@@ -374,22 +376,83 @@
                 }
             },          
             mouseoverCmpItem (e, obj, index) {
-                let handlerClickDom = getCurrentHandlerDom(e)
-                let $target = findEventElement($(handlerClickDom), 'atris-hoverable')
-                let targetCode = $target.data("atriscode")
-                console.log("$target, targetCode", $target, targetCode)
-                if($target && targetCode) {
-                    let targetStr = `.cmp-item-${targetCode}`
-                    setEventElementAttributes('.cmp-item-', targetCode, ['cmp-item-mouseover'])
-                    cancelElementAttribute(this.pageSetTotalData.pageSetTotalDataList, targetCode, {
-                        'cancel': {'str': '.cmp-item-', 'attr': ['cmp-item-mouseover']},
+                // let handlerClickDom = getCurrentHandlerDom(e)
+                // let $target = findEventElement($(handlerClickDom), 'atris-hoverable')
+                // let targetCode = $target.data("atriscode")
+                // console.log("$target, targetCode", $target, targetCode)
+                // if($target && targetCode) {
+                //     let targetStr = `.cmp-item-${targetCode}`
+                //     setEventElementAttributes('.cmp-item-', targetCode, ['cmp-item-mouseover'])
+                //     cancelElementAttribute(this.pageSetTotalData.pageSetTotalDataList, targetCode, {
+                //         'cancel': {'str': '.cmp-item-', 'attr': ['cmp-item-mouseover']},
+                //     })
+                // }               
+            },
+            // 
+            findKey(arr, parentCode, atrisCode){
+                if(arr && arr.length){
+                    for(let i = 0;i< arr.length;i++){
+                        let item = arr[i]
+                        item.levelIndex = i
+                        item.parentCode = parentCode 
+                        if(item.atrisCode && item.atrisCode === atrisCode){
+                            return {
+                                parentCode: item.parentCode,
+                                levelIndex: item.levelIndex
+                            }
+                        }
+                        if(item.atrisChildrenList && item.atrisChildrenList.length){
+                            this.findKey(item.atrisChildrenList, item.atrisCode, atrisCode)
+                        }
+                    }
+                    return null
+                }else {
+                    return null
+                }
+            },
+            // 添加 唯一码
+            addGuid(obj){
+                if(obj.atrisCode){
+                    obj.atrisCode = getGuid2()
+                    obj.atrisGuid = getGuid()
+                }
+                if(obj.atrisChildrenList && obj.atrisChildrenList.length){
+                    obj.atrisChildrenList.forEach((item) => {
+                        this.addGuid(item)
                     })
-                }               
+                }
+            },
+            copyData(arr, code, index, copyObj){
+                if(arr && arr.length){
+                    for(let i = 0; i< arr.length;i++){
+                        let  item = arr[i]
+                        if(item.atrisCode && item.atrisCode === code){
+                            item.atrisChildrenList.splice((index+1), 0, copyObj)
+                            return 
+                        }
+                        if(item.atrisChildrenList && item.atrisChildrenList.length){
+                            this.copyData(item.atrisChildrenList, code, index, copyObj)
+                        }                        
+                    }   
+                }
             },
             // 点击 复制的图标
             handlerClickCopy(obj, index){
                 debugger
                 // this.$emit("middleCopyEmit", obj, index)
+                let newObj = JSON.parse(JSON.stringify(obj))
+                this.addGuid(newObj)
+                console.log("------",newObj)
+                let resObj = this.findKey(this.currentPageSetData.currentPageSetDataList, 'allCode', obj.atrisCode)
+                console.log(resObj)
+                if(resObj){
+                    if(resObj.parentCode === 'allCode'){
+                        this.currentPageSetData.currentPageSetDataList.splice(++resObj.levelIndex, 0, newObj)
+                    }else {
+                        this.copyData(this.currentPageSetData.currentPageSetDataList, resObj.parentCode, resObj.levelIndex, newObj)
+                    }
+                }
+                this.saveCurrentPageSetData()
             },
             // 点击 删除的图标
             handlerClickDelete(obj, index){

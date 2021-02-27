@@ -149,6 +149,7 @@
 
 <script>
     import Vuedraggable from 'vuedraggable'   
+    import {  getGuid2, getGuid } from '@/utils/guid.js'
     let flexMap = [
         'flex-one',
         'flex-two',
@@ -239,6 +240,8 @@
                         {
                             span: 24,
                             controlName: `第1列`,
+                            atrisCode: getGuid2(),
+                            atrisGuid:'',
                             atrisComponentType: 'grid-simple',                                
                             atrisChildrenList: [
 
@@ -301,6 +304,8 @@
                         {
                             span: 12,
                             controlName: `第1列`,
+                            atrisCode: getGuid2(),
+                            atrisGuid:'',
                             atrisComponentType: 'grid-simple',                                
                             atrisChildrenList: [
 
@@ -375,6 +380,8 @@
                         {
                             span: 8,
                             controlName: `第1列`,
+                            atrisCode: getGuid2(),
+                            atrisGuid:'',
                             atrisComponentType: 'grid-simple',                                
                             atrisChildrenList: [
 
@@ -383,6 +390,8 @@
                         {
                             span: 8,
                             controlName: `第2列`,
+                            atrisCode: getGuid2(),
+                            atrisGuid:'',
                             atrisComponentType: 'grid-simple',                            
                             atrisChildrenList: [
 
@@ -391,6 +400,8 @@
                         {
                             span: 8,
                             controlName: `第3列`,
+                            atrisCode: getGuid2(),
+                            atrisGuid:'',
                             atrisComponentType: 'grid-simple',                            
                             atrisChildrenList: [
 
@@ -560,6 +571,8 @@
                             atrisChildrenList.push({
                                 span: (arrValue[i]/total)*24,
                                 controlName: `${name}——第${i}列`,
+                                atrisCode: getGuid2(),
+                                atrisGuid:'',
                                 atrisComponentType: 'grid-simple',
                                 atrisChildrenList: [
 

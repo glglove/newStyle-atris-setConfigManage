@@ -170,6 +170,7 @@
                             >
                                 <el-tooltip effect="dark" content="复制" placement="top-start">
                                     <i class="el-icon-document-copy"
+                                    @click.stop="handlerClickCopy(obj, index)"
                                     ></i>
                                 </el-tooltip>
                                 <el-tooltip effect="dark" content="删除" placement="top-start">
@@ -391,22 +392,100 @@ export default {
             }
         },          
         mouseoverCmpItem (e, obj, index) {
-            let handlerClickDom = getCurrentHandlerDom(e)
-            let $target = findEventElement($(handlerClickDom), 'atris-hoverable')
-            let targetCode = $target.data("atriscode")
-            console.log("$target, targetCode", $target, targetCode)
-            if($target && targetCode) {
-                let targetStr = `.cmp-item-${targetCode}`
-                setEventElementAttributes('.cmp-item-', targetCode, ['cmp-item-mouseover'])
-                cancelElementAttribute(this.pageSetTotalData.pageSetTotalDataList, targetCode, {
-                    'cancel': {'str': '.cmp-item-', 'attr': ['cmp-item-mouseover']},
+            // let handlerClickDom = getCurrentHandlerDom(e)
+            // let $target = findEventElement($(handlerClickDom), 'atris-hoverable')
+            // let targetCode = $target.data("atriscode")
+            // console.log("$target, targetCode", $target, targetCode)
+            // if($target && targetCode) {
+            //     let targetStr = `.cmp-item-${targetCode}`
+            //     setEventElementAttributes('.cmp-item-', targetCode, ['cmp-item-mouseover'])
+            //     cancelElementAttribute(this.pageSetTotalData.pageSetTotalDataList, targetCode, {
+            //         'cancel': {'str': '.cmp-item-', 'attr': ['cmp-item-mouseover']},
+            //     })
+            // }               
+        },
+        findKey(arr, parentCode, atrisCode, resObj){
+            let flag = false
+            if(arr && arr.length){
+                for(let i = 0;i< arr.length;i++){
+                    let item = arr[i]
+                    item.levelIndex = i
+                    item.parentCode = parentCode 
+                    if(item.atrisCode && item.atrisCode === atrisCode){
+                        resObj = {
+                            parentCode: item.parentCode,
+                            levelIndex: item.levelIndex
+                        }
+                        flag = true
+                        break
+                    }else {
+                        if(!flag){
+                            if(item.atrisChildrenList && item.atrisChildrenList.length){
+                                let res = this.findKey(item.atrisChildrenList, item.atrisCode, atrisCode, resObj)
+                                if(res.parentCode){
+                                    return res
+                                    break
+                                }
+                            }
+                        }
+                    }
+                }
+            }else {
+                return null
+            }
+            return resObj
+        },
+        // 添加 唯一码
+        addGuid(obj){
+            if(obj.atrisCode){
+                obj.atrisCode = getGuid2()
+                obj.atrisGuid = getGuid()
+            }
+            if(obj.atrisChildrenList && obj.atrisChildrenList.length){
+                obj.atrisChildrenList.forEach((item) => {
+                    this.addGuid(item)
                 })
-            }               
+            }
+        },
+        copyData(arr, code, index, copyObj){
+            let end = false
+            if(arr && arr.length){
+                for(let i = 0; i< arr.length;i++){
+                    let  item = arr[i]
+                    if(item.atrisCode && item.atrisCode === code){
+                        item.atrisChildrenList.splice((index+1), 0, copyObj)
+                        end = true
+                        return 
+                    }else {
+                        if(!end){
+                            if(item.atrisChildrenList && item.atrisChildrenList.length){
+                                this.copyData(item.atrisChildrenList, code, index, copyObj)
+                            }  
+                        }
+                    }     
+                }   
+            }
         },
         // 点击 复制的图标
         handlerClickCopy(obj, index){
             debugger
             // this.$emit("middleCopyEmit", obj, index)
+            let newObj = JSON.parse(JSON.stringify(obj))
+            this.addGuid(newObj)
+            console.log("------",newObj)
+            let resObj = {}
+            let res = this.findKey(this.pageSetTotalData.pageSetTotalDataList, 'allCode', obj.atrisCode, resObj)
+            console.log(resObj)
+            if(res){
+                if(res.parentCode === 'allCode'){
+                    this.pageSetTotalData.pageSetTotalDataList.splice(++res.levelIndex, 0, newObj)
+                }else {
+                    this.copyData(this.pageSetTotalData.pageSetTotalDataList, res.parentCode, res.levelIndex, newObj)
+                }
+            }
+            // this.saveCurrentPageSetData()
+            this.$bus.$emit("simpleContainerEmit")
+
         },
         // 点击 删除的图标
         handlerClickDelete(obj, index){

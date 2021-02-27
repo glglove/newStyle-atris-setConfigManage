@@ -43,6 +43,7 @@
 .left-pageSetModul-cmp {
     width: 100%;
     height: calc(100vh - 170px);
+    overflow: atuo;
     .topContent {
         // border-bottom: 1px solid silver;
         min-height 80vh
