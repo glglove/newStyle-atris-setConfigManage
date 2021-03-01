@@ -35,11 +35,25 @@ import BasePageLinkField from '@/base/NewStyle-cmp/Field-cmp/Base-pageLink'
 
 
 // --------高级组件(表布局组件、 分组组件、 选项卡组件)---------
-import BaseTableSection from '@/base/NewStyle-cmp/common-cmp/HighLevel-cmp/table-section'
-import BaseFeildGroupSection from '@/base/NewStyle-cmp/common-cmp/HighLevel-cmp/fieldGroup-section'
-import BaseTabSection from '@/base/NewStyle-cmp/common-cmp/HighLevel-cmp/tab-section'
+// import BaseTableSection from '@/base/NewStyle-cmp/common-cmp/HighLevel-cmp/table-section'
+// import BaseFeildGroupSection from '@/base/NewStyle-cmp/common-cmp/HighLevel-cmp/fieldGroup-section'
+// import BaseTabSection from '@/base/NewStyle-cmp/common-cmp/HighLevel-cmp/tab-section'
 
-// -----------容器组件 ------
+// ---------------显示组件--------
+import showingText from '@/base/NewStyle-cmp/common-cmp/showingComponents-cmp/text-cmp/index'
+import showingPic from '@/base/NewStyle-cmp/common-cmp/showingComponents-cmp/pic-cmp/index'
+import showingPicAndText from '@/base/NewStyle-cmp/common-cmp/showingComponents-cmp/picAndText-cmp/index'
+import showingIcon from '@/base/NewStyle-cmp/common-cmp/showingComponents-cmp/icon-cmp/index'
+import showingLink from '@/base/NewStyle-cmp/common-cmp/showingComponents-cmp/link-cmp/index'
+import showingLinkBox from '@/base/NewStyle-cmp/common-cmp/showingComponents-cmp/linkBox-cmp/index'
+
+// ------------------要素组件--------
+import gridElementButton from '@/base/NewStyle-cmp/common-cmp/grid-element-cmp/button-grid-cmp/index'
+import gridElementTable from '@/base/NewStyle-cmp/common-cmp/grid-element-cmp/table-grid-cmp/index'
+import gridElementFieldGroup from '@/base/NewStyle-cmp/common-cmp/grid-element-cmp/fieldGroup-grid-cmp/index'
+import gridElementEchart from '@/base/NewStyle-cmp/common-cmp/grid-element-cmp/echart-grid-cmp/index'
+
+// -----------分栏容器组件 ------
 import BaseSimpleContainer from '@/base/NewStyle-cmp/common-cmp/container-cmp/simpleContainer-cmp'
 
 
