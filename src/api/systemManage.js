@@ -3619,3 +3619,21 @@ export function addGroupOne (obj) {
         }
     })
 }
+
+
+/**
+ *  获取组件列表
+ * @params {} 
+ */
+export function getComponentsList () { 
+    return fetch({
+        module: 'SystemManage',
+        url: '/control-types/tree2',
+        method: 'post',
+        data: {
+            Method: 'getComponentsList',
+            params: {
+            }
+        }
+    })
+}

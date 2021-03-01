@@ -43,7 +43,7 @@
     .cmpTitWrap {
         height: 30px;
         line-height: 30px;
-        margin: 20px 0 0 10px;
+        margin: 20px 0 0 0;
         padding: 0 10px;
         background: #ffffff
     }

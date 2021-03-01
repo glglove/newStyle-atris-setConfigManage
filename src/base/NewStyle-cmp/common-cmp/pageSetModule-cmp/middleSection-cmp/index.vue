@@ -25,7 +25,7 @@
 .cmp-item {
     position: relative;
     width: 100%;
-    padding: 5px 10px;
+    padding: 5px;
     box-sizing: border-box;
     background-color: #ffffff;
     &:hover {
@@ -115,7 +115,7 @@
                     >
                         <div  
                             v-for="(obj, index) in currentPageSetData.currentPageSetDataList" 
-                            :key="index" 
+                            :key="index+1" 
                             :class="[`cmpBox_${obj.atrisCode}`, 'cmpItemBox']"
                         >
                             <!-- <el-button type="primary" size="mini">{{obj.controlName}}</el-button> -->

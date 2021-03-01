@@ -7,7 +7,7 @@
 
 .currentCmp-cmp {
     width: 100%;
-    padding-left: 10px;
+    // padding-left: 10px;
     box-sizing: border-box;
     margin-top: 10px;
     .item-titwrap {
@@ -28,7 +28,7 @@
     <div class="currentCmp-cmp">
         <!-- obj: {{obj}} -->
         <div class="item-titwrap u-f-jsb">
-            <span class="tit">{{obj.controlName}}</span>
+            <span class="tit" v-if="!ismultiColumnContainerFn(obj.controlType)">{{obj.controlName}}</span>
             <span class="iconwrap">
                 <!-- <i 
                     class="el-icon-document-copy"
@@ -56,12 +56,13 @@
         REQ_OK
     } from '@/api/config'
     // import { getGuid, getGuid2 } from '@/utils/guid.js'
-    import { getComponentUtils } from '@/utils/newStyle-components-type.js'
     import { mapGetters } from 'vuex'
     import {
         // setLocalStorage,
         // getLocalStorage
     } from '@/utils/auth.js'  
+    import { getComponentUtils, isContainerFn, ismultiColumnContainerFn } from '@/utils/newStyle-components-type.js'
+
     import Vuedraggable from 'vuedraggable'   
     let that = null
     export default {
@@ -117,7 +118,10 @@
         methods: {
             getComponentUtils(controlType){
                 return getComponentUtils(controlType)
-            }      
+            },
+            ismultiColumnContainerFn(type){
+                return ismultiColumnContainerFn(type)
+            }  
         }
     }
 </script>

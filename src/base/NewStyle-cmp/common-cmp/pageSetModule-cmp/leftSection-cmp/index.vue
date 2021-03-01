@@ -13,7 +13,7 @@
     padding-top: 5px;
 }
 >>>.el-collapse-item {
-    margin: 5px 0 5px 10px;
+    // margin: 5px 0 5px 10px;
     &.is-active {
         box-shadow: 1px 1px 10px 1px #e8dede
     }
@@ -47,6 +47,7 @@
     .topContent {
         // border-bottom: 1px solid silver;
         min-height 80vh
+        padding: 0 10px;
         .item {
             width 40%
             height 40px
@@ -83,17 +84,29 @@
         <div class="programTreeWrap" v-show="currentLeftNavType ===1">
             <program-tree-cmp></program-tree-cmp>
         </div>
-        <div class="topContent" v-loading="loading" v-show="currentLeftNavType ===2">
+
+
+        <div class="topContent" v-show="currentLeftNavType ===2">
+            <el-tabs 
+                v-model="activeTabType" 
+                @tab-click="handleClickTab"
+            >
+                <el-tab-pane label="控件" name="1">
+
+                </el-tab-pane>
+                <el-tab-pane label="组件" name="2">
+
+                </el-tab-pane>
+            </el-tabs>
             <!-- objP: {{objP}} -->
             <el-collapse 
                 :accordion="false"
                 v-model="activeIndex"
                 @change="collapseChange"
+                v-loading="loading"
             >   
-
-
                 <!---布局组件------>
-                <el-collapse-item>  
+                <!-- <el-collapse-item>  
                     <span slot="title">
                         布局容器
                         <i class="header-icon el-icon-info"></i>
@@ -111,13 +124,11 @@
                                 put:false
                             }" 
                         >
-                            <!-- <transition-group> -->
                             <left-components-by-layouts></left-components-by-layouts>
-                            <!-- </transition-group> -->
                         </vuedraggable>       
                     
                     </div>                       
-                </el-collapse-item>   
+                </el-collapse-item>    -->
 
                 <!-----常规控件----->               
                 <el-collapse-item 
@@ -152,34 +163,40 @@
                                 <li
                                     v-for="(controlItem, index) in cmpItem.childrenList"
                                     :key="controlItem.controlType"
-                                    class="item u-f-s1"
                                     draggable="true"
-                                    :class="controlItem.controlType"    
+                                    :class="[`controlType-controlItem.controlType`, 'u-f-s1', ismultiColumnContainerFn(controlItem.controlType)? '': 'item']"    
                                     :data-itemData="JSON.stringify(controlItem)"                                         
                                 >
-                                    <el-badge 
-                                        v-if="controlItem.flagNum"
-                                        :value="controlItem.flagNum" 
-                                        class="badgeItem"
-                                    >
+                                    <template v-if="!ismultiColumnContainerFn(controlItem.controlType)">
+                                        <el-badge 
+                                            v-if="controlItem.flagNum"
+                                            :value="controlItem.flagNum" 
+                                            class="badgeItem"
+                                        >
+                                            <el-button 
+                                                size="mini"
+                                                @click.native="selectTag(controlItem, index)"
+                                                :class="['itemBtn', 'ellipsis1', currentClickObjIndex === index ? 'click': ''] " 
+                                            >
+                                                {{controlItem.controlType}} - {{controlItem.controlName}} - {{controlItem.controlEnName}}
+                                            </el-button>
+                                        </el-badge>
+
                                         <el-button 
+                                            v-else
                                             size="mini"
                                             @click.native="selectTag(controlItem, index)"
                                             :class="['itemBtn', 'ellipsis1', currentClickObjIndex === index ? 'click': ''] " 
                                         >
                                             {{controlItem.controlType}} - {{controlItem.controlName}} - {{controlItem.controlEnName}}
-                                        </el-button>
-                                    </el-badge>
+                                        </el-button>    
+                                    </template>
 
 
-                                    <el-button 
-                                        v-else
-                                        size="mini"
-                                        @click.native="selectTag(controlItem, index)"
-                                        :class="['itemBtn', 'ellipsis1', currentClickObjIndex === index ? 'click': ''] " 
-                                    >
-                                        {{controlItem.controlType}} - {{controlItem.controlName}} - {{controlItem.controlEnName}}
-                                    </el-button>                            
+                                    <!------分栏容器布局------->
+                                    <template v-else>
+                                        <left-components-by-layouts></left-components-by-layouts>                                        
+                                    </template>                    
                                 </li>                    
                             <!-- </transition-group> -->
                         </vuedraggable>       
@@ -226,7 +243,7 @@
                 </el-collapse-item>     
 
                 <!----高级组件--->
-                <el-collapse-item>
+                <!-- <el-collapse-item>
                     <span slot="title">
                         高级组件
                         <i class="header-icon el-icon-info"></i>
@@ -248,7 +265,6 @@
                             @end="end"                
                             :move='allow'                            
                         >
-                            <!-- <transition-group> -->
                             <li
                                 v-for="(controlItem, index) in highLevelCmps.childrenList"
                                 :key="controlItem.controlType"
@@ -283,11 +299,10 @@
                                     {{controlItem.controlType}} - {{controlItem.controlName}} - {{controlItem.controlEnName}}
                                 </el-button>                            
                             </li> 
-                            <!-- </transition-group> -->
                         </vuedraggable>       
                     
                     </div>                     
-                </el-collapse-item> 
+                </el-collapse-item>  -->
    
             </el-collapse> 
         </div>        
@@ -310,6 +325,8 @@
     import Vuedraggable from 'vuedraggable'   
     import LeftComponentsByLayouts from './leftComponentsByLayouts' 
     import ProgramTreeCmp from './programTree-cmp'
+    import { getComponentsList } from '@/api/systemManage'
+    import { getComponentUtils, isContainerFn, ismultiColumnContainerFn } from '@/utils/newStyle-components-type.js'
     let that = null
     // 容器
     let gridCmps = {
@@ -563,6 +580,7 @@
         data(){
             return {
                 loading: false,
+                activeTabType: "1", // 1为控件 2 为 组件
                 cmps: [],
                 currentClickObjIndex: '',
                 activeIndex: 0,
@@ -612,8 +630,18 @@
                 this.$bus.$off("changeBadageNum")
             },
             initData(){
-                this.getControlInfo()
-            },                     
+                this.getCmpInfo(this.activeTabType)
+            },  
+            ismultiColumnContainerFn(type){
+                return ismultiColumnContainerFn(type)
+            }, 
+            getCmpInfo(tabType){
+                if(tabType == 1) {
+                    this.getControlInfo()
+                }else if (tabType == 2) {
+                    this.getComponentsList()
+                }
+            },                  
             cloneFuc(controlItem){
                 // 处理 拖拽的元素
                 debugger
@@ -670,7 +698,12 @@
                         this.$set(item, 'atrisComponentType', 'comonControl')
                     })
                 }
-            },        
+            }, 
+            handleClickTab(tab, event){
+                debugger
+                // this.activeTabType = tab.index
+                this.getCmpInfo(this.activeTabType)
+            },       
             getControlInfo(){
                 this.loading = true
                 let params = {
@@ -681,10 +714,19 @@
                     this.loading = false
                     // 处理cmps
                     this.cmps = res.data.Data.records
-                    this.changeData(this.cmps)
+                    // this.changeData(this.cmps)
                     // this.cmps =[gridCmps].concat(res.data.Data.records)
                 })
             }, 
+            getComponentsList(){
+                this.loading = true
+                getComponentsList().then(res => {
+                    this.loading = false
+                    // 处理cmps
+                    this.cmps = res.data.Data.records
+                    // this.changeData(this.cmps)
+                })                
+            },
             collapseChange(activeNames){
                 debugger
             },   

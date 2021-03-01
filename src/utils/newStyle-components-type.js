@@ -143,10 +143,34 @@ export const getComponentUtils = function (controltype) {
         case 1002:
         case '1002':
             return BaseTabSection                    
-        case 2000:
-        case '2000':
+        case 5001:
+        case '5001':
             return BaseSimpleContainer
         default: 
             return BaseInput
+    }
+}
+
+
+// ------判断是否为容器组件-------
+export const isContainerFn = function (type) {
+    switch(type){
+        case 0:
+            return false
+        case 1:
+            return true
+        default: 
+            return false
+    }
+}
+
+// ------判断是否为 分栏布局容器组件-------
+export const ismultiColumnContainerFn = function (type) {
+    switch(type){
+        case 5001:
+        case '5001':
+            return true
+        default: 
+            return false
     }
 }

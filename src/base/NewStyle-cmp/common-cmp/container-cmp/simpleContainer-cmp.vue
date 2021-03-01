@@ -18,6 +18,19 @@
     color: #a7b1bd;
     border: 1px solid rgba(0,0,0,0.1)
     // box-shadow: 0 1px 1px 0 rgba(0,0,0,0.1)
+    .simpleContainer-draggableWrap {
+        position: relative;
+        &:after {
+            // content: '请拖拽组件或者模板到这里';
+            // position: absolute;
+            // top: 50%;
+            // left: 50%;
+            // transform: translate(-50%, -50%);
+            // font-size: 12px;
+            // color: rgba(0,0,0,1);
+            // opacity: .1;
+        }
+    }
 }
 .transitionGroup-simpleContainer {
     display: block;
@@ -36,7 +49,7 @@
 .cmp-item {
     position: relative;
     width: 100%;
-    padding: 5px 10px;
+    padding: 5px;
     box-sizing: border-box;
     background-color: #ffffff;
     &:hover {
@@ -94,16 +107,16 @@
         <!-- <div class="marginB10">{{obj.controlName}}</div> -->
         <el-row :style="styleWidth" class="u-f grid-row">
             <el-col
-                v-for="(col, key) in obj.atrisChildrenList" 
+                v-for="(col, key) in obj.childrenList" 
                 :key="key"
                 :span="col.span"
                 class="content-layout-item"
-                :class="obj.num[key].layoutClass" 
+                :class="obj.columnObjMap[key].layoutClass"
             >
                 <!-- 列{{key+1}} -->
                 <vuedraggable
                     class="draggableWrap simpleContainer-draggableWrap"
-                    v-model="col.atrisChildrenList"
+                    v-model="col.childrenList"
                     v-bind="dragOptions"
                     :group="{
                         name:'component',
@@ -123,7 +136,7 @@
                         class="transitionGroup-simpleContainer"                
                     >
                         <div  
-                            v-for="(itemCol, index) in col.atrisChildrenList" 
+                            v-for="(itemCol, index) in col.childrenList" 
                             :key="index+1" 
                             :class="['cmp-item',`cmp-item-${itemCol.atrisCode}`,'atris-selectable', 'atris-hoverable']" 
                             :data-atriscode="`${itemCol.atrisCode}`"
@@ -131,7 +144,7 @@
                             @mouseover.stop="mouseoverCmpItem($event, obj, index)"
                         >
                             <!----容器中如果又拖过来纯容器 需要递归调用本组件------->
-                            <span v-if="itemCol.atrisComponentType=='grid-simple'">
+                            <span v-if="isContainerFn(itemCol.controlType)">
                                 <!-- itemCol: {{itemCol}} -->
                                 <simple-container-cmp
                                     :class="`yu_${itemCol.atrisCode}`"
@@ -141,7 +154,7 @@
                             </span>  
 
                             <!---容器中拖过来的不是纯容器--->
-                            <span v-if="itemCol.atrisComponentType!='grid-simple'">
+                            <span v-if="!isContainerFn(itemCol.controlType)">
                                 <!-- itemCol: {{itemCol}} -->
                                 <!-- <component 
                                     :is="getComponentUtils(itemCol.controlType)"
@@ -179,7 +192,8 @@
                                         @click.stop="handlerClickDelete(obj, index)"
                                     ></i>
                                 </el-tooltip>                                    
-                            </div>
+                            </div>      
+
                         </div>
                     </transition-group>
                 </vuedraggable>   
@@ -188,7 +202,7 @@
     </div>
 </template>
 <script type="text/ecmascript-6">
-import { getComponentUtils } from '@/utils/newStyle-components-type.js'
+import { getComponentUtils, isContainerFn } from '@/utils/newStyle-components-type.js'
 import { getGuid, getGuid2 } from '@/utils/guid.js'
 import { setLocalStorage } from '@/utils/auth.js'
 import CurrentComponentCmp from '@/base/NewStyle-cmp/common-cmp/pageSetModule-cmp/middleSection-cmp/currentComponent-cmp'
@@ -253,8 +267,8 @@ export default {
            }
         },
         styleWidth(){
-           return `${this.obj.atrisOptions.width}`
-        // return '100%'
+        //    return `${this.obj.atrisOptions.width}`
+        return '50%'
         },
         dragOptions() {
             return {
@@ -272,6 +286,9 @@ export default {
         getComponentUtils(controlType){
             return getComponentUtils(controlType)
         }, 
+        isContainerFn(type){
+            return isContainerFn(type)
+        },
         cloneFuc(obj){
             // debugger
             console.log("-----------cloneFuc----")
@@ -420,8 +437,8 @@ export default {
                         break
                     }else {
                         if(!flag){
-                            if(item.atrisChildrenList && item.atrisChildrenList.length){
-                                let res = this.findKey(item.atrisChildrenList, item.atrisCode, atrisCode, resObj)
+                            if(item.childrenList && item.childrenList.length){
+                                let res = this.findKey(item.childrenList, item.atrisCode, atrisCode, resObj)
                                 if(res.parentCode){
                                     return res
                                     break
@@ -441,8 +458,8 @@ export default {
                 obj.atrisCode = getGuid2()
                 obj.atrisGuid = getGuid()
             }
-            if(obj.atrisChildrenList && obj.atrisChildrenList.length){
-                obj.atrisChildrenList.forEach((item) => {
+            if(obj.childrenList && obj.childrenList.length){
+                obj.childrenList.forEach((item) => {
                     this.addGuid(item)
                 })
             }
@@ -453,13 +470,13 @@ export default {
                 for(let i = 0; i< arr.length;i++){
                     let  item = arr[i]
                     if(item.atrisCode && item.atrisCode === code){
-                        item.atrisChildrenList.splice((index+1), 0, copyObj)
+                        item.childrenList.splice((index+1), 0, copyObj)
                         end = true
                         return 
                     }else {
                         if(!end){
-                            if(item.atrisChildrenList && item.atrisChildrenList.length){
-                                this.copyData(item.atrisChildrenList, code, index, copyObj)
+                            if(item.childrenList && item.childrenList.length){
+                                this.copyData(item.childrenList, code, index, copyObj)
                             }  
                         }
                     }     

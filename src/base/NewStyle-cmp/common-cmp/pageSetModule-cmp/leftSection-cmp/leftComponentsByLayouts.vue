@@ -51,7 +51,7 @@
                             <div 
                                 class="content-layout-item" 
                                 :class="item.layoutClass" 
-                                v-for="(item,index) in item.num" 
+                                v-for="(item,index) in item.columnObjMap" 
                                 :key="index"
                             >
                             {{flexHash[item.layoutClass]}}
@@ -128,7 +128,7 @@
                                 <div 
                                     class="content-layout-item" 
                                     :class="item.layoutClass" 
-                                    v-for="(item,index) in layoutCustomItem.num" 
+                                    v-for="(item,index) in layoutCustomItem.columnObjMap" 
                                     :key="index"
                                 >
                                 {{flexHash[item.layoutClass]}}
@@ -189,45 +189,24 @@
         },
         data(){
           return {
-            maxLayoutRote:maxLayoutRote,
-            flexHash:flexHash,
+            maxLayoutRote: maxLayoutRote,
+            flexHash: flexHash,
             activeName: 'first',
             layoutGeneral: [
                 { 
-                    name:'布局 1',
-                    id: 0, 
-                    containerType: 'generalGrid',                            
+                    controlType: 5001,                            
                     componentName: 'Iflex',
                     iStyle:{},
                     iClass: [],
-                    num: [{
+                    columnObjMap: [{
                         iStyle:{},
                         iClass: [],
                         itemList: [],
                         layoutClass:'flex-one',
                     }],
-                    "allTeamControl": null,
-                    "attributionList": null,
-                    "childrenList": [],
-                    "commonCode": "sysfield",
-                    "controlEnName": "TMText",
                     "controlName": "一列布局",
-                    "controlType": 2000,
-                    "flagNum": 0,
-                    "hasChildren": true,
-                    "id": 1,
-                    "pcode": "abcdefgh",
-                    "sortId": null,
-                    "sysControlUnicode": null,
-                    "type": 1,
-                    "unicode": null,
-
-                    atrisCode: '',
+                    atrisCode: getGuid2(),
                     atrisGuid: '',
-                    atrisIcon: '',
-                    atrisTitle: '一列布局',
-                    atrisComponentType: 'grid-simple',
-                    atrisConValue: '',
                     atrisOptions: {
                         width: '100%',
                         defaultValue:'',
@@ -236,27 +215,25 @@
                         required: true,
                         regEx: ''
                     },
-                    atrisChildrenList:[
+                    childrenList:[
                         {
                             span: 24,
                             controlName: `第1列`,
                             atrisCode: getGuid2(),
                             atrisGuid:'',
-                            atrisComponentType: 'grid-simple',                                
-                            atrisChildrenList: [
+                            controlType: 5001,                                
+                            childrenList: [
 
                             ]
                         }
                     ]                            
                 },
                 {
-                    name:'布局 1:1',
-                    id: 1, 
-                    containerType: 'generalGrid',                            
+                    controlType: 5001,                            
                     componentName: 'Iflex',
                     iStyle:{},
                     iClass: [],
-                    num: [
+                    columnObjMap: [
                         {
                             iStyle:{},
                             iClass: [],
@@ -270,28 +247,10 @@
                             itemList: []
                         }
                     ],
-                    "allTeamControl": null,
-                    "attributionList": null,
-                    "childrenList": [],
-                    "commonCode": "sysfield",
-                    "controlEnName": "TMText",
                     "controlName": "两列等宽布局",
-                    "controlType": 2000,
-                    "flagNum": 0,
-                    "hasChildren": true,
-                    "id": 1,
-                    "pcode": "abcdefgh",
-                    "sortId": null,
-                    "sysControlUnicode": null,
-                    "type": 1,
-                    "unicode": null,
-
-                    atrisCode: '',
+                    atrisCode: getGuid2(),
                     atrisGuid: '',
                     atrisIcon: '',
-                    atrisTitle: '两列等宽布局',
-                    atrisComponentType: 'grid-simple',
-                    atrisConValue: '',
                     atrisOptions: {
                         width: '100%',
                         defaultValue:'',
@@ -300,40 +259,41 @@
                         required: true,
                         regEx: ''
                     },
-                    atrisChildrenList:[
+                    childrenList:[
                         {
                             span: 12,
                             controlName: `第1列`,
                             atrisCode: getGuid2(),
                             atrisGuid:'',
-                            atrisComponentType: 'grid-simple',                                
-                            atrisChildrenList: [
+                            controlType: 5001,                                
+                            childrenList: [
 
                             ]
                         },
                         {
                             span: 12,
                             controlName: `第2列`,
-                            atrisComponentType: 'grid-simple',                                
-                            atrisChildrenList: [
+                            atrisCode: getGuid2(),
+                            atrisGuid:'',                            
+                            controlType: 5001,                                
+                            childrenList: [
 
                             ]                                    
                         }
                     ]                            
                 },
                 {
-                    name:'布局 1:1:1',
-                    id: 2, 
-                    containerType: 'generalGrid',
+                    controlName:'布局 1:1:1',
+                    controlType: 5001,                 
                     componentName: 'Iflex',
                     iStyle:{},
                     iClass: [],
-                    num: [
+                    columnObjMap: [
                         {
-                        iClass: [],
-                        iStyle:{},
-                        layoutClass:'flex-one',
-                        itemList: []
+                            iClass: [],
+                            iStyle:{},
+                            layoutClass:'flex-one',
+                            itemList: []
                         },{
                             iClass: [],
                             iStyle:{},
@@ -346,27 +306,8 @@
                             itemList: []
                         }
                     ],
-                    "allTeamControl": null,
-                    "attributionList": null,
-                    "childrenList": [],
-                    "commonCode": "sysfield",
-                    "controlEnName": "TMText",
-                    "controlName": "三列等宽布局",
-                    "controlType": 2000,
-                    "flagNum": 0,
-                    "hasChildren": true,
-                    "id": 1,
-                    "pcode": "abcdefgh",
-                    "sortId": null,
-                    "sysControlUnicode": null,
-                    "type": 1,
-                    "unicode": null,
-
-                    atrisCode: '',
+                    atrisCode: getGuid2(),
                     atrisGuid: '',
-                    atrisIcon: '',
-                    atrisTitle: '三列等宽布局',
-                    atrisComponentType: 'grid-simple',
                     atrisConValue: '',
                     atrisOptions: {
                         width: '100%',
@@ -376,14 +317,14 @@
                         required: true,
                         regEx: ''
                     },
-                    atrisChildrenList:[
+                    childrenList:[
                         {
                             span: 8,
                             controlName: `第1列`,
                             atrisCode: getGuid2(),
                             atrisGuid:'',
-                            atrisComponentType: 'grid-simple',                                
-                            atrisChildrenList: [
+                            controlType: 5001,                                
+                            childrenList: [
 
                             ]
                         },
@@ -392,8 +333,8 @@
                             controlName: `第2列`,
                             atrisCode: getGuid2(),
                             atrisGuid:'',
-                            atrisComponentType: 'grid-simple',                            
-                            atrisChildrenList: [
+                            controlType: 5001,                            
+                            childrenList: [
 
                             ]                                    
                         },
@@ -402,85 +343,24 @@
                             controlName: `第3列`,
                             atrisCode: getGuid2(),
                             atrisGuid:'',
-                            atrisComponentType: 'grid-simple',                            
-                            atrisChildrenList: [
+                            controlType: 5001,                            
+                            childrenList: [
 
                             ]                                    
                         }                                
                     ]                              
-                },
-                // {
-                //     name:'布局 1:1:1:1',
-                //     id: 3, 
-                //     componentName: 'Iflex',
-                //     iStyle:{},
-                //     iClass: [],
-                //     num: [{
-                //         iClass: [],
-                //         iStyle:{},
-                //         layoutClass:'flex-one',
-                //         itemList: []
-                //     },{
-                //         iStyle:{},
-                //         iClass: [],
-                //         layoutClass:'flex-one',
-                //         itemList: []
-                //     },{
-                //         iStyle:{},
-                //         iClass: [],
-                //         layoutClass:'flex-one',
-                //         itemList: []
-                //     },{
-                //         iStyle:{},
-                //         iClass: [],
-                //         layoutClass:'flex-one',
-                //         itemList: []
-                //     }]
-                // },
-                // {
-                //     name:'布局 1:1:1:1:1',
-                //     id: 4, 
-                //     componentName: 'Iflex',
-                //     iStyle:{},
-                //     iClass: [],
-                //     num: [{
-                //         iClass: [],
-                //         iStyle:{},
-                //         layoutClass:'flex-one',
-                //         itemList: []
-                //     },{
-                //         iClass: [],
-                //         iStyle:{},
-                //         layoutClass:'flex-one',
-                //         itemList: []
-                //     },{
-                //         iStyle:{},
-                //         iClass: [],
-                //         layoutClass:'flex-one',
-                //         itemList: []
-                //     },{
-                //         iClass: [],
-                //         iStyle:{},
-                //         layoutClass:'flex-one',
-                //         itemList: []
-                //     },{
-                //         iStyle:{},
-                //         iClass: [],
-                //         layoutClass:'flex-one',
-                //         itemList: []
-                //     }]
-                // }
+                }
             ],
-              form: {
+            form: {
                 layoutRatio: ''
-              },
-              layoutCustom: [
-              ],
-              formRule: {
-                  layoutRatio: [{
-                        validator: this.validateCustomValue, trigger: 'blur'
-                    }]
-               }
+            },
+            layoutCustom: [
+            ],
+            formRule: {
+                layoutRatio: [{
+                    validator: this.validateCustomValue, trigger: 'blur'
+                }]
+            }
           }
         },
         methods:{
@@ -553,62 +433,39 @@
                     if (valid) {
                         let value = this.form.layoutRatio
                         let arrValue = value.split("-")
-                        let num = []
-                        let atrisChildrenList = []
+                        let columnObjMap = []
+                        let childrenList = []
                         let total = arrValue.reduce(function(pre, current, idx, []){
                             return parseInt(pre) + parseInt(current)
                         })
-                        let name = arrValue.join(':')
+                        let controlName = arrValue.join(':')
                         console.log("-------total------------",total)
                         for (let i = 0; i < arrValue.length; i++) {
                             let index =( parseInt(arrValue[i]) - 1)
-                            num.push({
+                            columnObjMap.push({
                                 layoutClass: flexMap[index],
                                 itemList: [],
                                 iStyle:{},
                                 iClass:[]
                             })
-                            atrisChildrenList.push({
+                            childrenList.push({
                                 span: (arrValue[i]/total)*24,
-                                controlName: `${name}——第${i}列`,
+                                controlName: `${controlName}——第${i}列`,
                                 atrisCode: getGuid2(),
                                 atrisGuid:'',
-                                atrisComponentType: 'grid-simple',
-                                atrisChildrenList: [
+                                controlType: 5001,
+                                childrenList: [
 
                                 ]
                             })
                         }
                         this.layoutCustom.push(
                             {   
-                                name:`布局 ${name}`,
-                                id: layoutGlobalId++, 
-                                containerType: 'customGrid',                                
-                                componentName: 'Iflex',
-                                iStyle:{},
-                                num,
-                                "allTeamControl": null,
-                                "attributionList": null,
-                                "childrenList": [],
-                                "commonCode": "sysfield",
-                                "controlEnName": "TMText",
-                                "controlName":  `${name}布局`,
-                                "controlType": 2000,
-                                "flagNum": 0,
-                                "hasChildren": true,
-                                "id": 1,
-                                "pcode": "abcdefgh",
-                                "sortId": null,
-                                "sysControlUnicode": null,
-                                "type": 1,
-                                "unicode": null,
-
+                                controlName:`布局 ${controlName}`,                             
+                                columnObjMap,
+                                "controlType": 5001,
                                 atrisCode: '',
                                 atrisGuid: '',
-                                atrisIcon: '',
-                                atrisTitle: `${name}布局`,
-                                atrisComponentType: 'grid-simple',
-                                atrisConValue: '',
                                 atrisOptions: {
                                     width: '100%',
                                     defaultValue:'',
@@ -617,7 +474,7 @@
                                     required: true,
                                     regEx: ''
                                 },
-                                atrisChildrenList: atrisChildrenList                             
+                                childrenList: childrenList                             
                             }
                         )
                     }else {

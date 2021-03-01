@@ -21,7 +21,7 @@
             node-key="atrisCode"
             default-expand-all
             :props="{
-                children: 'atrisChildrenList',
+                children: 'childrenList',
                 label: 'controlName',            
             }"
             @node-drag-start="handleDragStart"
@@ -93,11 +93,11 @@
             changeData(arr){
                 if(arr && arr.length){
                     arr.forEach(item => {
-                        if(item.atrisChildrenList) {
-                            if(item.atrisChildrenList.length){
-                                this.changeData(item.atrisChildrenList)
+                        if(item.childrenList) {
+                            if(item.childrenList.length){
+                                this.changeData(item.childrenList)
                             }else {
-                                delete item.atrisChildrenList
+                                delete item.childrenList
                             }
                         }else {
 
