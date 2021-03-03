@@ -7,6 +7,12 @@
     .el-form-item {
         margin-bottom: 18px !important
     }
+    .content-layout-wrap {
+        &:hover {
+            cursor: pointer;
+            background-color:  rgba(31, 56, 88, 0.3) 
+        }
+    }
     .content-layout-item{
         display: flex;
         justify-content: space-around;
@@ -27,7 +33,6 @@
                 <div style="display: flex;justify-content: center;width: 100%">
                     <!-- layoutGeneral: {{layoutGeneral}}
                     ---- -->
-
                     <vuedraggable 
                         :list="layoutGeneral"
                         :options="{sort:false}"
@@ -44,15 +49,18 @@
                         style="position: relative;width: 70%"
                     >
                         <div 
-                            class="u-f" 
+                            class="u-f content-layout-wrap" 
                             style="height: 35px;margin-bottom: 4px;" 
-                            v-for="item in layoutGeneral"
+                            v-for="(item,idx) in layoutGeneral"    
+                            :key="idx"                        
                         >
                             <div 
+                                v-for="(columnItem,index) in item.columnObjMap" 
                                 class="content-layout-item" 
-                                :class="item.layoutClass" 
-                                v-for="(item,index) in item.columnObjMap" 
+                                :class="[columnItem.layoutClass, `controlType-${columnItem.controlType}`]"    
+                                :data-itemData="JSON.stringify(columnItem)"                                 
                                 :key="index"
+                                @click="selectTag(item, index)"
                             >
                             {{flexHash[item.layoutClass]}}
                         </div>
@@ -70,10 +78,10 @@
                         :rules="formRule"  
                         ref="ruleForm" 
                         style="width:100%"
-                        class="u-f-jst u-f-ac"
+                        class="u-f-jst u-f-ajc"
                     >
                         <el-form-item 
-                            label="布局比例" 
+                            label="分栏比例:" 
                             prop="layoutRatio"
                             label-position="top"
                             class="u-f-g1"
@@ -88,18 +96,18 @@
                         </el-form-item>
 
                         <el-tooltip class="item" effect="dark" :content="'以 - 作为分割符，比例最大为' + maxLayoutRote" placement="top-start">
-                            <div style="display: inline-block;vertical-align: top;margin:-20px 10px 0 0">
+                            <div style="display: inline-block;vertical-align: top;margin:25px 0px 0 0">
                                 <i class="el-icon-question" style="font-size: 16px"></i>
                             </div>
                         </el-tooltip>
 
-                        <el-form-item>
+                        <span class="marginT20">
                             <el-button 
                                 type="primary" 
                                 @click="yes" 
                                 size="mini"
                             >确认</el-button>
-                        </el-form-item>
+                        </span>
                     </el-form>
                 </div>
                 <div class="u-f-ajc">
@@ -121,15 +129,18 @@
                     >
                         <!-- <transition-group> -->
                             <div 
-                                class="u-f" 
+                                class="u-f content-layout-wrap" 
                                 style="height: 35px;margin-bottom: 4px;" 
-                                v-for="layoutCustomItem in layoutCustom"
+                                v-for="(layoutCustomItem, idx1) in layoutCustom"
+                                :key="idx1"
                             >
                                 <div 
-                                    class="content-layout-item" 
-                                    :class="item.layoutClass" 
                                     v-for="(item,index) in layoutCustomItem.columnObjMap" 
+                                    class="content-layout-item" 
+                                    :class="[item.layoutClass, `controlType-${item.controlType}`]"    
+                                    :data-itemData="JSON.stringify(item)"                                 
                                     :key="index"
+                                    @click="selectTag(item, index)"                                    
                                 >
                                 {{flexHash[item.layoutClass]}}
                             </div>
@@ -383,6 +394,11 @@
             clearLayoutCustom(){
                 this.layoutCustom = []
             },
+            selectTag(item, index){
+                debugger
+                this.$bus.$emit("leftClickItem", item)
+                // this.changeBadageNum(item, true)
+            },            
             cloneFuc(controlItem){
                 // 处理 拖拽的元素
                 debugger
@@ -450,7 +466,7 @@
                             })
                             childrenList.push({
                                 span: (arrValue[i]/total)*24,
-                                controlName: `${controlName}——第${i}列`,
+                                controlName: `${controlName}——第${++i}列`,
                                 atrisCode: getGuid2(),
                                 atrisGuid:'',
                                 controlType: 5001,

@@ -1,7 +1,7 @@
 <!--
   User: gaol
   Date: 2020/12/30
-  功能：要素组件———— 图
+  功能：布局组件——选项卡组件
 -->
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 
@@ -9,7 +9,7 @@
 
 <template>
     <div>
-      要素组件———— 图
+     布局组件——选项卡组件
     </div>
 </template>
 

@@ -12,7 +12,7 @@
 </style>
 <template>
     <div class="pageSetProperty-cmp">
-        fdsaf
+        设置部分
     </div>
 </template>
 <script type="text/ecmascript-6">

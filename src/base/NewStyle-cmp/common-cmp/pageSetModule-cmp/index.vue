@@ -29,6 +29,9 @@
         .leftNavItem {
             font-size: 20px;
             margin: 20px;
+            &:hover {
+                cursor: pointer;
+            }
             .el-tooltip {
                 display: block;
             }

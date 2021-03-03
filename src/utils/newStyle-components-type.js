@@ -42,19 +42,36 @@ import BasePageLinkField from '@/base/NewStyle-cmp/Field-cmp/Base-pageLink'
 // ---------------显示组件--------
 import showingText from '@/base/NewStyle-cmp/common-cmp/showingComponents-cmp/text-cmp/index'
 import showingPic from '@/base/NewStyle-cmp/common-cmp/showingComponents-cmp/pic-cmp/index'
-import showingPicAndText from '@/base/NewStyle-cmp/common-cmp/showingComponents-cmp/picAndText-cmp/index'
 import showingIcon from '@/base/NewStyle-cmp/common-cmp/showingComponents-cmp/icon-cmp/index'
 import showingLink from '@/base/NewStyle-cmp/common-cmp/showingComponents-cmp/link-cmp/index'
 import showingLinkBox from '@/base/NewStyle-cmp/common-cmp/showingComponents-cmp/linkBox-cmp/index'
+import showingPicAndText from '@/base/NewStyle-cmp/common-cmp/showingComponents-cmp/picAndText-cmp/index'
+import showingButton from '@/base/NewStyle-cmp/common-cmp/showingComponents-cmp/button-cmp/index'
 
 // ------------------要素组件--------
-import gridElementButton from '@/base/NewStyle-cmp/common-cmp/grid-element-cmp/button-grid-cmp/index'
-import gridElementTable from '@/base/NewStyle-cmp/common-cmp/grid-element-cmp/table-grid-cmp/index'
 import gridElementFieldGroup from '@/base/NewStyle-cmp/common-cmp/grid-element-cmp/fieldGroup-grid-cmp/index'
-import gridElementEchart from '@/base/NewStyle-cmp/common-cmp/grid-element-cmp/echart-grid-cmp/index'
+import gridElementTable from '@/base/NewStyle-cmp/common-cmp/grid-element-cmp/table-grid-cmp/index'
+import gridElementBarEcharts from '@/base/NewStyle-cmp/common-cmp/grid-element-cmp/barEcharts-grid-cmp/index'
+import gridElementLineEcharts from '@/base/NewStyle-cmp/common-cmp/grid-element-cmp/lineEcharts-grid-cmp/index'
+import gridElementPieEcharts from '@/base/NewStyle-cmp/common-cmp/grid-element-cmp/pieEcharts-grid-cmp/index'
+
+// ----------带布局的组件-----------
+import gridContainerTab from '@/base/NewStyle-cmp/common-cmp/grid-container-cmp/grid-tab-cmp/index'
+import gridContainerStep from '@/base/NewStyle-cmp/common-cmp/grid-container-cmp/grid-step-cmp/index'
+import gridContainerButtonSection from '@/base/NewStyle-cmp/common-cmp/grid-container-cmp/button-section-cmp/index'
+import gridContainerSearchSection from '@/base/NewStyle-cmp/common-cmp/grid-container-cmp/search-section-cmp/index'
+import gridContainerSearchEnumerationSection from '@/base/NewStyle-cmp/common-cmp/grid-container-cmp/search-enumeration-section-cmp/index'
+import gridContainerFunctionSection from '@/base/NewStyle-cmp/common-cmp/grid-container-cmp/function-section-cmp/index'
+import gridContainerLinkSection from '@/base/NewStyle-cmp/common-cmp/grid-container-cmp/link-section-cmp/index'
 
 // -----------分栏容器组件 ------
-import BaseSimpleContainer from '@/base/NewStyle-cmp/common-cmp/container-cmp/simpleContainer-cmp'
+import BaseSimpleContainer from '@/base/NewStyle-cmp/common-cmp/grid-columnContainer-cmp/simpleContainer-cmp'
+
+// ------------------业务大组件-----------
+import gridBusinessFieldGroup from '@/base/NewStyle-cmp/common-cmp/grid-business-cmp/fieldGroup-cmp/index'
+import gridBusinessTable from '@/base/NewStyle-cmp/common-cmp/grid-business-cmp/table-cmp/index'
+import gridBusinessEcharts from '@/base/NewStyle-cmp/common-cmp/grid-business-cmp/echarts-cmp/index'
+import gridBusinessTree from '@/base/NewStyle-cmp/common-cmp/grid-business-cmp/tree-cmp/index'
 
 
 export const getComponentUtils = function (controltype) {
@@ -148,15 +165,75 @@ export const getComponentUtils = function (controltype) {
         case '32':
         case 32:
             return BaseSwitchSelect
-        case 1000:
-        case '1000':
-            return BaseTableSection
         case 1001:
         case '1001':
-            return BaseFeildGroupSection
+            return showingText
         case 1002:
         case '1002':
-            return BaseTabSection                    
+            return showingPic  
+        case 1003:
+        case '1003':
+            return showingIcon
+        case 1004:
+        case '1004':
+            return showingLink
+        case 1005:
+        case '1005':
+            return showingLinkBox
+        case 1006:
+        case '1006':
+            return  showingPicAndText   
+        case 1007:
+        case '1007':
+            return showingButton      
+        case  2001:
+        case '2001':
+            return gridElementFieldGroup
+        case 2002:
+        case '2002':
+            return gridElementTable 
+        case 2003:
+        case '2003':
+            return  gridElementBarEcharts    
+        case 2004:
+        case '2004':
+            return gridElementLineEcharts   
+        case 2005:
+        case '2005':
+            return gridElementPieEcharts
+        case 3002:
+        case '3002':
+            return gridContainerTab
+        case 3003:
+        case '3003':
+            return gridContainerStep
+        case 3004:
+        case '3004':
+            return gridContainerButtonSection
+        case 3005:
+        case '3005':
+            return gridContainerSearchSection
+        case 3006:
+        case '3006':
+            return gridContainerSearchEnumerationSection
+        case 3007:
+        case '3007':
+            return gridContainerFunctionSection
+        case 3008:
+        case '3008':
+            return gridContainerLinkSection
+        case 4001:
+        case '4001':
+            return gridBusinessFieldGroup
+        case 4002:
+        case '4002':
+            return gridBusinessTable
+        case 4003:
+        case '4003':
+            return gridBusinessEcharts
+        case 4004:
+        case '4004':
+            return gridBusinessTree
         case 5001:
         case '5001':
             return BaseSimpleContainer
@@ -167,8 +244,8 @@ export const getComponentUtils = function (controltype) {
 
 
 // ------判断是否为容器组件-------
-export const isContainerFn = function (type) {
-    switch(type){
+export const isContainerFn = function (isContainer) {
+    switch(isContainer){
         case 0:
             return false
         case 1:

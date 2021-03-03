@@ -1,7 +1,7 @@
 <!--
   User: gaol
   Date: 2020/12/30
-  功能：要素组件———— 按钮
+  功能：要素组件———— 饼状图
 -->
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 
@@ -9,7 +9,7 @@
 
 <template>
     <div>
-      要素组件———— 按钮
+      要素组件———— 饼状图
     </div>
 </template>
 

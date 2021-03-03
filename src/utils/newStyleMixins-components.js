@@ -40,7 +40,7 @@ import BaseFeildGroupSection from '@/base/NewStyle-cmp/common-cmp/HighLevel-cmp/
 import BaseTabSection from '@/base/NewStyle-cmp/common-cmp/HighLevel-cmp/tab-section'
 
 // -----------容器组件 ------
-import BaseSimpleContainer from '@/base/NewStyle-cmp/common-cmp/container-cmp/simpleContainer-cmp'
+import BaseSimpleContainer from '@/base/NewStyle-cmp/common-cmp/grid-columnContainer-cmp/simpleContainer-cmp'
 
 // 组件类型 mixins
 export const fieldControlTypeMixin = {

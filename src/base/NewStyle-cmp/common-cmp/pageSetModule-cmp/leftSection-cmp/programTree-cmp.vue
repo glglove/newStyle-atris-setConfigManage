@@ -30,6 +30,7 @@
             @node-drag-over="handleDragOver"
             @node-drag-end="handleDragEnd"
             @node-drop="handleDrop"
+            :expand-on-click-node="false"
             draggable
             :allow-drop="allowDrop"
             :allow-drag="allowDrag"
@@ -138,7 +139,6 @@
                 // return draggingNode.data.label.indexOf('三级 3-2-2') === -1;
                 console.log("draggingNode", draggingNode)
                 // 只有 有唯一码的可以拖拽 (布局容器中的 单个列 的atrisGuid为 null 不能单个进行拖拽排序需要和该布局容器一起进行拖拽)
-
                 return draggingNode.data.atrisGuid 
             },
             handleNodeClick(data, node, elem){

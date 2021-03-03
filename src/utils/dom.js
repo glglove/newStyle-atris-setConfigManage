@@ -43,6 +43,10 @@ export const setEventElementAttributes = function (str, targetCode, classNameArr
                 console.log("--------", $(`${str}${targetCode}`))
                 $(`${str}${targetCode}`).addClass(item)
             })
+            // 当前如果有cmp-item-selected取消当前的hover
+            if($(`${str}${targetCode}`).hasClass("cmp-item-selected")){
+                $(`${str}${targetCode}`).removeClass('cmp-item-mouseover')
+            }
         }
     }
 }
@@ -88,9 +92,42 @@ export const cancelElementAttribute = function (arr, targetCode, obj) {
                     })
                 }
             }
-            if(item.atrisChildrenList && item.atrisChildrenList.length){
-                cancelElementAttribute(item.atrisChildrenList, targetCode, obj)
+            if(item.childrenList && item.childrenList.length){
+                cancelElementAttribute(item.childrenList, targetCode, obj)
             }
         })
     }
+}
+
+export const getDataObj = function (arr, atrisCode, resObj, flag ) {
+    console.log("00000",atrisCode, arr)
+    // debugger
+    if(arr && arr.length ){
+        for(var i=0; i< arr.length; i++){
+            var item = arr[i];
+            // console.log(item);
+            // console.log(i)
+            // console.log(item.controlName);
+            if(!item.atrisCode){
+                return;
+            }
+            console.log("111111",item.atrisCode, atrisCode)
+            if(item.atrisCode && item.atrisCode === atrisCode){
+                flag = true
+                resObj = JSON.parse(JSON.stringify(item))
+                return resObj;
+            }else {
+                if(!flag){
+                    if(item.childrenList && item.childrenList.length){
+                        let res = getDataObj(item.childrenList, atrisCode, resObj, flag)
+                        if(res && res.atrisCode) {
+                            return res
+                        }
+                    }
+                }
+            }
+        }
+    } else {
+        return null
+    } 
 }

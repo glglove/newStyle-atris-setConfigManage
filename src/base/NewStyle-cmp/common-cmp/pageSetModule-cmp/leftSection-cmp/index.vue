@@ -164,7 +164,7 @@
                                     v-for="(controlItem, index) in cmpItem.childrenList"
                                     :key="controlItem.controlType"
                                     draggable="true"
-                                    :class="[`controlType-controlItem.controlType`, 'u-f-s1', ismultiColumnContainerFn(controlItem.controlType)? '': 'item']"    
+                                    :class="[`controlType-${controlItem.controlType}`, 'u-f-s1', ismultiColumnContainerFn(controlItem.controlType)? '': 'item']"    
                                     :data-itemData="JSON.stringify(controlItem)"                                         
                                 >
                                     <template v-if="!ismultiColumnContainerFn(controlItem.controlType)">
@@ -581,6 +581,7 @@
             return {
                 loading: false,
                 activeTabType: "1", // 1为控件 2 为 组件
+                activeTabIndex: 0,
                 cmps: [],
                 currentClickObjIndex: '',
                 activeIndex: 0,
@@ -701,7 +702,7 @@
             }, 
             handleClickTab(tab, event){
                 debugger
-                // this.activeTabType = tab.index
+                this.activeTabIndex = tab.index*1 
                 this.getCmpInfo(this.activeTabType)
             },       
             getControlInfo(){
