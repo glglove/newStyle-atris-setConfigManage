@@ -136,24 +136,26 @@
                 // return true;
                 // }
                 debugger
-                if (ismultiColumnContainerFn(dropNode.data.controlType) && dropNode.data.atrisGuid){
-                    // 分栏布局容器中的列不允许插入排序  （列的controleType也为5001 但是列的 atirsGuid为空）
-                    // return type !== 'inner' ;
-                    return false
-                } else if(!dropNode.data.childrenList.length && dropNode.data.atrisGuid) {
-                    // 非布局容器不允许插入排序
-                    return type !== 'inner';
-                }else  if( !dropNode.data.atrisGuid ){
+                
+                if( !dropNode.data.atrisGuid ){
                     // 列不允许前面  后面插入
                     console.log(dropNode.data)
-                    // return ((type !== 'pre') && (type !== 'next'))   
                     if(type === 'inner'){
                         return true
                     }else {
                         return false
                     }           
                 }else {
-                    return true
+                    if (ismultiColumnContainerFn(dropNode.data.controlType)){
+                        // 分栏布局容器中的列不允许插入排序  （列的controleType也为5001 但是列的 atirsGuid为空）
+                        // return type !== 'inner' ;
+                        return false
+                    } else if(!dropNode.data.childrenList.length) {
+                        // 非布局容器不允许插入排序
+                        return type !== 'inner';
+                    }else {
+                        return false
+                    }
                 }
             },
             allowDrag(draggingNode) {
