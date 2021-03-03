@@ -258,7 +258,7 @@ export const isContainerFn = function (isContainer) {
 // ------判断是否为 分栏布局容器组件-------
 export const ismultiColumnContainerFn = function (type) {
     switch(type){
-        case 5001:
+        case 5001:  // 注意 列的 controleType 也是 5001
         case '5001':
             return true
         default: 

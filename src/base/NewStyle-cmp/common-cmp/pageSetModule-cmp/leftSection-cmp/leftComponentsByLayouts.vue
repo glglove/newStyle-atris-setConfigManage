@@ -232,7 +232,7 @@
                             controlName: `第1列`,
                             atrisCode: getGuid2(),
                             atrisGuid:'',
-                            controlType: 5001,                                
+                            controlType: '5001-1',                                
                             childrenList: [
 
                             ]
@@ -276,7 +276,7 @@
                             controlName: `第1列`,
                             atrisCode: getGuid2(),
                             atrisGuid:'',
-                            controlType: 5001,                                
+                            controlType: '5001-1',                                
                             childrenList: [
 
                             ]
@@ -286,7 +286,7 @@
                             controlName: `第2列`,
                             atrisCode: getGuid2(),
                             atrisGuid:'',                            
-                            controlType: 5001,                                
+                            controlType: '5001-2',                                
                             childrenList: [
 
                             ]                                    
@@ -334,7 +334,7 @@
                             controlName: `第1列`,
                             atrisCode: getGuid2(),
                             atrisGuid:'',
-                            controlType: 5001,                                
+                            controlType: '5001-1',                                
                             childrenList: [
 
                             ]
@@ -344,7 +344,7 @@
                             controlName: `第2列`,
                             atrisCode: getGuid2(),
                             atrisGuid:'',
-                            controlType: 5001,                            
+                            controlType: '5001-2',                            
                             childrenList: [
 
                             ]                                    
@@ -354,7 +354,7 @@
                             controlName: `第3列`,
                             atrisCode: getGuid2(),
                             atrisGuid:'',
-                            controlType: 5001,                            
+                            controlType: '5001-3',                            
                             childrenList: [
 
                             ]                                    
@@ -396,9 +396,21 @@
             },
             selectTag(item, index){
                 debugger
+                // 给分栏布局的容器中 每列都添加一个唯一码
+                this.addGuid(item.childrenList)                
                 this.$bus.$emit("leftClickItem", item)
                 // this.changeBadageNum(item, true)
-            },            
+            },  
+            addGuid(arr){
+                if(arr && arr.length){
+                    arr.forEach((item, key) => {
+                        item.atrisCode = getGuid2()
+                        // 每列就不需要添加 atrisGuid了 因为 树形数据上面是否允许拖拽移动时是不支持 分栏容器的列进行移动的
+                        item.atrisGuid = ''
+                    })
+                }
+                return arr
+            },          
             cloneFuc(controlItem){
                 // 处理 拖拽的元素
                 debugger
@@ -406,6 +418,8 @@
                 // this.currentObj = controlItem
                 // this.changeBadageNum(controlItem, true)              
                 let obj = controlItem
+                // 给分栏布局的容器中 每列都添加一个唯一码
+                this.addGuid(obj.childrenList)
                 return JSON.parse(JSON.stringify(obj))          
             },
             //evt里面有两个值，一个evt.added 和evt.removed  可以分别知道移动元素的ID和删除元素的ID
@@ -469,7 +483,7 @@
                                 controlName: `${controlName}——第${++i}列`,
                                 atrisCode: getGuid2(),
                                 atrisGuid:'',
-                                controlType: 5001,
+                                controlType: `5001-${++i}`,
                                 childrenList: [
 
                                 ]

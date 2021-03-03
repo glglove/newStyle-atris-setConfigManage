@@ -51,6 +51,7 @@
         // getLocalStorage
     } from '@/utils/auth.js'  
     import Vuedraggable from 'vuedraggable'   
+    import { ismultiColumnContainerFn } from '@/utils/newStyle-components-type.js'
     let that = null
     export default {
         props: {    
@@ -119,6 +120,7 @@
                 console.log('tree drag over: ', dropNode.label);
             },
             handleDragEnd(draggingNode, dropNode, dropType, ev) {
+                // debugger
                 console.log('tree drag end: ', dropNode && dropNode.label, dropType);
             },
             handleDrop(draggingNode, dropNode, dropType, ev) {
@@ -133,9 +135,29 @@
                 // } else {
                 // return true;
                 // }
-                return true
+                debugger
+                if (ismultiColumnContainerFn(dropNode.data.controlType) && dropNode.data.atrisGuid){
+                    // 分栏布局容器中的列不允许插入排序  （列的controleType也为5001 但是列的 atirsGuid为空）
+                    // return type !== 'inner' ;
+                    return false
+                } else if(!dropNode.data.childrenList.length && dropNode.data.atrisGuid) {
+                    // 非布局容器不允许插入排序
+                    return type !== 'inner';
+                }else  if( !dropNode.data.atrisGuid ){
+                    // 列不允许前面  后面插入
+                    console.log(dropNode.data)
+                    // return ((type !== 'pre') && (type !== 'next'))   
+                    if(type === 'inner'){
+                        return true
+                    }else {
+                        return false
+                    }           
+                }else {
+                    return true
+                }
             },
             allowDrag(draggingNode) {
+                // debugger
                 // return draggingNode.data.label.indexOf('三级 3-2-2') === -1;
                 console.log("draggingNode", draggingNode)
                 // 只有 有唯一码的可以拖拽 (布局容器中的 单个列 的atrisGuid为 null 不能单个进行拖拽排序需要和该布局容器一起进行拖拽)
