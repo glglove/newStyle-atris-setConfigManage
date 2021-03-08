@@ -8,37 +8,42 @@
 </style>
 
 <template>
-    <div>
-      要素组件———— 折线图
-    </div>
+  <div>
+    要素——折线图
+    <common-drag-cmp
+      :obj.sync="obj"
+      :groupOption="{
+        name: 'component',
+        pull: true,
+        put: true,
+      }"
+    ></common-drag-cmp>
+  </div>
 </template>
 
 <script type="text/ecmascript-6">
-  export default {
-    props:{
-
-    },
-    components: {
-
-    },
-    computed: {
-
-    },
-    watch: {
-
-    },
-    data(){
-      return {
-
+import CommonDragCmp from "@/base/NewStyle-cmp/common-cmp/grid-common-drag-cmp/index.vue";
+import { getGuid, getGuid2 } from '@/utils/guid.js'
+export default {
+  props: {
+    obj: {
+      type: Object,
+      default: () => {
+        return {}
       }
-    },
-    created(){
+    }    
+  },
+  components: {
+    CommonDragCmp,
+  },
+  computed: {},
+  watch: {},
+  data() {
+    return {
 
-    },
-    methods: {
-
-    }
-}
+    };
+  },
+  created() {},
+  methods: {},
+};
 </script>
-
-

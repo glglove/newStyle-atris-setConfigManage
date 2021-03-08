@@ -142,10 +142,10 @@ export default {
             if(evt.added){
                 // 给拖拽后的数据对象生成  唯一码
                 let obj = evt.added.element
-                obj.atrisCode = getGuid2()
-                obj.atrisGuid = getGuid()
-                // this.$set(obj, 'atrisGuid', getGuid())
-                // this.$set(obj, 'atrisCode', getGuid2())                
+                // obj.atrisCode = getGuid2()
+                // obj.atrisGuid = getGuid()
+                this.$set(obj, 'atrisGuid', getGuid())
+                this.$set(obj, 'atrisCode', getGuid2())                
                 console.log("vuedragable拖拽完成后添加了唯一码（atrisCode 、 atrisGuid）打印", obj.atrisCode, obj.atrisGuid)
             }else if(evt.moved) {
 

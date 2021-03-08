@@ -10,6 +10,7 @@
 <template>
     <div>
       显示组件———— 图标
+      <el-icon class="el-icon-search"></el-icon>
     </div>
 </template>
 

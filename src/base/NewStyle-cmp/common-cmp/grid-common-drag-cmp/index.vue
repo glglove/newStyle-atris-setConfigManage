@@ -20,15 +20,17 @@
     // box-shadow: 0 1px 1px 0 rgba(0,0,0,0.1)
     .simpleContainer-draggableWrap {
         position: relative;
-        &:after {
-            // content: '请拖拽组件或者模板到这里';
-            // position: absolute;
-            // top: 50%;
-            // left: 50%;
-            // transform: translate(-50%, -50%);
-            // font-size: 12px;
-            // color: rgba(0,0,0,1);
-            // opacity: .1;
+        &.tips {
+            &:after {
+                content: '请拖拽组件或者模板到这里';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                font-size: 12px;
+                color: rgba(0,0,0,1);
+                opacity: .2;
+            }
         }
     }
 }
@@ -102,27 +104,21 @@
 }
 </style>
 <template>
-    <div class="basicGrid-simpleContainer-cmp" :id="ballId">
-        <!-- obj: {{obj}} -->
+    <div class="common-grid-drag-cmp">
+        <!-- dfjksdfdfjgfkdsjgkjdgsjkdg  -->
         <!-- <div class="marginB10">{{obj.controlName}}</div> -->
         <el-row :style="styleWidth" class="u-f grid-row">
             <el-col
-                v-for="(col, key) in obj.childrenList" 
-                :key="key"
-                :span="col.span"
+                :span="obj.span"
                 class="content-layout-item"
-                :class="obj.columnObjMap[key].layoutClass"
             >
                 <!-- 列{{key+1}} -->
                 <vuedraggable
                     class="draggableWrap simpleContainer-draggableWrap"
-                    v-model="col.childrenList"
+                    :class="!obj.childrenList.length? 'tips': ''"
+                    v-model="obj.childrenList"
                     v-bind="dragOptions"
-                    :group="{
-                        name:'component',
-                        pull: true,
-                        put:true                
-                    }"
+                    :group="groupOption"
                     sort:true
                     :clone="cloneFuc"
                     @change="change"
@@ -132,70 +128,52 @@
                     @update="drageUpdate"                              
                     :move='checkMove'                    
                 >
-                    <transition-group
-                        class="transitionGroup-simpleContainer"                
+                    <transition-group 
+                        class="transitionGroup" 
+                        style="display: inline-block;min-height: 80vh;width: 100%;"
                     >
                         <div  
-                            v-for="(itemCol, index) in col.childrenList" 
+                            v-for="(item, index) in obj.childrenList" 
                             :key="index+1" 
-                            :class="['cmp-item',`cmp-item-${itemCol.atrisCode}`,'atris-selectable', 'atris-hoverable']" 
-                            :data-atriscode="`${itemCol.atrisCode}`"
-                            @click.stop="clickCmpItem($event, obj, index)"
-                            @mouseover.stop="mouseoverCmpItem($event, obj, index)"
+                            :class="[`cmpBox_${item.atrisCode}`, 'cmpItemBox']"
                         >
-                            <!----容器中如果又拖过来纯容器 需要递归调用本组件------->
-                            <span v-if="isContainerFn(itemCol.isContainer)">
-                                <!-- itemCol: {{itemCol}} -->
-                                <simple-container-cmp
-                                    :class="`yu_${itemCol.atrisCode}`"
-                                    :obj.sync="itemCol"
-                                >
-                                </simple-container-cmp>
-                            </span>  
-
-                            <!---容器中拖过来的不是纯容器--->
-                            <span v-if="!isContainerFn(itemCol.isContainer)">
-                                <!-- itemCol: {{itemCol}} -->
-                                <!-- <component 
-                                    :is="getComponentUtils(itemCol.controlType)"
-                                    :obj.sync="itemCol"
-                                    :isTitle="false"
-                                    :isNeedGetDataSource="false"
-                                    :disableFlag="true"
-                                >
-                                </component>   -->
-
+                            <!-- <el-button type="primary" size="mini">{{item.controlName}}</el-button> -->
+                            <div 
+                                :class="['cmp-item',`cmp-item-${item.atrisCode}`,'atris-selectable', 'atris-hoverable']" 
+                                :data-atriscode="`${item.atrisCode}`"
+                                @click="clickCmpItem($event, item, index)"
+                                @mouseover.stop = "mouseoverCmpItem($event, item, index)"
+                            >
+                                <!-- 中间部分obj: {{item}} -->
                                 <!----动态渲染当前组件---->
                                 <current-component-cmp
-                                    :class="`yu_${itemCol.atrisCode}`"
-                                    :obj.sync="itemCol"
+                                    :obj.sync="item"
                                     :isTitle="false"
                                     :isNeedGetDataSource="false"
                                     :disableFlag="true"                                    
                                 >
                                 </current-component-cmp>
-                            </span>   
 
-                            <!----复制、删除----->
-                            <div 
-                                :class="['cmp-item-handlerBox', `cmp-item-handler-${itemCol.atrisCode}`]" 
-                                :data-atriscode="`${itemCol.atrisCode}`"
-                            >
-                                <el-tooltip effect="dark" content="复制" placement="top-start">
-                                    <i class="el-icon-document-copy"
-                                    @click.stop="handlerClickCopy($event, obj, index)"
-                                    ></i>
-                                </el-tooltip>
-                                <el-tooltip effect="dark" content="删除" placement="top-start">
-                                    <i 
-                                        class="el-icon-delete"
-                                        @click.stop="handlerClickDelete($event, obj, index)"
-                                    ></i>
-                                </el-tooltip>                                    
-                            </div>      
-
+                                <!----复制、删除----->
+                                <div 
+                                    :class="['cmp-item-handlerBox', `cmp-item-handler-${item.atrisCode}`]" 
+                                    :data-atriscode="`${item.atrisCode}`"
+                                >
+                                    <el-tooltip effect="dark" content="复制" placement="top-start">
+                                        <i class="el-icon-document-copy"
+                                            @click.stop = "handlerClickCopy($event,item, index)"
+                                        ></i>
+                                    </el-tooltip>
+                                    <el-tooltip effect="dark" content="删除" placement="top-start">
+                                        <i 
+                                            class="el-icon-delete"
+                                            @click.stop="handlerClickDelete($event, item, index)"
+                                        ></i>
+                                    </el-tooltip>                                    
+                                </div>
+                            </div>
                         </div>
-                    </transition-group>
+                    </transition-group>    
                 </vuedraggable>   
             </el-col>
         </el-row>
@@ -229,12 +207,22 @@ let flexHash = {
     'flex-five': 5
 }
 export default {
-    name: 'simpleContainerCmp',
+    name: 'commonDragCmp',
     props:{
         obj: {
             type: Object,
             default: () => {
                 return {}
+            }
+        },
+        groupOption: {
+            type: Object,
+            default: () => {
+                return {
+                    name:'component',
+                    pull: true,
+                    put:true                
+                }
             }
         }
     },
@@ -261,11 +249,6 @@ export default {
         this.$bus.$off("progressTreeEmitClick")
     },
     computed:{
-        ballId(){
-           if(this.obj.atrisCode) {
-               return `${this.obj.atrisCode}`
-           }
-        },
         styleWidth(){
             //    return `${this.obj.atrisOptions.width}`
             return 'width:100%'

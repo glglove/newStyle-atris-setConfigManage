@@ -5,7 +5,7 @@
 -->
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 >>>.el-collapse {
-    max-height: calc(100vh - 150px);
+    max-height: calc(100vh - 215px);
     overflow: auto;
     border-bottom: none !important
 }

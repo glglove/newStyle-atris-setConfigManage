@@ -20,7 +20,8 @@ export const getCurrentHandlerDom = function (e) {
     return target
 }
 
-export const setEventElementAttributes = function (str, targetCode, classNameArr, attributeObj={} ) {
+export const setEventElementAttributes = function (isPage=false, str, targetCode, classNameArr, attributeObj={}) {
+    debugger
     let {
         border,
         display,
@@ -33,12 +34,14 @@ export const setEventElementAttributes = function (str, targetCode, classNameArr
         fontSize,
         color
     } = attributeObj
+
     if($(`${str}${targetCode}`)){
         if(border){
             $(`${str}${targetCode}`).css({
                 'border': border
             })
         }else if(classNameArr && classNameArr.length){
+            // alert(666)
             classNameArr.forEach((item, key) => {
                 console.log("--------", $(`${str}${targetCode}`))
                 $(`${str}${targetCode}`).addClass(item)
@@ -56,7 +59,8 @@ export const setEventElementAttributes = function (str, targetCode, classNameArr
  * @param {*} targetCode 
  * @param {*} param2 {'cancel': {'str': '.cmp-item-', 'attr': ['cmp-item-selected']},'hide': {'str': ['.cmp-item-handler-']},'show': {'str': []}}
  */
-export const cancelElementAttribute = function (arr, targetCode, obj) {
+export const cancelElementAttribute = function (isPage=false, arr, targetCode, obj) {
+    debugger
     let {
         cancel = {},
         hide = {},
@@ -67,36 +71,51 @@ export const cancelElementAttribute = function (arr, targetCode, obj) {
     let cancelClassNameArr = cancel.attr
     let hideStrArr = hide.str
     let showStrArr = show.str
-    if(arr && arr.length){
-        arr.forEach((item, key) => {
-            if(item.atrisCode && (item.atrisCode != targetCode)) {
-                // alert(`${str}${item.atrisCode}`)
-                // console.log(str + `${item.atrisCode}`)
-                if(cancelClassNameArr && cancelClassNameArr.length){
-                    cancelClassNameArr.forEach((classNameItem, key) => {
-                        // alert($(cancelStr + `${item.atrisCode}`).hasClass(classNameItem))  
-                        $(cancelStr + `${item.atrisCode}`).removeClass(`${classNameItem}`) 
-                        // alert($(cancelStr + `${item.atrisCode}`).hasClass(classNameItem))  
-                    }) 
+    // if(isPage){
+        // 页面 取消页面内所有组件的选中 状态
+
+    // }else {
+        // 非页面
+        // 取消页面的 选中状态
+        if(arr && arr.length){
+            arr.forEach((item, key) => {
+                if(item.atrisCode && (item.atrisCode != targetCode)) {
+                    // alert(`${str}${item.atrisCode}`)
+                    // console.log(str + `${item.atrisCode}`)
+                    if(cancelClassNameArr && cancelClassNameArr.length){
+                        if(!isPage){
+                            // 取消页面的选中和hover状态
+                            $(cancelStr + `pagecode`).removeClass(`cmp-item-selected`)
+                            $(cancelStr + `pagecode`).removeClass(`cmp-item-mouseover`)
+                        }
+                        cancelClassNameArr.forEach((classNameItem, key) => {
+                            // alert($(cancelStr + `${item.atrisCode}`).hasClass(classNameItem))  
+                            $(cancelStr + `${item.atrisCode}`).removeClass(`${classNameItem}`) 
+                            // alert($(cancelStr + `${item.atrisCode}`).hasClass(classNameItem))  
+                        }) 
+                    }
+     
+                    if(hideStrArr && hideStrArr.length) {
+                        hideStrArr.forEach((hideStrItem, index) => {
+                            if(!isPage){
+                                $(hideStrItem + `pagecode`).hide()
+                            }
+                            $(hideStrItem + `${item.atrisCode}`).hide()
+                        })
+                    } 
+                    
+                    if(showStrArr && showStrArr.length) {
+                        showStrArr.forEach((showStrItem, index) => {
+                            $(showStrItem + `${item.atrisCode}`).show()
+                        })
+                    }
                 }
- 
-                if(hideStrArr && hideStrArr.length) {
-                    hideStrArr.forEach((hideStrItem, index) => {
-                        $(hideStrItem + `${item.atrisCode}`).hide()
-                    })
-                } 
-                
-                if(showStrArr && showStrArr.length) {
-                    showStrArr.forEach((showStrItem, index) => {
-                        $(showStrItem + `${item.atrisCode}`).show()
-                    })
+                if(item.childrenList && item.childrenList.length){
+                    cancelElementAttribute(item.childrenList, targetCode, obj)
                 }
-            }
-            if(item.childrenList && item.childrenList.length){
-                cancelElementAttribute(item.childrenList, targetCode, obj)
-            }
-        })
-    }
+            })
+        }
+    // }
 }
 
 export const getDataObj = function (arr, atrisCode, resObj, flag ) {

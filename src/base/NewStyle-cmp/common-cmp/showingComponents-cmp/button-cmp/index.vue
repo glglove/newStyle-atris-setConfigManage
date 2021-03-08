@@ -10,6 +10,15 @@
 <template>
     <div>
       显示组件———— 按钮
+      <el-button type="primary" size="mini">
+        按钮1
+      </el-button>
+      <el-button type="primary" size="mini">
+        按钮2
+      </el-button>
+      <el-button type="primary" size="mini">
+        按钮3
+      </el-button>            
     </div>
 </template>
 

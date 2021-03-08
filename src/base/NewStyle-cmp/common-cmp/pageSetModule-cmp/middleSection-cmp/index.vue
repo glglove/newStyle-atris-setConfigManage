@@ -13,12 +13,15 @@
     font-size: 14px;
     background: #ffffff
     .containerBox {
+        position: relative;
         height: 100%;
+        padding: 20px;
+        box-sizing: border-box;
         &.cmpSelected {
             border: $page-set-border
         }
     }
-    .cmpItemBox {
+    .cmpItemBox:not(:first-child) {
         margin: 20px 0;
     }
 }
@@ -84,9 +87,11 @@
             @dragenter="enterDrag($event)"   
             @dragleave="leaveDrag($event)" 
             @drop="dropDrag($event)"        
-            class="containerBox"    
-            @click="clickConteainerBox"
-            data-containerBox="middleCmpContainerBox"         
+            class="containerBox cmp-item-pagecode atris-selectable atris-hoverable"    
+            @click="clickConteainerBox($event)"
+            @mouseover = "mouseoverContainerBox($event)"
+            data-containerBox="middleCmpContainerBox"    
+            data-atriscode="pagecode"  
         >
             <!-- 配置板块——中间 -->    
             <!-- {{currentPageSetDataList}}  -->
@@ -125,6 +130,7 @@
                                 @click="clickCmpItem($event, obj, index)"
                                 @mouseover.stop = "mouseoverCmpItem($event, obj, index)"
                             >
+                                <!-- 中间部分obj: {{obj}} -->
                                 <!----动态渲染当前组件---->
                                 <current-component-cmp
                                     :obj.sync="obj"
@@ -155,7 +161,25 @@
                         </div>
                     </transition-group>              
                 </vuedraggable>    
-            </el-form>        
+            </el-form>  
+
+            <!----最外层(页面)的复制、删除按钮----->
+            <div 
+                :class="['cmp-item-handlerBox', 'cmp-item-handler-pagecode']" 
+                data-atriscode="pagecode"
+            >
+                <!-- <el-tooltip effect="dark" content="复制" placement="top-start">
+                    <i class="el-icon-document-copy"
+                        @click.stop = "handlerClickCopyPage($event)"
+                    ></i>
+                </el-tooltip> -->
+                <el-tooltip effect="dark" content="删除" placement="top-start">
+                    <i 
+                        class="el-icon-delete"
+                        @click.stop="handlerClickDeletePage($event)"
+                    ></i>
+                </el-tooltip>                                    
+            </div>                 
         </div>
     </div>
 </template>
@@ -236,8 +260,10 @@
             // this.$nextTick(() => {
                 this.$bus.$on("leftClickItem", (obj, callback) => {
                     // 给 点击的 obj 添加唯一码
-                    obj.atrisCode = getGuid2()
-                    obj.atrisGuid = getGuid()                                      
+                    // obj.atrisCode = getGuid2()
+                    // obj.atrisGuid = getGuid()    
+                    this.$set(obj, 'atrisGuid', getGuid())
+                    this.$set(obj, 'atrisCode', getGuid2())                                                        
                     this.currentPageSetData.currentPageSetDataList.push(JSON.parse(JSON.stringify(obj)))
                     this.currentClickItemObjIndex = (this.currentPageSetData.currentPageSetDataList.length)-1
                     this.saveCurrentPageSetData()
@@ -285,12 +311,53 @@
                     }
                 })
             },
-            clickConteainerBox(){
+            handlerClickDeletePage(e){
+                this.$confirm("确定要删除此页面?,删除后用户已填写的所有数据将一并被删除","提示", {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消'
+                }).then(res => {
+                    this.currentPageSetData = {
+                        currentPageSetDataList: []
+                    }
+                    this.saveCurrentPageSetData()
+                }).catch((err) => {
+
+                })              
+            },           
+            clickConteainerBox(e){
                 // $('.cmpItemBox').each(function(){
                 //     console.log($(this))
                 //     $(this).removeClass("cmpSelected")
                 // })
                 // this.addContainerBoxSelected(".containerBox", 0)
+                let handlerClickDom = getCurrentHandlerDom(e)
+                let $target = findEventElement($(handlerClickDom), 'atris-selectable')
+                let targetCode = $target.get(0).dataset.atriscode  // 注意此时不能用下面jq的方法来取值dataset 下面取值不会实时更新，jq存的dataset在缓存中 
+                // let targetCode = $target.data("atriscode")
+                console.log("----点击时-------","$target, targetCode", $target, targetCode)
+                if($target && targetCode) {
+                    let targetStr = `.cmp-item-${targetCode}`
+                    setEventElementAttributes(true, '.cmp-item-', targetCode, ['cmp-item-selected'], true)
+                    $('.cmp-item-handler-' + `${targetCode}`).show()
+                    cancelElementAttribute(true, this.pageSetTotalData.pageSetTotalDataList, targetCode, {
+                        'cancel': {'str': '.cmp-item-', 'attr': ['cmp-item-selected']},
+                        'hide': {'str': ['.cmp-item-handler-']},
+                    }, true)
+                }                
+            },
+            mouseoverContainerBox(e){
+                let handlerClickDom = getCurrentHandlerDom(e)
+                let $target = findEventElement($(handlerClickDom), 'atris-hoverable')
+                let targetCode = $target.get(0).dataset.atriscode  // 注意此时不能用下面jq的方法来取值dataset 下面取值不会实时更新，jq存的dataset在缓存中 
+                // let targetCode = $target.data("atriscode")
+                console.log("$target, targetCode", $target, targetCode)
+                if($target && targetCode) {
+                    let targetStr = `.cmp-item-${targetCode}`
+                    setEventElementAttributes(true, '.cmp-item-', targetCode, ['cmp-item-mouseover'])
+                    cancelElementAttribute(true, this.pageSetTotalData.pageSetTotalDataList, targetCode, {
+                        'cancel': {'str': '.cmp-item-', 'attr': ['cmp-item-mouseover']},
+                    })
+                }                 
             },
             // 拖起来的元素进入到目标区域中时触发事件
             enterDrag(event, sourceId) {
@@ -349,9 +416,9 @@
                 this.removeContainerBoxSelected()
                 if(targetCode) {
                     let targetStr = `.cmp-item-${targetCode}`
-                    setEventElementAttributes('.cmp-item-', targetCode, ['cmp-item-selected'])
+                    setEventElementAttributes(false, '.cmp-item-', targetCode, ['cmp-item-selected'])
                     $('.cmp-item-handler-' + `${targetCode}`).show()
-                    cancelElementAttribute(this.pageSetTotalData.pageSetTotalDataList, targetCode, {
+                    cancelElementAttribute(false, this.pageSetTotalData.pageSetTotalDataList, targetCode, {
                         'cancel': {'str': '.cmp-item-', 'attr': ['cmp-item-selected']},
                         'hide': {'str': ['.cmp-item-handler-']},
                     })
@@ -372,9 +439,9 @@
                 console.log("----点击时-------","$target, targetCode", $target, targetCode)
                 if($target && targetCode) {
                     let targetStr = `.cmp-item-${targetCode}`
-                    setEventElementAttributes('.cmp-item-', targetCode, ['cmp-item-selected'])
+                    setEventElementAttributes(false, '.cmp-item-', targetCode, ['cmp-item-selected'])
                     $('.cmp-item-handler-' + `${targetCode}`).show()
-                    cancelElementAttribute(this.pageSetTotalData.pageSetTotalDataList, targetCode, {
+                    cancelElementAttribute(false, this.pageSetTotalData.pageSetTotalDataList, targetCode, {
                         'cancel': {'str': '.cmp-item-', 'attr': ['cmp-item-selected']},
                         'hide': {'str': ['.cmp-item-handler-']},
                     })
@@ -388,8 +455,8 @@
                 console.log("$target, targetCode", $target, targetCode)
                 if($target && targetCode) {
                     let targetStr = `.cmp-item-${targetCode}`
-                    setEventElementAttributes('.cmp-item-', targetCode, ['cmp-item-mouseover'])
-                    cancelElementAttribute(this.pageSetTotalData.pageSetTotalDataList, targetCode, {
+                    setEventElementAttributes(false, '.cmp-item-', targetCode, ['cmp-item-mouseover'])
+                    cancelElementAttribute(false, this.pageSetTotalData.pageSetTotalDataList, targetCode, {
                         'cancel': {'str': '.cmp-item-', 'attr': ['cmp-item-mouseover']},
                     })
                 }               
@@ -427,8 +494,10 @@
             // 添加 唯一码
             addGuid(obj){
                 if(obj.atrisCode){
-                    obj.atrisCode = getGuid2()
-                    obj.atrisGuid = getGuid()
+                    // obj.atrisCode = getGuid2()
+                    // obj.atrisGuid = getGuid()                    
+                    this.$set(obj, 'atrisGuid', getGuid())
+                    this.$set(obj, 'atrisCode', getGuid2())                      
                 }
                 if(obj.childrenList && obj.childrenList.length){
                     obj.childrenList.forEach((item) => {
@@ -557,8 +626,10 @@
                 if(evt.added){
                     // 给拖拽后的数据对象生成  唯一码
                     let obj = evt.added.element
-                    obj.atrisCode = getGuid2()
-                    obj.atrisGuid = getGuid()
+                    // obj.atrisCode = getGuid2()
+                    // obj.atrisGuid = getGuid()
+                    this.$set(obj, 'atrisCode', getGuid2())
+                    this.$set(obj, 'atrisGuid', getGuid())
                     console.log(`vuedragable拖拽完成后${obj.controlName}添加了唯一码（atrisCode 、 atrisGuid）打印`, obj.atrisCode, obj.atrisGuid)
                 }else if(evt.moved) {
 
