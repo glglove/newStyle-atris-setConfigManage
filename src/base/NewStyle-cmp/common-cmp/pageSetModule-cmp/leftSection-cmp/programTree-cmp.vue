@@ -168,6 +168,12 @@
             handleNodeClick(data, node, elem){
                 debugger
                 this.$bus.$emit("progressTreeEmitClick", data)
+                // 触发 右边的变化
+                this.$bus.$emit("emitFromProgramTree", {
+                    atrisCode: data.atrisCode,
+                    obj: data,
+                    controlType: data.controlType,
+                });                
             },                   
         }
     }

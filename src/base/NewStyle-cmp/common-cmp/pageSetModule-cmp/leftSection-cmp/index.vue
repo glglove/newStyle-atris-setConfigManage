@@ -5,7 +5,7 @@
 -->
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 >>>.el-collapse {
-    max-height: calc(100vh - 215px);
+    max-height: calc(100vh - 225px);
     overflow: auto;
     border-bottom: none !important
 }
@@ -43,7 +43,7 @@
 .left-pageSetModul-cmp {
     width: 100%;
     height: calc(100vh - 170px);
-    overflow: atuo;
+    overflow: auto;
     .topContent {
         // border-bottom: 1px solid silver;
         min-height 80vh
@@ -98,7 +98,7 @@
 
                 </el-tab-pane>
             </el-tabs>
-            <!-- objP: {{objP}} -->
+            <!-- obj: {{obj}} -->
             <el-collapse 
                 :accordion="false"
                 v-model="activeIndex"
@@ -203,7 +203,7 @@
     let that = null
     export default {
         props: {    
-            objP: {
+            obj: {
                 type: Object,
                 default: () => {
                     return {}
@@ -344,7 +344,7 @@
             getControlInfo(){
                 this.loading = true
                 let params = {
-                    commonCode: this.objP.relateb,
+                    commonCode: this.obj.relateb,
                     type: 1
                 }
                 getControlInfo(params).then(res => {

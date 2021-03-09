@@ -114,7 +114,7 @@
                 </div>
                 <left-page-setmodule-cmp
                     class="leftSetCmpModule"
-                    :objP="objP"
+                    :obj="objP"
                 ></left-page-setmodule-cmp>
             </div>
             <div class="container-right u-f-jst u-f-g1" :class="leftCmpBoxShow?'':'open'">
@@ -122,7 +122,10 @@
                     <middle-page-setmodule-cmp></middle-page-setmodule-cmp>
                 </div>
                 <div class="setPropertyBox">
-                    <right-page-setproperty-cmp></right-page-setproperty-cmp>
+                    <right-page-setproperty-cmp
+                        ref="rightPageSetpropertyCmp"
+                        class="rightSetCmpModule"
+                    ></right-page-setproperty-cmp>
                 </div>
             </div>
         </div>

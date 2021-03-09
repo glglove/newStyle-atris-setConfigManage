@@ -40,42 +40,47 @@ import BasePageLinkField from '@/base/NewStyle-cmp/Field-cmp/Base-pageLink'
 // import BaseTabSection from '@/base/NewStyle-cmp/common-cmp/HighLevel-cmp/tab-section'
 
 // ---------------显示组件--------
-import showingText from '@/base/NewStyle-cmp/common-cmp/showingComponents-cmp/text-cmp/index'
-import showingPic from '@/base/NewStyle-cmp/common-cmp/showingComponents-cmp/pic-cmp/index'
-import showingIcon from '@/base/NewStyle-cmp/common-cmp/showingComponents-cmp/icon-cmp/index'
-import showingLink from '@/base/NewStyle-cmp/common-cmp/showingComponents-cmp/link-cmp/index'
-import showingLinkBox from '@/base/NewStyle-cmp/common-cmp/showingComponents-cmp/linkBox-cmp/index'
-import showingPicAndText from '@/base/NewStyle-cmp/common-cmp/showingComponents-cmp/picAndText-cmp/index'
-import showingButton from '@/base/NewStyle-cmp/common-cmp/showingComponents-cmp/button-cmp/index'
+import showingText from '@/base/NewStyle-cmp/common-cmp/pageSetModule-cmp/rightSection-cmp/attrType-cmp/attribute-set/set-showingComponents/base-text.vue'
+import showingPic from '@/base/NewStyle-cmp/common-cmp/pageSetModule-cmp/rightSection-cmp/attrType-cmp/attribute-set/set-showingComponents/base-pic.vue'
+import showingIcon from '@/base/NewStyle-cmp/common-cmp/pageSetModule-cmp/rightSection-cmp/attrType-cmp/attribute-set/set-showingComponents/base-icon.vue'
+import showingLink from '@/base/NewStyle-cmp/common-cmp/pageSetModule-cmp/rightSection-cmp/attrType-cmp/attribute-set/set-showingComponents/base-link.vue'
+import showingLinkBox from '@/base/NewStyle-cmp/common-cmp/pageSetModule-cmp/rightSection-cmp/attrType-cmp/attribute-set/set-showingComponents/base-linkbox.vue'
+import showingPicAndText from '@/base/NewStyle-cmp/common-cmp/pageSetModule-cmp/rightSection-cmp/attrType-cmp/attribute-set/set-showingComponents/base-pic-and-text.vue'
+import showingButton from '@/base/NewStyle-cmp/common-cmp/pageSetModule-cmp/rightSection-cmp/attrType-cmp/attribute-set/set-showingComponents/base-button.vue'
 
 // ------------------要素组件--------
-import gridElementFieldGroup from '@/base/NewStyle-cmp/common-cmp/grid-element-cmp/fieldGroup-grid-cmp/index'
-import gridElementTable from '@/base/NewStyle-cmp/common-cmp/grid-element-cmp/table-grid-cmp/index'
-import gridElementBarEcharts from '@/base/NewStyle-cmp/common-cmp/grid-element-cmp/barEcharts-grid-cmp/index'
-import gridElementLineEcharts from '@/base/NewStyle-cmp/common-cmp/grid-element-cmp/lineEcharts-grid-cmp/index'
-import gridElementPieEcharts from '@/base/NewStyle-cmp/common-cmp/grid-element-cmp/pieEcharts-grid-cmp/index'
+import gridElementFieldGroup from '@/base/NewStyle-cmp/common-cmp/pageSetModule-cmp/rightSection-cmp/attrType-cmp/attribute-set/set-grid-element/base-fieldGroup-grid.vue'
+import gridElementTable from '@/base/NewStyle-cmp/common-cmp/pageSetModule-cmp/rightSection-cmp/attrType-cmp/attribute-set/set-grid-element/base-table-grid.vue'
+import gridElementBarEcharts from '@/base/NewStyle-cmp/common-cmp/pageSetModule-cmp/rightSection-cmp/attrType-cmp/attribute-set/set-grid-element/base-barEcharts-grid.vue'
+import gridElementLineEcharts from '@/base/NewStyle-cmp/common-cmp/pageSetModule-cmp/rightSection-cmp/attrType-cmp/attribute-set/set-grid-element/base-lineEcharts-grid.vue'
+import gridElementPieEcharts from '@/base/NewStyle-cmp/common-cmp/pageSetModule-cmp/rightSection-cmp/attrType-cmp/attribute-set/set-grid-element/base-pieEcharts-grid.vue'
 
 // ----------带布局的组件-----------
-import gridContainerTab from '@/base/NewStyle-cmp/common-cmp/grid-container-cmp/grid-tab-cmp/index'
-import gridContainerStep from '@/base/NewStyle-cmp/common-cmp/grid-container-cmp/grid-step-cmp/index'
-import gridContainerButtonSection from '@/base/NewStyle-cmp/common-cmp/grid-container-cmp/button-section-cmp/index'
-import gridContainerSearchSection from '@/base/NewStyle-cmp/common-cmp/grid-container-cmp/search-section-cmp/index'
-import gridContainerSearchEnumerationSection from '@/base/NewStyle-cmp/common-cmp/grid-container-cmp/search-enumeration-section-cmp/index'
-import gridContainerFunctionSection from '@/base/NewStyle-cmp/common-cmp/grid-container-cmp/function-section-cmp/index'
-import gridContainerLinkSection from '@/base/NewStyle-cmp/common-cmp/grid-container-cmp/link-section-cmp/index'
+import gridContainerTab from '@/base/NewStyle-cmp/common-cmp/pageSetModule-cmp/rightSection-cmp/attrType-cmp/attribute-set/set-grid-container/base-grid-tab.vue'
+import gridContainerStep from '@/base/NewStyle-cmp/common-cmp/pageSetModule-cmp/rightSection-cmp/attrType-cmp/attribute-set/set-grid-container/base-grid-step.vue'
+import gridContainerButtonSection from '@/base/NewStyle-cmp/common-cmp/pageSetModule-cmp/rightSection-cmp/attrType-cmp/attribute-set/set-grid-container/base-button-section.vue'
+import gridContainerSearchSection from '@/base/NewStyle-cmp/common-cmp/pageSetModule-cmp/rightSection-cmp/attrType-cmp/attribute-set/set-grid-container/base-search-section.vue'
+import gridContainerSearchEnumerationSection from '@/base/NewStyle-cmp/common-cmp/pageSetModule-cmp/rightSection-cmp/attrType-cmp/attribute-set/set-grid-container/base-search-enumeration-section.vue'
+import gridContainerFunctionSection from '@/base/NewStyle-cmp/common-cmp/pageSetModule-cmp/rightSection-cmp/attrType-cmp/attribute-set/set-grid-container/base-function-section.vue'
+import gridContainerLinkSection from '@/base/NewStyle-cmp/common-cmp/pageSetModule-cmp/rightSection-cmp/attrType-cmp/attribute-set/set-grid-container/base-link-section.vue'
 
 // -----------分栏容器组件 ------
-import BaseSimpleContainer from '@/base/NewStyle-cmp/common-cmp/grid-columnContainer-cmp/simpleContainer-cmp'
+import BaseSimpleContainer from '@/base/NewStyle-cmp/common-cmp/pageSetModule-cmp/rightSection-cmp/attrType-cmp/attribute-set/set-grid-columnContainer/base-simpleContainer.vue'
 
 // ------------------业务大组件-----------
-import gridBusinessFieldGroup from '@/base/NewStyle-cmp/common-cmp/grid-business-cmp/fieldGroup-cmp/index'
-import gridBusinessTable from '@/base/NewStyle-cmp/common-cmp/grid-business-cmp/table-cmp/index'
-import gridBusinessEcharts from '@/base/NewStyle-cmp/common-cmp/grid-business-cmp/echarts-cmp/index'
-import gridBusinessTree from '@/base/NewStyle-cmp/common-cmp/grid-business-cmp/tree-cmp/index'
+import gridBusinessFieldGroup from '@/base/NewStyle-cmp/common-cmp/pageSetModule-cmp/rightSection-cmp/attrType-cmp/attribute-set/set-grid-business/base-fieldgroup.vue'
+import gridBusinessTable from '@/base/NewStyle-cmp/common-cmp/pageSetModule-cmp/rightSection-cmp/attrType-cmp/attribute-set/set-grid-business/base-table.vue'
+import gridBusinessEcharts from '@/base/NewStyle-cmp/common-cmp/pageSetModule-cmp/rightSection-cmp/attrType-cmp/attribute-set/set-grid-business/base-echarts.vue'
+import gridBusinessTree from '@/base/NewStyle-cmp/common-cmp/pageSetModule-cmp/rightSection-cmp/attrType-cmp/attribute-set/set-grid-business/base-tree.vue'
 
+// -----------------page 外层设置 -------
+import pageWrap from '@/base/NewStyle-cmp/common-cmp/pageSetModule-cmp/rightSection-cmp/attrType-cmp/attribute-set/set-page-wrap/base-page.vue'
 
-export const getComponentUtils = function (controltype) {
+export const getSetComponentUtils = function (controltype) {
     switch (controltype) {
+        case '-1':
+        case -1:
+            return pageWrap
         case '1':
         case 1:
             return BaseInput
@@ -238,30 +243,6 @@ export const getComponentUtils = function (controltype) {
         case '5001':
             return BaseSimpleContainer
         default: 
-            return BaseInput
-    }
-}
-
-
-// ------判断是否为容器组件-------
-export const isContainerFn = function (isContainer, controltype) {
-    switch(isContainer){
-        case 0:
-            return false
-        case 1:
-            return true
-        default: 
-            return false
-    }
-}
-
-// ------判断是否为 分栏布局容器组件-------
-export const ismultiColumnContainerFn = function (type) {
-    switch(type){
-        case 5001:  // 注意 列的 controleType 也是 5001
-        case '5001':
-            return true
-        default: 
-            return false
+            return pageWrap
     }
 }

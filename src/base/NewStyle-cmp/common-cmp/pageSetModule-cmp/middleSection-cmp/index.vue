@@ -9,13 +9,13 @@
     width: 100%;
     height: calc(100vh - 130px);
     margin-top: 20px;
-    overflow auto;
     font-size: 14px;
     background: #ffffff
     .containerBox {
         position: relative;
         height: 100%;
         padding: 20px;
+        overflow: auto;
         box-sizing: border-box;
         &.cmpSelected {
             border: $page-set-border
@@ -173,12 +173,12 @@
                         @click.stop = "handlerClickCopyPage($event)"
                     ></i>
                 </el-tooltip> -->
-                <el-tooltip effect="dark" content="删除" placement="top-start">
+                <!-- <el-tooltip effect="dark" content="删除" placement="top-start">
                     <i 
                         class="el-icon-delete"
                         @click.stop="handlerClickDeletePage($event)"
                     ></i>
-                </el-tooltip>                                    
+                </el-tooltip>                                     -->
             </div>                 
         </div>
     </div>
@@ -219,6 +219,8 @@
             return {
                 loading: false,
                 currentPageSetData: {
+                    atrisCode: 'pageCode',
+                    controlType: -1,
                     currentPageSetDataList: []
                 },
                 contentCmpsList1: [],
@@ -278,9 +280,9 @@
                 this.$bus.$on("simpleContainerEmit", () => {
                     this.simpleContainerEmit()
                 })
-                this.$bus.$on("progressTreeEmitClick", (data) => {
+                this.$bus.$on("progressTreeEmitClick", (emitObj) => {
                     debugger
-                    this.currentTreeClickObj = data
+                    this.currentTreeClickObj = emitObj
                     this.programTreeEmit(this.currentTreeClickObj.atrisCode)
                 })
             // })
@@ -337,13 +339,15 @@
                 console.log("----点击时-------","$target, targetCode", $target, targetCode)
                 if($target && targetCode) {
                     let targetStr = `.cmp-item-${targetCode}`
-                    setEventElementAttributes(true, '.cmp-item-', targetCode, ['cmp-item-selected'], true)
+                    setEventElementAttributes(true, '.cmp-item-', targetCode, ['cmp-item-selected'])
                     $('.cmp-item-handler-' + `${targetCode}`).show()
-                    cancelElementAttribute(true, this.pageSetTotalData.pageSetTotalDataList, targetCode, {
+                    cancelElementAttribute(true, true, this.pageSetTotalData.pageSetTotalDataList, targetCode, {
                         'cancel': {'str': '.cmp-item-', 'attr': ['cmp-item-selected']},
                         'hide': {'str': ['.cmp-item-handler-']},
                     }, true)
-                }                
+                }   
+                
+                this.emitRight(targetCode, this.currentPageSetData, -1)
             },
             mouseoverContainerBox(e){
                 let handlerClickDom = getCurrentHandlerDom(e)
@@ -354,7 +358,7 @@
                 if($target && targetCode) {
                     let targetStr = `.cmp-item-${targetCode}`
                     setEventElementAttributes(true, '.cmp-item-', targetCode, ['cmp-item-mouseover'])
-                    cancelElementAttribute(true, this.pageSetTotalData.pageSetTotalDataList, targetCode, {
+                    cancelElementAttribute(true, false, this.pageSetTotalData.pageSetTotalDataList, targetCode, {
                         'cancel': {'str': '.cmp-item-', 'attr': ['cmp-item-mouseover']},
                     })
                 }                 
@@ -412,24 +416,33 @@
             removeCmpItemSelected(str, index){
             },  
             programTreeEmit(targetCode){
-                debugger
-                this.removeContainerBoxSelected()
+                // debugger
+                alert(targetCode)
+                // this.removeContainerBoxSelected()
                 if(targetCode) {
                     let targetStr = `.cmp-item-${targetCode}`
                     setEventElementAttributes(false, '.cmp-item-', targetCode, ['cmp-item-selected'])
                     $('.cmp-item-handler-' + `${targetCode}`).show()
-                    cancelElementAttribute(false, this.pageSetTotalData.pageSetTotalDataList, targetCode, {
+                    cancelElementAttribute(false, true, this.pageSetTotalData.pageSetTotalDataList, targetCode, {
                         'cancel': {'str': '.cmp-item-', 'attr': ['cmp-item-selected']},
                         'hide': {'str': ['.cmp-item-handler-']},
                     })
 
                     // 锚点定位到此
                     let top = $(targetStr).offset().top
-                    $('.middleCmp').animate({scrollTop: top}, 500)
+                    $('.middleCmp .containerBox').animate({scrollTop: (top-50)}, 500)
                 }                
-            },           
+            },  
+            emitRight(targetCode, obj, controlType){
+                // 触发 右边的变化
+                this.$bus.$emit("emitFromMiddleSection", {
+                    atrisCode: targetCode,
+                    obj: obj,
+                    controlType: controlType
+                })
+            },         
             clickCmpItem(e, obj, index){
-                debugger
+                // debugger
                 // this.currentClickItemObjIndex = index
                 this.removeContainerBoxSelected()
                 let handlerClickDom = getCurrentHandlerDom(e)
@@ -441,11 +454,12 @@
                     let targetStr = `.cmp-item-${targetCode}`
                     setEventElementAttributes(false, '.cmp-item-', targetCode, ['cmp-item-selected'])
                     $('.cmp-item-handler-' + `${targetCode}`).show()
-                    cancelElementAttribute(false, this.pageSetTotalData.pageSetTotalDataList, targetCode, {
+                    cancelElementAttribute(false, true, this.pageSetTotalData.pageSetTotalDataList, targetCode, {
                         'cancel': {'str': '.cmp-item-', 'attr': ['cmp-item-selected']},
                         'hide': {'str': ['.cmp-item-handler-']},
                     })
                 }
+                this.emitRight(targetCode, obj, obj.controlType)
             },          
             mouseoverCmpItem (e, obj, index) {
                 let handlerClickDom = getCurrentHandlerDom(e)
@@ -456,7 +470,7 @@
                 if($target && targetCode) {
                     let targetStr = `.cmp-item-${targetCode}`
                     setEventElementAttributes(false, '.cmp-item-', targetCode, ['cmp-item-mouseover'])
-                    cancelElementAttribute(false, this.pageSetTotalData.pageSetTotalDataList, targetCode, {
+                    cancelElementAttribute(false, false, this.pageSetTotalData.pageSetTotalDataList, targetCode, {
                         'cancel': {'str': '.cmp-item-', 'attr': ['cmp-item-mouseover']},
                     })
                 }               
