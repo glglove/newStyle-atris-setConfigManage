@@ -161,17 +161,9 @@
               @click.stop="clickCmpItem($event, obj, index)"
               @mouseover.stop="mouseoverCmpItem($event, obj, index)"
             >
-              <!----容器中如果又拖过来分栏容器 需要递归调用本组件------->
-              <span v-if="ismultiColumnContainerFn(itemCol.controlType)">
-                <!-- itemCol: {{itemCol}} -->
-                <simple-container-cmp
-                  :class="`yu_${itemCol.atrisCode}`"
-                  :obj.sync="itemCol"
-                >
-                </simple-container-cmp>
-              </span>
-
-              <!---容器中拖过来的不是纯容器--->
+                itemCol.controlType: {{itemCol.controlType}}---
+                {{ismultiColumnContainerFn(itemCol.controlType)}}
+              <!---容器中拖过来的不是纯分栏容器--->
               <span v-if="!ismultiColumnContainerFn(itemCol.controlType)">
                 <!-- itemCol: {{itemCol}} -->
                 <!-- <component 
@@ -185,13 +177,24 @@
 
                 <!----动态渲染当前组件---->
                 <current-component-cmp
-                  :class="`yu_${itemCol.atrisCode}`"
+                  :class="`notcolumnContainer column_${itemCol.atrisCode}`"
                   :obj.sync="itemCol"
                   :isTitle="false"
                   :isNeedGetDataSource="false"
                   :disableFlag="true"
                 >
                 </current-component-cmp>
+              </span>
+
+
+              <!----容器中如果又拖过来分栏容器 需要递归调用本组件------->
+              <span v-if="ismultiColumnContainerFn(itemCol.controlType)">
+                <!-- itemCol: {{itemCol}} -->
+                <simple-container-cmp
+                  :class="`columnContainer column_${itemCol.atrisCode}`"
+                  :obj.sync="itemCol"
+                >
+                </simple-container-cmp>
               </span>
 
               <!----复制、删除----->
