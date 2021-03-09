@@ -10,8 +10,8 @@
 </style>
 <template>
     <div class="pageSetProperty-attribute-cmp">
-        <!-- pageSetModule-attribute 设置  组件
-        obj: {{obj}} -->
+        <!-- pageSetModule-attribute 设置  组件 -->
+        obj: {{obj}}
         <el-form>
             <component
                 :is="getSetComponentUtils(controlType)"

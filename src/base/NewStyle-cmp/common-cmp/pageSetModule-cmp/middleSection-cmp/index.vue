@@ -417,7 +417,7 @@
             },  
             programTreeEmit(targetCode){
                 // debugger
-                alert(targetCode)
+                // alert(targetCode)
                 // this.removeContainerBoxSelected()
                 if(targetCode) {
                     let targetStr = `.cmp-item-${targetCode}`

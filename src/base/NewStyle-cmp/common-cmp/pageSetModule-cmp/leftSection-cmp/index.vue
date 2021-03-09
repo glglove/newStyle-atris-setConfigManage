@@ -5,7 +5,7 @@
 -->
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 >>>.el-collapse {
-    max-height: calc(100vh - 225px);
+    max-height: calc(100vh - 215px);
     overflow: auto;
     border-bottom: none !important
 }
@@ -43,7 +43,6 @@
 .left-pageSetModul-cmp {
     width: 100%;
     height: calc(100vh - 170px);
-    overflow: auto;
     .topContent {
         // border-bottom: 1px solid silver;
         min-height 80vh

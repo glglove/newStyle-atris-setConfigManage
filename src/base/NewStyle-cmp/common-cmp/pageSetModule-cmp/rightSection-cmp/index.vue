@@ -71,7 +71,7 @@ export default {
             this.currentAtrisCode = atrisCode
             this.currentObj = obj
         })
-        this.$bus.$on("emitFromProgramTree", () => {
+        this.$bus.$on("emitFromProgramTree", (emitObj) => {
             let {
                 atrisCode,
                 obj,
