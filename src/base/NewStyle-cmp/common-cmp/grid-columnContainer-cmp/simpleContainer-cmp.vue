@@ -158,11 +158,11 @@
                 'atris-hoverable',
               ]"
               :data-atriscode="`${itemCol.atrisCode}`"
-              @click.stop="clickCmpItem($event, obj, index)"
-              @mouseover.stop="mouseoverCmpItem($event, obj, index)"
+              @click.stop="clickCmpItem($event, itemCol, index)"
+              @mouseover.stop="mouseoverCmpItem($event, itemCol, index)"
             >
-                itemCol.controlType: {{itemCol.controlType}}---
-                {{ismultiColumnContainerFn(itemCol.controlType)}}
+              <!-- itemCol.controlType: {{ itemCol.controlType }}---
+              {{ ismultiColumnContainerFn(itemCol.controlType) }} -->
               <!---容器中拖过来的不是纯分栏容器--->
               <span v-if="!ismultiColumnContainerFn(itemCol.controlType)">
                 <!-- itemCol: {{itemCol}} -->
@@ -186,9 +186,8 @@
                 </current-component-cmp>
               </span>
 
-
               <!----容器中如果又拖过来分栏容器 需要递归调用本组件------->
-              <span v-if="ismultiColumnContainerFn(itemCol.controlType)">
+              <span v-else>
                 <!-- itemCol: {{itemCol}} -->
                 <simple-container-cmp
                   :class="`columnContainer column_${itemCol.atrisCode}`"
@@ -229,7 +228,7 @@
 import {
   getComponentUtils,
   isContainerFn,
-  ismultiColumnContainerFn
+  ismultiColumnContainerFn,
 } from "@/utils/newStyle-components-type.js";
 import { getGuid, getGuid2 } from "@/utils/guid.js";
 import { setLocalStorage } from "@/utils/auth.js";
@@ -311,8 +310,8 @@ export default {
     isContainerFn(controlType) {
       return isContainerFn(controlType);
     },
-    ismultiColumnContainerFn(controlType){
-        return isContainerFn(controlType);
+    ismultiColumnContainerFn(controlType) {
+      return ismultiColumnContainerFn(controlType);
     },
     cloneFuc(obj) {
       // debugger
@@ -326,10 +325,10 @@ export default {
       if (evt.added) {
         // 给拖拽后的数据对象生成  唯一码
         let obj = evt.added.element;
-        this.$set(obj, "atrisGuid", getGuid());
-        this.$set(obj, "atrisCode", getGuid2());
-        // obj.atrisCode = getGuid2()
-        // obj.atrisGuid = getGuid()
+        this.$set(obj, "atrisGuid", getGuid(obj.controlType));
+        this.$set(obj, "atrisCode", getGuid2(obj.controlType));
+        // obj.atrisCode = getGuid2(obj.controlType)
+        // obj.atrisGuid = getGuid(obj.controlType)
         console.log(
           `vuedragable拖拽完成后${obj.controlName}添加了唯一码（atrisCode 、 atrisGuid）打印`,
           obj.atrisCode,
@@ -410,60 +409,65 @@ export default {
       // 排序后
     },
     programTreeEmit(targetCode) {
-        if (targetCode) {
-            let targetStr = `.cmp-item-${targetCode}`;
-            setEventElementAttributes(false, ".cmp-item-", targetCode, [
-            "cmp-item-selected",
-            ]);
-            $(".cmp-item-handler-" + `${targetCode}`).show();
-            cancelElementAttribute(
-            false,
-            true,
-            this.pageSetTotalData.pageSetTotalDataList,
-            targetCode,
-            {
-                cancel: { str: ".cmp-item-", attr: ["cmp-item-selected"] },
-                hide: { str: [".cmp-item-handler-"] },
-            }
-            );
-        }
+      if (targetCode) {
+        let targetStr = `.cmp-item-${targetCode}`;
+        setEventElementAttributes(false, ".cmp-item-", targetCode, [
+          "cmp-item-selected",
+        ]);
+        $(".cmp-item-handler-" + `${targetCode}`).show();
+        cancelElementAttribute(
+          false,
+          true,
+          this.pageSetTotalData.pageSetTotalDataList,
+          targetCode,
+          {
+            cancel: { str: ".cmp-item-", attr: ["cmp-item-selected"] },
+            hide: { str: [".cmp-item-handler-"] },
+          }
+        );
 
+        // 锚点定位到此
+        try {
+          let top = $(targetStr).offset().top;
+          $(".middleCmp .containerBox").animate({ scrollTop: top - 50 }, 500);
+        } catch (error) {}        
+      }
     },
-    emitRight(targetCode, obj, controlType){
-        // 触发 右边的变化
-        this.$bus.$emit("emitFromMiddleSection", {
-            atrisCode: targetCode,
-            obj: obj,
-            controlType: controlType
-        })
-    },     
+    emitRight(targetCode, obj, controlType) {
+      // 触发 右边的变化
+      this.$bus.$emit("emitFromMiddleSection", {
+        atrisCode: targetCode,
+        obj: obj,
+        controlType: controlType,
+      });
+    },
     clickCmpItem(e, obj, index) {
-        // debugger
-        // this.currentClickItemObjIndex = index
-        let handlerClickDom = getCurrentHandlerDom(e);
-        let $target = findEventElement($(handlerClickDom), "atris-selectable");
-        let targetCode = $target.get(0).dataset.atriscode; // 注意此时不能用下面jq的方法来取值dataset 下面取值不会实时更新，jq存的dataset在缓存中
-        // let targetCode = $target.data("atriscode")
-        if ($target && targetCode) {
-            let targetStr = `.cmp-item-${targetCode}`;
-            setEventElementAttributes(false, ".cmp-item-", targetCode, [
-            "cmp-item-selected",
-            ]);
-            $(".cmp-item-handler-" + `${targetCode}`).show();
-            cancelElementAttribute(
-            false,
-            true,
-            this.pageSetTotalData.pageSetTotalDataList,
-            targetCode,
-            {
-                cancel: { str: ".cmp-item-", attr: ["cmp-item-selected"] },
-                hide: { str: [".cmp-item-handler-"] },
-            }
-            );
-        }
-        // alert(targetCode)
-
-        this.emitRight(targetCode, obj, obj.controlType)
+      debugger
+      // this.currentClickItemObjIndex = index
+      let handlerClickDom = getCurrentHandlerDom(e);
+      let $target = findEventElement($(handlerClickDom), "atris-selectable");
+      let targetCode = $target.get(0).dataset.atriscode; // 注意此时不能用下面jq的方法来取值dataset 下面取值不会实时更新，jq存的dataset在缓存中
+      // let targetCode = $target.data("atriscode")
+      if ($target && targetCode) {
+        let targetStr = `.cmp-item-${targetCode}`;
+        setEventElementAttributes(false, ".cmp-item-", targetCode, [
+          "cmp-item-selected",
+        ]);
+        $(".cmp-item-handler-" + `${targetCode}`).show();
+        cancelElementAttribute(
+          false,
+          true,
+          this.pageSetTotalData.pageSetTotalDataList,
+          targetCode,
+          {
+            cancel: { str: ".cmp-item-", attr: ["cmp-item-selected"] },
+            hide: { str: [".cmp-item-handler-"] },
+          }
+        );
+      }
+      // alert(targetCode)
+      // alert(obj.controlType)
+      this.emitRight(targetCode, obj, obj.controlType);
     },
     mouseoverCmpItem(e, obj, index) {
       let handlerClickDom = getCurrentHandlerDom(e);
@@ -526,8 +530,8 @@ export default {
     // 添加 唯一码
     addGuid(obj) {
       if (obj.atrisCode) {
-        obj.atrisCode = getGuid2();
-        obj.atrisGuid = getGuid();
+        obj.atrisCode = getGuid2(obj.controlType);
+        obj.atrisGuid = getGuid(obj.controlType);
       }
       if (obj.childrenList && obj.childrenList.length) {
         obj.childrenList.forEach((item) => {

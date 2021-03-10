@@ -4,6 +4,7 @@
     功能: grid-element: table-grid 设置  组件
 -->
 <style lang="stylus" rel="stylesheet/stylus" scoped>
+@import "../../common-set-style.styl";
 .grid-element-table-cmp {
 
 }

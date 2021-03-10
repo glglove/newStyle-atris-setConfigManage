@@ -14,17 +14,19 @@
     height: 50px;
     padding: 0 20px;
     box-sizing: border-box;
-    background: #ffffff;
+    background: #bdb6b62b;
     // border: 1px solid red
 }
 .containerWrap {
-    height: calc(100vh - 50px);
-    overflow: auto;
+    height: calc(100vh - 110px);
+    overflow: hidden;
+    padding: 0 10px;
+    box-sizing: border-box;
     .fixedLeftNavWrap {
         position: fixed;
         left: 0;
         width: 50px;
-        height: calc(100vh - 50px);
+        height: calc(100% - 110px);
         background: #f2f3f5;
         .leftNavItem {
             font-size: 20px;
@@ -40,7 +42,7 @@
 }
 .container-left {
     width: 300px;
-    padding-left: 30px;
+    padding-left: 60px;
     box-sizing: border-box;
     // border: 1px solid blue
     .cmpTitWrap {
@@ -57,7 +59,7 @@
 .container-right {
     // border: 1px solid black
     width: calc(100% - 300px);
-    padding: 0 0 20px 20px;
+    padding-left: 20px;
     box-sizing: border-box;
     &.open {
         margin-left: 50px;

@@ -4,6 +4,7 @@
     功能: grid-business: fieldgroup 设置  组件
 -->
 <style lang="stylus" rel="stylesheet/stylus" scoped>
+@import "../../common-set-style.styl";
 .grid-business-fieldgroup-cmp {
 
 }

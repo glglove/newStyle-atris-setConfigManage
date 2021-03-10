@@ -55,7 +55,7 @@
                         v-if="handlerItem.code != 'using'"
                         type="text"
                         size="mini"
-                        @click.native="handlerClickBtn(handlerItem, scope.row, handlerItemIndex, scope.$index)"
+                        @click.native.stop="handlerClickBtn(handlerItem, scope.row, handlerItemIndex, scope.$index)"
                     >
                         {{handlerItem.tit}}
                     </el-button>
@@ -67,7 +67,7 @@
                         v-if="handlerItem.code != 'stop'"
                         type="text"
                         size="mini"
-                        @click.native="handlerClickBtn(handlerItem, scope.row, handlerItemIndex, scope.$index)"
+                        @click.native.stop="handlerClickBtn(handlerItem, scope.row, handlerItemIndex, scope.$index)"
                     >
                         {{handlerItem.tit}}
                     </el-button>

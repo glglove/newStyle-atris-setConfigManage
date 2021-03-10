@@ -4,27 +4,40 @@
     功能: pageSetModule-attribute-column 设置  组件
 -->
 <style lang="stylus" rel="stylesheet/stylus" scoped>
+@import '../../common-set-style.styl';
+
 .pageSetProperty-attribute-column-cmp {
 }
 </style>
 <template>
-    <div class="pageSetProperty-attribute-column-cmp">
-        <!-- obj: {{obj}} -->
-        columnGrid分栏容器设置组件
-        <div class="set-input-wrap u-f-ajc">
-            <el-button
-                type="text"
-                size="small"
-            >分栏比例:</el-button>
-            <el-input
-                size="mini"
-                style="width: 60%"
-                v-model="columnRatio"
-                @blur="inputBlur"
-                placeholder="分栏比例(如:1-2-1-1)"
-            ></el-input>
-        </div>
-    </div>
+  <div class="pageSetProperty-attribute-column-cmp">
+    <!-- columnRatio： {{ columnRatio }} -->
+    <!-- obj: {{obj}} -->
+    <!-- columnGrid分栏容器设置组件 -->
+    <h2 class="common-cmp-name">{{obj.controlName}}</h2>
+    <!-- <h4 class="common-type-tit">样式设置</h4> -->
+    <ul class="common-listWrap">
+      <el-form-item>
+        <li class="common-item u-f-ac">
+          <span class="common-label ellipsis1">分栏比例</span>
+          <el-input
+            v-model="columnRatio"
+            placeholder="分栏比例(如:1-2-1-1)"
+            class="u-f-s1"
+            size="mini"
+          >
+          </el-input>
+          <el-button
+            class="marginL5"
+            type="primary"
+            size="mini"
+            @click.native="handlerClickBtn"
+            >修改</el-button
+          >
+        </li>
+      </el-form-item>
+    </ul>
+  </div>
 </template>
 <script type="text/ecmascript-6">
 import { REQ_OK } from "@/api/config";
@@ -39,8 +52,9 @@ let flexHash = {
   "flex-two": 2,
   "flex-three": 3,
   "flex-four": 4,
-  "flex-five": 5
+  "flex-five": 5,
 };
+let maxLayoutRote = 5
 export default {
   mixins: [CommonInterfaceMixin],
   props: {
@@ -48,34 +62,34 @@ export default {
       type: Object,
       default: () => {
         return {};
-      }
+      },
     },
     controlType: {
       type: [String, Number],
       default: () => {
         return "";
-      }
+      },
     },
     atrisCode: {
       type: [String],
       default: () => {
         return "";
-      }
-    }
+      },
+    },
   },
   components: {
-    SearchToolsCmp
+    SearchToolsCmp,
   },
   data() {
     return {
-      columnRatio: ""
+      columnRatio: "",
     };
   },
   created() {
-      this.initData()
+    this.initData();
   },
   computed: {
-    ...mapGetters(["pageSetTotalData"])
+    ...mapGetters(["pageSetTotalData"]),
   },
   watch: {
     // columnRatio: {
@@ -83,64 +97,109 @@ export default {
     //     this.changeColumnRatio(newValue);
     //   }
     // }
-    'obj.atrisCode': {
+    "obj.atrisCode": {
       handler(newValue, oldValue) {
         this.initData();
-      }
-    }
+      },
+    },
   },
   methods: {
     //重新刷新获取数据
     _refreshData() {},
-    initData(){
-        let ratioArr = []
-        this.obj.columnObjMap.forEach((item, key) => {
-            ratioArr.push(flexHash[item.layoutClass])
-        })
-        this.columnRatio = ratioArr.join("-")
+    initData() {
+      let ratioArr = [];
+      this.obj.columnObjMap.forEach((item, key) => {
+        ratioArr.push(flexHash[item.layoutClass]);
+      });
+      this.columnRatio = ratioArr.join("-");
     },
-    inputBlur(){
-        this.changeColumnRatio(this.columnRatio)
+    handlerClickBtn() {
+      if(this.columnRatio){
+        this.changeColumnRatio(this.columnRatio);
+      }
+    },
+    validateCustomValue(value, callback){
+      if (value === '') {
+        // callback(new Error('请填写布局比例'));
+        return {
+          code: 0,
+          message: '请填写布局比例'
+        }
+      }
+      let arrValue = value.split("-")
+      for (let i = 0; i < arrValue.length; i++) {
+          let item = arrValue[i]
+          let itemRex = /^[1-5]$/
+          if (!itemRex.test(item)){
+              // callback(new Error(`布局比例在1-${maxLayoutRote}之间`));
+              // return
+            return {
+              code: 0,
+              message: `布局比例在1-${maxLayoutRote}之间`
+            }              
+          }
+      }
+      return {
+        code: 1,
+        message: '验证pass'        
+      }
     },
     changeColumnRatio(columnRatio) {
+      debugger
       let ratioArr = columnRatio.split("-");
+      let name = ratioArr.join(":") + '布局'
       let ratioLength = ratioArr.length;
       let oldColumnLength = this.obj.childrenList.length;
-      if (ratioLength > oldColumnLength) {
-        ratioArr.forEach((toCol, idx) => {
-          if (idx < oldColumnLength) {
-            this.obj.childrenList[idx].span = (toCol / ratioLength) * 24;
-            this.obj.childrenList[idx].controlName = `第${idx}列`;
-            this.obj.childrenList[idx].controlType = `5001-${idx}`;
-            this.obj.columnObjMap[idx].layoutClass = `${flexMap[ratioArr[idx]]}`;
-          } else {
-            this.obj.childrenList.push({
-              span: (toCol / ratioLength) * 24,
-              controlName: `第${idx}列`,
-              atrisCode: getGuid2(),
-              atrisGuid: "",
-              controlType: `5001-${idx}`,
-              childrenList: []
+      if(this.validateCustomValue(columnRatio).code){
+        if (ratioLength >= oldColumnLength) {
+          this.obj.controlName = name
+          ratioArr.forEach((toCol, idx) => {
+            if (idx < oldColumnLength) {
+              this.obj.childrenList[idx].span = (toCol / ratioLength) * 24;
+              this.obj.childrenList[idx].controlName = `第${idx+1}列`;
+              this.obj.childrenList[idx].controlType = `5001-${idx+1}`;
+              this.obj.columnObjMap[idx].layoutClass = `${
+                flexMap[ratioArr[idx]-1]
+              }`;
+            } else {
+              this.obj.childrenList.push({
+                span: (toCol / ratioLength) * 24,
+                controlName: `第${idx}列`,
+                atrisCode: getGuid2(),
+                atrisGuid: "",
+                controlType: `5001-${idx}`,
+                childrenList: [],
+              });
+              this.obj.columnObjMap.push({
+                iStyle: {},
+                iClass: [],
+                layoutClass: `${flexMap[ratioArr[idx]-1]}`,
+                itemList: [],
+              });
+            }
+          });
+        } else {
+          this.$confirm(`此修改将删除此分栏中的"${ratioLength + 1}-${oldColumnLength}"列,删除后这些列用户已填写的数据将一并被删除`, "提示", {
+            confirmButtonText: '删除',
+            cancelButtonText: '取消'
+          }).then(() => {
+            this.obj.controlName = name
+            this.obj.childrenList = this.obj.childrenList.slice(0, ratioLength);
+            this.obj.columnObjMap = this.obj.columnObjMap.slice(0, ratioLength);
+            ratioArr.forEach((toCol, idx) => {
+              this.obj.childrenList[idx].span = (toCol / ratioLength) * 24;
+              this.obj.childrenList[idx].controlName = `第${idx}列`;
+              this.obj.childrenList[idx].controlType = `5001-${idx}`;
+              this.obj.columnObjMap[idx].layoutClass = flexMap[ratioArr[idx]-1];
             });
-            this.obj.columnObjMap.push({
-              iStyle: {},
-              iClass: [],
-              layoutClass: `${flexMap[ratioArr[idx]]}`,
-              itemList: []
-            });
-          }
-        });
-      } else {
-        this.obj.childrenList = this.obj.childrenList.slice(0, ratioLength);
-        this.obj.columnObjMap = this.obj.columnObjMap.slice(0, ratioLength);
-        ratioArr.forEach((toCol, idx) => {
-          this.obj.childrenList[idx].span = (toCol / ratioLength) * 24;
-          this.obj.childrenList[idx].controlName = `第${idx}列`;
-          this.obj.childrenList[idx].controlType = `5001-${idx}`;
-          this.obj.columnObjMap[idx].layoutClass = flexMap[ratioArr[idx]];
-        });
+          }).catch(() => {
+
+          }) 
+        }
+      }else {
+        this.$message.info(`${this.validateCustomValue(columnRatio).message}`)
       }
-    }
-  }
+    },
+  },
 };
 </script>

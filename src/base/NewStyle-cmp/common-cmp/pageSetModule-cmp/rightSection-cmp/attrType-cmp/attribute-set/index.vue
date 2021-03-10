@@ -11,16 +11,14 @@
 <template>
     <div class="pageSetProperty-attribute-cmp">
         <!-- pageSetModule-attribute 设置  组件 -->
-        obj: {{obj}}
-        <el-form>
-            <component
-                :is="getSetComponentUtils(controlType)"
-                :controlType="controlType"
-                :atrisCode="atrisCode"
-                :obj.sync="obj"
-            >
-            </component>
-        </el-form>
+        <!-- obj: {{obj}} -->
+        <component
+            :is="getSetComponentUtils(controlType)"
+            :controlType="controlType"
+            :atrisCode="atrisCode"
+            :obj.sync="obj"
+        >
+        </component>
     </div>
 </template>
 <script type="text/ecmascript-6">

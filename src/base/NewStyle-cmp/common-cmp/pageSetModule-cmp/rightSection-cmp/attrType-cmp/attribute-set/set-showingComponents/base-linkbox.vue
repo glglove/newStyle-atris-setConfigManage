@@ -4,6 +4,7 @@
     功能: showingcomponents: linkbox 设置  组件
 -->
 <style lang="stylus" rel="stylesheet/stylus" scoped>
+@import "../../common-set-style.styl";
 .showingcomponents-linkbox-cmp {
 
 }

@@ -4,6 +4,7 @@
     功能: grid-element: barEcharts-grid 设置  组件
 -->
 <style lang="stylus" rel="stylesheet/stylus" scoped>
+@import "../../common-set-style.styl";
 .grid-element-barEcharts-cmp {
 
 }

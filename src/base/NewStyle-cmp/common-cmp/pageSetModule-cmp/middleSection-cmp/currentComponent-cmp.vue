@@ -26,7 +26,7 @@
 </style>
 <template>
     <div class="currentCmp-cmp">
-        obj: {{obj}}
+        <!-- obj: {{obj}} -->
         <div class="item-titwrap u-f-jsb">
             <span class="tit" v-if="!ismultiColumnContainerFn(obj.controlType)">{{obj.controlName}}</span>
             <span class="iconwrap">

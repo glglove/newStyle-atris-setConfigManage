@@ -262,10 +262,10 @@
             // this.$nextTick(() => {
                 this.$bus.$on("leftClickItem", (obj, callback) => {
                     // 给 点击的 obj 添加唯一码
-                    // obj.atrisCode = getGuid2()
-                    // obj.atrisGuid = getGuid()    
-                    this.$set(obj, 'atrisGuid', getGuid())
-                    this.$set(obj, 'atrisCode', getGuid2())                                                        
+                    // obj.atrisCode = getGuid2(obj.controlType)
+                    // obj.atrisGuid = getGuid(obj.controlType)    
+                    this.$set(obj, 'atrisGuid', getGuid(obj.controlType))
+                    this.$set(obj, 'atrisCode', getGuid2(obj.controlType))                                                        
                     this.currentPageSetData.currentPageSetDataList.push(JSON.parse(JSON.stringify(obj)))
                     this.currentClickItemObjIndex = (this.currentPageSetData.currentPageSetDataList.length)-1
                     this.saveCurrentPageSetData()
@@ -429,8 +429,12 @@
                     })
 
                     // 锚点定位到此
-                    let top = $(targetStr).offset().top
-                    $('.middleCmp .containerBox').animate({scrollTop: (top-50)}, 500)
+                    try {
+                        let top = $(targetStr).offset().top
+                        $('.middleCmp .containerBox').animate({scrollTop: (top-50)}, 500)
+                    } catch (error) {
+                        
+                    }
                 }                
             },  
             emitRight(targetCode, obj, controlType){
@@ -508,10 +512,10 @@
             // 添加 唯一码
             addGuid(obj){
                 if(obj.atrisCode){
-                    // obj.atrisCode = getGuid2()
-                    // obj.atrisGuid = getGuid()                    
-                    this.$set(obj, 'atrisGuid', getGuid())
-                    this.$set(obj, 'atrisCode', getGuid2())                      
+                    // obj.atrisCode = getGuid2(obj.controlType)
+                    // obj.atrisGuid = getGuid(obj.controlType)                    
+                    this.$set(obj, 'atrisGuid', getGuid(obj.controlType))
+                    this.$set(obj, 'atrisCode', getGuid2(obj.controlType))                      
                 }
                 if(obj.childrenList && obj.childrenList.length){
                     obj.childrenList.forEach((item) => {
@@ -640,10 +644,10 @@
                 if(evt.added){
                     // 给拖拽后的数据对象生成  唯一码
                     let obj = evt.added.element
-                    // obj.atrisCode = getGuid2()
-                    // obj.atrisGuid = getGuid()
-                    this.$set(obj, 'atrisCode', getGuid2())
-                    this.$set(obj, 'atrisGuid', getGuid())
+                    // obj.atrisCode = getGuid2(obj.controlType)
+                    // obj.atrisGuid = getGuid(obj.controlType)
+                    this.$set(obj, 'atrisCode', getGuid2(obj.controlType))
+                    this.$set(obj, 'atrisGuid', getGuid(obj.controlType))
                     console.log(`vuedragable拖拽完成后${obj.controlName}添加了唯一码（atrisCode 、 atrisGuid）打印`, obj.atrisCode, obj.atrisGuid)
                 }else if(evt.moved) {
 

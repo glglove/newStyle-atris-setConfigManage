@@ -307,10 +307,10 @@ export default {
       if (evt.added) {
         // 给拖拽后的数据对象生成  唯一码
         let obj = evt.added.element;
-        this.$set(obj, "atrisGuid", getGuid());
-        this.$set(obj, "atrisCode", getGuid2());
-        // obj.atrisCode = getGuid2()
-        // obj.atrisGuid = getGuid()
+        this.$set(obj, "atrisGuid", getGuid(obj.controlType));
+        this.$set(obj, "atrisCode", getGuid2(obj.controlType));
+        // obj.atrisCode = getGuid2(obj.controlType)
+        // obj.atrisGuid = getGuid(obj.controlType)
         console.log(
           `vuedragable拖拽完成后${obj.controlName}添加了唯一码（atrisCode 、 atrisGuid）打印`,
           obj.atrisCode,
@@ -407,7 +407,14 @@ export default {
             hide: { str: [".cmp-item-handler-"] },
           }
         );
-      }
+        // 锚点定位到此
+        try {
+            let top = $(targetStr).offset().top
+            $('.middleCmp .containerBox').animate({scrollTop: (top-50)}, 500)
+        } catch (error) {
+            
+        }          
+      }    
     },
     clickCmpItem(e, obj, index) {
       // debugger
@@ -503,8 +510,8 @@ export default {
     // 添加 唯一码
     addGuid(obj) {
       if (obj.atrisCode) {
-        obj.atrisCode = getGuid2();
-        obj.atrisGuid = getGuid();
+        obj.atrisCode = getGuid2(obj.controlType);
+        obj.atrisGuid = getGuid(obj.controlType);
       }
       if (obj.childrenList && obj.childrenList.length) {
         obj.childrenList.forEach((item) => {

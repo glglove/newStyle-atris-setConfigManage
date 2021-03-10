@@ -11,7 +11,11 @@
     .leftTree {
     }
 }
-
+>>>.pageSetDialog {
+    .el-dialog__body {
+        padding: 0 !important
+    }
+}
 .rightTable {
     // margin-left: 510px;
 }
@@ -357,232 +361,252 @@
                 </save-footer>
         </el-dialog>
 
-       <!--table 新增/编辑--->
-        <atris-drawer-cmp
-            v-if="showAddTableDialog"
-            :tit="dialogTitTable"    
-            :dialog.sync="showAddTableDialog"        
-            @emitClickSureBtn="saveDialogTable"
-        >            
-            <!-- pageData: {{pageData}} -->
-            <el-form 
-                ref="dialogForm_table" 
-                slot="container-slot"
-                :model="currentRowTable" 
-                :rules="dialogTableObjRules" 
-                label-width="150px">
-                <div class="item-container">
-                    <el-form-item
-                        label="模块"
-                        prop="modulecode"
-                    >
-                        <el-select 
-                            clearable
-                            size="small"
-                            style="width: 200px"
-                            v-model="currentRowTable.modulecode"
+        <!--table 新增/编辑--->
+        <div v-if="showAddTableDialog">
+            <atris-drawer-cmp
+                v-if="showAddTableDialog"
+                :tit="dialogTitTable"    
+                :appendToBody="true"
+                :dialog.sync="showAddTableDialog"        
+                @emitClickSureBtn="saveDialogTable"
+            >            
+                <!-- pageData: {{pageData}} -->
+                <el-form 
+                    ref="dialogForm_table" 
+                    slot="container-slot"
+                    :model="currentRowTable" 
+                    :rules="dialogTableObjRules" 
+                    label-width="150px">
+                    <div class="item-container">
+                        <el-form-item
+                            label="模块"
+                            prop="modulecode"
                         >
-                            <el-option
-                                v-for="(item, key) in commonDataSourceConfig.ModulesetEnum"
-                                :key="key"
-                                :label="item.moduleName"
-                                :value="item.moduleCode"
+                            <el-select 
+                                clearable
+                                size="small"
+                                style="width: 200px"
+                                v-model="currentRowTable.modulecode"
                             >
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-                </div>  
+                                <el-option
+                                    v-for="(item, key) in commonDataSourceConfig.ModulesetEnum"
+                                    :key="key"
+                                    :label="item.moduleName"
+                                    :value="item.moduleCode"
+                                >
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                    </div>  
 
-                <!-- <div class="item-container">
-                    <el-form-item
-                        label="页面编号"
-                        prop=""
-                    >
-                        <el-input 
-                            placeholder="请输入"
-                            style="width: 200px"
-                        ></el-input>                     
-                    </el-form-item>
-                </div>        -->
-
-                <div class="item-container">
-                    <el-form-item
-                        label="页面名称"
-                        prop="routeName"
-                    >
-                        <el-input 
-                            size="small"
-                            style="width: 200px"
-                            placeholder="请输入"
-                            v-model="currentRowTable.routeName"
-                        ></el-input>
-                    </el-form-item>
-                </div>        
-
-                <!-- <div class="item-container">
-                    <el-form-item
-                        label="页面子类型"
-                        prop=""
-                    >
-                        <el-select 
-                            style="width: 200px"    
+                    <!-- <div class="item-container">
+                        <el-form-item
+                            label="页面编号"
+                            prop=""
                         >
+                            <el-input 
+                                placeholder="请输入"
+                                style="width: 200px"
+                            ></el-input>                     
+                        </el-form-item>
+                    </div>        -->
 
-                        </el-select>
-                    </el-form-item>
-                </div>   -->
-
-
-                <div class="item-container">
-                    <el-form-item
-                        label="样式格式"
-                        prop="templateId"
-                    >
-                        <el-select 
-                            clearable
-                            size="small"
-                            style="width: 200px"
-                            v-model="currentRowTable.templateId"
+                    <div class="item-container">
+                        <el-form-item
+                            label="页面名称"
+                            prop="routeName"
                         >
-                            <el-option
-                                v-for="(item, key) in commonDataSourceConfig.FormTypeEnum"
-                                :key="key"
-                                :label="item.des"
-                                :value="item.type"
+                            <el-input 
+                                size="small"
+                                style="width: 200px"
+                                placeholder="请输入"
+                                v-model="currentRowTable.routeName"
+                            ></el-input>
+                        </el-form-item>
+                    </div>        
+
+                    <!-- <div class="item-container">
+                        <el-form-item
+                            label="页面子类型"
+                            prop=""
+                        >
+                            <el-select 
+                                style="width: 200px"    
                             >
-                            </el-option>
-                        </el-select>                        
-                    </el-form-item>
-                </div>                  
 
-                <!-- pageData: {{pageData}} -->                   
+                            </el-select>
+                        </el-form-item>
+                    </div>   -->
 
-                <div class="item-container">
-                    <el-form-item
-                        label="描述"
-                        prop="description"
-                    >
-                        <el-input 
-                            type="textarea" 
-                            style="width: 200px"
-                            v-model="currentRowTable.description"
-                            placeholder="请输入"></el-input>
-                    </el-form-item>
-                </div>      
 
-                <!-- <div class="item-container">
-                    <el-form-item
-                        label="路由"
-                        prop=""
-                    >
-                        <el-input 
-                            size="small"
-                            style="width: 200px"
-                            placeholder="请输入"
-                        ></el-input>
-                    </el-form-item>
-                </div>   -->
-
-                <div class="item-container">
-                    <el-form-item
-                        label="小图标"
-                        prop="routeIcon"
-                    >
-                        <el-input 
-                            size="small"
-                            style="width: 200px"
-                            placeholder="请输入"
-                            v-model="currentRowTable.routeIcon"
-                        ></el-input>                        
-                    </el-form-item>
-                </div>  
-
-                <div class="item-container">
-                    <el-form-item
-                        label="pc端"
-                        prop="ispc"
-                    >
-                        <el-switch
-                            :inactive-value="0"
-                            :active-value="1"
-                            v-model="currentRowTable.ispc"
+                    <div class="item-container">
+                        <el-form-item
+                            label="样式格式"
+                            prop="templateId"
                         >
-                        </el-switch>
-                    </el-form-item>
-                </div>   
-
-                <div class="item-container">
-                    <el-form-item
-                        label="移动端"
-                        prop="ismobile"
-                    >
-                        <el-switch
-                            :inactive-value="0"
-                            :active-value="1"
-                            v-model="currentRowTable.ismobile"
-                        >
-                        </el-switch>                        
-                    </el-form-item>
-                </div>                                                  
-
-                <div class="item-container">
-                    <el-form-item
-                        label="隐藏"
-                        prop="routeHidden"
-                    >
-                        <el-switch
-                            :inactive-value="0"
-                            :active-value="1"
-                            v-model="currentRowTable.routeHidden"
-                        >
-                        </el-switch>
-                    </el-form-item>
-                </div>                                
-
-                <div class="item-container">
-                    <el-form-item
-                        label="启用/停用"
-                        prop="state"
-                    >
-                        <el-switch
-                            :inactive-value="0"
-                            :active-value="1"
-                            v-model="currentRowTable.state"
-                        >
-                        </el-switch>
-                    </el-form-item>
-                </div>  
-
-                <div class="item-container" v-if="tableEditType == 1">
-                     
-                    <el-form-item
-                        label="关联已有页面配置"
-                        prop="existMetaCode"
-                    >
-                        <el-select 
-                            clearable
-                            size="small"
-                            style="width: 200px"
-                            v-model="currentRowTable.existMetaCode"
-                        >
-                            <el-option
-                                v-for="(item, key) in tableData"
-                                :key="key"
-                                :label="item.routeName"
-                                :value="item.metacode"
+                            <el-select 
+                                clearable
+                                size="small"
+                                style="width: 200px"
+                                v-model="currentRowTable.templateId"
                             >
-                            </el-option>
-                        </el-select>  
-                    </el-form-item>
-                </div>                 
-            </el-form>
-        </atris-drawer-cmp>        
+                                <el-option
+                                    v-for="(item, key) in commonDataSourceConfig.FormTypeEnum"
+                                    :key="key"
+                                    :label="item.des"
+                                    :value="item.type"
+                                >
+                                </el-option>
+                            </el-select>                        
+                        </el-form-item>
+                    </div>                  
+
+                    <!-- pageData: {{pageData}} -->                   
+
+                    <div class="item-container">
+                        <el-form-item
+                            label="描述"
+                            prop="description"
+                        >
+                            <el-input 
+                                type="textarea" 
+                                style="width: 200px"
+                                v-model="currentRowTable.description"
+                                placeholder="请输入"></el-input>
+                        </el-form-item>
+                    </div>      
+
+                    <!-- <div class="item-container">
+                        <el-form-item
+                            label="路由"
+                            prop=""
+                        >
+                            <el-input 
+                                size="small"
+                                style="width: 200px"
+                                placeholder="请输入"
+                            ></el-input>
+                        </el-form-item>
+                    </div>   -->
+
+                    <div class="item-container">
+                        <el-form-item
+                            label="小图标"
+                            prop="routeIcon"
+                        >
+                            <el-input 
+                                size="small"
+                                style="width: 200px"
+                                placeholder="请输入"
+                                v-model="currentRowTable.routeIcon"
+                            ></el-input>                        
+                        </el-form-item>
+                    </div>  
+
+                    <div class="item-container">
+                        <el-form-item
+                            label="pc端"
+                            prop="ispc"
+                        >
+                            <el-switch
+                                :inactive-value="0"
+                                :active-value="1"
+                                v-model="currentRowTable.ispc"
+                            >
+                            </el-switch>
+                        </el-form-item>
+                    </div>   
+
+                    <div class="item-container">
+                        <el-form-item
+                            label="移动端"
+                            prop="ismobile"
+                        >
+                            <el-switch
+                                :inactive-value="0"
+                                :active-value="1"
+                                v-model="currentRowTable.ismobile"
+                            >
+                            </el-switch>                        
+                        </el-form-item>
+                    </div>                                                  
+
+                    <div class="item-container">
+                        <el-form-item
+                            label="隐藏"
+                            prop="routeHidden"
+                        >
+                            <el-switch
+                                :inactive-value="0"
+                                :active-value="1"
+                                v-model="currentRowTable.routeHidden"
+                            >
+                            </el-switch>
+                        </el-form-item>
+                    </div>                                
+
+                    <div class="item-container">
+                        <el-form-item
+                            label="启用/停用"
+                            prop="state"
+                        >
+                            <el-switch
+                                :inactive-value="0"
+                                :active-value="1"
+                                v-model="currentRowTable.state"
+                            >
+                            </el-switch>
+                        </el-form-item>
+                    </div>  
+
+                    <div class="item-container" v-if="tableEditType == 1">
+                        
+                        <el-form-item
+                            label="关联已有页面配置"
+                            prop="existMetaCode"
+                        >
+                            <el-select 
+                                clearable
+                                size="small"
+                                style="width: 200px"
+                                v-model="currentRowTable.existMetaCode"
+                            >
+                                <el-option
+                                    v-for="(item, key) in tableData"
+                                    :key="key"
+                                    :label="item.routeName"
+                                    :value="item.metacode"
+                                >
+                                </el-option>
+                            </el-select>  
+                        </el-form-item>
+                    </div>                 
+                </el-form>
+            </atris-drawer-cmp>  
+        </div>
+
+        <!---table的设置---->
+        <div class="pageSetDialogWrap" v-if="showPageSetDialog">
+            <el-dialog
+                :title="currentPageSetTit"
+                :visible.sync="showPageSetDialog"
+                fullscreen
+                append-to-body
+                custom-class="pageSetDialog"
+                :close-on-click-modal="false"
+            >
+                <page-set-module-cmp
+                    :objP.sync="currentPageSetRow"                
+                ></page-set-module-cmp>
+            </el-dialog>  
+        </div>    
     </div>
 </template>
 <script type="text/ecmascript-6">
 import CommonTableCmp from '@/base/NewStyle-cmp/common-cmp/tableCommon-cmp/tableCommon-cmp'
 import leftTreeCmp from '@/components/manage/companySetting/systemSetting/pageManage/leftTree-cmp'
- import SaveFooter from '@/base/Save-footer/index'
+import SaveFooter from '@/base/Save-footer/index'
+import pageSetModuleCmp from '@/base/NewStyle-cmp/common-cmp/pageSetModule-cmp/index'
 import { 
     REQ_OK
 } from '@/api/config'
@@ -602,7 +626,8 @@ export default {
         SaveFooter,
         SearchToolsCmp,
         CommonTableCmp,
-        leftTreeCmp
+        leftTreeCmp,
+        pageSetModuleCmp
     },
     data() {
         return {
@@ -764,7 +789,14 @@ export default {
                     tit: '移动归属',
                     baseKey:'c9f0f895',
                     stopOrUsingTitKey: 'routeName'            
-                },                              
+                },  
+                {
+                    no: 6,
+                    code: 'set',
+                    tit: '设置',
+                    baseKey:'c9f0f895',
+                    stopOrUsingTitKey: 'routeName'            
+                },                                            
             ], 
             tableData: [],
             outShowSearchInput: true,
@@ -827,6 +859,9 @@ export default {
                     {required: true, message: '请输入描述', trrigger: 'blur'}
                 ],
             },
+            currentPageSetTit: '',
+            showPageSetDialog: false,
+            currentPageSetRow: {}
         }
     },
     created(){
@@ -962,6 +997,9 @@ export default {
             this.currentRowTable = row
             let code = btn.code || ''
             switch (code) {
+                case 'set':
+                    this.handlerSetPage(row)
+                break
                 case 'edit':
                     this.handlerEditPage(row)             
                 break
@@ -1089,9 +1127,16 @@ export default {
             })
             this.showTableDialog()
         },  
+        // 设置页面
+        handlerSetPage(row){
+            this.currentPageSetTit =  `${row.routeName}页面设置`
+            this.currentPageSetRow = JSON.parse(JSON.stringify(row))
+            this.showPageSetDialog = true
+        },
         // tablelist 编辑
         handlerEditPage(row){
             debugger
+            alert(1)
             this.dialogTitTable = "编辑"
             this.tableEditType = 2
             this.currentTableHasPage = true

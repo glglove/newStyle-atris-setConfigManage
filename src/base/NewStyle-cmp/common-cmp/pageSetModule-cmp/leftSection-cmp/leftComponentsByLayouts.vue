@@ -459,6 +459,7 @@
                 }
             },             
             yes() {
+                debugger
                 this.$refs['ruleForm'].validate((valid) => {
                     if (valid) {
                         let value = this.form.layoutRatio
@@ -469,21 +470,22 @@
                             return parseInt(pre) + parseInt(current)
                         })
                         let controlName = arrValue.join(':')
+                        let num = 1
                         console.log("-------total------------",total)
                         for (let i = 0; i < arrValue.length; i++) {
-                            let index =( parseInt(arrValue[i]) - 1)
+                            num +=1
                             columnObjMap.push({
-                                layoutClass: flexMap[index],
+                                layoutClass: flexMap[arrValue[i]-1],
                                 itemList: [],
                                 iStyle:{},
                                 iClass:[]
                             })
                             childrenList.push({
                                 span: (arrValue[i]/total)*24,
-                                controlName: `${controlName}——第${++i}列`,
+                                controlName: `${controlName}——第${num}列`,
                                 atrisCode: getGuid2(),
                                 atrisGuid:'',
-                                controlType: `5001-${++i}`,
+                                controlType: `5001-${num}`,
                                 childrenList: [
 
                                 ]

@@ -4,6 +4,7 @@
     功能: pageSetModule-attribute-input 设置  组件
 -->
 <style lang="stylus" rel="stylesheet/stylus" scoped>
+@import "../../common-set-style.styl";
 .pageSetProperty-attribute-input-cmp {
 
 }

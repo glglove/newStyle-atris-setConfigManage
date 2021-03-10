@@ -7,26 +7,35 @@
 .pageSetProperty-cmp {
     height: calc(100vh - 130px);
     background: #F2F3F5;
-    padding: 10px;
     box-sizing:border-box;
+    overflow: hidden;
+    .tabWrap {
+        padding: 0 10px;
+    }
+}
+.setContainer {
+    height: calc(100% - 60px);
     overflow: auto;
+    padding: 0 10px 10px 10px;
+    box-sizing: border-box;
 }
 </style>
 <template>
     <div class="pageSetProperty-cmp">
-        <el-tabs v-model="activeTab" @tab-click="handleClickTab">
-            <el-tab-pane label="属性设置" name="attr"></el-tab-pane>
-            <el-tab-pane label="事件设置" name="event"></el-tab-pane>
-            <!-- <el-tab-pane label="角色管理" name="third">角色管理</el-tab-pane>
-            <el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane> -->
+        <el-tabs class="tabWrap" v-model="activeTab" @tab-click="handleClickTab">
+            <el-tab-pane label="设置" name="attrSet"></el-tab-pane>
+            <el-tab-pane label="样式" name="styleSet"></el-tab-pane>
+            <el-tab-pane label="高级" name="highSet"></el-tab-pane>
         </el-tabs>
-        <div class="setAttibuteContainer">
-            <component
-                :is="currentAttrType(activeTab)"
-                :controlType="currentControlType"
-                :obj.sync="currentObj"
-                atrisCode="currentAtrisCode"
-            ></component>
+        <div class="setContainer">
+            <el-form>
+                <component
+                    :is="currentAttrType(activeTab)"
+                    :controlType="currentControlType"
+                    :obj.sync="currentObj"
+                    atrisCode="currentAtrisCode"
+                ></component>
+            </el-form>
         </div>
     </div>
 </template>
@@ -39,7 +48,8 @@ import {
 } from '@/utils/CommonInterfaceMixin'
 import SearchToolsCmp from '@/base/NewStyle-cmp/common-cmp/searchTool-cmp'
 import AttributeSetCmp from './attrType-cmp/attribute-set/index'
-import EventSetCmp from './attrType-cmp/event-set/index'
+import StyleSetCmp from './attrType-cmp/style-set/index'
+import HighSetCmp from './attrType-cmp/high-set/index'
 export default {
     mixins: [CommonInterfaceMixin],
     props: {
@@ -48,12 +58,13 @@ export default {
     components: {
         SearchToolsCmp,
         AttributeSetCmp,
-        EventSetCmp
+        StyleSetCmp,
+        HighSetCmp
     },
     data() {
         return {
             loading: false,
-            activeTab: 'attr',
+            activeTab: 'attrSet',
             currentControlType: '',
             currentAtrisCode: '',
             currentObj: {}
@@ -97,10 +108,12 @@ export default {
         }, 
         currentAttrType(attrType){
             switch(attrType){
-                case 'attr':
+                case 'attrSet':
                  return  AttributeSetCmp;
-                case 'event':
-                    return EventSetCmp;
+                case 'styleSet':
+                    return StyleSetCmp;
+                case 'highSet':
+                    return HighSetCmp;                    
                 default:
                     return AttributeSetCmp
             }

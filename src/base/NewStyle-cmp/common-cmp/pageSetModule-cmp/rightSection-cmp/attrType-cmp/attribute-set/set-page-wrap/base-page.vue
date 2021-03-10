@@ -4,6 +4,7 @@
     功能: page外层 设置  组件
 -->
 <style lang="stylus" rel="stylesheet/stylus" scoped>
+@import "../../common-set-style.styl";
 .page-wrap-cmp {
 
 }
