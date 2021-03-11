@@ -70,7 +70,7 @@ export default {
         return "";
       },
     },
-    atrisCode: {
+    minUnicode: {
       type: [String],
       default: () => {
         return "";
@@ -97,7 +97,7 @@ export default {
     //     this.changeColumnRatio(newValue);
     //   }
     // }
-    "obj.atrisCode": {
+    "obj.minUnicode": {
       handler(newValue, oldValue) {
         this.initData();
       },
@@ -157,7 +157,8 @@ export default {
             if (idx < oldColumnLength) {
               this.obj.childrenList[idx].span = (toCol / ratioLength) * 24;
               this.obj.childrenList[idx].controlName = `第${idx+1}列`;
-              this.obj.childrenList[idx].controlType = `5001-${idx+1}`;
+              this.obj.childrenList[idx].controlType = 5001;
+              this.obj.childrenList[idx].sortid = idx+1;
               this.obj.columnObjMap[idx].layoutClass = `${
                 flexMap[ratioArr[idx]-1]
               }`;
@@ -165,9 +166,10 @@ export default {
               this.obj.childrenList.push({
                 span: (toCol / ratioLength) * 24,
                 controlName: `第${idx}列`,
-                atrisCode: getGuid2(),
-                atrisGuid: "",
-                controlType: `5001-${idx}`,
+                minUnicode: getGuid2(),
+                longUnicode: "",
+                controlType: 5001,
+                sortid: idx,
                 childrenList: [],
               });
               this.obj.columnObjMap.push({
@@ -179,7 +181,8 @@ export default {
             }
           });
         } else {
-          this.$confirm(`此修改将删除此分栏中的"${ratioLength + 1}-${oldColumnLength}"列,删除后这些列用户已填写的数据将一并被删除`, "提示", {
+          let num = (oldColumnLength - ratioLength) == 1 ? (ratioLength + 1) : `${ratioLength + 1}-${oldColumnLength}`
+          this.$confirm(`此修改将删除此分栏中的第"${num}"列,删除后这些列用户已填写的数据将一并被删除`, "提示", {
             confirmButtonText: '删除',
             cancelButtonText: '取消'
           }).then(() => {
@@ -189,7 +192,8 @@ export default {
             ratioArr.forEach((toCol, idx) => {
               this.obj.childrenList[idx].span = (toCol / ratioLength) * 24;
               this.obj.childrenList[idx].controlName = `第${idx}列`;
-              this.obj.childrenList[idx].controlType = `5001-${idx}`;
+              this.obj.childrenList[idx].controlType = 5001;
+              this.obj.childrenList[idx].sortid = idx;
               this.obj.columnObjMap[idx].layoutClass = flexMap[ratioArr[idx]-1];
             });
           }).catch(() => {

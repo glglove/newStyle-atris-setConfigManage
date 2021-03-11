@@ -79,13 +79,24 @@
 </style>
 <template>
     <div class="pageSetModule-cmp">
+        resConfigArr: {{resConfigArr}}
         <div class="topWrap u-f-jsb u-f-ac">
             <div class="leftBox">
                 <h4>页面设置页</h4>
             </div>
             <div class="rightBox">
-                <el-button type="info" size="mini" disabled>预览</el-button>
-                <el-button type="primary" size="mini">保存</el-button>
+                <el-button 
+                    type="info" 
+                    size="mini" 
+                    disabled
+                    @click.native="previewSetPage"
+                >预览</el-button>
+                <el-button 
+                    type="primary" 
+                    size="mini"
+                    :disabled="!pageSetTotalData.pageSetTotalDataList.length"
+                    @click.native="savePageSetConfigBtn"
+                >保存</el-button>
             </div>
         </div>
         <div class="containerWrap u-f-jc">
@@ -116,17 +127,20 @@
                 </div>
                 <left-page-setmodule-cmp
                     class="leftSetCmpModule"
-                    :obj="objP"
+                    :objP="objP"
                 ></left-page-setmodule-cmp>
             </div>
             <div class="container-right u-f-jst u-f-g1" :class="leftCmpBoxShow?'':'open'">
                 <div class="setMainBox u-f-g1 u-f-s1">
-                    <middle-page-setmodule-cmp></middle-page-setmodule-cmp>
+                    <middle-page-setmodule-cmp
+                        :objP="objP"
+                    ></middle-page-setmodule-cmp>
                 </div>
                 <div class="setPropertyBox">
                     <right-page-setproperty-cmp
                         ref="rightPageSetpropertyCmp"
                         class="rightSetCmpModule"
+                        :objP="objP"
                     ></right-page-setproperty-cmp>
                 </div>
             </div>
@@ -138,7 +152,8 @@ import {
     REQ_OK
 } from '@/api/config'
 import { 
-    getControlInfo
+    getControlInfo,
+    savePageSetConfigInfo
 } from '@/api/systemManage'
 import { 
     CommonInterfaceMixin
@@ -169,7 +184,8 @@ export default {
     },
     data() {
         return {
-            currentNavTit: '组件库'
+            currentNavTit: '组件库',
+            resConfigArr: []
         }
     },
     created(){
@@ -178,7 +194,9 @@ export default {
     computed:{
       ...mapGetters([
         'leftCmpBoxShow',
-        'currentLeftNavType'
+        'currentLeftNavType',
+        'pageSetTotalData',
+        'currentsetPageCode'
       ]),
     },
     watch:{
@@ -223,7 +241,53 @@ export default {
                 navType: this.currentLeftNavType,
                 flag: false
             })
-        },        
+        },
+        // 预览
+        previewSetPage(){
+
+        },  
+        savePageSetConfigInfo(){
+            let params = {
+                pagecode: this.currentsetPageCode,
+                list: this.resConfigArr
+            }
+            savePageSetConfigInfo(params).then(res => {
+                if(res && res.data.State === REQ_OK){
+                    this.$message({
+                        type: 'success',
+                        message: '保存成功'
+                    })
+                }
+            })
+        },
+        savePageSetConfigBtn(){
+            this.resConfigArr = []
+            this.getSavePageSetData(1, this.pageSetTotalData.pageSetTotalDataList, this.resConfigArr)
+            // 防抖操作
+            this.$debounce(this.savePageSetConfigInfo())
+        },   
+        getSavePageSetData(upIsPage, arr, resConfigArr){
+            if(arr.length) {
+                // let resArr = []
+                arr.forEach((item, key) => {
+                    resConfigArr.push({
+                        controlType: item.controlType,
+                        minUnicode: item.minUnicode,
+                        longUnicode: item.longUnicode,
+                        uplsPage: upIsPage,
+                        childrenList: [],
+                        pageSetUp: item.pageSetUp || {},
+                        pageStyle: item.pageStyle || {},
+                        pageHighSetUp: item.pageHighSetUp || {}
+                    })
+                    if(item.childrenList.length){
+                        this.getSavePageSetData(0, item.childrenList, resConfigArr[key].childrenList)
+                    }
+                })
+                
+            }
+            
+        }
     }
 }
 </script>

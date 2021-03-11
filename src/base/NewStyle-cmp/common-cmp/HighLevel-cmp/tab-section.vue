@@ -138,8 +138,8 @@ export default {
                         layoutClass: "flex-one" 
                     }                   
                 ],                       
-                atrisCode: getGuid2(5001),
-                atrisGuid: getGuid(5001),
+                minUnicode: getGuid2(5001),
+                longUnicode: getGuid(5001),
                 atrisIcon: '',
                 atrisTitle: '选项卡(一列容器)',
                 atrisComponentType: 'grid-simple',
@@ -168,8 +168,8 @@ export default {
                                 layoutClass: "flex-one" 
                             }                   
                         ],                       
-                        atrisCode: getGuid2(5001),
-                        atrisGuid: getGuid(5001),
+                        minUnicode: getGuid2(5001),
+                        longUnicode: getGuid(5001),
                         atrisIcon: '',
                         atrisTitle: '选项卡(一列容器)',
                         atrisComponentType: 'grid-simple',
@@ -197,8 +197,8 @@ export default {
         },    
         addTabSectionCode(){
             obj.atrisChildrenList.forEach((item, key) => {
-                item.atrisCode = getGuid2(item.controlType)
-                item.atrisGuid = getGuid(item.controlType)
+                item.minUnicode = getGuid2(item.controlType)
+                item.longUnicode = getGuid(item.controlType)
             })
         },                   
         //evt里面有几个值，一个evt.added 和evt.removed,evt.moved  可以分别知道移动元素的ID和删除元素的ID
@@ -208,11 +208,11 @@ export default {
             if(evt.added){
                 // 给拖拽后的选项卡数据对象生成  唯一码
                 let obj = evt.added.element
-                // obj.atrisCode = getGuid2(obj.controlType)
-                // obj.atrisGuid = getGuid(obj.controlType)
-                this.$set(obj, 'atrisGuid', getGuid(obj.controlType))
-                this.$set(obj, 'atrisCode', getGuid2(obj.controlType))                
-                console.log("vuedragable拖拽完成后添加了唯一码（atrisCode 、 atrisGuid）打印", obj.atrisCode, obj.atrisGuid)
+                // obj.minUnicode = getGuid2(obj.controlType)
+                // obj.longUnicode = getGuid(obj.controlType)
+                this.$set(obj, 'longUnicode', getGuid(obj.controlType))
+                this.$set(obj, 'minUnicode', getGuid2(obj.controlType))                
+                console.log("vuedragable拖拽完成后添加了唯一码（minUnicode 、 longUnicode）打印", obj.minUnicode, obj.longUnicode)
                 // 给选项卡里面的一列布局组件添加 唯一码
                 this.addTabSectionCode(obj)
             }else if(evt.moved) {

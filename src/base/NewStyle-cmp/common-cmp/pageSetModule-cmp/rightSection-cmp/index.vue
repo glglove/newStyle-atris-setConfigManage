@@ -22,18 +22,19 @@
 </style>
 <template>
     <div class="pageSetProperty-cmp">
+        <!-- currentObj: {{currentObj}} -->
         <el-tabs class="tabWrap" v-model="activeTab" @tab-click="handleClickTab">
             <el-tab-pane label="设置" name="attrSet"></el-tab-pane>
             <el-tab-pane label="样式" name="styleSet"></el-tab-pane>
             <el-tab-pane label="高级" name="highSet"></el-tab-pane>
         </el-tabs>
         <div class="setContainer">
-            <el-form>
+            <el-form :model="currentObj">
                 <component
                     :is="currentAttrType(activeTab)"
                     :controlType="currentControlType"
                     :obj.sync="currentObj"
-                    atrisCode="currentAtrisCode"
+                    minUnicode="currentAtrisCode"
                 ></component>
             </el-form>
         </div>
@@ -53,7 +54,12 @@ import HighSetCmp from './attrType-cmp/high-set/index'
 export default {
     mixins: [CommonInterfaceMixin],
     props: {
-       
+        objP: {
+            type: Object,
+            default: () => {
+                return {}
+            }
+        }       
     },
     components: {
         SearchToolsCmp,
@@ -74,22 +80,22 @@ export default {
         this.$bus.$on("emitFromMiddleSection", (emitObj) => {
             // debugger
             let {
-                atrisCode,
+                minUnicode,
                 obj,
                 controlType
             } = emitObj
             this.currentControlType = controlType
-            this.currentAtrisCode = atrisCode
+            this.currentAtrisCode = minUnicode
             this.currentObj = obj
         })
         this.$bus.$on("emitFromProgramTree", (emitObj) => {
             let {
-                atrisCode,
+                minUnicode,
                 obj,
                 controlType
             } = emitObj
             this.currentControlType = controlType
-            this.currentAtrisCode = atrisCode
+            this.currentAtrisCode = minUnicode
             this.currentObj = obj            
         })
     },

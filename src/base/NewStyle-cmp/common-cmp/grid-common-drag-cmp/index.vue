@@ -144,17 +144,17 @@
             <div
               v-for="(item, index) in obj.childrenList"
               :key="index + 1"
-              :class="[`cmpBox_${item.atrisCode}`, 'cmpItemBox']"
+              :class="[`cmpBox_${item.minUnicode}`, 'cmpItemBox']"
             >
               <!-- <el-button type="primary" size="mini">{{item.controlName}}</el-button> -->
               <div
                 :class="[
                   'cmp-item',
-                  `cmp-item-${item.atrisCode}`,
+                  `cmp-item-${item.minUnicode}`,
                   'atris-selectable',
                   'atris-hoverable',
                 ]"
-                :data-atriscode="`${item.atrisCode}`"
+                :data-minunicode="`${item.minUnicode}`"
                 @click="clickCmpItem($event, item, index)"
                 @mouseover.stop="mouseoverCmpItem($event, item, index)"
               >
@@ -172,9 +172,9 @@
                 <div
                   :class="[
                     'cmp-item-handlerBox',
-                    `cmp-item-handler-${item.atrisCode}`,
+                    `cmp-item-handler-${item.minUnicode}`,
                   ]"
-                  :data-atriscode="`${item.atrisCode}`"
+                  :data-minunicode="`${item.minUnicode}`"
                 >
                   <el-tooltip
                     effect="dark"
@@ -221,6 +221,10 @@ import {
   cancelElementAttribute,
   getDataObj,
 } from "@/utils/dom.js";
+import { isEmpty } from '@/utils/validate.js'
+import {
+  getComponentsAttr
+} from '@/api/systemManage.js'
 import Vuedraggable from "vuedraggable";
 import $ from "jquery";
 import { REQ_OK } from "@/api/config";
@@ -266,7 +270,7 @@ export default {
     this.$bus.$on("progressTreeEmitClick", (data) => {
       debugger;
       this.currentTreeClickObj = data;
-      this.programTreeEmit(this.currentTreeClickObj.atrisCode);
+      this.programTreeEmit(this.currentTreeClickObj.minUnicode);
     });
   },
   watch: {},
@@ -286,7 +290,10 @@ export default {
         // ghostClass: "ghost"
       };
     },
-    ...mapGetters(["pageSetTotalData"]),
+    ...mapGetters([
+      "pageSetTotalData",
+      "currentsetPageCode"
+    ]),
   },
   methods: {
     getComponentUtils(controlType) {
@@ -307,19 +314,19 @@ export default {
       if (evt.added) {
         // 给拖拽后的数据对象生成  唯一码
         let obj = evt.added.element;
-        this.$set(obj, "atrisGuid", getGuid(obj.controlType));
-        this.$set(obj, "atrisCode", getGuid2(obj.controlType));
-        // obj.atrisCode = getGuid2(obj.controlType)
-        // obj.atrisGuid = getGuid(obj.controlType)
+        this.$set(obj, "longUnicode", getGuid(obj.controlType));
+        this.$set(obj, "minUnicode", getGuid2(obj.controlType));
+        // obj.minUnicode = getGuid2(obj.controlType)
+        // obj.longUnicode = getGuid(obj.controlType)
         console.log(
-          `vuedragable拖拽完成后${obj.controlName}添加了唯一码（atrisCode 、 atrisGuid）打印`,
-          obj.atrisCode,
-          obj.atrisGuid
+          `vuedragable拖拽完成后${obj.controlName}添加了唯一码（minUnicode 、 longUnicode）打印`,
+          obj.minUnicode,
+          obj.longUnicode
         );
       } else if (evt.moved) {
       } else if (evt.removed) {
       }
-      // 以下可以使得 拖拽完成后 template模板中绑定的 atrisCode 值能及时绑定上去
+      // 以下可以使得 拖拽完成后 template模板中绑定的 minUnicode 值能及时绑定上去
       this.$forceUpdate();
       // 触发 middleSelection-cmp/index 组件 将当前页面所有数据存入缓存中
       this.$bus.$emit("simpleContainerEmit");
@@ -416,14 +423,19 @@ export default {
         }          
       }    
     },
-    clickCmpItem(e, obj, index) {
+    getComponentsAttr(params){
+      return getComponentsAttr(params).then(res => {
+        return res.data.Data
+      })
+    },
+    async clickCmpItem(e, obj, index) {
       // debugger
       // this.currentClickItemObjIndex = index
 
       let handlerClickDom = getCurrentHandlerDom(e);
       let $target = findEventElement($(handlerClickDom), "atris-selectable");
-      let targetCode = $target.get(0).dataset.atriscode; // 注意此时不能用下面jq的方法来取值dataset 下面取值不会实时更新，jq存的dataset在缓存中
-      // let targetCode = $target.data("atriscode")
+      let targetCode = $target.get(0).dataset.minunicode; // 注意此时不能用下面jq的方法来取值dataset 下面取值不会实时更新，jq存的dataset在缓存中
+      // let targetCode = $target.data("minunicode")
       if ($target && targetCode) {
         let targetStr = `.cmp-item-${targetCode}`;
         setEventElementAttributes(false, ".cmp-item-", targetCode, [
@@ -441,10 +453,29 @@ export default {
           }
         );
       }
+      // 给点击的 obj 添加 pageSetUp  pageStyle pageHighSetUp 属性
+      if (
+        isEmpty(obj.pageSetUp) ||
+        isEmpty(obj.pageStyle) ||
+        isEmpty(obj.pageHighSetUp)
+      ) {
+        let params = {
+          maincode: obj.maincode || "",
+          pagecode: this.currentsetPageCode,
+          controlType: obj.controlType,
+        };
+        let attrObj = await this.getComponentsAttr(params);
+        console.log("attrObj", attrObj);
+        if (attrObj) {
+          this.$set(obj, "pageSetUp", attrObj.pageSetUp);
+          this.$set(obj, "pageStyle", attrObj.pageStyle);
+          this.$set(obj, "pageHighSetUp", attrObj.pageHighSetUp);
+        }
+      }
 
       // 触发 右边的变化
       this.$bus.$emit("emitFromMiddleSection", {
-        atrisCode: targetCode,
+        minUnicode: targetCode,
         obj: obj,
         controlType: obj.controlType,
       });
@@ -452,9 +483,9 @@ export default {
     mouseoverCmpItem(e, obj, index) {
       let handlerClickDom = getCurrentHandlerDom(e);
       let $target = findEventElement($(handlerClickDom), "atris-hoverable");
-      let targetCode = $target.get(0).dataset.atriscode; // 注意此时不能用下面jq的方法来取值dataset 下面取值不会实时更新，jq存的dataset在缓存中
-      // let targetCode = $target.data("atriscode")
-      console.log("$target, targetCode", $target, targetCode);
+      let targetCode = $target.get(0).dataset.minunicode; // 注意此时不能用下面jq的方法来取值dataset 下面取值不会实时更新，jq存的dataset在缓存中
+      // let targetCode = $target.data("minunicode")
+      // console.log("$target, targetCode", $target, targetCode);
       if ($target && targetCode) {
         let targetStr = `.cmp-item-${targetCode}`;
         setEventElementAttributes(false, ".cmp-item-", targetCode, [
@@ -471,14 +502,14 @@ export default {
         );
       }
     },
-    findKey(arr, parentCode, atrisCode, resObj, flag = false) {
+    findKey(arr, parentCode, minUnicode, resObj, flag = false) {
       if (arr && arr.length) {
         for (let i = 0; i < arr.length; i++) {
           let item = arr[i];
           item.levelIndex = i;
           item.parentCode = parentCode;
           console.log("-------------------", arr);
-          if (item.atrisCode && item.atrisCode === atrisCode) {
+          if (item.minUnicode && item.minUnicode === minUnicode) {
             resObj.parentCode = item.parentCode;
             resObj.levelIndex = item.levelIndex;
             flag = true;
@@ -490,12 +521,12 @@ export default {
               if (item.childrenList && item.childrenList.length) {
                 let res = this.findKey(
                   item.childrenList,
-                  item.atrisCode,
-                  atrisCode,
+                  item.minUnicode,
+                  minUnicode,
                   resObj,
                   flag
                 );
-                if (res && res.atrisCode) {
+                if (res && res.minUnicode) {
                   return res;
                   break;
                 }
@@ -509,9 +540,9 @@ export default {
     },
     // 添加 唯一码
     addGuid(obj) {
-      if (obj.atrisCode) {
-        obj.atrisCode = getGuid2(obj.controlType);
-        obj.atrisGuid = getGuid(obj.controlType);
+      if (obj.minUnicode) {
+        obj.minUnicode = getGuid2(obj.controlType);
+        obj.longUnicode = getGuid(obj.controlType);
       }
       if (obj.childrenList && obj.childrenList.length) {
         obj.childrenList.forEach((item) => {
@@ -524,7 +555,7 @@ export default {
       if (arr && arr.length) {
         for (let i = 0; i < arr.length; i++) {
           let item = arr[i];
-          if (item.atrisCode && item.atrisCode === code) {
+          if (item.minUnicode && item.minUnicode === code) {
             item.childrenList.splice(index + 1, 0, copyObj);
             end = true;
             return;
@@ -542,8 +573,8 @@ export default {
       debugger;
       let handlerClickDom = getCurrentHandlerDom(e);
       let $target = findEventElement($(handlerClickDom), "atris-selectable");
-      let targetCode = $target.get(0).dataset.atriscode; // 注意此时不能用下面jq的方法来取值dataset 下面取值不会实时更新，jq存的dataset在缓存中
-      // let targetCode = $target.data("atriscode")
+      let targetCode = $target.get(0).dataset.minunicode; // 注意此时不能用下面jq的方法来取值dataset 下面取值不会实时更新，jq存的dataset在缓存中
+      // let targetCode = $target.data("minunicode")
       var resultObj = {};
       resultObj = getDataObj(
         this.pageSetTotalData.pageSetTotalDataList,
@@ -586,7 +617,7 @@ export default {
       if (arr && arr.length) {
         for (let i = 0; i < arr.length; i++) {
           let item = arr[i];
-          if (item.atrisCode && item.atrisCode === code) {
+          if (item.minUnicode && item.minUnicode === code) {
             item.childrenList.splice(index, 1);
             end = true;
             return;
@@ -619,8 +650,8 @@ export default {
             $(handlerClickDom),
             "atris-selectable"
           );
-          let targetCode = $target.get(0).dataset.atriscode; // 注意此时不能用下面jq的方法来取值dataset 下面取值不会实时更新，jq存的dataset在缓存中
-          // let targetCode = $target.data("atriscode")
+          let targetCode = $target.get(0).dataset.minunicode; // 注意此时不能用下面jq的方法来取值dataset 下面取值不会实时更新，jq存的dataset在缓存中
+          // let targetCode = $target.data("minunicode")
           var resultObj = {};
           resultObj = getDataObj(
             this.pageSetTotalData.pageSetTotalDataList,

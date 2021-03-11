@@ -15,8 +15,13 @@
 
 <script type="text/ecmascript-6">
   export default {
-    props:{
-
+    props: {
+      obj: {
+        type: Object,
+        default: () => {
+          return {}
+        }
+      }      
     },
     components: {
 

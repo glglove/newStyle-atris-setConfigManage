@@ -2,6 +2,7 @@
 import * as types from '../mutation-types'
 const pageset = {
     state: {
+        currentsetPageCode: '',  // 当前配置菜单页面的pagecode
         currentLeftNavType: 2, // 1: 大纲树 2 组件库 
         leftCmpBoxShow : true,
         pageSetTotalData: {
@@ -15,7 +16,10 @@ const pageset = {
         },
         [types.SET_PAGESETDATALIST] (state, arr) {
             state.pageSetTotalData.pageSetTotalDataList = arr
-        }
+        },
+        [types.SET_CURRENTSETPAGECODE] (state, pagecode) {
+            state.currentsetPageCode = pagecode
+        },
     },
     actions: {
         setPageSetLeftCmpBoxStatus({commit, state}, {navType, flag}){
@@ -23,6 +27,9 @@ const pageset = {
         },
         setPageSetDataList( {commit, state}, arr ) {
             commit(types.SET_PAGESETDATALIST, arr)
+        },
+        setPageSetPagecode ({commit, state}, pagecode) {
+            commit(types.SET_CURRENTSETPAGECODE, pagecode)
         }
     }
 }

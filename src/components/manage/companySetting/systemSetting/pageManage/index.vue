@@ -1132,6 +1132,8 @@ export default {
             this.currentPageSetTit =  `${row.routeName}页面设置`
             this.currentPageSetRow = JSON.parse(JSON.stringify(row))
             this.showPageSetDialog = true
+            // 存入 store 中
+            this.$store.dispatch("setPageSetPagecode", this.currentPageSetRow.metacode)
         },
         // tablelist 编辑
         handlerEditPage(row){

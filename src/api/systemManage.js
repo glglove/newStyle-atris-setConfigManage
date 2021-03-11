@@ -3621,6 +3621,7 @@ export function addGroupOne (obj) {
 }
 
 
+
 /**
  *  获取组件列表
  * @params {} 
@@ -3637,3 +3638,60 @@ export function getComponentsList () {
         }
     })
 }
+
+
+/**
+ *  获取组件 的 配置属性
+ * @params {}  maincode;
+ * @params {}  pagecode;
+ * @params {}  controlType;
+ */
+ export function getComponentsAttr (obj) { 
+    let {
+        maincode,
+        pagecode,
+        controlType
+    } = obj
+    return fetch({
+        module: 'SystemManage',
+        url: '/plat-configsys-sys-page-relation/get',
+        method: 'post',
+        data: {
+            Method: 'getComponentsAttr',
+            params: {
+                maincode,
+                pagecode,
+                controlType
+            }
+        }
+    })
+}
+
+
+/**
+ *  保存页面  组件 配置属性
+ * @params {}  pagecode;
+ * @params {}  list; [{controlType, minUnicode, longUnicode, uplsPage, pageSetUp, pageStyle, pageHighSetUp, childrenList}]
+ */
+ export function savePageSetConfigInfo (obj) { 
+    let {
+        pagecode,
+        list
+    } = obj
+    return fetch({
+        module: 'SystemManage',
+        url: '/plat-configsys-sys-page-relation/addOne',
+        method: 'post',
+        data: {
+            Method: 'savePageSetConfigInfo',
+            params: {
+                pagecode,
+                list
+            }
+        }
+    })
+}
+
+
+
+

@@ -110,3 +110,5 @@ export const leftCmpBoxShow = state => state.pageset.leftCmpBoxShow
 export const currentLeftNavType = state => state.pageset.currentLeftNavType
 
 export const pageSetTotalData = state => state.pageset.pageSetTotalData
+
+export const currentsetPageCode = state => state.pageset.currentsetPageCode

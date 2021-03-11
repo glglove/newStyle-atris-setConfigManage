@@ -74,26 +74,26 @@ export const cancelElementAttribute = function (isPage=false, isClick, arr, targ
     // 取消其他的 选中状态
     if(arr && arr.length){
         arr.forEach((item, key) => {
-            if(item.atrisCode && (item.atrisCode != targetCode)) {
-                // alert(`${str}${item.atrisCode}`)
-                // console.log(str + `${item.atrisCode}`)
+            if(item.minUnicode && (item.minUnicode != targetCode)) {
+                // alert(`${str}${item.minUnicode}`)
+                // console.log(str + `${item.minUnicode}`)
                 if(cancelClassNameArr && cancelClassNameArr.length){
                     cancelClassNameArr.forEach((classNameItem, key) => {
-                        // alert($(cancelStr + `${item.atrisCode}`).hasClass(classNameItem))                        
-                        $(cancelStr + `${item.atrisCode}`).removeClass(`${classNameItem}`) 
-                        // alert($(cancelStr + `${item.atrisCode}`).hasClass(classNameItem))  
+                        // alert($(cancelStr + `${item.minUnicode}`).hasClass(classNameItem))                        
+                        $(cancelStr + `${item.minUnicode}`).removeClass(`${classNameItem}`) 
+                        // alert($(cancelStr + `${item.minUnicode}`).hasClass(classNameItem))  
                     }) 
                 }
     
                 if(hideStrArr && hideStrArr.length) {
                     hideStrArr.forEach((hideStrItem, index) => {
-                        $(hideStrItem + `${item.atrisCode}`).hide()
+                        $(hideStrItem + `${item.minUnicode}`).hide()
                     })
                 } 
                 
                 if(showStrArr && showStrArr.length) {
                     showStrArr.forEach((showStrItem, index) => {
-                        $(showStrItem + `${item.atrisCode}`).show()
+                        $(showStrItem + `${item.minUnicode}`).show()
                     })
                 }
             }
@@ -116,8 +116,8 @@ export const cancelElementAttribute = function (isPage=false, isClick, arr, targ
     }
 }
 
-export const getDataObj = function (arr, atrisCode, resObj, flag ) {
-    console.log("00000",atrisCode, arr)
+export const getDataObj = function (arr, minUnicode, resObj, flag ) {
+    console.log("00000",minUnicode, arr)
     // debugger
     if(arr && arr.length ){
         for(var i=0; i< arr.length; i++){
@@ -125,19 +125,19 @@ export const getDataObj = function (arr, atrisCode, resObj, flag ) {
             // console.log(item);
             // console.log(i)
             // console.log(item.controlName);
-            if(!item.atrisCode){
+            if(!item.minUnicode){
                 return;
             }
-            console.log("111111",item.atrisCode, atrisCode)
-            if(item.atrisCode && item.atrisCode === atrisCode){
+            console.log("111111",item.minUnicode, minUnicode)
+            if(item.minUnicode && item.minUnicode === minUnicode){
                 flag = true
                 resObj = JSON.parse(JSON.stringify(item))
                 return resObj;
             }else {
                 if(!flag){
                     if(item.childrenList && item.childrenList.length){
-                        let res = getDataObj(item.childrenList, atrisCode, resObj, flag)
-                        if(res && res.atrisCode) {
+                        let res = getDataObj(item.childrenList, minUnicode, resObj, flag)
+                        if(res && res.minUnicode) {
                             return res
                         }
                     }

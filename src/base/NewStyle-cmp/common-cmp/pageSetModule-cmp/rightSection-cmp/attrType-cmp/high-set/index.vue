@@ -12,7 +12,7 @@
 <template>
     <div class="pageSetProperty-highset-cmp">
         <!-- pageSetModule - highset 属性设置  组件 -->
-        <!-- obj: {{obj}} -->
+        obj: {{obj}}
         <h2 class="common-cmp-name">{{obj.controlName}}</h2>
         <!-- <h4 class="common-type-tit">样式设置</h4> -->
         <ul class="common-listWrap">
@@ -20,7 +20,7 @@
                 <li class="common-item u-f-ac">
                     <span class="common-label ellipsis1">唯一码</span>
                     <el-input 
-                        v-model="obj.atrisCode"
+                        v-model="obj.minUnicode"
                         class="u-f-s1"
                         size="mini" 
                         disabled

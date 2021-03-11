@@ -7,8 +7,8 @@ export const getGuid = function (controlType) {
 export const getGuid2 = function (controlType) {  
   let typeStr = controlType + '_'
   switch (controlType) {
-    case '-1':
-    case -1:
+    case '0':
+    case 0:
       typeStr = 'page_' + typeStr
       break;
     case '1':

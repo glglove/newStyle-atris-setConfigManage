@@ -97,7 +97,7 @@
 
                 </el-tab-pane>
             </el-tabs>
-            <!-- obj: {{obj}} -->
+            <!-- objP: {{objP}} -->
             <el-collapse 
                 :accordion="false"
                 v-model="activeIndex"
@@ -202,7 +202,7 @@
     let that = null
     export default {
         props: {    
-            obj: {
+            objP: {
                 type: Object,
                 default: () => {
                     return {}
@@ -343,7 +343,7 @@
             getControlInfo(){
                 this.loading = true
                 let params = {
-                    commonCode: this.obj.relateb,
+                    commonCode: this.objP.relateb,
                     type: 1
                 }
                 getControlInfo(params).then(res => {

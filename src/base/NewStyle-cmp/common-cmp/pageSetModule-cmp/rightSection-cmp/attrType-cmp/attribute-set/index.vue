@@ -15,7 +15,7 @@
         <component
             :is="getSetComponentUtils(controlType)"
             :controlType="controlType"
-            :atrisCode="atrisCode"
+            :minUnicode="minUnicode"
             :obj.sync="obj"
         >
         </component>
@@ -46,7 +46,7 @@ export default {
                 return ''
             }
         },
-        atrisCode: {
+        minUnicode: {
             type: [String],
             default: () => {
                 return ''

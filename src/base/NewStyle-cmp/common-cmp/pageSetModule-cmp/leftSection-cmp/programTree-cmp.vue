@@ -18,7 +18,7 @@
         <!-- pageSetTotalData: {{pageSetTotalData}} -->
         <el-tree
             :data="treeData"
-            node-key="atrisCode"
+            node-key="minUnicode"
             default-expand-all
             :props="{
                 children: 'childrenList',
@@ -137,7 +137,7 @@
                 // }
                 debugger
                 
-                if( !dropNode.data.atrisGuid ){
+                if( !dropNode.data.longUnicode ){
                     // 列不允许前面  后面插入
                     console.log(dropNode.data)
                     if(type === 'inner'){
@@ -163,14 +163,14 @@
                 // return draggingNode.data.label.indexOf('三级 3-2-2') === -1;
                 console.log("draggingNode", draggingNode)
                 // 只有 有唯一码的可以拖拽 (布局容器中的 单个列 的atrisGuid为 null 不能单个进行拖拽排序需要和该布局容器一起进行拖拽)
-                return draggingNode.data.atrisGuid 
+                return draggingNode.data.longUnicode 
             },
             handleNodeClick(data, node, elem){
                 debugger
                 this.$bus.$emit("progressTreeEmitClick", data)
                 // 触发 右边的变化
                 this.$bus.$emit("emitFromProgramTree", {
-                    atrisCode: data.atrisCode,
+                    minUnicode: data.minUnicode,
                     obj: data,
                     controlType: data.controlType,
                 });                

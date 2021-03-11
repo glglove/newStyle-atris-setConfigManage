@@ -67,7 +67,7 @@
                         </div>                        
                     </vuedraggable>
                 </div>
-                <!--<el-divider><span style="color: #DCDFE6">拖动布局</span></el-divider>-->
+                <!--<el-divider><spanNum style="color: #DCDFE6">拖动布局</spanNum></el-divider>-->
             </el-tab-pane>
 
             <!-----自定义的容器------>
@@ -101,13 +101,13 @@
                             </div>
                         </el-tooltip>
 
-                        <span class="marginT20">
+                        <spanNum class="marginT20">
                             <el-button 
                                 type="primary" 
                                 @click="yes" 
                                 size="mini"
                             >确认</el-button>
-                        </span>
+                        </spanNum>
                     </el-form>
                 </div>
                 <div class="u-f-ajc">
@@ -149,9 +149,9 @@
                     </vuedraggable>
                 </div>
                 <el-divider>
-                    <span style="color: #aeb1b7;cursor: pointer" @click="clearLayoutCustom">
+                    <spanNum style="color: #aeb1b7;cursor: pointer" @click="clearLayoutCustom">
                         清空
-                    </span>
+                    </spanNum>
                 </el-divider>
             </el-tab-pane>
         </el-tabs>
@@ -216,8 +216,8 @@
                         layoutClass:'flex-one',
                     }],
                     "controlName": "一列布局",
-                    atrisCode: getGuid2(),
-                    atrisGuid: '',
+                    minUnicode: getGuid2(),
+                    longUnicode: '',
                     atrisOptions: {
                         width: '100%',
                         defaultValue:'',
@@ -228,11 +228,12 @@
                     },
                     childrenList:[
                         {
-                            span: 24,
+                            spanNum: 24,
                             controlName: `第1列`,
-                            atrisCode: getGuid2(),
-                            atrisGuid:'',
-                            controlType: '5001-1',                                
+                            minUnicode: getGuid2(),
+                            longUnicode:'',
+                            controlType: 5001,   
+                            sortid: 1,                                                          
                             childrenList: [
 
                             ]
@@ -259,8 +260,8 @@
                         }
                     ],
                     "controlName": "两列等宽布局",
-                    atrisCode: getGuid2(),
-                    atrisGuid: '',
+                    minUnicode: getGuid2(),
+                    longUnicode: '',
                     atrisIcon: '',
                     atrisOptions: {
                         width: '100%',
@@ -272,21 +273,23 @@
                     },
                     childrenList:[
                         {
-                            span: 12,
+                            spanNum: 12,
                             controlName: `第1列`,
-                            atrisCode: getGuid2(),
-                            atrisGuid:'',
-                            controlType: '5001-1',                                
+                            minUnicode: getGuid2(),
+                            longUnicode:'',
+                            controlType: 5001,    
+                            sortid: 1,                                                          
                             childrenList: [
 
                             ]
                         },
                         {
-                            span: 12,
+                            spanNum: 12,
                             controlName: `第2列`,
-                            atrisCode: getGuid2(),
-                            atrisGuid:'',                            
-                            controlType: '5001-2',                                
+                            minUnicode: getGuid2(),
+                            longUnicode:'',                            
+                            controlType: 5001,  
+                            sortid: 2,                               
                             childrenList: [
 
                             ]                                    
@@ -317,8 +320,8 @@
                             itemList: []
                         }
                     ],
-                    atrisCode: getGuid2(),
-                    atrisGuid: '',
+                    minUnicode: getGuid2(),
+                    longUnicode: '',
                     atrisConValue: '',
                     atrisOptions: {
                         width: '100%',
@@ -330,31 +333,34 @@
                     },
                     childrenList:[
                         {
-                            span: 8,
+                            spanNum: 8,
                             controlName: `第1列`,
-                            atrisCode: getGuid2(),
-                            atrisGuid:'',
-                            controlType: '5001-1',                                
+                            minUnicode: getGuid2(),
+                            longUnicode:'',
+                            controlType: 5001,   
+                            sortid: 1,                             
                             childrenList: [
 
                             ]
                         },
                         {
-                            span: 8,
+                            spanNum: 8,
                             controlName: `第2列`,
-                            atrisCode: getGuid2(),
-                            atrisGuid:'',
-                            controlType: '5001-2',                            
+                            minUnicode: getGuid2(),
+                            longUnicode:'',
+                            controlType: 5001,                            
+                            sortid: 2, 
                             childrenList: [
 
                             ]                                    
                         },
                         {
-                            span: 8,
+                            spanNum: 8,
                             controlName: `第3列`,
-                            atrisCode: getGuid2(),
-                            atrisGuid:'',
-                            controlType: '5001-3',                            
+                            minUnicode: getGuid2(),
+                            longUnicode:'',
+                            controlType: 5001,   
+                            sortid: 3,                          
                             childrenList: [
 
                             ]                                    
@@ -404,9 +410,9 @@
             addGuid(arr){
                 if(arr && arr.length){
                     arr.forEach((item, key) => {
-                        item.atrisCode = getGuid2()
+                        item.minUnicode = getGuid2()
                         // 每列就不需要添加 atrisGuid了 因为 树形数据上面是否允许拖拽移动时是不支持 分栏容器的列进行移动的
-                        item.atrisGuid = ''
+                        item.longUnicode = ''
                     })
                 }
                 return arr
@@ -470,7 +476,7 @@
                             return parseInt(pre) + parseInt(current)
                         })
                         let controlName = arrValue.join(':')
-                        let num = 1
+                        let num = 0
                         console.log("-------total------------",total)
                         for (let i = 0; i < arrValue.length; i++) {
                             num +=1
@@ -481,11 +487,12 @@
                                 iClass:[]
                             })
                             childrenList.push({
-                                span: (arrValue[i]/total)*24,
+                                spanNum: (arrValue[i]/total)*24,
                                 controlName: `${controlName}——第${num}列`,
-                                atrisCode: getGuid2(),
-                                atrisGuid:'',
-                                controlType: `5001-${num}`,
+                                minUnicode: getGuid2(),
+                                longUnicode:'',
+                                controlType: 5001,   
+                                sortid: num,  
                                 childrenList: [
 
                                 ]
@@ -496,8 +503,8 @@
                                 controlName:`布局 ${controlName}`,                             
                                 columnObjMap,
                                 "controlType": 5001,
-                                atrisCode: '',
-                                atrisGuid: '',
+                                minUnicode: '',
+                                longUnicode: '',
                                 atrisOptions: {
                                     width: '100%',
                                     defaultValue:'',

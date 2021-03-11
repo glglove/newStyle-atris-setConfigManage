@@ -39,7 +39,7 @@ export default {
                 return ''
             }
         },
-        atrisCode: {
+        minUnicode: {
             type: [String],
             default: () => {
                 return ''

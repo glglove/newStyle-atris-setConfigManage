@@ -7,6 +7,7 @@
 
 <template>
   <div>
+    obj: {{obj}}
     显示组件———— 文本
     <div class="text" v-html="textData"></div>
   </div>
@@ -14,7 +15,14 @@
 
 <script type="text/ecmascript-6">
 export default {
-  props: {},
+  props: {
+    obj: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    }    
+  },
   components: {},
   computed: {},
   watch: {},

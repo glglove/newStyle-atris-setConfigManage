@@ -175,7 +175,7 @@
             <!---分页部分--end--->           
         </div>
 
-        <el-dialog
+        <!-- <el-dialog
             v-if="showPageSet"
             fullscreen
             :visible.sync="showPageSet"
@@ -185,7 +185,7 @@
             <page-set-module-cmp
                 :objP.sync="currentTableSetRow"                
             ></page-set-module-cmp>
-        </el-dialog>
+        </el-dialog> -->
 
 
         <!-- <div class="wrap" style="border: 1px solid red" @click="handlerClick0($event)">

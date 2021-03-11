@@ -142,11 +142,11 @@ export default {
             if(evt.added){
                 // 给拖拽后的数据对象生成  唯一码
                 let obj = evt.added.element
-                // obj.atrisCode = getGuid2(obj.controlType)
-                // obj.atrisGuid = getGuid(obj.controlType)
-                this.$set(obj, 'atrisGuid', getGuid(obj.controlType))
-                this.$set(obj, 'atrisCode', getGuid2(obj.controlType))                
-                console.log("vuedragable拖拽完成后添加了唯一码（atrisCode 、 atrisGuid）打印", obj.atrisCode, obj.atrisGuid)
+                // obj.minUnicode = getGuid2(obj.controlType)
+                // obj.longUnicode = getGuid(obj.controlType)
+                this.$set(obj, 'longUnicode', getGuid(obj.controlType))
+                this.$set(obj, 'minUnicode', getGuid2(obj.controlType))                
+                console.log("vuedragable拖拽完成后添加了唯一码（minUnicode 、 longUnicode）打印", obj.minUnicode, obj.longUnicode)
             }else if(evt.moved) {
 
             }else if(evt.removed){
