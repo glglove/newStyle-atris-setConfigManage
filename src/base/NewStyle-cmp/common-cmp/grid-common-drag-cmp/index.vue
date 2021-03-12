@@ -196,6 +196,7 @@
                       @click.stop="handlerClickDelete($event, item, index)"
                     ></i>
                   </el-tooltip>
+                  
                   <el-tooltip
                     effect="dark"
                     content="撤销到上一步"
