@@ -145,3 +145,17 @@ export function isEmpty (value) {
   return result
 }
 
+// 判断是控件
+export function isBasicControl (controlType) {
+  controlType = controlType? controlType*1 : ''
+  let flag = false
+  if(0<controlType && controlType < 100) {
+    //大于 0 小于 100 的视为 控件
+    flag =  true
+  }else if (controlType == 0) {
+    // 页面
+  } else {
+
+  }
+  return flag
+}

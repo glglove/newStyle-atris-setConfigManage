@@ -51,10 +51,10 @@
             @dragleave="leaveDrag($event)"              
             class="containerBox"             
         >
-            配置板块——中间
+            <!-- 配置板块——中间
             cmpsList: {{cmpsList}}        
             滑动设置部分
-            {{contentCmpsList}}
+            {{contentCmpsList}} -->
             
             <vuedraggable 
                 class="wrapper" 

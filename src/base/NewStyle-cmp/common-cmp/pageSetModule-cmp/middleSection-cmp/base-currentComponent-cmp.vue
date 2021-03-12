@@ -26,7 +26,7 @@
 </style>
 <template>
     <div class="currentCmp-cmp">
-        <!-- obj: {{obj}} -->
+        obj: {{obj}}
         <div class="item-titwrap u-f-jsb">
             <span class="tit" v-if="!ismultiColumnContainerFn(obj.controlType)">{{obj.controlName}}</span>
             <span class="iconwrap">
@@ -55,11 +55,11 @@
     import { 
         REQ_OK
     } from '@/api/config'
-    // import { getGuid, getGuid2 } from '@/utils/guid.js'
+    import { getGuid, getGuid2, getGuidPrefixStr } from '@/utils/guid.js'
     import { mapGetters } from 'vuex'
     import {
-        // setLocalStorage,
-        // getLocalStorage
+        setLocalStorage,
+        getLocalStorage
     } from '@/utils/auth.js'  
     import { getComponentUtils, isContainerFn, ismultiColumnContainerFn } from '@/utils/newStyle-components-type.js'
 
@@ -107,15 +107,39 @@
             ])           
         },
         watch: {
-
+            obj: {
+                handler(newValue, oldValue){
+                    debugger
+                    let res = JSON.parse(getLocalStorage(this.obj.minUnicode))
+                    console.log("-----------33333333333333------", res)
+                    // 单个组件 做历史记录
+                    this.setLocalStorage(this.obj.minUnicode, JSON.stringify({
+                        objCurrentValue: newValue,
+                        objBeforeValue: res.objCurrentValue                     
+                    }))
+                    // 页面整体的历史记录 
+                    // this.$bus.$emit("emitFromBasecurrentComponent")
+                },
+                deep: true
+            }
         },
         created(){
-            that = this         
+            that = this      
+            this.initData()   
         },
         beforeDestroy(){
 
         },
         methods: {
+            initData(){
+                this.setLocalStorage(this.obj.minUnicode, JSON.stringify({
+                    objCurrentValue: this.obj,
+                    objBeforeValue: {}
+                }))
+            },
+            setLocalStorage(minUnicode, strObj){
+                setLocalStorage(minUnicode, strObj)
+            },
             getComponentUtils(controlType){
                 return getComponentUtils(controlType)
             },

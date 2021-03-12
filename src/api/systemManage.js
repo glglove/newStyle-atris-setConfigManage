@@ -3624,9 +3624,14 @@ export function addGroupOne (obj) {
 
 /**
  *  获取组件列表
- * @params {} 
+ * @params {} commonCode 取值 pagecode
+ * @params {} type 1 代表 物理表  2 代表分组 3 代表 页面设置里面
  */
-export function getComponentsList () { 
+export function getComponentsList (obj) { 
+    let {
+        commonCode,
+        type=3,
+    } = obj
     return fetch({
         module: 'SystemManage',
         url: '/control-types/tree2',
@@ -3634,6 +3639,8 @@ export function getComponentsList () {
         data: {
             Method: 'getComponentsList',
             params: {
+                commonCode,
+                type
             }
         }
     })
@@ -3687,6 +3694,27 @@ export function getComponentsList () {
             params: {
                 pagecode,
                 list
+            }
+        }
+    })
+}
+
+/**
+ *  获取页面配置 中间部分的 回显数据
+ * @params {}  pagecode;
+ */
+ export function getPageSetConfigInfo (obj) { 
+    let {
+        pagecode,
+    } = obj
+    return fetch({
+        module: 'SystemManage',
+        url: '/plat-configsys-sys-page-relation/treeRelation',
+        method: 'post',
+        data: {
+            Method: 'getPageSetConfigInfo',
+            params: {
+                pagecode,
             }
         }
     })

@@ -79,7 +79,7 @@
 </style>
 <template>
     <div class="pageSetModule-cmp">
-        resConfigArr: {{resConfigArr}}
+        <!-- resConfigArr: {{resConfigArr}} -->
         <div class="topWrap u-f-jsb u-f-ac">
             <div class="leftBox">
                 <h4>页面设置页</h4>
@@ -89,12 +89,17 @@
                     type="info" 
                     size="mini" 
                     disabled
+                    @click.native="previousSetPage"
+                >撤销</el-button>                
+                <el-button 
+                    type="info" 
+                    size="mini" 
+                    disabled
                     @click.native="previewSetPage"
                 >预览</el-button>
                 <el-button 
                     type="primary" 
                     size="mini"
-                    :disabled="!pageSetTotalData.pageSetTotalDataList.length"
                     @click.native="savePageSetConfigBtn"
                 >保存</el-button>
             </div>
@@ -196,7 +201,8 @@ export default {
         'leftCmpBoxShow',
         'currentLeftNavType',
         'pageSetTotalData',
-        'currentsetPageCode'
+        'currentsetPageCode',
+        'historyRecords'
       ]),
     },
     watch:{
@@ -242,6 +248,10 @@ export default {
                 flag: false
             })
         },
+        // 撤销
+        previousSetPage(){
+            
+        },
         // 预览
         previewSetPage(){
 
@@ -274,7 +284,7 @@ export default {
                         controlType: item.controlType,
                         minUnicode: item.minUnicode,
                         longUnicode: item.longUnicode,
-                        uplsPage: upIsPage,
+                        upIsPage: upIsPage,
                         childrenList: [],
                         pageSetUp: item.pageSetUp || {},
                         pageStyle: item.pageStyle || {},

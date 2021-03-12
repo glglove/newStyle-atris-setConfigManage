@@ -82,7 +82,7 @@ import {
 } from '@/utils/CommonInterfaceMixin'
 import { fieldControlTypeMixin } from '@/utils/newStyleMixins-components.js'
 import { getComponentUtils } from '@/utils/newStyle-components-type.js'
-import CurrentComponentCmp from '@/base/NewStyle-cmp/common-cmp/pageSetModule-cmp/middleSection-cmp/currentComponent-cmp'
+import CurrentComponentCmp from '@/base/NewStyle-cmp/common-cmp/pageSetModule-cmp/middleSection-cmp/base-currentComponent-cmp'
 import { getGuid, getGuid2 } from '@/utils/guid.js'
 import SearchToolsCmp from '@/base/NewStyle-cmp/common-cmp/searchTool-cmp'
 export default {

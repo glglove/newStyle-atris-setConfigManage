@@ -88,17 +88,17 @@ export let consRouterMap = [
         },
         children: []
       },
-      {
-        path: 'test',
-        component: () => import('@/components/test/test'),
-        name: 'test',
-        routehidechildrenlist: true,
-        hidden: false,
-        meta: {
-          title: '动态显示测试'
-        },
-        children: []
-      },   
+      // {
+      //   path: 'test',
+      //   component: () => import('@/components/test/test'),
+      //   name: 'test',
+      //   routehidechildrenlist: true,
+      //   hidden: false,
+      //   meta: {
+      //     title: '动态显示测试'
+      //   },
+      //   children: []
+      // },   
       {
         path: 'testDic',
         component: () => import('@/components/test/testDicTree'),

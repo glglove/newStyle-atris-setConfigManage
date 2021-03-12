@@ -234,7 +234,8 @@
                 }
             },
             ...mapGetters([
-                'currentLeftNavType'
+                'currentLeftNavType',
+                'currentsetPageCode'
             ])           
         },
         watch: {
@@ -356,7 +357,11 @@
             }, 
             getComponentsList(){
                 this.loading = true
-                getComponentsList().then(res => {
+                let params = {
+                    commonCode: this.currentsetPageCode,
+                    type: 3
+                }
+                getComponentsList(params).then(res => {
                     this.loading = false
                     // 处理cmps
                     this.cmps = res.data.Data.records

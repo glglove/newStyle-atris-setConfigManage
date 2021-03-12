@@ -15,7 +15,7 @@ export const getCurrentHandlerDom = function (e) {
     let event = e || window.event
     event.preventDefault ? event.preventDefault() : (event.returnValue = false)
     event.stopPropagation ? event.stopPropagation() : (event.cancelBubble = true)
-    console.log("-----------event----------------------", event)    
+    // console.log("-----------event----------------------", event)    
     let target = event.target||event.srcElement   
     return target
 }

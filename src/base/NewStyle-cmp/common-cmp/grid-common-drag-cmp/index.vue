@@ -139,7 +139,7 @@
         >
           <transition-group
             class="transitionGroup"
-            style="display: inline-block; min-height: 80vh; width: 100%"
+            style="display: inline-block; min-height: 100px; width: 100%"
           >
             <div
               v-for="(item, index) in obj.childrenList"
@@ -196,6 +196,26 @@
                       @click.stop="handlerClickDelete($event, item, index)"
                     ></i>
                   </el-tooltip>
+                  <el-tooltip
+                    effect="dark"
+                    content="撤销到上一步"
+                    placement="top-start"
+                  >
+                    <i
+                      class="el-icon-back"
+                      @click.stop="handlerClickBack($event, obj, index)"
+                    ></i>
+                  </el-tooltip>
+                  <el-tooltip
+                    effect="dark"
+                    content="重做"
+                    placement="top-start"
+                  >
+                    <i
+                      class="el-icon-right"
+                      @click.stop="handlerClickAfter($event, obj, index)"
+                    ></i>
+                  </el-tooltip>
                 </div>
               </div>
             </div>
@@ -210,9 +230,9 @@ import {
   getComponentUtils,
   isContainerFn,
 } from "@/utils/newStyle-components-type.js";
-import { getGuid, getGuid2 } from "@/utils/guid.js";
+import { getGuid, getGuid2, getGuidPrefixStr } from "@/utils/guid.js";
 import { setLocalStorage } from "@/utils/auth.js";
-import CurrentComponentCmp from "@/base/NewStyle-cmp/common-cmp/pageSetModule-cmp/middleSection-cmp/currentComponent-cmp";
+import CurrentComponentCmp from "@/base/NewStyle-cmp/common-cmp/pageSetModule-cmp/middleSection-cmp/base-currentComponent-cmp";
 // import CurrentComponentCmp from './current'
 import {
   getCurrentHandlerDom,
@@ -221,10 +241,8 @@ import {
   cancelElementAttribute,
   getDataObj,
 } from "@/utils/dom.js";
-import { isEmpty } from '@/utils/validate.js'
-import {
-  getComponentsAttr
-} from '@/api/systemManage.js'
+import { isEmpty } from "@/utils/validate.js";
+import { getComponentsAttr } from "@/api/systemManage.js";
 import Vuedraggable from "vuedraggable";
 import $ from "jquery";
 import { REQ_OK } from "@/api/config";
@@ -290,10 +308,7 @@ export default {
         // ghostClass: "ghost"
       };
     },
-    ...mapGetters([
-      "pageSetTotalData",
-      "currentsetPageCode"
-    ]),
+    ...mapGetters(["pageSetTotalData", "currentsetPageCode"]),
   },
   methods: {
     getComponentUtils(controlType) {
@@ -416,17 +431,41 @@ export default {
         );
         // 锚点定位到此
         try {
-            let top = $(targetStr).offset().top
-            $('.middleCmp .containerBox').animate({scrollTop: (top-50)}, 500)
-        } catch (error) {
-            
-        }          
-      }    
+          let top = $(targetStr).offset().top;
+          $(".middleCmp .containerBox").animate({ scrollTop: top - 50 }, 500);
+        } catch (error) {}
+      }
     },
-    getComponentsAttr(params){
-      return getComponentsAttr(params).then(res => {
-        return res.data.Data
-      })
+    // 给点击的 obj 添加 pageSetUp  pageStyle pageHighSetUp 属性
+    async addRightsAttr(obj) {
+      if (!isBasicControl(obj.controlType)) {
+        // 非控件类
+        if (
+          isEmpty(obj.pageSetUp) ||
+          isEmpty(obj.pageStyle) ||
+          isEmpty(obj.pageHighSetUp)
+        ) {
+          let params = {
+            maincode: obj.maincode || "",
+            pagecode: this.currentsetPageCode,
+            controlType: obj.controlType,
+          };
+          let attrObj = await this.getComponentsAttr(params);
+          console.log("attrObj", attrObj);
+          if (attrObj) {
+            this.$set(obj, "pageSetUp", attrObj.pageSetUp);
+            this.$set(obj, "pageStyle", attrObj.pageStyle);
+            this.$set(obj, "pageHighSetUp", attrObj.pageHighSetUp);
+          }
+        }
+      } else {
+        // 控件
+      }
+    },
+    getComponentsAttr(params) {
+      return getComponentsAttr(params).then((res) => {
+        return res.data.Data;
+      });
     },
     async clickCmpItem(e, obj, index) {
       // debugger
@@ -454,25 +493,7 @@ export default {
         );
       }
       // 给点击的 obj 添加 pageSetUp  pageStyle pageHighSetUp 属性
-      if (
-        isEmpty(obj.pageSetUp) ||
-        isEmpty(obj.pageStyle) ||
-        isEmpty(obj.pageHighSetUp)
-      ) {
-        let params = {
-          maincode: obj.maincode || "",
-          pagecode: this.currentsetPageCode,
-          controlType: obj.controlType,
-        };
-        let attrObj = await this.getComponentsAttr(params);
-        console.log("attrObj", attrObj);
-        if (attrObj) {
-          this.$set(obj, "pageSetUp", attrObj.pageSetUp);
-          this.$set(obj, "pageStyle", attrObj.pageStyle);
-          this.$set(obj, "pageHighSetUp", attrObj.pageHighSetUp);
-        }
-      }
-
+      this.addRightsAttr(obj);
       // 触发 右边的变化
       this.$bus.$emit("emitFromMiddleSection", {
         minUnicode: targetCode,
@@ -630,6 +651,9 @@ export default {
         }
       }
     },
+    setLocalStorage(minUnicode, strObj) {
+      setLocalStorage(minUnicode, strObj);
+    },
     // 点击 删除的图标
     handlerClickDelete(e, obj, index) {
       this.$confirm(
@@ -684,6 +708,12 @@ export default {
               );
             }
           }
+          // 删除 缓存中该对象的值
+          this.setLocalStorage(
+            getGuidPrefixStr(obj.controlType) + targetCode,
+            ""
+          );
+
           this.$bus.$emit("simpleContainerEmit");
         })
         .catch((err) => {
@@ -691,5 +721,7 @@ export default {
         });
     },
   },
+  handlerClickBack() {},
+  handlerClickAfter() {},
 };
 </script>

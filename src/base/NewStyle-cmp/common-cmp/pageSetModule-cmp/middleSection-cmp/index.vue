@@ -155,7 +155,27 @@
                                             class="el-icon-delete"
                                             @click.stop="handlerClickDelete($event, obj, index)"
                                         ></i>
-                                    </el-tooltip>                                    
+                                    </el-tooltip>  
+                                    <el-tooltip
+                                        effect="dark"
+                                        content="撤销到上一步"
+                                        placement="top-start"
+                                    >
+                                        <i
+                                        class="el-icon-back"
+                                        @click.stop="handlerClickBack($event, obj, index)"
+                                        ></i>
+                                    </el-tooltip>
+                                    <el-tooltip
+                                        effect="dark"
+                                        content="重做"
+                                        placement="top-start"
+                                    >
+                                        <i
+                                        class="el-icon-right"
+                                        @click.stop="handlerClickAfter($event, obj, index)"
+                                        ></i>
+                                    </el-tooltip>                                                                      
                                 </div>
                             </div>
                         </div>
@@ -189,26 +209,18 @@
         REQ_OK
     } from '@/api/config'
     import {
-        // setLocalStorage,
-        // getLocalStorage
-    } from '@/utils/auth.js'
-    import {
-        getMiddleSetData,
+        getPageSetConfigInfo,
         getComponentsAttr
     } from '@/api/systemManage.js'
     import Vuedraggable from 'vuedraggable'
-    // import { fieldControlTypeMixin } from '@/utils/newStyleMixins-components.js'
-    // import BaseSimpleContainerCmp from '@/base/NewStyle-cmp/common-cmp/grid-columnContainer-cmp/simpleContainer-cmp.vue'
-    import CurrentComponentCmp from './currentComponent-cmp'
-    import { getGuid, getGuid2 } from '@/utils/guid.js'
-    import { isEmpty } from '@/utils/validate.js'
+    import CurrentComponentCmp from './base-currentComponent-cmp'
+    import { getGuid, getGuid2, getGuidPrefixStr } from '@/utils/guid.js'
+    import { isEmpty, isBasicControl } from '@/utils/validate.js'
     import {setLocalStorage, getLocalStorage} from '@/utils/auth.js'
     import $ from 'jquery'
     import { getCurrentHandlerDom, findEventElement, setEventElementAttributes, cancelElementAttribute } from '@/utils/dom.js'
     import { mapGetters } from 'vuex'
-    import { scrollAnimation } from '@/utils/scrollAnimation.js'
     export default {
-        // mixins: [ fieldControlTypeMixin ],
         props:{
             objP: {
                 type: Object,
@@ -219,7 +231,6 @@
         },
         components: {
             Vuedraggable,
-            // BaseSimpleContainerCmp,
             CurrentComponentCmp,
         },
         data() {
@@ -281,7 +292,9 @@
                     // obj.longUnicode = getGuid(obj.controlType)    
                     this.$set(obj, 'longUnicode', getGuid(obj.controlType))
                     this.$set(obj, 'minUnicode', getGuid2(obj.controlType))   
-                    this.currentPageSetData.currentPageSetDataList.push(JSON.parse(JSON.stringify(obj)))
+                    // 给点击的 obj 添加 pageSetUp  pageStyle pageHighSetUp 属性
+                    this.addRightsAttr(obj)
+                    this.currentPageSetData.currentPageSetDataList.push(obj)
                     this.currentClickItemObjIndex = (this.currentPageSetData.currentPageSetDataList.length)-1
                     this.saveCurrentPageSetData()
                     if(callback){
@@ -301,7 +314,7 @@
                     this.programTreeEmit(this.currentTreeClickObj.minUnicode)
                 })
             // })
-            // this.getMiddleSetData()
+            this.getPageSetConfigInfo()
         },
         beforeDestroy(){
             this.$bus.$off("leftClickItem")
@@ -313,16 +326,24 @@
 
         },
         methods: {
-            getMiddleSetData(){
+            changePageSetData(arr){
+                if(arr && arr.length){
+                    
+                }
+                console.log(arr)
+                return arr
+            },
+            getPageSetConfigInfo(){
                 this.loading = true
                 let obj = {
-                    commonCode: this.objP.relateb,
-                    type: 1                    
+                    pagecode: this.currentsetPageCode,
                 }
                 // 获取中间部分的回显数据
-                getMiddleSetData(obj).then(res => {
+                getPageSetConfigInfo(obj).then(res => {
                     this.loading = false
-                    this.currentPageSetData.currentPageSetDataList = res.data.Data
+                    // this.currentPageSetData.currentPageSetDataList = res.data.Data
+                    let resPageSetConfigInfo = res.data.Data
+                    this.currentPageSetData.currentPageSetDataList = this.changePageSetData(resPageSetConfigInfo)
                     if(this.currentPageSetData.currentPageSetDataList.length){
                         this.currentClickItemObjIndex = 0                
                     }
@@ -340,8 +361,31 @@
                 }).catch((err) => {
 
                 })              
-            },           
-            clickConteainerBox(e){
+            },     
+            // 给点击的 obj 添加 pageSetUp  pageStyle pageHighSetUp 属性
+            async addRightsAttr(obj){
+                if(!isBasicControl(obj.controlType)){
+                    // 非控件类
+                    if(isEmpty(obj.pageSetUp) || isEmpty(obj.pageStyle) || isEmpty(obj.pageHighSetUp)){
+                        let params = {
+                            maincode: obj.maincode || '',
+                            pagecode: this.currentsetPageCode,
+                            controlType: obj.controlType
+                        }
+                        let attrObj = await this.getComponentsAttr(params)
+                        console.log("attrObj", attrObj)
+                        if(attrObj){
+                            this.$set(obj, 'pageSetUp', attrObj.pageSetUp)
+                            this.$set(obj, 'pageStyle', attrObj.pageStyle)
+                            this.$set(obj, 'pageHighSetUp', attrObj.pageHighSetUp)
+                        }
+                    }
+                }else {
+                    // 控件
+
+                }
+            },    
+            async clickConteainerBox(e){
                 // $('.cmpItemBox').each(function(){
                 //     console.log($(this))
                 //     $(this).removeClass("cmpSelected")
@@ -361,7 +405,10 @@
                         'hide': {'str': ['.cmp-item-handler-']},
                     }, true)
                 }   
-                
+        
+                // 给页面 添加 pageSetUp  和 pageStyle  pageHighSetUp 属性
+                this.addRightsAttr(this.currentPageSetData)
+
                 this.emitRight(targetCode, this.currentPageSetData, 0)
             },
             mouseoverContainerBox(e){
@@ -453,6 +500,7 @@
                 }                
             },  
             emitRight(targetCode, obj, controlType){
+                debugger
                 // 触发 右边的变化
                 this.$bus.$emit("emitFromMiddleSection", {
                     minUnicode: targetCode,
@@ -484,23 +532,8 @@
                         'hide': {'str': ['.cmp-item-handler-']},
                     })
                 }
-
-                // 给点击的 obj 添加 pageSetUp  pageStyle pageHighSetUp 属性
-                if(isEmpty(obj.pageSetUp) || isEmpty(obj.pageStyle) || isEmpty(obj.pageHighSetUp)){
-                    let params = {
-                        maincode: obj.maincode || '',
-                        pagecode: this.currentsetPageCode,
-                        controlType: obj.controlType
-                    }
-                    let attrObj = await this.getComponentsAttr(params)
-                    console.log("attrObj", attrObj)
-                    if(attrObj){
-                        this.$set(obj, 'pageSetUp', attrObj.pageSetUp)
-                        this.$set(obj, 'pageStyle', attrObj.pageStyle)
-                        this.$set(obj, 'pageHighSetUp', attrObj.pageHighSetUp)
-                    }
-                }
-
+                //给点击的 obj 添加 pageSetUp  pageStyle pageHighSetUp 属性
+                this.addRightsAttr(obj)
                 this.emitRight(targetCode, obj, obj.controlType)
             },          
             mouseoverCmpItem (e, obj, index) {
@@ -623,6 +656,9 @@
                     }   
                 }
             },
+            setLocalStorage(minUnicode, strObj){
+                setLocalStorage(minUnicode, strObj)
+            },            
             // 点击 删除的图标
             handlerClickDelete(e, obj, index){
                 debugger
@@ -634,9 +670,9 @@
                     this.saveCurrentPageSetData()
                     // this.$bus.$emit("changeBadageNum", obj, false)
                     debugger
-                    // let handlerClickDom = getCurrentHandlerDom(e)
-                    // let $target = findEventElement($(handlerClickDom), 'atris-selectable')
-                    // let targetCode = $target.get(0).dataset.minunicode  // 注意此时不能用下面jq的方法来取值dataset 下面取值不会实时更新，jq存的dataset在缓存中 
+                    let handlerClickDom = getCurrentHandlerDom(e)
+                    let $target = findEventElement($(handlerClickDom), 'atris-selectable')
+                    let targetCode = $target.get(0).dataset.minunicode  // 注意此时不能用下面jq的方法来取值dataset 下面取值不会实时更新，jq存的dataset在缓存中 
                     // var resultObj = {}
                     // resultObj = getDataObj(this.pageSetTotalData.pageSetTotalDataList, targetCode, resultObj, false)  
                     // console.log("--resultObj----",resultObj)
@@ -651,10 +687,19 @@
                     //         this.deleteData(this.pageSetTotalData.pageSetTotalDataList, resObj.parentCode, resObj.levelIndex)
                     //     }
                     // }  
+
+                    // 删除 缓存中该对象的值
+                    this.setLocalStorage(getGuidPrefixStr(obj.controlType) + targetCode, '')
                 }).catch(err => {
                     // this.$message.info("删除已取消")
                 })
             },  
+            handlerBack(e, obj, index) {
+
+            },
+            handlerAfter(e, obj, index){
+
+            },
             // 将当前中间部分配置的所有页面信息存入缓存
             saveCurrentPageSetData(){
                 // 以下可以使得 拖拽完成后 template模板中绑定的 minUnicode 值
@@ -666,6 +711,7 @@
                 setLocalStorage('currentPageSetData', JSON.stringify(this.currentPageSetData))
                 // 存入 store中
                 this.$store.dispatch('setPageSetDataList', this.currentPageSetData.currentPageSetDataList)
+                this.$store.dispatch('setPageSetDataHistory', JSON.parse(JSON.stringify(this.currentPageSetData)))
             }, 
             simpleContainerEmit(){
                 this.saveCurrentPageSetData()
@@ -678,6 +724,7 @@
             //evt里面有几个值，一个evt.added 和evt.removed,evt.moved  可以分别知道移动元素的ID和删除元素的ID
             change: function (evt) {
                 debugger
+                // alert(44)
                 console.log("vuedragable拖拽完成后打印", evt)
                 if(evt.added){
                     // 给拖拽后的数据对象生成  唯一码

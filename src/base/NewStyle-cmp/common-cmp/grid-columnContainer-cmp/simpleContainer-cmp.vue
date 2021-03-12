@@ -196,7 +196,7 @@
                 </simple-container-cmp>
               </span>
 
-              <!----复制、删除----->
+              <!----复制、删除, 撤销到上一步----->
               <div
                 :class="[
                   'cmp-item-handlerBox',
@@ -216,6 +216,18 @@
                     @click.stop="handlerClickDelete($event, obj, index)"
                   ></i>
                 </el-tooltip>
+                <el-tooltip effect="dark" content="撤销到上一步" placement="top-start">
+                  <i
+                    class="el-icon-back"
+                    @click.stop="handlerClickBack($event, obj, index)"
+                  ></i>
+                </el-tooltip>    
+                <el-tooltip effect="dark" content="重做" placement="top-start">
+                  <i
+                    class="el-icon-right"
+                    @click.stop="handlerClickAfter($event, obj, index)"
+                  ></i>
+                </el-tooltip>                             
               </div>
             </div>
           </transition-group>
@@ -230,10 +242,10 @@ import {
   isContainerFn,
   ismultiColumnContainerFn,
 } from "@/utils/newStyle-components-type.js";
-import { getGuid, getGuid2 } from "@/utils/guid.js";
+import { getGuid, getGuid2, getGuidPrefixStr} from "@/utils/guid.js";
 import { isEmpty } from "@/utils/validate.js";
 import { setLocalStorage } from "@/utils/auth.js";
-import CurrentComponentCmp from "@/base/NewStyle-cmp/common-cmp/pageSetModule-cmp/middleSection-cmp/currentComponent-cmp";
+import CurrentComponentCmp from "@/base/NewStyle-cmp/common-cmp/pageSetModule-cmp/middleSection-cmp/base-currentComponent-cmp";
 // import CurrentComponentCmp from './current'
 import {
   getCurrentHandlerDom,
@@ -435,6 +447,32 @@ export default {
         } catch (error) {}
       }
     },
+    // 给点击的 obj 添加 pageSetUp  pageStyle pageHighSetUp 属性
+    async addRightsAttr(obj) {
+      if (!isBasicControl(obj.controlType)) {
+        // 非控件类
+        if (
+          isEmpty(obj.pageSetUp) ||
+          isEmpty(obj.pageStyle) ||
+          isEmpty(obj.pageHighSetUp)
+        ) {
+          let params = {
+            maincode: obj.maincode || "",
+            pagecode: this.currentsetPageCode,
+            controlType: obj.controlType,
+          };
+          let attrObj = await this.getComponentsAttr(params);
+          console.log("attrObj", attrObj);
+          if (attrObj) {
+            this.$set(obj, "pageSetUp", attrObj.pageSetUp);
+            this.$set(obj, "pageStyle", attrObj.pageStyle);
+            this.$set(obj, "pageHighSetUp", attrObj.pageHighSetUp);
+          }
+        }
+      } else {
+        // 控件
+      }
+    },
     emitRight(targetCode, obj, controlType) {
       // 触发 右边的变化
       this.$bus.$emit("emitFromMiddleSection", {
@@ -445,7 +483,7 @@ export default {
     },
     getComponentsAttr(params) {
       return getComponentsAttr(params).then((res) => {
-        return res.data.Data
+        return res.data.Data;
       });
     },
     async clickCmpItem(e, obj, index) {
@@ -475,24 +513,7 @@ export default {
       // alert(targetCode)
       // alert(obj.controlType)
       // 给点击的 obj 添加 pageSetUp  pageStyle pageHighSetUp 属性
-      if (
-        isEmpty(obj.pageSetUp) ||
-        isEmpty(obj.pageStyle) ||
-        isEmpty(obj.pageHighSetUp)
-      ) {
-        let params = {
-          maincode: obj.maincode || "",
-          pagecode: this.currentsetPageCode,
-          controlType: obj.controlType,
-        };
-        let attrObj = await this.getComponentsAttr(params);
-        console.log("attrObj", attrObj);
-        if (attrObj) {
-          this.$set(obj, "pageSetUp", attrObj.pageSetUp);
-          this.$set(obj, "pageStyle", attrObj.pageStyle);
-          this.$set(obj, "pageHighSetUp", attrObj.pageHighSetUp);
-        }
-      }
+      this.addRightsAttr(obj)
       this.emitRight(targetCode, obj, obj.controlType);
     },
     mouseoverCmpItem(e, obj, index) {
@@ -645,6 +666,9 @@ export default {
         }
       }
     },
+    setLocalStorage(minUnicode, strObj){
+      setLocalStorage(minUnicode, strObj)
+    },      
     // 点击 删除的图标
     handlerClickDelete(e, obj, index) {
       this.$confirm(
@@ -699,11 +723,21 @@ export default {
               );
             }
           }
+
+          // 删除 缓存中该对象的值
+          this.setLocalStorage(getGuidPrefixStr(obj.controlType) + targetCode, '')
+
           this.$bus.$emit("simpleContainerEmit");
         })
         .catch((err) => {
           // this.$message.info("删除已取消")
         });
+    },
+    handlerClickBack(){
+      
+    },
+    handlerClickAfter(){
+
     },
   },
 };
