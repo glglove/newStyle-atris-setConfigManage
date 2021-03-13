@@ -243,7 +243,7 @@ import {
   ismultiColumnContainerFn,
 } from "@/utils/newStyle-components-type.js";
 import { getGuid, getGuid2, getGuidPrefixStr} from "@/utils/guid.js";
-import { isEmpty } from "@/utils/validate.js";
+import { isEmpty, isBasicControl } from "@/utils/validate.js";
 import { setLocalStorage } from "@/utils/auth.js";
 import CurrentComponentCmp from "@/base/NewStyle-cmp/common-cmp/pageSetModule-cmp/middleSection-cmp/base-currentComponent-cmp";
 // import CurrentComponentCmp from './current'

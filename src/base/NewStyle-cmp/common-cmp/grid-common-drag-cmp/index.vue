@@ -242,7 +242,7 @@ import {
   cancelElementAttribute,
   getDataObj,
 } from "@/utils/dom.js";
-import { isEmpty } from "@/utils/validate.js";
+import { isEmpty,isBasicControl } from "@/utils/validate.js";
 import { getComponentsAttr } from "@/api/systemManage.js";
 import Vuedraggable from "vuedraggable";
 import $ from "jquery";

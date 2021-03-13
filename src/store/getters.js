@@ -114,3 +114,7 @@ export const pageSetTotalData = state => state.pageset.pageSetTotalData
 export const currentsetPageCode = state => state.pageset.currentsetPageCode
 
 export const historyRecords = state => state.pageset.historyRecords
+
+export const historyNum = state => state.pageset.historyNum
+
+export const hasclickHistorayBtn = state => state.pageset.hasclickHistorayBtn

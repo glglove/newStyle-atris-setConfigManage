@@ -88,9 +88,15 @@
                 <el-button 
                     type="info" 
                     size="mini" 
-                    disabled
+                    :disabled="!historyRecords.length || (historyNum==0)"
                     @click.native="previousSetPage"
-                >撤销</el-button>                
+                >后退</el-button>   
+                <el-button 
+                    type="info" 
+                    size="mini" 
+                    :disabled="!historyRecords.length || (historyNum==historyRecords.length-1)"
+                    @click.native="nextSetPage"
+                >前进</el-button>                               
                 <el-button 
                     type="info" 
                     size="mini" 
@@ -202,7 +208,8 @@ export default {
         'currentLeftNavType',
         'pageSetTotalData',
         'currentsetPageCode',
-        'historyRecords'
+        'historyRecords',
+        'historyNum'
       ]),
     },
     watch:{
@@ -248,9 +255,13 @@ export default {
                 flag: false
             })
         },
-        // 撤销
+        // 页面后退一步
         previousSetPage(){
-            
+            this.$store.dispatch("setClickHistoryBtn", 'before')
+        },
+        // 页面前进一步
+        nextSetPage(){
+            this.$store.dispatch("setClickHistoryBtn", 'after')
         },
         // 预览
         previewSetPage(){

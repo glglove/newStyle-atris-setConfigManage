@@ -243,6 +243,7 @@
                 },
                 currentClickItemObjIndex: '',
                 currentTreeClickObj: {},
+                currentClickItemObjMinUnicode: ''
             }
         },
         computed: {
@@ -257,6 +258,9 @@
             ...mapGetters([
                 'pageSetTotalData',
                 'currentsetPageCode',
+                'historyNum',
+                'hasclickHistorayBtn',
+                'historyRecords'
             ])
         },
         watch: {
@@ -280,9 +284,19 @@
                     debugger
                     // 实时保存到缓存 和 store中
                     this.saveCurrentPageSetData()
+                   
                 },
                 deep: true
-            }        
+            },
+            historyNum: {
+                handler (newValue, oldValue) {
+                    if(this.hasclickHistorayBtn){
+                        this.currentPageSetData = this.historyRecords[newValue]
+                        // this.currentPageSetData.currentPageSetDataList = [].concat(this.historyRecords[newValue].currentPageSetDataList)
+                        this.emitRight(this.currentClickItemObjMinUnicode, this.currentPageSetData.currentPageSetDataList[this.currentClickItemObjIndex], this.currentPageSetData.currentPageSetDataList[this.currentClickItemObjIndex].controlType)
+                    }
+                }
+            }      
         },
         created(){
             // this.$nextTick(() => {
@@ -516,7 +530,7 @@
             },                   
             async clickCmpItem(e, obj, index){
                 // debugger
-                // this.currentClickItemObjIndex = index
+                this.currentClickItemObjIndex = index
                 this.removeContainerBoxSelected()
                 let handlerClickDom = getCurrentHandlerDom(e)
                 let $target = findEventElement($(handlerClickDom), 'atris-selectable')
@@ -532,6 +546,7 @@
                         'hide': {'str': ['.cmp-item-handler-']},
                     })
                 }
+                this.currentClickItemObjMinUnicode = targetCode
                 //给点击的 obj 添加 pageSetUp  pageStyle pageHighSetUp 属性
                 this.addRightsAttr(obj)
                 this.emitRight(targetCode, obj, obj.controlType)
@@ -708,10 +723,17 @@
                 this.$forceUpdate()   
                 console.log("-------$forceUpdate后--------", this.currentPageSetData)
 
+                // 点击了 整体页面的 前进/后退 按钮后 不存 历史记录
+                if(this.hasclickHistorayBtn){
+
+                }else {
+                    // alert(424)
+                    this.$store.dispatch('setPageSetDataHistory', JSON.parse(JSON.stringify(this.currentPageSetData)))
+                }
                 setLocalStorage('currentPageSetData', JSON.stringify(this.currentPageSetData))
                 // 存入 store中
                 this.$store.dispatch('setPageSetDataList', this.currentPageSetData.currentPageSetDataList)
-                this.$store.dispatch('setPageSetDataHistory', JSON.parse(JSON.stringify(this.currentPageSetData)))
+                
             }, 
             simpleContainerEmit(){
                 this.saveCurrentPageSetData()
