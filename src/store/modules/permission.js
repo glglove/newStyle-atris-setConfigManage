@@ -66,6 +66,8 @@ const permission = {
         // 获取的用户可访问路由与 配置的 asyncRouterMap 路由做递归匹配 得到用户真实的可访问的路由地址
         // let accessedRouters = filterAsyncRouter(asyncRouterMap, rootState.user.userAccessRouters)
         let res = filterAsyncRouter(asyncRouterMap)
+        // 处理 用户有权限的路由信息
+        // let res = filterAsyncRouter(rootState.user.userAccessRouters)        
         console.log("----999-----", res)
         let accessedRouters = constantRouterMap.concat(res)
         // let accessedRouters = constantRouterMap.concat([])

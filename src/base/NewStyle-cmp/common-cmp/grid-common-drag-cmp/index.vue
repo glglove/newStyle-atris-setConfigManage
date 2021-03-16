@@ -493,8 +493,6 @@ export default {
           }
         );
       }
-      // 给点击的 obj 添加 pageSetUp  pageStyle pageHighSetUp 属性
-      this.addRightsAttr(obj);
       // 触发 右边的变化
       this.$bus.$emit("emitFromMiddleSection", {
         minUnicode: targetCode,

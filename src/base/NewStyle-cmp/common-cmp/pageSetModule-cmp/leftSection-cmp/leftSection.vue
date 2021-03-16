@@ -290,7 +290,7 @@
                     })
                 }else {
                     return new Promise((resolve, reject) => {
-                        reslove(resAttr)
+                        resolve(resAttr)
                     })
                 }              
             }, 

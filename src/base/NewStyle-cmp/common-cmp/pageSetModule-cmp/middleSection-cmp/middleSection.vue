@@ -358,6 +358,7 @@
                     this.loading = false
                     // this.currentPageSetData.currentPageSetDataList = res.data.Data
                     let resPageSetConfigInfo = res.data.Data
+                    debugger
                     this.currentPageSetData.currentPageSetDataList = this.changePageSetData(resPageSetConfigInfo)
                     if(this.currentPageSetData.currentPageSetDataList.length){
                         this.currentClickItemObjIndex = 0                

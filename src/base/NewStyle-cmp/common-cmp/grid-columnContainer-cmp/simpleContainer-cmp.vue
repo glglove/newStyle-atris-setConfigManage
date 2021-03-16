@@ -117,7 +117,7 @@
 </style>
 <template>
   <div class="basicGrid-simpleContainer-cmp" :id="ballId">
-    <!-- obj: {{ obj }} -->
+    <!-- obj: {{ obj.childrenList[0].childrenList[0] }} -->
     <!-- <div class="marginB10">{{obj.controlName}}</div> -->
     <el-row :style="styleWidth" class="u-f grid-row">
       <el-col
@@ -512,8 +512,6 @@ export default {
       }
       // alert(targetCode)
       // alert(obj.controlType)
-      // 给点击的 obj 添加 pageSetUp  pageStyle pageHighSetUp 属性
-      this.addRightsAttr(obj)
       this.emitRight(targetCode, obj, obj.controlType);
     },
     mouseoverCmpItem(e, obj, index) {
