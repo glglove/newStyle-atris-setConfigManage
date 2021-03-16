@@ -519,6 +519,17 @@ export let constantRouterMap = [
         children: []
       }, 
       {
+        path: 'test2',
+        component: () => import('@/base/NewStyle-cmp/testPageCmp/common-page'),
+        name: 'test2',
+        routehidechildrenlist: true,
+        hidden: false,
+        meta: {
+          title: '通用页面'
+        },
+        children: []
+      },      
+      {
         path: 'testDic',
         component: () => import('@/components/test/testDicTree'),
         name: 'testDic',

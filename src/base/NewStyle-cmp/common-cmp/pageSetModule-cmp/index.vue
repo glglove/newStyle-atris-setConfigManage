@@ -294,6 +294,7 @@ export default {
                     resConfigArr.push({
                         controlType: item.controlType,
                         controlName: item.controlName,
+                        columnObjMap: item.columnObjMap || [],
                         minUnicode: item.minUnicode,
                         longUnicode: item.longUnicode,
                         upIsPage: upIsPage,
