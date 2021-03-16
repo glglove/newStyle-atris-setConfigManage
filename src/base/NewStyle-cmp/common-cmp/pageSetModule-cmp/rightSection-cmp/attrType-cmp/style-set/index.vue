@@ -180,12 +180,16 @@
                     ></el-switch>
                 </li>   
             </el-form-item> 
-            <el-form-item>
+            <!-- commonDataSourceConfig.SiteTypeEnum: {{commonDataSourceConfig.SiteTypeEnum}} -->
+            <el-form-item prop="pageStyle.fontSite">
                 <li class="common-item u-f-ac">
                     <span class="common-label ellipsis1">水平位置</span>
-                    <el-radio label="1">左</el-radio>
-                    <el-radio label="2">中</el-radio>
-                    <el-radio label="3">右</el-radio>
+                    <el-radio 
+                        v-for="(item, key) in commonDataSourceConfig.SiteTypeEnum"
+                        :key="key"
+                        :label="item.type"
+                        v-model="obj.pageStyle.fontSite"
+                    >{{item.des}}</el-radio>
                 </li> 
             </el-form-item>                                                                        
         </ul>      
@@ -218,16 +222,22 @@
         </ul>    
         <h4 class="marginT20">边框</h4>
         <ul class="common-listWrap">
-            <el-form-item>
+            <!-- commonDataSourceConfig.BorderStyleEnum: {{commonDataSourceConfig.BorderStyleEnum}} -->
+            <el-form-item prop="pageStyle.borderStyle">
                 <li class="common-item u-f-ac">
                     <span class="common-label ellipsis1">边框样式</span>
                     <el-select 
                         class="u-f-s1"
                         size="mini" 
                         placeholder="边框样式"
+                        v-model="obj.pageStyle.borderStyle"
                     >
-                        <el-option>实线</el-option>
-                        <el-option>虚线</el-option>
+                        <el-option 
+                            v-for="(item, key) in commonDataSourceConfig.BorderStyleEnum"
+                            :key="key"
+                            :label="item.des"
+                            :value="item.type"
+                        ></el-option>
                     </el-select>
                 </li>
             </el-form-item>

@@ -26,7 +26,7 @@
 </style>
 <template>
     <div class="currentCmp-cmp">
-        obj: {{obj}}
+        <!-- currentComponent中 obj: {{obj}} -->
         <div class="item-titwrap u-f-jsb">
             <span class="tit" v-if="!ismultiColumnContainerFn(obj.controlType)">{{obj.controlName}}</span>
             <span class="iconwrap">
@@ -103,22 +103,20 @@
         computed: {
             ...mapGetters([
                 'pageSetTotalData',
-                'currentLeftNavType'
+                'currentLeftNavType',
+                'singleCmpHistory'
             ])           
         },
         watch: {
             obj: {
                 handler(newValue, oldValue){
                     debugger
-                    let res = JSON.parse(getLocalStorage(this.obj.minUnicode))
-                    console.log("-----------33333333333333------", res)
-                    // 单个组件 做历史记录
-                    this.setLocalStorage(this.obj.minUnicode, JSON.stringify({
-                        objCurrentValue: newValue,
-                        objBeforeValue: res.objCurrentValue                     
-                    }))
                     // 页面整体的历史记录 
-                    // this.$bus.$emit("emitFromBasecurrentComponent")
+                    let code = newValue.minUnicode
+                    this.$store.dispatch("setSingleCmpHistory", {
+                        obj: JSON.parse(JSON.stringify(newValue)),
+                        objCode: code,
+                    })                    
                 },
                 deep: true
             }
@@ -132,10 +130,16 @@
         },
         methods: {
             initData(){
-                this.setLocalStorage(this.obj.minUnicode, JSON.stringify({
-                    objCurrentValue: this.obj,
-                    objBeforeValue: {}
-                }))
+                // this.setLocalStorage(this.obj.minUnicode, JSON.stringify({
+                //     objCurrentValue: this.obj,
+                //     objBeforeValue: {}
+                // }))
+                let code = this.obj.minUnicode
+                // 单个控件的 历史记录存入 store中
+                this.$store.dispatch("setSingleCmpHistory", {
+                    obj: JSON.parse(JSON.stringify(this.obj)),
+                    objCode: code,
+                })
             },
             setLocalStorage(minUnicode, strObj){
                 setLocalStorage(minUnicode, strObj)

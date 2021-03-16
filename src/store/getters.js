@@ -118,3 +118,5 @@ export const historyRecords = state => state.pageset.historyRecords
 export const historyNum = state => state.pageset.historyNum
 
 export const hasclickHistorayBtn = state => state.pageset.hasclickHistorayBtn
+
+export const singleCmpHistory = state => state.pageset.singleCmpHistory

@@ -102,3 +102,7 @@ export const SET_CURRENTSETPAGECODE = "SET_CURRENTSETPAGECODE"
 export const SET_PAGESETDATAHISTORY = "SET_PAGESETDATAHISTORY"
 
 export const SET_CLICKHISTORYBTN = "SET_CLICKHISTORYBTN"
+
+export const SET_currentCmpHistoryNum = "SET_currentCmpHistoryNum"
+
+export const SET_singleCmpHistory = "SET_singleCmpHistory"

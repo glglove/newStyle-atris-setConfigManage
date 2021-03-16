@@ -101,13 +101,13 @@
                             </div>
                         </el-tooltip>
 
-                        <spanNum class="marginT20">
+                        <span class="marginT20">
                             <el-button 
                                 type="primary" 
                                 @click="yes" 
                                 size="mini"
                             >确认</el-button>
-                        </spanNum>
+                        </span>
                     </el-form>
                 </div>
                 <div class="u-f-ajc">
@@ -140,18 +140,18 @@
                                     :class="[item.layoutClass, `controlType-${item.controlType}`]"    
                                     :data-itemData="JSON.stringify(item)"                                 
                                     :key="index"
-                                    @click="selectTag(item, index)"                                    
+                                    @click="selectTag(layoutCustomItem, index)"                                    
                                 >
-                                {{flexHash[item.layoutClass]}}
+                                {{flexHash[layoutCustomItem.layoutClass]}}
                             </div>
                             </div>
                         <!-- </transition-group> -->
                     </vuedraggable>
                 </div>
                 <el-divider>
-                    <spanNum style="color: #aeb1b7;cursor: pointer" @click="clearLayoutCustom">
+                    <span style="color: #aeb1b7;cursor: pointer" @click="clearLayoutCustom">
                         清空
-                    </spanNum>
+                    </span>
                 </el-divider>
             </el-tab-pane>
         </el-tabs>
@@ -161,6 +161,12 @@
 <script>
     import Vuedraggable from 'vuedraggable'   
     import {  getGuid2, getGuid } from '@/utils/guid.js'
+    import { getComponentsList, getComponentsAttr } from '@/api/systemManage'
+    import { isEmpty, isBasicControl } from '@/utils/validate.js'
+    import {
+        setLocalStorage,
+        getLocalStorage
+    } from '@/utils/auth.js' 
     let flexMap = [
         'flex-one',
         'flex-two',
@@ -197,6 +203,9 @@
         },
         components:{
             Vuedraggable
+        },
+        created(){
+            this.getAttributesInfo()
         },
         data(){
           return {
@@ -400,17 +409,79 @@
             clearLayoutCustom(){
                 this.layoutCustom = []
             },
-            selectTag(item, index){
-                debugger
+            async getAttributesInfo(obj){
+                let resAttr = JSON.parse(getLocalStorage("pageSetAttrObj"))
+                if(!resAttr){
+                    let params = {
+                        maincode: '',
+                        pagecode: this.currentsetPageCode,
+                        controlType: 1001  // 所有非控件类的 数据都下面的这个接口获得 是全量级的
+                    }
+                    let pageSetAttrObj = await this.getComponentsAttr(params)
+                    console.log("pageSetAttrObj", pageSetAttrObj)
+                    // 将获取的 attrObj 存入 缓存中
+                    setLocalStorage("pageSetAttrObj", JSON.stringify(pageSetAttrObj))
+                    return pageSetAttrObj
+                }             
+            },             
+            selectTag(controlItem, index){
+                debugger             
+                // this.changeBadageNum(controlItem, true)
+                let obj = JSON.parse(JSON.stringify(controlItem))
+                // 给拖拽的数据对象生成  唯一码
+                this.$set(obj, 'minUnicode', getGuid2(obj.controlType))
+                this.$set(obj, 'longUnicode', getGuid(obj.controlType))
+                console.log(`点击时${obj.controlName}添加了唯一码（atrisCode 、 atrisGuid）打印`, obj.minUnicode, obj.longUnicode)                
+                // 给点击的 obj 添加 pageSetUp  pageStyle pageHighSetUp 属性
+                this.addRightsAttr(obj)
                 // 给分栏布局的容器中 每列都添加一个唯一码
-                this.addGuid(item.childrenList)                
-                this.$bus.$emit("leftClickItem", item)
-                // this.changeBadageNum(item, true)
-            },  
+                this.addGuid(obj.childrenList)                
+                // this.$bus.$emit("leftClickItem", JSON.parse(JSON.stringify(obj)), this.changeBadageNum)                
+                this.$bus.$emit("leftClickItem", JSON.parse(JSON.stringify(obj)))                
+            }, 
+            getComponentsAttr(params){
+                debugger
+                return getComponentsAttr(params).then(res => {
+                    return res.data.Data
+                })
+                
+            },             
+            // 给点击的 obj 添加 pageSetUp  pageStyle pageHighSetUp 属性
+            addRightsAttr(obj){
+                if(!isBasicControl(obj.controlType)){
+                    // alert(111)
+                    // 非控件类
+                    if(isEmpty(obj.pageSetUp) || isEmpty(obj.pageStyle) || isEmpty(obj.pageHighSetUp)){
+                        // let params = {
+                        //     maincode: obj.maincode || '',
+                        //     pagecode: this.currentsetPageCode,
+                        //     controlType: obj.controlType
+                        // }
+                        let pageSetAttrObj = JSON.parse(getLocalStorage("pageSetAttrObj")) 
+
+                        console.log("pageSetAttrObj", pageSetAttrObj)
+                        if(pageSetAttrObj){
+                            // alert(222)
+                            this.$set(obj, 'pageSetUp', pageSetAttrObj.pageSetUp)
+                            this.$set(obj, 'pageStyle', pageSetAttrObj.pageStyle)
+                            this.$set(obj, 'pageHighSetUp', pageSetAttrObj.pageHighSetUp)
+                        }else {                         
+                            this.getAttributesInfo().then(res => {
+                                this.$set(obj, 'pageSetUp', res.pageSetUp)
+                                this.$set(obj, 'pageStyle', res.pageStyle)
+                                this.$set(obj, 'pageHighSetUp', res.pageHighSetUp)
+                            })                            
+                        }
+                    }
+                }else {
+                    // 控件
+                    // alert(44)
+                }
+            },              
             addGuid(arr){
                 if(arr && arr.length){
                     arr.forEach((item, key) => {
-                        item.minUnicode = getGuid2()
+                        item.minUnicode = getGuid2(item.controlType)
                         // 每列就不需要添加 atrisGuid了 因为 树形数据上面是否允许拖拽移动时是不支持 分栏容器的列进行移动的
                         item.longUnicode = ''
                     })
@@ -423,10 +494,16 @@
                 console.log("---------拖拽的元素----------", controlItem)
                 // this.currentObj = controlItem
                 // this.changeBadageNum(controlItem, true)              
-                let obj = controlItem
+                let obj = JSON.parse(JSON.stringify(controlItem))
+                // 给拖拽的数据对象生成  唯一码
+                this.$set(obj, 'minUnicode', getGuid2(obj.controlType))
+                this.$set(obj, 'longUnicode', getGuid(obj.controlType))                
+                // 给点击的 obj 添加 pageSetUp  pageStyle pageHighSetUp 属性
+                this.addRightsAttr(obj)                  
                 // 给分栏布局的容器中 每列都添加一个唯一码
                 this.addGuid(obj.childrenList)
-                return JSON.parse(JSON.stringify(obj))          
+                console.log("-55---", obj)
+                return JSON.parse(JSON.stringify(obj))                     
             },
             //evt里面有两个值，一个evt.added 和evt.removed  可以分别知道移动元素的ID和删除元素的ID
             change: function (evt) {
@@ -502,7 +579,7 @@
                             {   
                                 controlName:`布局 ${controlName}`,                             
                                 columnObjMap,
-                                "controlType": 5001,
+                                controlType: 5001,
                                 minUnicode: '',
                                 longUnicode: '',
                                 atrisOptions: {

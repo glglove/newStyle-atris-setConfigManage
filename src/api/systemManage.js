@@ -3594,6 +3594,9 @@ export function addGroupOne (obj) {
     let {
         pageSize=10,
         pageNum = 1,
+        pcode,
+        modulecode,
+        routeName,
         routeIcon,
         ispc,
         ismobile,

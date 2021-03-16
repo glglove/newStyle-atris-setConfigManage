@@ -22,7 +22,7 @@
 </style>
 <template>
     <div class="pageSetProperty-cmp">
-        currentObj: {{currentObj}}
+        <!-- currentObj: {{currentObj}} -->
         <el-tabs class="tabWrap" v-model="activeTab" @tab-click="handleClickTab">
             <el-tab-pane label="设置" name="attrSet"></el-tab-pane>
             <el-tab-pane label="样式" name="styleSet"></el-tab-pane>

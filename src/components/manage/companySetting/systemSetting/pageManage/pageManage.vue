@@ -796,7 +796,14 @@ export default {
                     tit: '设置',
                     baseKey:'c9f0f895',
                     stopOrUsingTitKey: 'routeName'            
-                },                                            
+                },     
+                {
+                    no: 7,
+                    code: 'navigation',
+                    tit: '跳转',
+                    baseKey:'c9f0f895',
+                    stopOrUsingTitKey: 'routeName'            
+                },                                                         
             ], 
             tableData: [],
             outShowSearchInput: true,
@@ -887,7 +894,7 @@ export default {
                 pageSize: this.queryObj.pageSize,
                 pageNum: this.queryObj.pageNum,
                 state: this.queryObj.state,
-                metacode: this.queryObj.metacode,
+                metacode: this.currentTreeLevelObj.metacode,
                 hasPage: this.currentTableHasPage ? 1 : ''
             }
             this.tableLoading = true
@@ -991,7 +998,14 @@ export default {
                     baseKey
                 })
             }
-        },                    
+        }, 
+        // 跳转
+        handlerNavigation(btn, row){
+            debugger
+            this.$router.push({
+                path: '/'+ row.routePath
+            })
+        },                   
         commonTableEmitHandler(btn, row){
             debugger
             this.currentRowTable = row
@@ -1012,6 +1026,9 @@ export default {
                 break
                 case 'move':
                     // this.handleEdit(row)
+                    break;
+                case 'navigation':
+                    this.handlerNavigation(btn, row)
                 break
             }        
         }, 
@@ -1024,6 +1041,7 @@ export default {
         treeClick(obj){
             debugger
             this.currentTreeLevelObj = obj
+            this.queryObj.metacode = obj.metacode
             this._getComTables()
         },
         showTreeDialog(){
@@ -1129,6 +1147,7 @@ export default {
         },  
         // 设置页面
         handlerSetPage(row){
+            // alert(4433)
             this.currentPageSetTit =  `${row.routeName}页面设置`
             this.currentPageSetRow = JSON.parse(JSON.stringify(row))
             this.showPageSetDialog = true
@@ -1138,7 +1157,7 @@ export default {
         // tablelist 编辑
         handlerEditPage(row){
             debugger
-            alert(1)
+            // alert(1)
             this.dialogTitTable = "编辑"
             this.tableEditType = 2
             this.currentTableHasPage = true

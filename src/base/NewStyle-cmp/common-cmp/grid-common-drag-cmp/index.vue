@@ -197,7 +197,7 @@
                     ></i>
                   </el-tooltip>
                   
-                  <el-tooltip
+                  <!-- <el-tooltip
                     effect="dark"
                     content="撤销到上一步"
                     placement="top-start"
@@ -216,7 +216,7 @@
                       class="el-icon-right"
                       @click.stop="handlerClickAfter($event, obj, index)"
                     ></i>
-                  </el-tooltip>
+                  </el-tooltip> -->
                 </div>
               </div>
             </div>

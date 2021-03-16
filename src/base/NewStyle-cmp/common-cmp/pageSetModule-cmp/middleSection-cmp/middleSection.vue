@@ -94,7 +94,7 @@
             data-minunicode="pagecode"  
         >
             <!-- 配置板块——中间 -->    
-            <!-- {{currentPageSetDataList}}  -->
+            <!-- currentPageSetData.currentPageSetDataList:{{currentPageSetData.currentPageSetDataList}}  -->
             <el-form>
                 <vuedraggable 
                     class="wrapper" 
@@ -156,7 +156,7 @@
                                             @click.stop="handlerClickDelete($event, obj, index)"
                                         ></i>
                                     </el-tooltip>  
-                                    <el-tooltip
+                                    <!-- <el-tooltip
                                         effect="dark"
                                         content="撤销到上一步"
                                         placement="top-start"
@@ -175,7 +175,7 @@
                                         class="el-icon-right"
                                         @click.stop="handlerClickAfter($event, obj, index)"
                                         ></i>
-                                    </el-tooltip>                                                                      
+                                    </el-tooltip>                                                                       -->
                                 </div>
                             </div>
                         </div>
@@ -260,7 +260,8 @@
                 'currentsetPageCode',
                 'historyNum',
                 'hasclickHistorayBtn',
-                'historyRecords'
+                'historyRecords',
+                'singleCmpHistory'
             ])
         },
         watch: {
@@ -301,16 +302,15 @@
         created(){
             // this.$nextTick(() => {
                 this.$bus.$on("leftClickItem", (obj, callback) => {
-                    // 给 点击的 obj 添加唯一码
+                    // 给 点击的 obj 添加唯一码 （注意：此操作已经在点击的同时 添加了 ）
                     // obj.minUnicode = getGuid2(obj.controlType)
                     // obj.longUnicode = getGuid(obj.controlType)    
-                    this.$set(obj, 'longUnicode', getGuid(obj.controlType))
-                    this.$set(obj, 'minUnicode', getGuid2(obj.controlType))   
+                    // this.$set(obj, 'longUnicode', getGuid(obj.controlType))
+                    // this.$set(obj, 'minUnicode', getGuid2(obj.controlType))   
                     // 给点击的 obj 添加 pageSetUp  pageStyle pageHighSetUp 属性
-                    this.addRightsAttr(obj)
+                    // this.addRightsAttr(obj)
                     this.currentPageSetData.currentPageSetDataList.push(obj)
                     this.currentClickItemObjIndex = (this.currentPageSetData.currentPageSetDataList.length)-1
-                    this.saveCurrentPageSetData()
                     if(callback){
                         callback(obj,true)
                     }
@@ -328,6 +328,7 @@
                     this.programTreeEmit(this.currentTreeClickObj.minUnicode)
                 })
             // })
+            // 获取 初始回显的中间部分的数据
             this.getPageSetConfigInfo()
         },
         beforeDestroy(){
@@ -375,30 +376,7 @@
                 }).catch((err) => {
 
                 })              
-            },     
-            // 给点击的 obj 添加 pageSetUp  pageStyle pageHighSetUp 属性
-            async addRightsAttr(obj){
-                if(!isBasicControl(obj.controlType)){
-                    // 非控件类
-                    if(isEmpty(obj.pageSetUp) || isEmpty(obj.pageStyle) || isEmpty(obj.pageHighSetUp)){
-                        let params = {
-                            maincode: obj.maincode || '',
-                            pagecode: this.currentsetPageCode,
-                            controlType: obj.controlType
-                        }
-                        let attrObj = await this.getComponentsAttr(params)
-                        console.log("attrObj", attrObj)
-                        if(attrObj){
-                            this.$set(obj, 'pageSetUp', attrObj.pageSetUp)
-                            this.$set(obj, 'pageStyle', attrObj.pageStyle)
-                            this.$set(obj, 'pageHighSetUp', attrObj.pageHighSetUp)
-                        }
-                    }
-                }else {
-                    // 控件
-
-                }
-            },    
+            },        
             async clickConteainerBox(e){
                 // $('.cmpItemBox').each(function(){
                 //     console.log($(this))
@@ -420,9 +398,6 @@
                     }, true)
                 }   
         
-                // 给页面 添加 pageSetUp  和 pageStyle  pageHighSetUp 属性
-                this.addRightsAttr(this.currentPageSetData)
-
                 this.emitRight(targetCode, this.currentPageSetData, 0)
             },
             mouseoverContainerBox(e){
@@ -521,13 +496,7 @@
                     obj: obj,
                     controlType: controlType
                 })
-            },  
-            getComponentsAttr(params){
-                return getComponentsAttr(params).then(res => {
-                    return res.data.Data
-                })
-                
-            },                   
+            },                    
             async clickCmpItem(e, obj, index){
                 // debugger
                 this.currentClickItemObjIndex = index
@@ -547,8 +516,6 @@
                     })
                 }
                 this.currentClickItemObjMinUnicode = targetCode
-                //给点击的 obj 添加 pageSetUp  pageStyle pageHighSetUp 属性
-                this.addRightsAttr(obj)
                 this.emitRight(targetCode, obj, obj.controlType)
             },          
             mouseoverCmpItem (e, obj, index) {
@@ -709,11 +676,11 @@
                     // this.$message.info("删除已取消")
                 })
             },  
-            handlerBack(e, obj, index) {
-
+            handlerClickBack(e, obj, index) {
+                this.$store.dispatch("setSingleCmpHistoryNum")
             },
-            handlerAfter(e, obj, index){
-
+            handlerClickAfter(e, obj, index){
+                this.$store.dispatch("setSingleCmpHistoryNum")
             },
             // 将当前中间部分配置的所有页面信息存入缓存
             saveCurrentPageSetData(){
@@ -724,12 +691,12 @@
                 console.log("-------$forceUpdate后--------", this.currentPageSetData)
 
                 // 点击了 整体页面的 前进/后退 按钮后 不存 历史记录
-                if(this.hasclickHistorayBtn){
+                // if(this.hasclickHistorayBtn){
 
-                }else {
-                    // alert(424)
-                    this.$store.dispatch('setPageSetDataHistory', JSON.parse(JSON.stringify(this.currentPageSetData)))
-                }
+                // }else {
+                //     // alert(424)
+                //     this.$store.dispatch('setPageSetDataHistory', JSON.parse(JSON.stringify(this.currentPageSetData)))
+                // }
                 setLocalStorage('currentPageSetData', JSON.stringify(this.currentPageSetData))
                 // 存入 store中
                 this.$store.dispatch('setPageSetDataList', this.currentPageSetData.currentPageSetDataList)
@@ -749,13 +716,13 @@
                 // alert(44)
                 console.log("vuedragable拖拽完成后打印", evt)
                 if(evt.added){
-                    // 给拖拽后的数据对象生成  唯一码
-                    let obj = evt.added.element
-                    // obj.minUnicode = getGuid2(obj.controlType)
-                    // obj.longUnicode = getGuid(obj.controlType)
-                    this.$set(obj, 'minUnicode', getGuid2(obj.controlType))
-                    this.$set(obj, 'longUnicode', getGuid(obj.controlType))
-                    console.log(`vuedragable拖拽完成后${obj.controlName}添加了唯一码（atrisCode 、 atrisGuid）打印`, obj.minUnicode, obj.longUnicode)
+                    // // 给拖拽后的数据对象生成  唯一码 (注意 此操作已经在 拖拽或者点击时已经添加了)
+                    // let obj = evt.added.element
+                    // // obj.minUnicode = getGuid2(obj.controlType)
+                    // // obj.longUnicode = getGuid(obj.controlType)
+                    // this.$set(obj, 'minUnicode', getGuid2(obj.controlType))
+                    // this.$set(obj, 'longUnicode', getGuid(obj.controlType))
+                    // console.log(`vuedragable拖拽完成后${obj.controlName}添加了唯一码（atrisCode 、 atrisGuid）打印`, obj.minUnicode, obj.longUnicode)
                 }else if(evt.moved) {
 
                 }else if(evt.removed){

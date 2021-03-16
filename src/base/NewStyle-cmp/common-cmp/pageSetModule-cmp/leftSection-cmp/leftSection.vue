@@ -188,16 +188,17 @@
     import { 
         getControlInfo
     } from '@/api/systemManage'
-    // import { getGuid, getGuid2 } from '@/utils/guid.js'
+    import { getGuid, getGuid2, getGuidPrefixStr } from '@/utils/guid.js'
+    import { isEmpty, isBasicControl } from '@/utils/validate.js'
     import { mapGetters } from 'vuex'
     import {
-        // setLocalStorage,
-        // getLocalStorage
+        setLocalStorage,
+        getLocalStorage
     } from '@/utils/auth.js'  
     import Vuedraggable from 'vuedraggable'   
     import LeftComponentsByLayouts from './leftComponentsByLayouts' 
     import ProgramTreeCmp from './programTree-cmp'
-    import { getComponentsList } from '@/api/systemManage'
+    import { getComponentsList, getComponentsAttr } from '@/api/systemManage'
     import { getComponentUtils, isContainerFn, ismultiColumnContainerFn } from '@/utils/newStyle-components-type.js'
     let that = null
     export default {
@@ -241,9 +242,11 @@
         watch: {
 
         },
-        created(){
+        async created(){
             that = this      
             this.initData()  
+            let resAttributesObj = this.getAttributesInfo()
+            // alert(resAttributesObj)
             this.$nextTick(() => {
                 debugger
                 this.$bus.$on("changeBadageNum", (obj, flag) => {
@@ -268,7 +271,29 @@
             },
             initData(){
                 this.getCmpInfo(this.activeTabType)
-            },  
+            }, 
+            getAttributesInfo(obj){
+                debugger
+                let resAttr = JSON.parse(getLocalStorage("pageSetAttrObj"))
+                if(isEmpty(resAttr)){
+                    let params = {
+                        maincode: '',
+                        pagecode: this.currentsetPageCode,
+                        controlType: 1001  // 所有非控件类的 数据都下面的这个接口获得 是全量级的
+                    }
+                    this.getComponentsAttr(params).then(pageSetAttrObj => {
+                        debugger
+                        console.log("pageSetAttrObj", pageSetAttrObj)
+                        // 将获取的 attrObj 存入 缓存中
+                        setLocalStorage("pageSetAttrObj", JSON.stringify(pageSetAttrObj))
+                        return pageSetAttrObj
+                    })
+                }else {
+                    return new Promise((resolve, reject) => {
+                        reslove(resAttr)
+                    })
+                }              
+            }, 
             ismultiColumnContainerFn(type){
                 return ismultiColumnContainerFn(type)
             }, 
@@ -278,7 +303,46 @@
                 }else if (tabType == 2) {
                     this.getComponentsList()
                 }
-            },                  
+            },  
+            getComponentsAttr(params){
+                debugger
+                return getComponentsAttr(params).then(res => {
+                    return res.data.Data
+                })
+                
+            },             
+            // 给点击的 obj 添加 pageSetUp  pageStyle pageHighSetUp 属性
+            addRightsAttr(obj){
+                if(!isBasicControl(obj.controlType)){
+                    // alert(111)
+                    // 非控件类
+                    if(isEmpty(obj.pageSetUp) || isEmpty(obj.pageStyle) || isEmpty(obj.pageHighSetUp)){
+                        // let params = {
+                        //     maincode: obj.maincode || '',
+                        //     pagecode: this.currentsetPageCode,
+                        //     controlType: obj.controlType
+                        // }
+                        let pageSetAttrObj = JSON.parse(getLocalStorage("pageSetAttrObj")) 
+
+                        console.log("pageSetAttrObj", pageSetAttrObj)
+                        if(pageSetAttrObj){
+                            // alert(222)
+                            this.$set(obj, 'pageSetUp', pageSetAttrObj.pageSetUp)
+                            this.$set(obj, 'pageStyle', pageSetAttrObj.pageStyle)
+                            this.$set(obj, 'pageHighSetUp', pageSetAttrObj.pageHighSetUp)
+                        }else {                         
+                            this.getAttributesInfo().then(res => {
+                                this.$set(obj, 'pageSetUp', res.pageSetUp)
+                                this.$set(obj, 'pageStyle', res.pageStyle)
+                                this.$set(obj, 'pageHighSetUp', res.pageHighSetUp)
+                            })                            
+                        }
+                    }
+                }else {
+                    // 控件
+                    // alert(44)
+                }
+            },                             
             cloneFuc(controlItem){
                 // 处理 拖拽的元素
                 debugger
@@ -286,6 +350,15 @@
                 // this.currentObj = controlItem
                 // this.changeBadageNum(controlItem, true)    
                 let obj = controlItem
+                // 给拖拽的数据对象生成  唯一码
+                // obj.minUnicode = getGuid2(obj.controlType)
+                // obj.longUnicode = getGuid(obj.controlType)
+                this.$set(obj, 'minUnicode', getGuid2(obj.controlType))
+                this.$set(obj, 'longUnicode', getGuid(obj.controlType))
+                console.log(`vuedragable拖拽时${obj.controlName}添加了唯一码（atrisCode 、 atrisGuid）打印`, obj.minUnicode, obj.longUnicode)                
+                // 给点击的 obj 添加 pageSetUp  pageStyle pageHighSetUp 属性
+                this.addRightsAttr(obj)   
+                console.log("------------4444----------",obj)            
                 return JSON.parse(JSON.stringify(obj))       
             },
             //evt里面有两个值，一个evt.added 和evt.removed  可以分别知道移动元素的ID和删除元素的ID
@@ -378,10 +451,20 @@
                 }else {
                     item.flagNum = item.flagNum? --item.flagNum: 0
                 }
-            },        
-            selectTag(item, index){
+            },    
+            // 点击时    
+            selectTag(controlItem, index){
                 debugger
-                this.$bus.$emit("leftClickItem", item, this.changeBadageNum)
+                console.log("---------点击的元素----------", controlItem)   
+                let obj = controlItem
+                // 给拖拽的数据对象生成  唯一码
+                this.$set(obj, 'minUnicode', getGuid2(obj.controlType))
+                this.$set(obj, 'longUnicode', getGuid(obj.controlType))
+                console.log(`点击时${obj.controlName}添加了唯一码（atrisCode 、 atrisGuid）打印`, obj.minUnicode, obj.longUnicode)                
+                // 给点击的 obj 添加 pageSetUp  pageStyle pageHighSetUp 属性
+                this.addRightsAttr(obj)
+                // console.log("---00000---", obj)
+                this.$bus.$emit("leftClickItem", JSON.parse(JSON.stringify(obj)), this.changeBadageNum)
                 // this.changeBadageNum(item, true)
             },
             dragstart(event, sourceItem, index){

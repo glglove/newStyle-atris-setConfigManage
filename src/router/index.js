@@ -88,17 +88,17 @@ export let consRouterMap = [
         },
         children: []
       },
-      // {
-      //   path: 'test',
-      //   component: () => import('@/components/test/test'),
-      //   name: 'test',
-      //   routehidechildrenlist: true,
-      //   hidden: false,
-      //   meta: {
-      //     title: '动态显示测试'
-      //   },
-      //   children: []
-      // },   
+      {
+        path: 'test',
+        component: () => import('@/base/NewStyle-cmp/testPageCmp/981fe2d9'),
+        name: 'test',
+        routehidechildrenlist: true,
+        hidden: false,
+        meta: {
+          title: '动态显示测试'
+        },
+        children: []
+      },   
       {
         path: 'testDic',
         component: () => import('@/components/test/testDicTree'),
@@ -509,15 +509,15 @@ export let constantRouterMap = [
       },
       {
         path: 'test',
-        component: () => import('@/components/test/test'),
+        component: () => import('@/base/NewStyle-cmp/testPageCmp/981fe2d9'),
         name: 'test',
-        routeHidden: true,
         routehidechildrenlist: true,
-        routeMeta: {
+        hidden: false,
+        meta: {
           title: '动态显示测试'
         },
-        children:[]
-      },   
+        children: []
+      }, 
       {
         path: 'testDic',
         component: () => import('@/components/test/testDicTree'),
@@ -2740,7 +2740,7 @@ export let asyncRouterMap = [
           },
           {
             routePath: 'pageManage',
-            routeComponent: 'components/manage/companySetting/systemSetting/pageManage/index',
+            routeComponent: 'components/manage/companySetting/systemSetting/pageManage/pageManage',
             routeName: '页面管理',
             routeHidden: false,
             routehidechildrenlist: false,

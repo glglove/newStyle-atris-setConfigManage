@@ -85,7 +85,7 @@
                 <h4>页面设置页</h4>
             </div>
             <div class="rightBox">
-                <el-button 
+                <!-- <el-button 
                     type="info" 
                     size="mini" 
                     :disabled="!historyRecords.length || (historyNum==0)"
@@ -96,7 +96,7 @@
                     size="mini" 
                     :disabled="!historyRecords.length || (historyNum==historyRecords.length-1)"
                     @click.native="nextSetPage"
-                >前进</el-button>                               
+                >前进</el-button>                                -->
                 <el-button 
                     type="info" 
                     size="mini" 
@@ -174,9 +174,9 @@ import {
     fieldControlTypeMixin
 } from '@/utils/newStyleMixins-components'
 import SearchToolsCmp from '@/base/NewStyle-cmp/common-cmp/searchTool-cmp'
-import LeftPageSetmoduleCmp from './leftSection-cmp/index'
-import MiddlePageSetmoduleCmp from './middleSection-cmp/index'
-import RightPageSetpropertyCmp from './rightSection-cmp/index'
+import LeftPageSetmoduleCmp from './leftSection-cmp/leftSection'
+import MiddlePageSetmoduleCmp from './middleSection-cmp/middleSection'
+import RightPageSetpropertyCmp from './rightSection-cmp/rightSection'
 export default {
     mixins: [fieldControlTypeMixin, CommonInterfaceMixin],
     props: {
@@ -293,6 +293,7 @@ export default {
                 arr.forEach((item, key) => {
                     resConfigArr.push({
                         controlType: item.controlType,
+                        controlName: item.controlName,
                         minUnicode: item.minUnicode,
                         longUnicode: item.longUnicode,
                         upIsPage: upIsPage,

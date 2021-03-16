@@ -216,7 +216,7 @@
                     @click.stop="handlerClickDelete($event, obj, index)"
                   ></i>
                 </el-tooltip>
-                <el-tooltip effect="dark" content="撤销到上一步" placement="top-start">
+                <!-- <el-tooltip effect="dark" content="撤销到上一步" placement="top-start">
                   <i
                     class="el-icon-back"
                     @click.stop="handlerClickBack($event, obj, index)"
@@ -227,7 +227,7 @@
                     class="el-icon-right"
                     @click.stop="handlerClickAfter($event, obj, index)"
                   ></i>
-                </el-tooltip>                             
+                </el-tooltip>                              -->
               </div>
             </div>
           </transition-group>
@@ -461,7 +461,7 @@ export default {
             pagecode: this.currentsetPageCode,
             controlType: obj.controlType,
           };
-          let attrObj = await this.getComponentsAttr(params);
+          let attrObj = this.getComponentsAttr(params);
           console.log("attrObj", attrObj);
           if (attrObj) {
             this.$set(obj, "pageSetUp", attrObj.pageSetUp);
